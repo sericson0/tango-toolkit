@@ -19,11 +19,19 @@ import { getCollection } from 'astro:content';
           <p>Our beginner series walks you through the fundamentals of tango DJing. Each course contains multiple lessons with videos, text, and practical exercises.</p>
           <a href="/dj/courses/" class="btn btn-primary btn-lg">Browse All Courses →</a>
 
+          <h2 style="margin-top: 3rem;">Articles</h2>
+          <div class="article-card">
+            <h3><a href="/dj/history-of-tango-music/">The History of Tango Music</a></h3>
+            <p>How many tango recordings are there? A deep dive into the history of tango music, the recording industry, and Argentina — from the first tango recording in 1905 to the modern restoration movement.</p>
+            <a href="/dj/history-of-tango-music/" class="btn btn-primary">Read Article →</a>
+          </div>
+
           <h2 style="margin-top: 3rem;">Quick Links</h2>
           <ul class="resource-links">
             <li><a href="/dj/courses/">Beginner DJ Course Series</a></li>
             <li><a href="/dj/materials/">DJ Materials & References</a></li>
             <li><a href="/dj/paid/">Apps & Premium Resources</a></li>
+            <li><a href="/dj/history-of-tango-music/">The History of Tango Music</a></li>
           </ul>
         </div>
         <aside class="dj-sidebar">
@@ -84,6 +92,25 @@ import { getCollection } from 'astro:content';
   .btn-lg {
     padding: 0.75rem 1.5rem;
     font-size: 1rem;
+  }
+
+  .article-card {
+    background: white;
+    border: 2px solid var(--color-orange-300);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .article-card h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1.15rem;
+  }
+
+  .article-card p {
+    margin: 0 0 1rem;
+    color: var(--color-slate-600);
+    font-size: 0.95rem;
   }
 
   .resource-links {

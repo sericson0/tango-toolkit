@@ -1,0 +1,557 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+const imgBase = '/articles/history-of-tango-music';
+---
+
+<BaseLayout title="The History of Tango Music" description="How many tango recordings are there? Stories on the history of tango music, the recording industry, and Argentina.">
+  <article class="article-page">
+    <section class="page-hero">
+      <div class="container">
+        <a href="/dj/" class="back-link">&larr; Back to DJ Resources</a>
+        <h1>How Many Tango Recordings Are There?</h1>
+        <p class="lead">Stories on the history of tango music</p>
+      </div>
+    </section>
+
+    <div class="article-body">
+      <div class="container narrow">
+        <div class="prose">
+
+<p>I have been recently going through the process of structuring my tango library as part of learning to DJ. While working through the orchestras, I became curious about what I thought would be a straightforward question. &lsquo;How many tango recordings are there?&rsquo; What I thought would be a simple google search whose answer would fill a quick page turned into a couple month journey into the history of tango music, the history of the recording industry, and the history of Argentina and the world. Luckily, this rabbit hole I fell down is filled with Chessire Cats, Mad Hatters, and interesting adventures which I have tried my best to convey here.</p>
+
+<p>The following sections turned out to be much longer than originally planned, though is still much shorter than each of the stories deserve. In each section, I try to answer a question that came up during my attempt to answer the original question. In total, it tells a story about the songs we listen to and dance to each night at the milonga.</p>
+
+<h2>What is the First Tango?</h2>
+
+<p>If there are a total number of tangos, then there has to be a first. But tango music evolved organically from many influences, so there is no clear cutoff where we can say before is not tango and after is tango. A question we can try to definitively answer, though, is &ldquo;what is the first tango recording that we can listen to today?&rdquo;</p>
+
+<p>The oldest surviving recording of any song is <a href="https://en.wikipedia.org/wiki/File:1860-Scott-Au-Clair-de-la-Lune-05-09.ogg">this</a> banger recorded in 1860 by &Eacute;douard-L&eacute;on Scott de Martinville, using a phonautograph to transcribe audio onto paper.</p>
+
+<figure class="audio-embed">
+  <audio controls src={`${imgBase}/1860-Scott-Au-Clair-de-la-Lune-05-09.ogg`}></audio>
+</figure>
+
+<p>It took a little while for the song to become a hit, with researchers at Berkeley using optical imaging to first play it back in 2008 <a id="_ftnref1" href="#_ftn1">[1]</a>.</p>
+
+<div class="two-col">
+  <div>
+    <p>Therefore, the real birth year of audio recording is with Thomas Edison's invention of the Phonograph in 1877. Sounds were engraved onto a tinfoil (and later wax) cylinder which could then be played back. Ten years later, in 1887, Emile Berliner patented the Gramophone which allowed for the much more practical recording onto flat disks. While Berliner's original company did not pan out, his patent rights got passed on to his partner Eldridge Johnson who founded the Consolidated Talking Machine Company, which in 1901 changed its name to the Victor Talking Machine Company <a id="_ftnref2" href="#_ftn2">[2]</a>. Victor and RCA, the radio and electronics company Victor merged with in 1929, produced more tango records than any other label. If you ever see an old tango record, or if you use a program such as <a href="https://www.virtualdj.com/">Virtual DJ</a> which displays the record label, then you are certain to see the Victor and RCA logos.</p>
+  </div>
+  <div>
+    <figure>
+      <img src={`${imgBase}/image-19.png`} alt="Patent for the original Gramophone" />
+      <figcaption>Patent for the original Gramophone. Image from patents.google.com</figcaption>
+    </figure>
+  </div>
+</div>
+
+<div class="two-col">
+  <div>
+    <p>As far I can tell, none of the few phonograph cylinders whose sounds have been digitized contain tango songs <a id="_ftnref3" href="#_ftn3">[3]</a>. And many of the earliest recorded disks have been lost to time. The oldest surviving tango recordings may be held by the TangoVia Buenos Aires project, started by the renowned tango bassist Ignacio Varchausky, which states they have a tango recording from 1902 <a id="_ftnref4" href="#_ftn4">[4]</a><a id="_ftnref5" href="#_ftn5">[5]</a>. It did not seem that this recording had been digitized and made available, however.</p>
+  </div>
+  <div>
+    <figure>
+      <img src={`${imgBase}/image-1.png`} alt="1905 Choclo from Orquestra Argentina Victor" />
+      <figcaption>1905 Choclo from Orquestra Argentina Victor.</figcaption>
+    </figure>
+  </div>
+</div>
+
+<p>After a fair amount of searching, the oldest recording of a tango song that I could find available online to listen to is <a href="https://adp.library.ucsb.edu/index.php/matrix/detail/200005245/B-3624-El_choclo">this</a> 1905 recording of El Choclo by the Victor Argentine Orchestra.</p>
+
+<figure class="audio-embed">
+  <audio controls src={`${imgBase}/cusb_victor_3280_01_b3624_01d.mp3`}></audio>
+  <figcaption>1905 El Choclo &mdash; Victor Argentine Orchestra</figcaption>
+</figure>
+
+<hr />
+
+<h2>So, How Many Tango Recordings Are There?</h2>
+
+<p>Websites such as <a href="https://www.tango-dj.at/">Tango-DJ.at</a>, <a href="https://tangotimetravel.be/">Tango Time Travel</a>, <a href="https://tango.info/">Tango.Info</a>, and <a href="https://www.el-recodo.com/?lang=en">El Recodo Tango</a> provide a number of tango artist discographies. To estimate the number of tango recordings I used tango songs from the El Recodo tango collection because their data were convenient to process and did not have too many duplicates. The first recordings in this list were from 1912 and the final were from 2024.</p>
+
+<p>Golden age artists appear to have a close to complete representation in the dataset, but more recent tango artists were under-represented. I therefore used a cutoff date for the analysis to consider &lsquo;historical&rsquo; tango songs. The cutoff that seems most appropriate is 1995, when the analog era of recording ended in Argentina. After cleaning the data and dropping duplicate entries, the data set includes 11,839 available tango songs recorded between 1912 to 1995. Given additional songs before 1912 along with missing entries, we can give a rough estimate of there being <strong>approximately 12 thousand historical tango recordings</strong>. This tracks El Recodo's own estimates of the number of tango records <a id="_ftnref6" href="#_ftn6">[6]</a>. <strong>Adding an additional 700 Milongas and 1330 Valses brings the total list to around 14 thousand songs.</strong></p>
+
+<h2>When Were They Recorded?</h2>
+
+<figure class="full-width-figure">
+  <img src={`${imgBase}/Orquestras-and-Recordings-per-year-1024x614.png`} alt="Tango orchestras and tango recordings by year" />
+  <figcaption>Tango orchestras and tango recordings by year. Data from El Recodo Tango</figcaption>
+</figure>
+
+<hr />
+
+<div class="two-col">
+  <div>
+    <p>The figure above displays the number of tango orchestras and recorded tangos each year. Early audio recordings used the acoustic energy of the sound itself to power the stylus to record the sound on wax disk (<a href="https://www.youtube.com/watch?v=JwyD-4rFomA">This video</a> provides a good description of the acoustic recording process and the transition to electronic recording techniques).</p>
+  </div>
+  <div>
+    <div class="video-embed">
+      <iframe src="https://www.youtube.com/embed/JwyD-4rFomA" title="Technology That Changed Recording History" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+  </div>
+</div>
+
+<p>While acoustic recording methods became quite sophisticated, the technology was limited in what sounds could be captured. Soft sounds, low frequencies, and high frequencies would all be lost in the recording process. Modern audio files generally have a frequency range of 20 Hz to 20,000 Hz and early electronic recordings had a frequency range of approximately 50 Hz to 6,000 Hz. Acoustic recordings, meanwhile, only had a range of 200 to 2,400 Hz <a id="_ftnref7" href="#_ftn7">[7]</a>.</p>
+
+<div class="two-col">
+  <div>
+    <p>In the early 1920's researchers Henry Harrison and Joseph Maxfield at Bell Labs developed electrical microphones, amplifiers and electromechanical recorders which greatly improved the process of recording sound. In February 1925 Art Gillham and His Southland Syncopators recorded <a href="https://www.youtube.com/watch?v=Q3n98QuABT8">You May Be Lonesome</a>, the first electrically recorded song. One year later, March 1st, 1926, electrical recording made its way to Argentina with Rosita Quiroga's <a href="https://www.youtube.com/watch?v=IsN15YRgr9A">La Musa Mistonga</a>.</p>
+  </div>
+  <div>
+    <div class="video-embed">
+      <iframe src="https://www.youtube.com/embed/IsN15YRgr9A" title="La Musa Mistonga by Rosita Quiroga" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+    <figcaption>La Musa Mistonga by Rosita Quiroga, 1926. The first electrically recorded tango.</figcaption>
+  </div>
+</div>
+
+<p>Interestingly, the studios slow-rolled the new technology into Argentina with minimal marketing or fanfare to not be stuck with a large stockpile of now inferior quality acoustic records. For example, instead of the usual publicity that would follow such an improvement, the only change Victor made to denote that a new record was recorded electrically was to add a VE to denote Victor Electrical <a id="_ftnref8" href="#_ftn8">[8]</a>.</p>
+
+<div class="two-col">
+  <div>
+    <figure>
+      <img src={`${imgBase}/image-3.png`} alt="Acoustic recording session" />
+      <figcaption>Acoustic recording session</figcaption>
+    </figure>
+  </div>
+  <div>
+    <figure>
+      <img src={`${imgBase}/image-4.png`} alt="Electric recording session" />
+      <figcaption>Electric recording session</figcaption>
+    </figure>
+  </div>
+</div>
+
+<div class="two-col">
+  <div>
+    <figure>
+      <a href="https://adp.library.ucsb.edu/index.php/matrix/detail/600004948/BA-727-Alma_de_bohemio">
+        <img src={`${imgBase}/image-5.png`} alt="1925 Acoustic recording by Julio de Caro" />
+      </a>
+      <figcaption>1925 Acoustic recording by Julio de Caro</figcaption>
+    </figure>
+  </div>
+  <div>
+    <figure>
+      <img src={`${imgBase}/image-6.png`} alt="1926 Electric recording of Fuiste by Julio de Caro" />
+      <figcaption>1926 Electric recording of Fuiste by Julio de Caro. Note the <em>VE</em> at the top</figcaption>
+    </figure>
+  </div>
+</div>
+
+<div class="two-col">
+  <div>
+    <p>Listen to Julio de Caro's 1925 acoustical recording of <a href="https://adp.library.ucsb.edu/index.php/matrix/detail/600004948/BA-727-Alma_de_bohemio">Alma De Bohemio</a> and compare with his electrically recorded <a href="https://adp.library.ucsb.edu/index.php/matrix/detail/600005031/BAVE-810-Fuiste">Fuiste</a> just one year later. His 1928 recording of <a href="https://adp.library.ucsb.edu/index.php/matrix/detail/800018397/BAVE-44267-Ojos_brujos">Ojos Brujos</a> further shows how much the recording technology improved in just a few short years. But to get the full scope of the change in sound quality from the start of tango recordings to the start of Tango's Golden Age, listen to the difference between Carlos Gardel's 1912 <a href="https://adp.library.ucsb.edu/index.php/matrix/detail/2000087272/56757-La_mariposa">La Mariposa</a>, and Gardel's <a href="https://adp.library.ucsb.edu/index.php/matrix/detail/200019667/BVE-89226-Volver">Volver</a> recorded March of 1935; just three months before his death on June 24th.</p>
+  </div>
+  <div>
+    <figure class="audio-embed">
+      <audio controls src={`${imgBase}/cusb_col_t637_01_56757_01d.mp3`}></audio>
+      <figcaption>Gardel 1912 La Mariposa</figcaption>
+    </figure>
+    <div class="video-embed">
+      <iframe src="https://www.youtube.com/embed/mxMWHcaW6Cw?start=13" title="Carlos Gardel - Volver" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+    <figcaption>Gardel 1935 Volver</figcaption>
+  </div>
+</div>
+
+<p>Because of the lower audio quality of acoustic recordings, the music we hear at the milonga is all from 1926 onward.</p>
+
+<h2>What is That Big Spike in the 1920's?</h2>
+
+<p>What stands out most in the figure of recordings by year is the spike in songs from 1927-1930. What happened?</p>
+
+<p>At the same time electrical microphones were revolutionizing the recording industry, advances in radio technology were revolutionizing the ability to transmit and receive signals <a id="_ftnref9" href="#_ftn9">[9]</a>. Radio allowed an artist to reach millions of homes at once, enabling international superstars to emerge. Radio was also the OG streaming service, allowing people to listen to music without having to buy records. Facing declining sales, the record companies looked to expand their offerings to reach new audiences <a id="_ftnref10" href="#_ftn10">[10]</a>. Add to this the post-war prosperity that marked the roaring 20's.</p>
+
+<p>The 20's were ripe for big changes in music. To draw corollaries to music in the US at the time: Blind Lemon Jeffries recorded <a href="https://www.youtube.com/watch?v=JXC1jjRCXtg">Matchbox Blues</a> March 1927; Duke Ellington recorded <a href="https://www.youtube.com/watch?v=-_Y0cJ-aEbY">East St. Louis Toodle-Oo</a>, his first record to reach the charts, March 1927; The Carter Family recorded their <a href="https://www.youtube.com/watch?v=qUhw2DGSny4">first tracks</a> August, 1927; Jimmy Rogers recorded his <a href="https://www.youtube.com/watch?v=svqtO81iaFY">first tracks</a> August, 1927; and Louis Armstrong recorded <a href="https://www.youtube.com/watch?v=4WPCBieSESI">West End Blues</a> June 1928. The foundations of Blues, American Folk, Country, and Jazz were all set in a few short years in the latter half of the 1920s.</p>
+
+<p>Facing near-insatiable demand for music from records and radio stations, composer and band leader Francisco Canaro said, &lsquo;hold my mate&rsquo;. Canaro recorded 372 songs (325 tangos) in 1927, 344 songs (293 tangos) in 1928, 421 songs (275 tangos) in 1929, and 421 songs (221 tangos) in 1930 <a id="_ftnref11" href="#_ftn11">[11]</a>. This is more than a song a day consistently for four years! His band recorded 16 songs in one particularly prolific session on December 12th, 1930. A significant fraction of the spike in the late 1920's in tango recordings can be attributed to Canaro's productivity during this period.</p>
+
+<h3>Who Recorded the Most?</h3>
+
+<table>
+<thead><tr><th>Artist</th><th>Tangos Recorded</th><th>First Recording</th><th>Final Recording</th><th>Recording Lifespan</th></tr></thead>
+<tbody>
+<tr><td>Francisco Canaro</td><td>1,584</td><td>1915</td><td>1973</td><td>58</td></tr>
+<tr><td>Juan D'Arienzo</td><td>824</td><td>1928</td><td>1975</td><td>47</td></tr>
+<tr><td>Carlos Gardel</td><td>603</td><td>1912</td><td>1935</td><td>23</td></tr>
+<tr><td>Osvaldo Fresedo</td><td>503</td><td>1926</td><td>1980</td><td>54</td></tr>
+<tr><td>Osvaldo Pugliese</td><td>427</td><td>1943</td><td>1986</td><td>43</td></tr>
+<tr><td>Francisco Lomuto</td><td>399</td><td>1925</td><td>1950</td><td>25</td></tr>
+<tr><td>An&iacute;bal Troilo</td><td>384</td><td>1938</td><td>1971</td><td>33</td></tr>
+<tr><td>Roberto Firpo</td><td>384</td><td>1917</td><td>1944</td><td>27</td></tr>
+<tr><td>Alfredo De Angelis</td><td>364</td><td>1943</td><td>1985</td><td>42</td></tr>
+<tr><td>Carlos Di Sarli</td><td>356</td><td>1928</td><td>1960</td><td>32</td></tr>
+</tbody>
+</table>
+
+<p>The table above shows the ten orchestras who recorded the most songs. In total, the top ten account for about half of all of the tango recordings. While volume is not necessarily an indicator of influence or quality, this list is a decent place to start for anyone newer to tango who wants to know who to start listening to. Unsurprisingly, Canaro was the most prolific, accounting for 13% of all tangos recorded, but the other artists on the list were no slouches either. The &lsquo;King of the Beat&rsquo;, Juan D'Arienzo comes in a strong second. And given his orchestra's proclivity for faster tempos and ending variations, he likely comes fairly close to Canaro on a &lsquo;total recorded notes&rsquo; basis.</p>
+
+<h2>What are the Most Recorded Songs?</h2>
+
+<p>There are a few tango classics that get recorded and played repeatedly throughout the decades. As a tango dancer, becoming familiar with these tango evergreens can go a long way to improving your musicality. The table below provides 25 of the most recorded tango songs along with selected examples for each (You can also listen to them on <a href="https://open.spotify.com/playlist/73Dkdg5sS0TjhZQfHs5WKv?si=abf1732eb3d742f5">this Spotify playlist</a>).</p>
+
+<div class="table-scroll">
+<table>
+<thead><tr><th>#</th><th>Title</th><th>Rec.</th><th>Example 1</th><th>Example 2</th></tr></thead>
+<tbody>
+<tr><td>1</td><td>La Cumparsita</td><td>100</td><td><a href="https://youtu.be/rW3hDu9FMUE?si=hAVqTQWd_qINCD3n&t=545">Troilo '43</a></td><td><a href="https://youtu.be/rW3hDu9FMUE?si=SXIJoueuzWJtEp4G&t=729">D'Arienzo '63</a></td></tr>
+<tr><td>2</td><td>El Choclo</td><td>34</td><td><a href="https://www.youtube.com/watch?v=W3Uo5Z-6ZyE">Di Sarli '54</a></td><td><a href="https://www.youtube.com/watch?v=DadmXdp0wY0">Tipica Victor '29</a></td></tr>
+<tr><td>3</td><td>A Media Luz</td><td>33</td><td><a href="https://www.youtube.com/watch?v=PgzMHEIon20">Donato '41</a></td><td><a href="https://www.youtube.com/watch?v=EaD7jY62vrY">Di Angelis '56</a></td></tr>
+<tr><td>4</td><td>Rodr&iacute;guez Pe&ntilde;a</td><td>33</td><td><a href="https://open.spotify.com/track/5Q12i5JXns2eKPqZ3IE7to">Carabelli '32</a></td><td><a href="https://www.youtube.com/watch?v=fKkc5ZKt3z0">Di Sarli '56</a></td></tr>
+<tr><td>5</td><td>Caminito</td><td>29</td><td><a href="https://open.spotify.com/track/1HjxqsoGIvIQGzJ8ArYOrL">Gardel '27</a></td><td><a href="https://open.spotify.com/track/2a4P2ZM4hM7wJkwhWv3Kak">Lomuto '35</a></td></tr>
+<tr><td>6</td><td>El Amanecer</td><td>27</td><td><a href="https://open.spotify.com/track/3srF3hSwHRjUvuVVCAzuCq">Firpo '28</a></td><td><a href="https://open.spotify.com/track/2QZL7w3U6EhInvB5cP03zL">Di Sarli '41</a></td></tr>
+<tr><td>7</td><td>Sentimiento Gaucho</td><td>27</td><td><a href="https://open.spotify.com/track/54bCi1NfD7g6hsedHa344W">Miranda '63</a></td><td><a href="https://open.spotify.com/track/1aYCEiqHbv8Jb29yOT6KxH">Falc&oacute;n '30</a></td></tr>
+<tr><td>8</td><td>Derecho Viejo</td><td>26</td><td><a href="https://www.youtube.com/watch?v=VzUXbY50zMQ">Fresedo '41</a></td><td><a href="https://www.youtube.com/watch?v=k_nK0Ewr6Ws">D'Arienzo '48</a></td></tr>
+<tr><td>9</td><td>El Entrerriano</td><td>26</td><td><a href="https://open.spotify.com/track/1HnWt0CPL7L0F6ymshJ8zl">Biagi '41</a></td><td><a href="https://open.spotify.com/track/2G0Xie63m3L1sRLshFZARv">Salg&aacute;n '63</a></td></tr>
+<tr><td>10</td><td>Ojos Negros</td><td>25</td><td><a href="https://open.spotify.com/track/2Dmi5spHaYCkNBUYyiIdTv">Sassone '74</a></td><td><a href="https://open.spotify.com/track/69IlVhOAl6ZEPevAfrdsuE">Canaro '32</a></td></tr>
+<tr><td>11</td><td>Chiqu&eacute;</td><td>24</td><td><a href="https://open.spotify.com/track/2kP1tRSKOGSgvAyCh9swxK">Pugliese '53</a></td><td><a href="https://open.spotify.com/track/1W5F4l2o8OW50uKBcCCl4G">Francini-Pontier '53</a></td></tr>
+<tr><td>12</td><td>Yira Yira</td><td>24</td><td><a href="https://open.spotify.com/track/0EPZKCcDQJBFef5wdLa6UR">Troilo &ndash; Rivero '47</a></td><td><a href="https://open.spotify.com/track/4PXMvngbWMoWlRtXvh7FTg">Gardel '30</a></td></tr>
+<tr><td>13</td><td>Don Juan</td><td>23</td><td><a href="https://www.youtube.com/watch?v=PnOti9EWwAQ">D'Arienzo '36</a></td><td><a href="https://www.youtube.com/watch?v=R48OWFUokas">D'Arienzo '50</a></td></tr>
+<tr><td>14</td><td>A La Gran Mu&ntilde;eca</td><td>22</td><td><a href="https://www.youtube.com/watch?v=BnarozuIflg">Di Sarli '45</a></td><td><a href="https://www.youtube.com/watch?v=coVy25CcPzA">Di Sarli '54</a></td></tr>
+<tr><td>15</td><td>Adi&oacute;s Muchachos</td><td>22</td><td><a href="https://open.spotify.com/track/09mugqikQkKNXmVi00hOhJ">OTV '27</a></td><td><a href="https://open.spotify.com/track/1zd7D0uvXA9A9RIMqDYMUs">Rodriguez '45</a></td></tr>
+<tr><td>16</td><td>Adi&oacute;s Pampa M&iacute;a</td><td>22</td><td><a href="https://open.spotify.com/track/6Xj8NprVU0UvHwMzTOEYav">Troilo '45</a></td><td><a href="https://open.spotify.com/track/4IeRMTo1CY1MOhV1dvAW93">Tanturi &ndash; Castillo '47</a></td></tr>
+<tr><td>17</td><td>Felicia</td><td>22</td><td><a href="https://open.spotify.com/track/3xQisDoxrqs5vLyEudL5OR">Carabelli '32</a></td><td><a href="https://open.spotify.com/track/3b1Oamds7MiYkIIlKkS3fd">D'Arienzo '39</a></td></tr>
+<tr><td>18</td><td>Inspiraci&oacute;n</td><td>22</td><td><a href="https://open.spotify.com/track/1Q8jJD96jxwrgjAAU5IWug">Troilo '47</a></td><td><a href="https://open.spotify.com/track/0aYduqrAEi2sHGOIVkjGH0">Maderna '50</a></td></tr>
+<tr><td>19</td><td>El Once</td><td>21</td><td><a href="https://www.youtube.com/watch?v=jegvrek-N1c">Fresedo '27</a></td><td><a href="https://www.youtube.com/watch?v=HWqGycK5Mww">Fresedo '53</a></td></tr>
+<tr><td>20</td><td>Quejas De Bandone&oacute;n</td><td>21</td><td><a href="https://open.spotify.com/track/1lM0f7nBiTzYUkitjTYjYX">Troilo '58</a></td><td><a href="https://www.youtube.com/watch?v=1y8kO8Y4chI">Piazzola '47</a></td></tr>
+<tr><td>21</td><td>Canaro En Par&iacute;s</td><td>20</td><td><a href="https://open.spotify.com/track/7LTV07W5fIGuiicFcUp7Yx">Canaro '27</a></td><td><a href="https://open.spotify.com/track/6nry0nNyx2r9HYLQdTrjKy">Quintetto Real '60</a></td></tr>
+<tr><td>22</td><td>Recuerdo</td><td>20</td><td><a href="https://www.youtube.com/watch?v=QmlzVaWvJqY">Pugliese '44</a></td><td><a href="https://www.youtube.com/watch?v=7j8zWi7nIk8">Pugliese '85</a></td></tr>
+<tr><td>23</td><td>Uno</td><td>20</td><td><a href="https://open.spotify.com/track/6e3uxnqIJutp95nCD05Zmz">Pontier &ndash; Goyenche '68</a></td><td><a href="https://open.spotify.com/track/2c8IZD6C5JlN9wCOFPSqji">Fresedo &ndash; Serpa '43</a></td></tr>
+<tr><td>24</td><td>Alma De Bohemio</td><td>19</td><td><a href="https://open.spotify.com/track/62PD8BOdQc2VRiSeRjqotg">Laurenz &ndash; Podest&aacute; '43</a></td><td><a href="https://open.spotify.com/track/3m72jaauLbd00RmqwVEL0l">Tanturi &ndash; Ribo '47</a></td></tr>
+<tr><td>25</td><td>Mano a Mano</td><td>19</td><td><a href="https://open.spotify.com/track/0O9AExDcV6UwnUxmVMHsGM">Canaro '27</a></td><td><a href="https://open.spotify.com/track/6CqaWFOMbRL7bH3S2Py2Ds">D&iacute;az '75</a></td></tr>
+</tbody>
+</table>
+</div>
+<figcaption>Table of the 25 most recorded tango songs along with examples of each.</figcaption>
+
+<p>In terms of number of recordings, the winner by a mile (winner by 1.6 kilometers in Argentina) is La Cumparsita. First recorded by Roberto Firpo in 1917, La Cumparsita has gone on to become the most recognized and recorded tango. A story shared to me by my friend Ragnar is that one of D'Arienzo's versions of La Cumparsita became such a hit that audiences wouldn't let the band leave until they played it. Hence the tradition of ending the night with La Cumparsita.</p>
+
+<p>While the milonga may end with La Cumparsita, D'Arienzo tried to ensure record sales from this hit never would. His orchestra recorded no less than seven versions of the song, the first in 1928 and the final in 1971, selling more than 14 million copies of the song in total <a id="_ftnref12" href="#_ftn12">[12]</a>. These varying versions provide an insightful timeline into how tango music evolved throughout the decades. You can hear similar differences in D'Arienzo's Don Juan from 1936 and 1950, or Di Sarli's 1945 and 1954 versions of A La Gran Mu&ntilde;eca. The various versions of El Once by Osvaldo Fresedo provide an especially vivid timeline, with recordings in 1927, '31, '35, '45, '53, and '71.</p>
+
+<p>In general, what I will call the &lsquo;size&rsquo; of the song tended to increase over time. &lsquo;Size&rsquo; of song is not a musical term (discussing things like composition, volume, tempo changes, and dynamic range would be more accurate), but it is certainly something we feel as dancers. Some songs naturally ask for bigger steps, more complex movements, and more changes in dynamics than others. I believe this is part of why so many dancers prefer dancing to tangos from the 1930s and '40s. In this period, the songs are &lsquo;big enough&rsquo; to call for interesting movements and maintain interest for a full night, but also &lsquo;small enough&rsquo; to fit into a crowded milonga and not tire yourself out after just a few tandas. It is also interesting that the upper end of eras for milongas is the lower end for stage performances. Most songs in the milonga are from the 30's to early 50's, whereas songs chosen for tango stage performances are often from the mid 50's onwards.</p>
+
+<h2>How Come Many DJs have More Than 12 thousand Tango Records?</h2>
+
+<p>I said the estimated number of tango recordings before 1995 is around 12,000 (14,000 if we include Vals and Milonga). But I know a few DJs and music collectors whose personal libraries have 50 thousand recordings or more. And the <a href="https://www.tango-dj.at/index.htm">Tango-DJ.AT</a> states that they have data on 105,000 tango recordings! <a id="_ftnref13" href="#_ftn13">[13]</a> How can I tell you there are 12 thousand tangos when I personally know of people with tango libraries five times that size? There is a story worth telling here.</p>
+
+<p>The story I am about to tell could have been taken straight from the script for a Marvel movie. It has it all&mdash;secret Nazi technology, a millionaire media icon and entrepreneur, shady corporations, political machinations, and an eclectic group of superheroes banding together to save the day.</p>
+
+<div class="two-col">
+  <div>
+    <p>By the beginning of tango's golden age, recording technology had already started to become dated. Recordings were lathed directly onto a lacquer disk, meaning you had one take to get the recording right with no way to edit. The actual records were made from shellac, which is a resin secreted from the Lac bug. As you can see in <a href="https://www.youtube.com/watch?v=2zL53iEHf_0">this</a> video, the whole process was complex, expensive, and required a lot of expertise and equipment.</p>
+  </div>
+  <div>
+    <div class="video-embed">
+      <iframe src="https://www.youtube.com/embed/2zL53iEHf_0" title="How Shellac Records Are Made" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+  </div>
+</div>
+
+<hr />
+
+<figure class="full-width-figure">
+  <img src={`${imgBase}/image-8.png`} alt="Record manufacturing process" />
+  <figcaption>Image from pspatialaudio.com. Note: for vinyl records, the mother-master is called a mould.</figcaption>
+</figure>
+
+<p>As incredible as it is that millions of people were able to enjoy recorded music for decades because of resin from a small bug, shellac is not the ideal material for audio. Shellac records are relatively <em>big</em>, 10-12 inches in diameter, <em>brittle</em>, you drop one and it shatters, and the grooves could not be cut too fine so each shellac could only hold one song per side. They are also expensive to produce, transport, and store, and the sound quality degrades with each play.</p>
+
+<p>Companies were hard at work researching technology for recording and storing sound when World War II broke out. While the war put much of the research on hold, Allied signal operators started hearing something strange coming out of Germany. Things like radio broadcasts of Hitler from two places at the same time, or symphony orchestras playing from concert halls that had already been destroyed in bombing raids. The broadcasts had to be recordings but sounded as if they were live and were much longer than could be stored on Shellac. <a href="https://www.youtube.com/watch?v=EY7lvuVjjX4">Here</a> you can hear the superb sound quality compared to other 1944 recordings. In fact, the sound quality is so high that you can actually hear the sound of the allied bombing in the background during the quieter moments (listen starting around 5:30).</p>
+
+<figure class="audio-embed">
+  <audio controls src={`${imgBase}/Beethoven-1944-Stereo_-Allegro-from-Concerto-for-piano-and-o.mp3`}></audio>
+  <figcaption>Allegro from Concerto for piano and orchestra No.5 &mdash; Gieseking/RO Berlin.<br/>Audio from youtube.com/watch?v=EY7lvuVjjX4</figcaption>
+</figure>
+
+<div class="two-col">
+  <div>
+    <p>As the war was coming to an end, US Signal Corps officer Jack Mullin went on a quest to discover the new Nazi recording technology. What he finally found was high-fidelity &lsquo;Magnetophon&rsquo; tape recorders. Mullen had a few of these devices along with 50 reels of tape shipped back to his home in San Francisco and began working on them over the next two years <a id="_ftnref14" href="#_ftn14">[14]</a>.</p>
+    <p>Once Mullen felt he had mastered the technology, he went out looking for investors. Luckily for Mullen, Harry Lillis &ldquo;Bing&rdquo; Crosby Jr. was fed up with his work. Radio shows would do two live broadcasts three hours apart, one each for the East Coast and West Coast audiences.</p>
+  </div>
+  <div>
+    <figure>
+      <img src={`${imgBase}/image-9.png`} alt="Magnetophon tape recorder" />
+      <figcaption>Magnetophon tape recorder discovered at a German-controlled radio station in 1945.</figcaption>
+    </figure>
+  </div>
+</div>
+
+<p>With this schedule, Crosby was working himself ragged and missing a lot of dinners with his family. He also couldn't go back and fix errors or take out sections before the broadcast was sent out.</p>
+
+<p>When he heard about Mullen's recording tape he immediately scheduled a meeting. Crosby invested $50k (about $500k in today's dollars) in the Ampex company to work with Mullen to make the Reel-to-Reel tape recorder. By 1948 Bing was recording and editing his show on magnetic tape.</p>
+
+<div class="two-col">
+  <div>
+    <p>Around the same time as magnetic tape, record companies began coming out with new vinyl records. These were cheaper, sturdier, could hold higher fidelity, and could hold more music for the same amount of space. <a href="https://youtu.be/fjC094yTEj4">This</a> 1954 video, made by the RCA company, shows the process of recording and producing vinyl. Given what occurs 10 years later, it also has the unfortunate quote &ldquo;The original tape goes into the vault for safe keeping, to take its place forever alongside many other priceless performances by the world's greatest artists.&rdquo;</p>
+  </div>
+  <div>
+    <div class="video-embed">
+      <iframe src="https://www.youtube.com/embed/fjC094yTEj4" title="HISTORY OF VINYL RECORDS" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+    </div>
+  </div>
+</div>
+
+<p>Magnetic tape and vinyl opened a new world of economic opportunities. Costs and production capacity are based on the number of disks produced, so vinyl storing 3-6 times the number of songs per disk means production and transport costs are reduced and production capacity of songs are increased. Magnetic tape meant that a song could be recorded in a separate location from where the lacquer master was cut.</p>
+
+<p>Newer record labels could record onto tape and then have the tape shipped off to a separate facility to be turned into vinyl, increasing the number of record labels recording tango in the 50s. In 1951, the first tangos recorded with tape and vinyl were by Carlos Di Sarli with the new recording company Music-Hall <a id="_ftnref15" href="#_ftn15">[15]</a>. Many of my personal favorite tango recordings are from the 50s&mdash;those crystal-clear songs DJs play later in the milonga where you fall in love with your partner by the end of the tanda.</p>
+
+<figure class="full-width-figure">
+  <img src={`${imgBase}/image-10.png`} alt="Recording technology timeline" />
+  <figcaption>Image from jens-ingo.all2all.org/archives/2776</figcaption>
+</figure>
+
+<p>The party started coming to an end with the exile of Per&oacute;n by military coup in 1955. While coups were standard operating procedure for Argentina, which had 6 between 1930 and 1983, this coup was especially disruptive. The new military regime banned and censored tangos they deemed too close to &ldquo;peronismo&rdquo; and imprisoned a number of artists who were seen as supportive of the previous regime <a id="_ftnref16" href="#_ftn16">[16]</a>. They prohibited gatherings in the street of three or more people and imposed a mandatory curfew. They cracked down especially hard on milongas compared to other dance venues and nightclubs. While tango music continued strong, the decimation of dance venues severed the ties between the music and the dance. By the 1960's, both the number of tango dancers and the number of tango orchestras were in steep decline.</p>
+
+<p>The 60's dealt another devastating blow to tango. Public tastes were shifting towards a new wave of music, and record companies were facing increasing competition. A number of independent labels such as Music-Hall, who recorded the first vinyl in Argentina, had already gone bankrupt, spreading their original masters and collections to the wind. For the remaining companies, all of those old metal-masters from the shellac era were taking up a lot of space and storage costs. They were also starting to look pretty dated. After all, people weren't making or buying shellac now that there was vinyl, so the recordings would have to be transferred anyways if they ever were to be reproduced.</p>
+
+<p>In 1964, the Argentina branch of RCA decided to clear out its old warehouse of metal masters to create space for new business opportunities. It set up to transfer the masters to metal tape before destroying the old masters, but this transfer process was done in a haphazard manner. Only a portion of the masters were transferred and many of these done with limited quality control <a id="_ftnref17" href="#_ftn17">[17]</a>. The same happened to a lesser extent with the other record labels resulting in many of the original tango masters being lost forever.</p>
+
+<p>Lest you think this is tragedy confined to tango, an equally wholesale destruction of cultural heritage occurred by RCA around the same time less than an hour drive from my home. In the early 1960s, RCA deemed that its Camden New Jersey warehouse, which stored more than 300,000 disks of Victor recordings made from 1900 to 1945, would best serve the company by being dynamited to allow the rubble to be pushed into the waterfront to build a shipping dock on top of <a id="_ftnref18" href="#_ftn18">[18]</a>. Most of the blues and jazz masters, classical recordings from the greats like Rachmaninoff <a id="_ftnref19" href="#_ftn19">[19]</a>, and recordings from artists such as Elvis Presley <a id="_ftnref20" href="#_ftn20">[20]</a> all went up in smoke. Before the destruction, employees and a few collectors were allowed to go through the collection and take what they could carry. This must have been a surreal experience to have nearly 50 years of musical heritage in front of you and can only save what fits in your bag.</p>
+
+<p>The advent of compact discs in the 1980's, along with renewed interest in tango dancing, brought a growing interest in golden age tango recordings. The new CD format made it much more convenient to ship collections of music to customers all around the world. But what to do now that many of the original recordings were destroyed? Some of the songs had already been released as LP compilations in the 60's but were often sped up and had reverb and echo added. When no master remained and no LP existed, employees went out to collect old records to serve as the new master <a id="_ftnref21" href="#_ftn21">[21]</a>. The sound quality from these derivations &ldquo;range from very good to poor, depending on the quality of the sources, dedication and technical competence&rdquo; <a id="_ftnref22" href="#_ftn22">[22]</a>. When transferring the old 78s to CDs, the old records were sometimes played at the incorrect speed, changing the tempo and pitch of the song. <a href="https://www.tangomusicsecrets.co.uk/transfers/whats-all-the-fuss-about-pitch/">This</a> article provides an especially clear example of the difference tempo change. Even with the renewed interest in tango music, much of the tango discography was in a sorry state.</p>
+
+<div class="two-col">
+  <div>
+    <p>This is where the heroes of our story come in. A small group of collectors maintained records in good condition, and another small group went about properly restoring and remastering. The tango world is both big and small&mdash;big in that you can go pretty much anywhere and find people dancing it; small in that there are only so many of us, so anywhere you go you run into some of the same people. The effort to restore tango music was no different. The people doing this work are spread around the world, but the total number is only a few dozen.</p>
+    <p>Restoring tango recordings is detailed and painstaking work involving numerous steps to collect, prepare, digitize, and process each individual track. Those interested can read more about the whole process <a href="https://tangotunes.com/en/digitalization">here</a>, <a href="https://tangotimetravel.be/method-of-restoration/">here</a>, and <a href="https://www.tangovia.org/archivo_audio.htm">here</a>. The result of all this labor, though, is that, through websites such as <a href="https://tangotimetravel.be/">Tango Time Travel</a> and <a href="https://tangotunes.com/">Tango Tunes</a>, milongas and festivals now get to play the tango greats as they were meant to be heard.</p>
+  </div>
+  <div>
+    <figure>
+      <img src={`${imgBase}/image-11.png`} alt="Restoration mid process" />
+      <figcaption>Restoration mid-process. Image from tangotimetravel.be</figcaption>
+    </figure>
+  </div>
+</div>
+
+<p>This restoration work means there are now often several versions of the same recording. Each version may have used different records for the transfer and different methods of cleaning and equalizing the song. There can be large differences in sound quality, and sometimes the ideal version to use varies depending on the venue, time of night, or mood being conveyed. These multiple versions compound with the fact that files can use different compression algorithms and come in different bitrates. Thus, a tango DJ may have several versions of a single recording. In this way, the discography of 14 thousand tangos, milongas, and valses can turn into a library several times this size.</p>
+
+<h2>What About Tango Music Today?</h2>
+
+<p>The full history of tango music has led us to a very special moment today. Hugely important and influential tango music from artists such as Astor Piazzolla and Horacio Salg&aacute;n, along with continued output of the greats from the Golden age, were made well into the 60s, 70s, and 80s. As a whole, however, the tango music industry experienced several decades of decline. The number of tango orchestras, number of recordings, and number of opportunities for artists dwindled. Fortunately for us though, dwindling is not the same as vanishing.</p>
+
+<p>We are at the start of a new golden age of tango music. On my last trip to Buenos Aires, I was struck by the number of live orchestras you could hear, and by the quality of sound coming from all of them. A generation of tango musicians were able to learn from the greats of the golden age, who were able to pass along their knowledge before passing away. And that generation is teaching a new generation of musicians. The quality of technique, sound, and artistry of tango music today is incredible and is continuing to grow.</p>
+
+<p>The advancements in recording technology throughout the decades allow us to listen to music from more than 100 years of tango. The hard work of restoring and remastering means these songs sound better than ever before. And the continued artistry and creativity of contemporary tango musicians means new tangos to enjoy listening to and dancing to are coming out every year. There is no better time to be a tango dancer and tango music listener than today.</p>
+
+<hr />
+
+<h2>References</h2>
+
+<ol class="references">
+  <li id="_ftn1"><a href="#_ftnref1">[1]</a> https://www.nytimes.com/2008/03/27/arts/27soun.html</li>
+  <li id="_ftn2"><a href="#_ftnref2">[2]</a> https://www.loc.gov/collections/emile-berliner/articles-and-essays/gramophone/</li>
+  <li id="_ftn3"><a href="#_ftnref3">[3]</a> Archived cylinder recordings can be found at the UC Santa Barbara library: https://cylinders.library.ucsb.edu/</li>
+  <li id="_ftn4"><a href="#_ftnref4">[4]</a> https://www.theguardian.com/culture/2010/oct/05/argentina-dance-tango-buenos-aires</li>
+  <li id="_ftn5"><a href="#_ftnref5">[5]</a> https://gearspace.com/board/mastering-forum/157797-please-we-need-help-form-experts.html</li>
+  <li id="_ftn6"><a href="#_ftnref6">[6]</a> https://www.el-recodo.com/lostrecordings-en?lang=en</li>
+  <li id="_ftn7"><a href="#_ftnref7">[7]</a> https://jens-ingo.all2all.org/archives/882, https://historyofrecordingblog.wordpress.com/24-2/</li>
+  <li id="_ftn8"><a href="#_ftnref8">[8]</a> https://www.todotango.com/english/history/chronicle/302/The-electric-recordings-and-a-marketing-trick/, https://www.tangomusicsecrets.co.uk/uncategorized/victor-electrical-1926/</li>
+  <li id="_ftn9"><a href="#_ftnref9">[9]</a> https://en.wikipedia.org/wiki/History_of_radio</li>
+  <li id="_ftn10"><a href="#_ftnref10">[10]</a> https://youtu.be/Wbx7Pn87uGQ</li>
+  <li id="_ftn11"><a href="#_ftnref11">[11]</a> From the Discography of Francisco Canaro: https://sites.google.com/site/franciscocanarodiscography</li>
+  <li id="_ftn12"><a href="#_ftnref12">[12]</a> https://www.todotango.com/english/history/chronicle/4/DArienzo-Tango-has-three-things/</li>
+  <li id="_ftn13"><a href="#_ftnref13">[13]</a> https://www.tango-dj.at/index.htm</li>
+  <li id="_ftn14"><a href="#_ftnref14">[14]</a> https://blogs.telosalliance.com/the-history-of-magnetic-recording-tape</li>
+  <li id="_ftn15"><a href="#_ftnref15">[15]</a> http://jens-ingo.all2all.org/archives/2776</li>
+  <li id="_ftn16"><a href="#_ftnref16">[16]</a> https://www.atlasobscura.com/articles/rock-n-roll-and-military-dictatorships-almost-destroyed-argentine-tango</li>
+  <li id="_ftn17"><a href="#_ftnref17">[17]</a> https://humilitan.blogspot.com/2014/12/the-dark-ages-from-days-of-burned.html</li>
+  <li id="_ftn18"><a href="#_ftnref18">[18]</a> https://whyy.org/articles/encore-for-iconic-camden-recording-company-with-a-new-spin/</li>
+  <li id="_ftn19"><a href="#_ftnref19">[19]</a> https://en.wikipedia.org/wiki/RCA_Records</li>
+  <li id="_ftn20"><a href="#_ftnref20">[20]</a> https://variety.com/2017/music/news/elvis-presley-archivist-ernst-jorgensen-interview-1202529943/</li>
+  <li id="_ftn21"><a href="#_ftnref21">[21]</a> http://www.totango.net/rca.html</li>
+  <li id="_ftn22"><a href="#_ftnref22">[22]</a> https://tangoteca.all2all.org/tango_sellos/index.html</li>
+</ol>
+
+        </div>
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .page-hero {
+    padding: 3rem 0;
+    background: linear-gradient(135deg, var(--color-orange-50) 0%, white 100%);
+    border-bottom: 1px solid var(--color-orange-100);
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    color: var(--color-slate-600);
+  }
+
+  .back-link:hover {
+    color: var(--color-primary);
+  }
+
+  .page-hero h1 {
+    margin: 0 0 0.5rem;
+    font-size: clamp(1.75rem, 4vw, 2.5rem);
+  }
+
+  .lead {
+    font-size: 1.2rem;
+    color: var(--color-slate-600);
+    margin: 0;
+  }
+
+  .article-body {
+    padding: 3rem 0;
+  }
+
+  .narrow {
+    max-width: 50rem;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  .prose h2 {
+    margin: 2.5rem 0 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-slate-200);
+  }
+
+  .prose h2:first-child {
+    border-top: none;
+    padding-top: 0;
+  }
+
+  .prose h3 {
+    margin: 2rem 0 0.75rem;
+  }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin: 1.5rem 0;
+    align-items: start;
+  }
+
+  @media (max-width: 768px) {
+    .two-col {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .two-col figure {
+    margin: 0;
+  }
+
+  .two-col figure img {
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .two-col figcaption,
+  .full-width-figure figcaption {
+    font-size: 0.85rem;
+    color: var(--color-slate-500);
+    margin-top: 0.5rem;
+    text-align: center;
+  }
+
+  .full-width-figure {
+    margin: 2rem 0;
+  }
+
+  .full-width-figure img {
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+  }
+
+  .video-embed {
+    position: relative;
+    width: 100%;
+    padding-bottom: 56.25%;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    margin: 0.5rem 0;
+  }
+
+  .video-embed iframe {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .audio-embed {
+    margin: 1.5rem 0;
+    background: var(--color-slate-100);
+    padding: 1rem;
+    border-radius: var(--radius-md);
+  }
+
+  .audio-embed audio {
+    width: 100%;
+  }
+
+  .audio-embed figcaption {
+    font-size: 0.85rem;
+    color: var(--color-slate-600);
+    margin-top: 0.5rem;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+
+  thead {
+    background: var(--color-orange-50);
+  }
+
+  th, td {
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--color-slate-200);
+    text-align: left;
+  }
+
+  th {
+    font-weight: 600;
+    color: var(--color-slate-800);
+  }
+
+  .table-scroll {
+    overflow-x: auto;
+    margin: 1.5rem 0;
+  }
+
+  .table-scroll + figcaption {
+    font-size: 0.85rem;
+    color: var(--color-slate-500);
+    text-align: center;
+    margin-bottom: 1rem;
+  }
+
+  hr {
+    border: none;
+    border-top: 1px solid var(--color-slate-200);
+    margin: 2rem 0;
+  }
+
+  .references {
+    font-size: 0.85rem;
+    color: var(--color-slate-600);
+    padding-left: 1.5rem;
+  }
+
+  .references li {
+    margin-bottom: 0.5rem;
+    word-break: break-all;
+  }
+
+  .container {
+    max-width: var(--container-max);
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+</style>
