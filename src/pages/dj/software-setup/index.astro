@@ -1,0 +1,626 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="DJ Software Setup" description="Step-by-step guide to installing Virtual DJ and TigerTango for tango DJing. Download installers, configure audio, and get playing.">
+  <article class="article-page">
+    <section class="page-hero">
+      <div class="container">
+        <a href="/dj/" class="back-link">&larr; Back to DJ Resources</a>
+        <h1>DJ Software Setup</h1>
+        <p class="lead">Install Virtual DJ and TigerTango &mdash; a free interface built specifically for tango DJs.</p>
+      </div>
+    </section>
+
+    <div class="article-body">
+      <div class="container narrow">
+        <div class="prose">
+
+<nav class="toc">
+  <h3>In this guide</h3>
+  <ol>
+    <li><a href="#what-is-tigertango">What is TigerTango?</a></li>
+    <li><a href="#download-vdj">Step 1: Download Virtual DJ</a></li>
+    <li><a href="#install-tigertango">Step 2: Install TigerTango</a></li>
+    <li><a href="#configure-audio">Step 3: Configure Audio</a></li>
+    <li><a href="#warnings-settings">Step 4: Warnings &amp; Settings</a></li>
+    <li><a href="#playing-music">Step 5: Playing Music</a></li>
+    <li><a href="#layout-overview">TigerTango Layout Overview</a></li>
+    <li><a href="#optional-video">Optional: Video Display Skin</a></li>
+    <li><a href="#optional-plugins">Optional: Install Plugins</a></li>
+    <li><a href="#troubleshooting">Troubleshooting</a></li>
+  </ol>
+</nav>
+
+<!-- ============================================================ -->
+<h2 id="what-is-tigertango">What is TigerTango?</h2>
+
+<p>Playing music requires a <strong>software interface</strong>. Programs like Spotify or iTunes work for everyday listening, but they lack features tango DJs need: prelistening, stable audio output, and safety features to prevent accidental track changes.</p>
+
+<p>Professional DJ tools like Virtual DJ, Traktor, and Serato meet some of these needs, but they come with their own problems for tango DJs:</p>
+<ul>
+  <li>They include many features not used for tango (deck scratching, beat matching)</li>
+  <li>Can be difficult to configure appropriately</li>
+  <li>Often cost money</li>
+</ul>
+
+<p><a href="https://github.com/sericson0/TigerTango">TigerTango</a> is a customized Virtual DJ skin specifically designed for tango DJs. It provides:</p>
+<ul>
+  <li>The full power and reliability of dedicated DJ software</li>
+  <li>A clean interface with unused features removed</li>
+  <li>Configuration set up specifically for tango DJing</li>
+  <li>Safety features so you can focus on the dancers, not the software</li>
+  <li>Built-in semiparametric equalizer</li>
+  <li>VST3 plugin integration</li>
+  <li>Cortina fade-out buttons</li>
+  <li>Optional video skin for displaying song information and lyrics</li>
+  <li><strong>Free for all to use</strong></li>
+</ul>
+
+<h3>What DJs Are Saying</h3>
+
+<div class="testimonials">
+  <blockquote>
+    <p>&ldquo;The TigerTango VirtualDJ skin interface is perfect for Tango DJs. As a Traktor user for the last 10 years I never stopped looking for a more practical alternative, until now.&rdquo;</p>
+    <cite>&mdash; &Eacute;ric Heleno, Sound Systems Engineer &amp; Tango DJ</cite>
+  </blockquote>
+  <blockquote>
+    <p>&ldquo;Until now, software for Tango DJing meant compromise: too little, or way too much. TigerTango fixes this. Designed and tuned for Tango DJs, its interface and unique features finally fit our craft.&rdquo;</p>
+    <cite>&mdash; DJ Ragnar (Germany)</cite>
+  </blockquote>
+  <blockquote>
+    <p>&ldquo;It is totally awesome, making tango DJ-ing wonderfully streamlined on the technical side. VDJ with TigerTango blows all other options out of water.&rdquo;</p>
+    <cite>&mdash; TDJ Michael Plaks (Houston, Texas)</cite>
+  </blockquote>
+</div>
+
+<hr />
+
+<!-- ============================================================ -->
+<h2 id="download-vdj">Step 1: Download Virtual DJ</h2>
+
+<div class="callout callout-critical">
+  <strong>Critical step &mdash; use the 2025 version.</strong>
+  <p>[Fill in details about why the 2025 version is necessary]</p>
+</div>
+
+<p>The 2026 release of Virtual DJ added an audio watermark to the free version. To avoid this, <strong>install the 2025 version</strong> provided below and disable automatic updates.</p>
+
+<p>Virtual DJ is free to download and use. The license stipulates that you buy a license (currently $299) if you are using it regularly for paid performances. But you can try it out at home and at your local milonga for free.</p>
+
+<div class="download-buttons">
+  <a href="https://drive.google.com/drive/folders/1uAO8mz2jWHvKZ7-leiDQ1G_sjNj8ewcX?usp=drive_link" target="_blank" rel="noopener" class="download-btn-large">
+    <span class="dl-icon">&#128187;</span>
+    <div>
+      <strong>Download for Windows</strong>
+      <span>Virtual DJ 2025 (.msi) &mdash; via Google Drive</span>
+    </div>
+  </a>
+  <a href="https://drive.google.com/drive/folders/1uAO8mz2jWHvKZ7-leiDQ1G_sjNj8ewcX?usp=drive_link" target="_blank" rel="noopener" class="download-btn-large">
+    <span class="dl-icon">&#128187;</span>
+    <div>
+      <strong>Download for Mac</strong>
+      <span>Virtual DJ 2025 (.pkg) &mdash; via Google Drive</span>
+    </div>
+  </a>
+</div>
+
+<p>The download folder contains both the Windows (<code>.msi</code>) and Mac (<code>.pkg</code>) installers. Download the one for your system and run it.</p>
+
+<div class="callout callout-critical">
+  <strong>Critical step &mdash; disable automatic updates.</strong>
+  <p>[Fill in details about preventing the watermark update]</p>
+</div>
+
+<p>After installation, disable automatic updates to prevent upgrading to the watermarked 2026 version:</p>
+<ol>
+  <li>Open Virtual DJ</li>
+  <li>Go to <strong>Settings</strong> (gear icon in upper right)</li>
+  <li>Select <strong>Options</strong></li>
+  <li>Type <code>checkUpdates</code> in the search box</li>
+  <li>Set to <strong>No</strong></li>
+</ol>
+
+<hr />
+
+<!-- ============================================================ -->
+<h2 id="install-tigertango">Step 2: Install TigerTango</h2>
+
+<p>The simplest way to install TigerTango is directly from within Virtual DJ.</p>
+
+<h3>Install from Virtual DJ</h3>
+<ol>
+  <li>Open Virtual DJ and click <strong>Settings</strong> (gear icon in upper right)</li>
+  <li>Select the <strong>Interface</strong> tab (computer monitor icon)</li>
+  <li>Click <strong>Get More</strong></li>
+  <li>Type <strong>TigerTango</strong> in the search box</li>
+  <li>Click <strong>Install</strong></li>
+  <li>Return to the Interface tab</li>
+  <li>Select the <strong>TigerTango</strong> skin (it should now appear as an option)</li>
+</ol>
+
+<div class="callout callout-critical">
+  <strong>Critical step &mdash; verify TigerTango is loaded.</strong>
+  <p>[Fill in details about confirming the skin is active]</p>
+</div>
+
+<h3>Alternative: Install from GitHub</h3>
+<p>For the latest development version with newest features:</p>
+<ol>
+  <li>Go to <a href="https://github.com/sericson0/TigerTango">github.com/sericson0/TigerTango</a></li>
+  <li>Click <strong>Code</strong> &rarr; <strong>Download ZIP</strong></li>
+  <li>Open the downloaded <code>TigerTango-main.zip</code></li>
+  <li>Find the <strong>TigerTango</strong> folder inside (it contains a <code>.xml</code> file and images)</li>
+  <li>Move this folder to your VirtualDJ skins directory:
+    <ul>
+      <li><strong>Windows:</strong> <code>C:\Users\&lt;username&gt;\AppData\Local\VirtualDJ\Skins</code></li>
+      <li><strong>Mac:</strong> <code>/Users/&lt;username&gt;/Library/VirtualDJ/Skins</code></li>
+    </ul>
+  </li>
+  <li>Open Virtual DJ &rarr; Settings &rarr; Interface &rarr; select TigerTango</li>
+</ol>
+
+<div class="callout callout-tip">
+  <strong>Tip &mdash; finding the skins folder.</strong>
+  <p>[Fill in details about how to locate the skins folder from within VDJ]</p>
+</div>
+
+<hr />
+
+<!-- ============================================================ -->
+<h2 id="configure-audio">Step 3: Configure Audio</h2>
+
+<p>For Virtual DJ to work correctly, you need to configure your audio output.</p>
+
+<ol>
+  <li>Click on <strong>Settings</strong></li>
+  <li>Select the <strong>Audio</strong> tab (speaker icon)</li>
+  <li>Select <strong>Speaker only</strong> or <strong>Speaker + Headphones</strong> (headphones enable prelistening)</li>
+  <li>Select where you want your speakers and headphones to play from</li>
+  <li>Click <strong>Apply</strong></li>
+</ol>
+
+<div class="callout callout-critical">
+  <strong>Critical step &mdash; set the correct output channel.</strong>
+  <p>[Fill in details about choosing the right master output]</p>
+</div>
+
+<div class="callout callout-critical">
+  <strong>Critical step &mdash; headphones must use a different output.</strong>
+  <p>[Fill in details about separating headphone and speaker outputs]</p>
+</div>
+
+<hr />
+
+<!-- ============================================================ -->
+<h2 id="warnings-settings">Step 4: Warnings &amp; Settings</h2>
+
+<p>Virtual DJ is designed with club DJs in mind, so many defaults are poor choices for tango. TigerTango automatically sets several settings to ones that tango DJs want. In addition, TigerTango has a <strong>Warning Lights</strong> area &mdash; if a setting is improperly configured, a warning light will appear.</p>
+
+<div class="callout callout-critical">
+  <strong>Critical step &mdash; resolve all warning lights before your set.</strong>
+  <p>[Fill in details about the warning lights system]</p>
+</div>
+
+<h3>Recommended Settings</h3>
+
+<p>These settings can be changed via Settings &rarr; Options &rarr; search by name:</p>
+
+<div class="callout callout-config">
+  <strong>Useful configuration &mdash; resetEQOnLoad &rarr; Yes</strong>
+  <p>[Fill in details about why resetting EQ between tracks matters]</p>
+</div>
+
+<div class="callout callout-config">
+  <strong>Useful configuration &mdash; resetFXOnLoad &rarr; Yes</strong>
+  <p>[Fill in details about resetting effects between tracks]</p>
+</div>
+
+<div class="callout callout-config">
+  <strong>Useful configuration &mdash; coverDownload &rarr; No</strong>
+  <p>[Fill in details about preventing wrong album art downloads]</p>
+</div>
+
+<hr />
+
+<!-- ============================================================ -->
+<h2 id="playing-music">Step 5: Playing Music</h2>
+
+<p>Virtual DJ connects with your music folder and other libraries such as iTunes. The browser area in the bottom part of TigerTango allows you to search for music.</p>
+
+<p>There are two ways to load a song:</p>
+
+<ol>
+  <li><strong>Loading directly to deck.</strong> Drag a song from the browser to a deck dropzone. Press play to start the track. This is especially useful during performances where you want control over when the next track starts.</li>
+  <li><strong>Playing from Automix.</strong> Automix plays from a playlist &mdash; when one track ends, the next begins automatically. The staging area in TigerTango is for the automix playlist.</li>
+</ol>
+
+<div class="callout callout-critical">
+  <strong>Critical step &mdash; understand automix behavior.</strong>
+  <p>[Fill in details about automix nuances for tango DJs]</p>
+</div>
+
+<div class="callout callout-config">
+  <strong>Useful configuration &mdash; automix type and gap settings.</strong>
+  <p>[Fill in details about NO MIX, FULL SONG, gap duration options]</p>
+</div>
+
+<hr />
+
+<!-- ============================================================ -->
+<h2 id="layout-overview">TigerTango Layout Overview</h2>
+
+<p>TigerTango is organized into six main components:</p>
+
+<div class="layout-grid">
+  <div class="layout-item">
+    <h4>1. Browser</h4>
+    <p>Search songs, set up lists, and connect with iTunes, Rekordbox, or Traktor libraries.</p>
+  </div>
+  <div class="layout-item">
+    <h4>2. Staging Area</h4>
+    <p>An always-available automix panel. Build your tandas and cortinas here.</p>
+  </div>
+  <div class="layout-item">
+    <h4>3. Decks</h4>
+    <p>Play songs, EQ, fade, and prelisten. Two mirrored decks allow cueing the next song.</p>
+  </div>
+  <div class="layout-item">
+    <h4>4. Master</h4>
+    <p>Master effects (plugins), video display, master fader, headphone and mic volume.</p>
+  </div>
+  <div class="layout-item">
+    <h4>5. Shortcuts</h4>
+    <p>Quick access to automix settings, recording, color coding, and stereo/mono toggle.</p>
+  </div>
+  <div class="layout-item">
+    <h4>6. Info</h4>
+    <p>Settings, time, master VU metering, battery level, and warning lights.</p>
+  </div>
+</div>
+
+<h3>Key Deck Features</h3>
+<ul>
+  <li><strong>Track Info:</strong> Song name, artist, BPM, key, elapsed/remaining time, and waveform</li>
+  <li><strong>Drop Zone:</strong> Drag and drop tracks to load them</li>
+  <li><strong>Controls:</strong> ADD (add to staging area), PLAY/PAUSE, AUTO (toggle automix)</li>
+  <li><strong>Fade Controls:</strong> FADE (fade out without playing next), AUTO FADE (fade out and continue), configurable fade duration (3/5/7/9 seconds)</li>
+  <li><strong>Hot Cues &amp; Loop:</strong> Set start points for cortinas; loop between two cues for practice</li>
+  <li><strong>Volume:</strong> Per-deck fader (use master fader for main volume adjustment)</li>
+  <li><strong>Pre-listen:</strong> Hear a track through headphones before sending to main</li>
+  <li><strong>EQ &amp; Pitch:</strong> 3-band semiparametric EQ with adjustable frequency centers, plus pitch correction</li>
+  <li><strong>Spectrum Analyzer:</strong> 30-band visualizer from ~60 Hz to ~10 kHz</li>
+</ul>
+
+<div class="callout callout-config">
+  <strong>Useful configuration &mdash; single vs. dual deck automix.</strong>
+  <p>[Fill in details about single vs dual deck tradeoffs]</p>
+</div>
+
+<div class="callout callout-critical">
+  <strong>Critical step &mdash; do not click AUTO if you are not ready to play.</strong>
+  <p>[Fill in details about automix starting playback immediately]</p>
+</div>
+
+<div class="callout callout-config">
+  <strong>Useful configuration &mdash; pre-listening setup.</strong>
+  <p>[Fill in details about pre-listen headphone requirements]</p>
+</div>
+
+<p>For the full documentation including screenshots, see the <a href="https://github.com/sericson0/TigerTango">TigerTango GitHub repository</a>.</p>
+
+<hr />
+
+<!-- ============================================================ -->
+<h2 id="optional-video">Optional: Video Display Skin</h2>
+
+<p>Some DJs like to display song information (artist, title, tanda position, lyrics) on a second monitor. TigerTango includes a video skin for this purpose.</p>
+
+<p>To install it:</p>
+<ol>
+  <li>Download the TigerTango ZIP from <a href="https://github.com/sericson0/TigerTango">GitHub</a></li>
+  <li>Move the <strong>TigerTangoVideo</strong> folder to your VirtualDJ video skins directory:
+    <ul>
+      <li><strong>Windows:</strong> <code>C:\Users\&lt;username&gt;\AppData\Local\VirtualDJ\VideoSkins</code></li>
+      <li><strong>Mac:</strong> <code>/Users/&lt;username&gt;/Library/VirtualDJ/VideoSkins</code></li>
+    </ul>
+  </li>
+  <li>Open Settings &rarr; Interface &rarr; Video Overlay tab &rarr; select <strong>TigerTangoVideo (edit)</strong></li>
+</ol>
+
+<div class="callout callout-tip">
+  <strong>Tip &mdash; video skin path.</strong>
+  <p>[Fill in details about finding the VideoSkins folder from within VDJ]</p>
+</div>
+
+<hr />
+
+<!-- ============================================================ -->
+<h2 id="optional-plugins">Optional: Install Plugins</h2>
+
+<p>TigerTango has a semiparametric EQ built in, but plugins can offer additional sound quality control. Useful plugins for tango DJs include:</p>
+
+<ul>
+  <li>Parametric equalizer for removing hiss and clarifying sound</li>
+  <li>Limiter</li>
+  <li>Tape or saturation plugin for certain songs</li>
+  <li>Audio visualizers for studying music</li>
+</ul>
+
+<h3>Example: Installing TDR NOVA (free parametric EQ)</h3>
+<ol>
+  <li>Go to <a href="https://www.tokyodawn.net/tdr-nova/">tokyodawn.net/tdr-nova</a> and download the installer for your system</li>
+  <li>Run the installer &mdash; note the folder where the <strong>VST3</strong> file is saved</li>
+  <li>In Virtual DJ: Settings &rarr; Options &rarr; search <code>vstFxFolder</code> &rarr; set to your VST3 path (Windows default: <code>C:\Program Files\Common Files\VST3</code>)</li>
+  <li>Close and restart Virtual DJ</li>
+</ol>
+
+<div class="callout callout-config">
+  <strong>Useful configuration &mdash; VST3 folder path.</strong>
+  <p>[Fill in details about setting the correct vstFxFolder path]</p>
+</div>
+
+<h3>Other Plugins Worth Checking Out</h3>
+<ul>
+  <li><a href="https://www.tokyodawn.net/">Tokyo Dawn Records</a> &mdash; TDR Prism (spectrum analyzer), TDR Limiter 6 GE</li>
+  <li><a href="https://analogobsession.com/">Analog Obsession</a> &mdash; Free analog emulations</li>
+  <li><a href="https://www.voxengo.com/product/marvelgeq/">Voxengo Marvel GEQ</a> &mdash; Free 16-band graphic equalizer</li>
+  <li><a href="https://www.toneboosters.com/tb_spectrogram_v1.html">Toneboosters Spectrogram</a> &mdash; Free audio spectrogram</li>
+  <li><a href="https://loudmax.blogspot.com/">LoudMax</a> &mdash; Simple free limiter</li>
+</ul>
+
+<hr />
+
+<!-- ============================================================ -->
+<h2 id="troubleshooting">Troubleshooting</h2>
+
+<div class="faq-list">
+  <details>
+    <summary><strong>No sound is coming from a deck</strong></summary>
+    <p>Check that the deck volume fader is up. TigerTango adjusts deck volume during fading and prelistening, and resets to 100% afterward. If it didn&rsquo;t reset, manually slide it up.</p>
+  </details>
+  <details>
+    <summary><strong>I hear a watermark / periodic audio artifact</strong></summary>
+    <p>You may have accidentally updated to Virtual DJ 2026. Reinstall the 2025 version from the download buttons above and disable <code>checkUpdates</code> in Options.</p>
+  </details>
+  <details>
+    <summary><strong>Pre-listening doesn&rsquo;t work</strong></summary>
+    <p>Make sure your audio is configured for Speaker + Headphones (not Speaker only). Also check that the headphone volume in the Master section is turned up and the headphone output is set to a different device than the speakers.</p>
+  </details>
+  <details>
+    <summary><strong>Automix is playing from the wrong position</strong></summary>
+    <p>When starting or restarting automix, Virtual DJ uses the first instance of a track to determine list position. If you have duplicate tracks (e.g. reusing the same cortina), double-check that automix is playing from where you want.</p>
+  </details>
+  <details>
+    <summary><strong>I can&rsquo;t drag tracks onto a deck</strong></summary>
+    <p>In automix mode, TigerTango deactivates deck loading as a safety feature (shown by a &oslash; symbol). Right-click the &ldquo;Single Deck / Dual Deck&rdquo; button in the shortcuts area to disable this safety.</p>
+  </details>
+  <details>
+    <summary><strong>Warning lights are showing</strong></summary>
+    <p>Hover over a warning light to see the issue. Click it to change the setting to the recommended value. Resolve all warnings before starting your set.</p>
+  </details>
+  <details>
+    <summary><strong>CPU usage is high</strong></summary>
+    <p>Close other programs or reduce the number of active plugins. Check the CPU indicator in the Info section.</p>
+  </details>
+</div>
+
+<hr />
+
+<p class="contact-note">Questions or feedback? Reach out at <a href="mailto:sericson0@gmail.com">sericson0@gmail.com</a> or <a href="https://github.com/sericson0/TigerTango/issues">open an issue on GitHub</a>.</p>
+
+        </div>
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .page-hero {
+    padding: 3rem 0;
+    background: linear-gradient(135deg, var(--color-orange-50) 0%, white 100%);
+    border-bottom: 1px solid var(--color-orange-100);
+  }
+
+  .back-link { display: inline-block; margin-bottom: 1rem; font-size: 0.9rem; color: var(--color-slate-600); }
+  .back-link:hover { color: var(--color-primary); }
+  .page-hero h1 { margin: 0 0 0.5rem; }
+  .lead { font-size: 1.2rem; color: var(--color-slate-600); margin: 0; max-width: 55ch; }
+
+  .article-body { padding: 3rem 0; }
+
+  .narrow { max-width: 60rem; margin: 0 auto; padding: 0 1.5rem; }
+
+  .toc {
+    background: var(--color-slate-50);
+    border: 1px solid var(--color-slate-200);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .toc h3 { margin: 0 0 0.75rem; font-size: 1rem; }
+  .toc ol { margin: 0; padding-left: 1.25rem; }
+  .toc li { margin-bottom: 0.25rem; font-size: 0.95rem; }
+
+  .prose h2 {
+    margin: 2.5rem 0 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-slate-200);
+  }
+
+  .prose h3 { margin: 2rem 0 0.75rem; }
+  .prose h4 { margin: 1.25rem 0 0.5rem; }
+
+  /* Callout boxes */
+  .callout {
+    padding: 1rem 1.25rem;
+    border-radius: var(--radius-md);
+    margin: 1.5rem 0;
+    font-size: 0.95rem;
+  }
+
+  .callout strong { display: block; margin-bottom: 0.25rem; }
+  .callout p { margin: 0; color: var(--color-slate-600); }
+
+  .callout-critical {
+    background: #fef2f2;
+    border-left: 4px solid #ef4444;
+  }
+
+  .callout-critical strong { color: #b91c1c; }
+
+  .callout-config {
+    background: #eff6ff;
+    border-left: 4px solid #3b82f6;
+  }
+
+  .callout-config strong { color: #1d4ed8; }
+
+  .callout-tip {
+    background: #f0fdf4;
+    border-left: 4px solid #22c55e;
+  }
+
+  .callout-tip strong { color: #15803d; }
+
+  /* Download buttons */
+  .download-buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+
+  .download-btn-large {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem 1.5rem;
+    background: var(--color-primary);
+    color: white;
+    border-radius: var(--radius-lg);
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .download-btn-large:hover {
+    background: var(--color-primary-hover);
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+
+  .dl-icon { font-size: 1.75rem; }
+
+  .download-btn-large div {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .download-btn-large strong { font-size: 1.05rem; }
+
+  .download-btn-large span {
+    font-size: 0.8rem;
+    opacity: 0.85;
+  }
+
+  /* Testimonials */
+  .testimonials {
+    display: grid;
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+
+  .testimonials blockquote {
+    margin: 0;
+    padding: 1rem 1.25rem;
+    background: var(--color-slate-50);
+    border-left: 3px solid var(--color-orange-400);
+    border-radius: var(--radius-md);
+  }
+
+  .testimonials blockquote p {
+    margin: 0 0 0.5rem;
+    font-style: italic;
+  }
+
+  .testimonials cite {
+    font-size: 0.85rem;
+    color: var(--color-slate-500);
+    font-style: normal;
+  }
+
+  /* Layout overview grid */
+  .layout-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+    margin: 1.5rem 0;
+  }
+
+  .layout-item {
+    background: white;
+    border: 1px solid var(--color-slate-200);
+    border-radius: var(--radius-md);
+    padding: 1rem;
+  }
+
+  .layout-item h4 { margin: 0 0 0.25rem; font-size: 0.95rem; color: var(--color-orange-700); }
+  .layout-item p { margin: 0; font-size: 0.85rem; color: var(--color-slate-600); }
+
+  /* FAQ / troubleshooting */
+  .faq-list details {
+    margin-bottom: 0.5rem;
+    border: 1px solid var(--color-slate-200);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+
+  .faq-list summary {
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    background: var(--color-slate-50);
+    list-style: none;
+    font-size: 0.95rem;
+  }
+
+  .faq-list summary::-webkit-details-marker { display: none; }
+  .faq-list summary::before { content: "▸ "; color: var(--color-slate-400); }
+  .faq-list details[open] summary::before { content: "▾ "; }
+
+  .faq-list details p {
+    padding: 0.75rem 1rem;
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--color-slate-600);
+  }
+
+  pre, code {
+    background: var(--color-slate-100);
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+  }
+
+  code { padding: 0.15rem 0.35rem; }
+
+  pre {
+    padding: 1rem;
+    overflow-x: auto;
+    line-height: 1.6;
+  }
+
+  hr {
+    border: none;
+    border-top: 1px solid var(--color-slate-200);
+    margin: 2rem 0;
+  }
+
+  .contact-note {
+    text-align: center;
+    font-size: 0.9rem;
+    color: var(--color-slate-500);
+  }
+
+  .container { max-width: var(--container-max); margin: 0 auto; padding: 0 1.5rem; }
+</style>
