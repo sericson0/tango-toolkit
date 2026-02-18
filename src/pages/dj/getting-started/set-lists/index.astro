@@ -159,17 +159,17 @@ function groupLabel(g: any): string {
       <p>Tangos from D'Arienzo, Di Sarli, Troilo, and Pugliese. Each group contains songs from the same orchestra, singer, and era &mdash; build 1&ndash;2 tandas from each.</p>
 
       {setI.map((g) => (
-        <details class="group-details" open>
+        <details class="group-details">
           <summary>
             <span class="group-num">Group {g.group}</span>
             <span class="group-label">{groupLabel(g)}</span>
           </summary>
           <div class="table-scroll">
             <table>
-              <thead><tr><th>Title</th><th>Date</th></tr></thead>
+              <thead><tr><th>Orchestra</th><th>Title</th><th>Singer</th><th>Date</th></tr></thead>
               <tbody>
                 {g.songs.map((s) => (
-                  <tr><td>{s.title}</td><td>{s.date}</td></tr>
+                  <tr><td>{g.artist}</td><td>{s.title}</td><td>{g.singer}</td><td>{s.date}</td></tr>
                 ))}
               </tbody>
             </table>
@@ -188,10 +188,10 @@ function groupLabel(g: any): string {
           </summary>
           <div class="table-scroll">
             <table>
-              <thead><tr><th>Title</th><th>Date</th></tr></thead>
+              <thead><tr><th>Orchestra</th><th>Title</th><th>Singer</th><th>Date</th></tr></thead>
               <tbody>
                 {g.songs.map((s) => (
-                  <tr><td>{s.title}</td><td>{s.date}</td></tr>
+                  <tr><td>{g.artist}</td><td>{s.title}</td><td>{g.singer}</td><td>{s.date}</td></tr>
                 ))}
               </tbody>
             </table>
