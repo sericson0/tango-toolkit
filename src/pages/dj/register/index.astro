@@ -1,0 +1,132 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Register for DJ Resources" description="Sign up to access curated tango DJ resources, set lists, and updates on new materials.">
+  <section class="page-hero">
+    <div class="container">
+      <a href="/dj/getting-started/" class="back-link">&larr; Back to Getting Started</a>
+      <h1>Register for DJ Resources</h1>
+      <p class="lead">Sign up so we can keep you in the loop on new resources, set lists, and tools for tango DJs.</p>
+    </div>
+  </section>
+
+  <section class="form-section">
+    <div class="container narrow">
+      <form name="dj-registration" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/dj/register/success/">
+        <input type="hidden" name="form-name" value="dj-registration" />
+        <p class="hidden-field"><label>Don't fill this out: <input name="bot-field" /></label></p>
+
+        <div class="form-group">
+          <label for="name">Name <span class="required">*</span></label>
+          <input type="text" id="name" name="name" required placeholder="Your name" />
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email <span class="required">*</span></label>
+          <input type="email" id="email" name="email" required placeholder="your@email.com" />
+        </div>
+
+        <div class="form-group">
+          <label for="city">City / Community</label>
+          <input type="text" id="city" name="city" placeholder="e.g. Buenos Aires, Portland, Berlin" />
+        </div>
+
+        <div class="form-group">
+          <label for="experience">DJ Experience</label>
+          <select id="experience" name="experience">
+            <option value="">Select one...</option>
+            <option value="brand-new">Brand new &mdash; haven't DJ'd yet</option>
+            <option value="beginner">Beginner &mdash; DJ'd a few times</option>
+            <option value="intermediate">Intermediate &mdash; DJ regularly</option>
+            <option value="experienced">Experienced &mdash; looking for new resources</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="message">Anything else you'd like to share?</label>
+          <textarea id="message" name="message" rows="3" placeholder="Questions, what you're looking for, how you heard about us..."></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-lg">Register</button>
+      </form>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-hero {
+    padding: 3rem 0;
+    background: linear-gradient(135deg, var(--color-orange-50) 0%, white 100%);
+    border-bottom: 1px solid var(--color-orange-100);
+  }
+
+  .back-link { display: inline-block; margin-bottom: 1rem; font-size: 0.9rem; color: var(--color-slate-600); }
+  .back-link:hover { color: var(--color-primary); }
+  .page-hero h1 { margin: 0 0 0.5rem; }
+  .lead { font-size: 1.15rem; color: var(--color-slate-600); margin: 0; max-width: 50ch; }
+
+  .form-section { padding: 3rem 0; }
+
+  .narrow { max-width: 36rem; margin: 0 auto; padding: 0 1.5rem; }
+
+  .hidden-field { display: none; }
+
+  form {
+    background: white;
+    border: 1px solid var(--color-slate-200);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+  }
+
+  .form-group { margin-bottom: 1.25rem; }
+
+  .form-group label {
+    display: block;
+    margin-bottom: 0.35rem;
+    font-weight: 500;
+    font-size: 0.95rem;
+    color: var(--color-slate-700);
+  }
+
+  .required { color: var(--color-orange-500); }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid var(--color-slate-300);
+    border-radius: var(--radius-md);
+    font-size: 0.95rem;
+    font-family: inherit;
+    background: var(--color-slate-50);
+    transition: border-color 0.2s;
+  }
+
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    outline: none;
+    border-color: var(--color-orange-400);
+    box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: 500;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background 0.2s;
+    font-family: inherit;
+  }
+
+  .btn-primary { background: var(--color-primary); color: white; }
+  .btn-primary:hover { background: var(--color-primary-hover); }
+  .btn-lg { padding: 0.75rem 2rem; font-size: 1.05rem; }
+
+  .container { max-width: var(--container-max); margin: 0 auto; padding: 0 1.5rem; }
+</style>

@@ -2,13 +2,13 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 ---
 
-<BaseLayout title="Getting Started as a Tango DJ" description="A complete walkthrough for new tango DJs. From setting up your software to building your first tandas.">
+<BaseLayout title="Getting Started as a Tango DJ" description="A complete walkthrough for new tango DJs. Set up your software, get good music, organize your library, and build your first tandas.">
   <article class="article-page">
     <section class="page-hero">
       <div class="container">
         <a href="/dj/" class="back-link">&larr; Back to DJ Resources</a>
         <h1>Getting Started as a Tango DJ</h1>
-        <p class="lead">A step-by-step walkthrough to remove the barriers and get you DJing.</p>
+        <p class="lead">Everything you need to remove the barriers and start DJing.</p>
       </div>
     </section>
 
@@ -16,15 +16,22 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
       <div class="container narrow">
         <div class="prose">
 
+<div class="welcome-box">
+  <p>Hello dear aspiring tango DJ!</p>
+  <p>This guide is intended to be a useful resource to help you on your journey. It won't teach you the art of DJing, but hopefully it can remove some of the barriers to getting started.</p>
+  <a href="/dj/register/" class="btn btn-primary">Register here &rarr;</a>
+  <span class="register-note">Let us know who you are so we can keep you updated on new resources.</span>
+</div>
+
 <nav class="toc">
   <h3>In this guide</h3>
   <ol>
     <li><a href="#overview">Overview</a></li>
-    <li><a href="#audio-player">Setting Up Your Audio Player</a></li>
-    <li><a href="#understanding-tango-music">Understanding Tango Music</a></li>
-    <li><a href="#music-quality">Music Quality &amp; Sources</a></li>
-    <li><a href="#starting-sets">Your Starting Music Sets</a></li>
-    <li><a href="#organizing">Organizing Your Library</a></li>
+    <li><a href="#terms">Terms, Conditions &amp; Requests</a></li>
+    <li><a href="#audio-player">Audio Player</a></li>
+    <li><a href="#music">Music</a></li>
+    <li><a href="#music-provided">Music Provided</a></li>
+    <li><a href="#organizing">Organizing Your Music</a></li>
     <li><a href="#building-tandas">Building Tandas &amp; Exercises</a></li>
     <li><a href="#additional-resources">Additional Resources</a></li>
   </ol>
@@ -32,140 +39,196 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 
 <h2 id="overview">Overview</h2>
 
-<p>Welcome, aspiring tango DJ! This guide is designed to help you get started on your DJ journey. It won't teach you every nuance of the art, but it will remove the barriers and set you up for success.</p>
+<p>What is in this guide:</p>
+<ul>
+  <li>Files for downloading a free version of Virtual DJ</li>
+  <li>A curated set of songs to get you started DJing</li>
+  <li>A getting started walkthrough (what you are reading now)</li>
+</ul>
 
-<p>Here's what you need to do to get going:</p>
-
+<p>There are a few steps you want to take to set yourself up for success:</p>
 <ol>
-  <li><strong>Set up your audio player</strong> &mdash; Get the right DJ software</li>
-  <li><strong>Get good quality tango music</strong> &mdash; Not all versions are equal</li>
-  <li><strong>Organize your library</strong> &mdash; A little structure now saves hours later</li>
-  <li><strong>Build tandas</strong> &mdash; Group songs into sets for the milonga</li>
+  <li><strong>Download your audio player</strong></li>
+  <li><strong>Get good quality tango music</strong></li>
+  <li><strong>Organize your library</strong></li>
+  <li><strong>Create tandas</strong></li>
 </ol>
 
-<p>This guide covers each step. There are also <a href="/dj/getting-started/set-lists/">curated starting set lists</a> with around 250 songs to get you DJing right away.</p>
+<p>This document quickly covers each.</p>
 
 <hr />
 
-<h2 id="audio-player">Setting Up Your Audio Player</h2>
+<h2 id="terms">Terms, Conditions &amp; Requests</h2>
 
-<p>A good tango DJ software should:</p>
-<ul>
-  <li>Be easy to work with and have as few surprises as possible</li>
-  <li>Not introduce any sound artifacts or quality issues</li>
-  <li>Work with all common audio file types (FLAC, MP3, WAV, OGG)</li>
-  <li>Be stable and reliable</li>
-</ul>
+<ol class="terms-list">
+  <li>The resources here are <strong>free for you to use</strong>. You can pass along the link or files to other aspiring tango DJs as you see fit. But please do not post the link or any of these resources online, and please do not sell any of the materials.</li>
 
-<p>Different DJs use different tools. The website <a href="https://tangodjsforgoodsound.info/technology/">Tango DJs for Good Sound</a> shows what software and hardware a range of tango DJs use around the world.</p>
+  <li>The music provided here is good quality. But the gold standard of tango music comes from groups doing tango transfers and restorations such as <a href="https://tangotimetravel.be/">Tango Time Travel</a>, <a href="https://tangotunes.com/">Tango Tunes</a>, and <a href="https://tangosparks.com/">Tango Sparks</a>. Their work offers a huge service to the tango community. <strong>If you find the music here helpful, I ask you to purchase at least one album</strong> to support these efforts to improve the quality of sound in the milonga.</li>
 
-<h3>Recommended: TigerTango (Virtual DJ Interface)</h3>
+  <li>These resources are a work in progress. Please let me know your thoughts and feedback so that I can make this a valuable resource. You can reach me at <a href="mailto:sericson0@gmail.com">sericson0@gmail.com</a>.</li>
 
-<p><a href="https://github.com/sericson0/TigerTango">TigerTango</a> is a free Virtual DJ interface designed specifically for tango DJs. Tango DJs around the world use it, including several highly respected DJs, so you'll be in good hands.</p>
-
-<p>To set it up:</p>
-<ol>
-  <li>Install <a href="https://www.virtualdj.com/">Virtual DJ</a></li>
-  <li>Open Virtual DJ and go to <strong>Settings</strong> (gear icon, upper right)</li>
-  <li>Go to <strong>Interface</strong></li>
-  <li>Click <strong>Get more</strong></li>
-  <li>Search for <strong>TigerTango</strong> and click <strong>Install</strong></li>
-  <li>Go back to the Interface tab and select <strong>TigerTango</strong></li>
-  <li>If there are any warning lights in the upper right, click them to adjust settings for tango DJing</li>
+  <li>I am working on additional resources for tango DJs and tango dancers, and am working with artists and experts to build them.
+    <ul>
+      <li>If you are simply interested in supporting, please reach out.</li>
+      <li>If you are willing to offer expertise, you can reach out at <a href="mailto:sericson0@gmail.com">sericson0@gmail.com</a>.</li>
+      <li>You can make a financial contribution to support tango learning resources &mdash; Venmo: <strong>@Sean-Ericson-1</strong> (pin: 5227), Zelle: <strong>sericson0@gmail.com</strong>. 100% of proceeds go towards building tango learning resources.</li>
+    </ul>
+  </li>
 </ol>
 
-<p>Full documentation and setup images are available in the <a href="https://github.com/sericson0/TigerTango">TigerTango GitHub repository</a>.</p>
+<hr />
 
-<div class="callout callout-info">
-  <strong>Note on Virtual DJ licensing:</strong> Before 2026, Virtual DJ was fully free for personal use. The 2026 version introduced an occasional audio watermark on the free tier. For a free workaround, install the 2025 version and disable automatic update checks in the settings. Eventually, you may want to purchase a license.
+<h2 id="audio-player">Audio Player</h2>
+
+<p>A good DJ software should:</p>
+<ul>
+  <li>Be stable</li>
+  <li>Work with all audio file types</li>
+  <li>Not result in any sound issues</li>
+  <li>Be easy to work with and have as few &ldquo;gotchas&rdquo; or temperamental issues as possible</li>
+</ul>
+
+<p>Different DJs use different software. The website <a href="https://tangodjsforgoodsound.info/technology/">Tango DJs for Good Sound</a> shows what a range of DJs use.</p>
+
+<p>I am definitely biased in which audio player I recommend, given I created <a href="https://github.com/sericson0/TigerTango">TigerTango</a>, a Virtual DJ interface designed specifically for tango DJs. It is free, and tango DJs around the world are using it, including several of the most respected tango DJs, so I feel confident that you would be in good hands using it.</p>
+
+<p>You can find the documentation and user guide at <a href="https://github.com/sericson0/TigerTango">github.com/sericson0/TigerTango</a>, which also has images walking through the setup.</p>
+
+<div class="callout callout-warning">
+  <strong>Important note on Virtual DJ licensing:</strong> Before 2026, you could use Virtual DJ for free as long as you wanted, but the 2026 version added an occasional audio watermark to the free version. Eventually you can solve this by paying for the software, but the free workaround is below.
 </div>
 
+<h3>Setup Steps</h3>
+
+<ol class="setup-steps">
+  <li>
+    <strong>Install the 2025 version of Virtual DJ</strong>
+    <p>Download the <code>.mac</code> (Mac) or <code>.msi</code> (PC) installer for the pre-2026 version and run the executable.</p>
+  </li>
+  <li>
+    <strong>Turn off automatic updates</strong>
+    <ol>
+      <li>Open Virtual DJ</li>
+      <li>Go to <strong>Settings</strong> (gear icon in upper right)</li>
+      <li>Select <strong>Options</strong></li>
+      <li>Type <code>checkUpdates</code></li>
+      <li>Select <strong>No</strong></li>
+    </ol>
+  </li>
+  <li>
+    <strong>Get TigerTango</strong>
+    <ol>
+      <li>Go to <strong>Interface</strong> (in Settings)</li>
+      <li>Click the <strong>Get more</strong> button</li>
+      <li>Search for <strong>TigerTango</strong></li>
+      <li>Click <strong>Install</strong> on TigerTango</li>
+    </ol>
+  </li>
+  <li>
+    <strong>Select TigerTango</strong>
+    <ol>
+      <li>Go back to the <strong>Interface</strong> tab</li>
+      <li>Select the <strong>TigerTango</strong> option</li>
+    </ol>
+  </li>
+  <li>
+    <strong>Turn off any warning lights</strong>
+    <p>If there are any warning lights in the upper right box, click them to change settings to those appropriate for tango DJing.</p>
+  </li>
+</ol>
+
+<p>Sweet! You now have a great free interface!</p>
+
 <hr />
 
-<h2 id="understanding-tango-music">Understanding Tango Music</h2>
+<h2 id="music">Music</h2>
 
-<p>Most tango music danced at milongas was recorded between the 1930s and the 1950s. Understanding how music from that era survives today helps you make better choices as a DJ.</p>
+<p>Most tango music we dance to is from the 1930s to the 1950s. It is helpful to understand a quick history of how music from that time period is with us today.</p>
 
-<p>For a deep dive into the history, see our article: <a href="/dj/history-of-tango-music/"><strong>How Many Tango Recordings Are There? Stories on the History of Tango Music</strong></a>.</p>
+<p>When a song was recorded, it was saved to a metal &ldquo;master,&rdquo; which serves as the official recording. This master is used to create the other steps to produce records. In the 1960s, many of the tango masters were destroyed, so there is no official recording of many tango records.</p>
 
-<p>The short version:</p>
+<p><strong>Important: Not all versions of the same recording are of equal quality!</strong></p>
+
+<p>When tango became popular again in the 1990s, the record companies wanted to re-release albums. In some cases, they had the original master. In other cases, they collected old records to transfer the sound from, i.e., to serve the place of a master (technically taking the place of the &ldquo;mother&rdquo;). This transfer process resulted in several problems:</p>
+
 <ul>
-  <li>When a song was originally recorded, it was saved to a metal &ldquo;master&rdquo; &mdash; the official recording used to produce records</li>
-  <li>In the 1960s, many of these masters were destroyed to free up warehouse space</li>
-  <li>When tango became popular again in the 1990s, record companies re-released albums. Sometimes they had the original master; often they collected old records and transferred the sound from them</li>
-  <li>This transfer process introduced problems: dulled dynamics from equalization, added reverb, incorrect pitch, and variable quality</li>
+  <li>The records they collected were not always the best quality</li>
+  <li>The correct pitch was not always maintained</li>
+  <li>The transfers were not always done correctly</li>
+  <li>Effects like reverb were added</li>
+  <li>Equalization to reduce the hiss dulled some of the musical dynamics</li>
 </ul>
 
-<p>The key takeaway: <strong>not all versions of the same recording are equal.</strong> A bad transfer of a great song will still sound bad at the milonga.</p>
+<p>A few tango collectors, aficionados, and organizations have created their own transfers, some of which are the best quality versions available. More recently, a few groups have been going through the meticulous process of restoring tango collections, with the goal of preserving sound quality and dynamics. The ones most commonly mentioned are <a href="https://tangotimetravel.be/">Tango Time Travel</a>, <a href="https://tangotunes.com/">Tango Tunes</a>, and most recently <a href="https://tangosparks.com/">Tango Sparks</a>.</p>
 
-<hr />
+<p>For a deep dive into the full history, read our article: <a href="/dj/history-of-tango-music/"><strong>How Many Tango Recordings Are There? Stories on the History of Tango Music</strong></a>.</p>
 
-<h2 id="music-quality">Music Quality &amp; Sources</h2>
+<h3>Music Quality Overview</h3>
 
-<p>Here&rsquo;s a rough hierarchy of tango music quality, from best to most variable:</p>
-
+<div class="table-scroll">
 <table>
 <thead>
   <tr><th>Source</th><th>Quality</th><th>Notes</th></tr>
 </thead>
 <tbody>
   <tr>
-    <td><strong>Recent Restorations</strong><br/><a href="https://tangotimetravel.be/">Tango Time Travel</a>, <a href="https://tangotunes.com/">Tango Tunes</a>, <a href="https://tangosparks.com/">Tango Sparks</a></td>
-    <td>Highest</td>
-    <td>Maintains dynamics; may have more natural hiss. Can be costly to purchase, but supports the restoration community.</td>
+    <td><strong>Recent Transfers</strong><br/><a href="https://tangotunes.com/">Tango Tunes</a>, <a href="https://tangotimetravel.be/">Tango Time Travel</a>, <a href="https://tangosparks.com/">Tango Sparks</a></td>
+    <td>Often considered the highest quality. Maintains song dynamics, though sometimes has more hiss and noise which requires additional steps.</td>
+    <td>Can be costly to purchase. Good to support tango music restoration and preservation.</td>
   </tr>
   <tr>
     <td><strong>Collectors</strong><br/>CTA (Club Tango Argentino), Audio Park</td>
-    <td>High</td>
-    <td>Quality varies by collector and specific song. Can be rare and difficult to find.</td>
+    <td>High quality depending on the collector and specific song.</td>
+    <td>Rare. Difficult to find.</td>
   </tr>
   <tr>
-    <td><strong>High Quality Releases</strong><br/><em>From Argentina to the World</em>, <em>Collecion de 78</em>, <em>Archivo de Victor/Columbia</em>, <em>Reliquias</em></td>
-    <td>Good</td>
-    <td>Sometimes the best available; other times loses dynamics. Easier to find.</td>
+    <td><strong>High Quality Releases</strong><br/><em>From Argentina to the World</em>, <em>Collecion de 78</em>, <em>Archivo de Victor</em>, <em>Archivo de Columbia</em>, <em>Reliquias</em>, and some specific artist releases</td>
+    <td>Sometimes the best quality, other times lose some of the dynamics of the song.</td>
+    <td>Easier to find, and often can find for free.</td>
   </tr>
   <tr>
     <td><strong>Other Releases</strong></td>
-    <td>Variable</td>
-    <td>Be careful. Wrong pitch, lost dynamics, and poor quality are common in lower-tier releases.</td>
+    <td>Huge collection of music that is of very variable quality.</td>
+    <td>Some can have wrong pitch or lose a lot of the sound quality. This is where you want to start being careful. A bad recording of a good song will still sound bad.</td>
   </tr>
 </tbody>
 </table>
+</div>
 
-<p>As you grow as a DJ, you&rsquo;ll want to invest in high-quality restorations. If you find the starting music helpful, please consider purchasing at least one album from <a href="https://tangotimetravel.be/">Tango Time Travel</a>, <a href="https://tangotunes.com/">Tango Tunes</a>, or <a href="https://tangosparks.com/">Tango Sparks</a> to support their invaluable work.</p>
+<p>Eventually, you may want to purchase some of the recent transfers. But to get started, I have put together a collection of tracks to get you started in the right place.</p>
 
 <hr />
 
-<h2 id="starting-sets">Your Starting Music Sets</h2>
+<h2 id="music-provided">Music Provided</h2>
 
-<p>We&rsquo;ve curated two starting sets totaling around 250 songs &mdash; more than enough to DJ your first milonga once you add a few cortinas.</p>
+<p>I have curated two starting sets of around 250 songs total (I have a lot more music, so please <a href="mailto:sericson0@gmail.com">reach out</a> whenever you want more).</p>
 
 <div class="set-cards">
   <div class="set-card">
-    <h3>Set List I &mdash; The Big Four</h3>
-    <p>Tangos by the four pillars: <strong>Juan D'Arienzo</strong>, <strong>Carlos Di Sarli</strong>, <strong>An&iacute;bal Troilo</strong>, and <strong>Osvaldo Pugliese</strong>. Each orchestra is broken into groups by singer and era.</p>
+    <h3>Starting Set I</h3>
+    <p>Tangos by the big 4: <strong>Juan D'Arienzo</strong>, <strong>Carlos Di Sarli</strong>, <strong>An&iacute;bal Troilo</strong>, and <strong>Osvaldo Pugliese</strong>.</p>
     <a href="/dj/getting-started/set-lists/" class="btn btn-primary">View Set List I &rarr;</a>
   </div>
   <div class="set-card">
-    <h3>Set List II &mdash; Expanding Your Library</h3>
-    <p>Additional orchestras plus <strong>Valses</strong> and <strong>Milongas</strong>: Pedro Laurenz, Rodolfo Biagi, Alfredo De Angelis, Miguel Cal&oacute;, Ricardo Tanturi, Edgardo Donato, Francisco Canaro, and Osvaldo Fresedo.</p>
+    <h3>Starting Set II</h3>
+    <p>Additional orchestras along with <strong>Valses</strong> and <strong>Milongas</strong>: Laurenz, Biagi, De Angelis, Cal&oacute;, Tanturi, Donato, Canaro, and Fresedo.</p>
     <a href="/dj/getting-started/set-lists/" class="btn btn-primary">View Set List II &rarr;</a>
   </div>
 </div>
 
-<p>Each set is organized into groups of approximately 8 tracks from the same bandleader, singer, and era. The idea is to build one or two tandas from each group.</p>
+<p>Once you find a few songs to use as cortinas, this is more than enough for you to DJ your first milonga.</p>
 
 <hr />
 
-<h2 id="organizing">Organizing Your Library</h2>
+<h2 id="organizing">Organizing Your Music</h2>
 
-<p>Taking a few hours to set up a good folder structure now will save you many hours in the future. Here&rsquo;s what to think about:</p>
+<p>You want to take a moment to think about how you want to organize your music on your computer. Taking a few hours to set yourself up well will save many hours in the future.</p>
 
-<h3>Folder Structure</h3>
+<p>If you want all the nitty gritty of how to do this best, my friend Eric Heleno has a whole lecture about the best approaches to organizing your tango library. He also does tango consults, and you can reach him at <a href="mailto:erichetango@gmail.com">erichetango@gmail.com</a>.</p>
 
-<p>A common approach is:</p>
+<p>One basic but important decision is how you want the general folder structure of your tango library. One example would be:</p>
 
-<pre>Genre &rarr; Bandleader &rarr; Singer / Era &rarr; Tracks</pre>
+<pre>Genre &rarr; Bandleader &rarr; Singer / Time Period &rarr; Tracks</pre>
 
 <p>For example:</p>
 <pre>Tango/
@@ -179,72 +242,75 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
     Rufino 1939-1941/
     ...</pre>
 
-<p>There are many valid approaches. The important thing is to be consistent.</p>
-
-<h3>Tips</h3>
-<ul>
-  <li><strong>Color coding:</strong> In Virtual DJ, you can color-code songs by genre (tango, vals, milonga) for quick visual scanning</li>
-  <li><strong>Metadata tagging:</strong> Keep your ID3 tags clean and consistent. Tools like <a href="https://www.mp3tag.de/en/">MP3tag</a> are excellent for batch-editing metadata</li>
-  <li><strong>Tanda breaks:</strong> Consider creating a silent audio file and naming it with dashes (<code>———————</code>) to use as a visual tanda separator in your playlist</li>
-</ul>
+<p>But there are many other valid approaches as well. The important thing is to be consistent.</p>
 
 <hr />
 
 <h2 id="building-tandas">Building Tandas &amp; Exercises</h2>
 
-<p>The music in the starting sets is grouped into blocks of approximately 8 tracks. Each block contains songs from the same orchestra, singer, and general period. Your task is to build <strong>one or two tandas</strong> (3&ndash;4 songs each) from each group.</p>
+<p>The music provided is broken into sets of approximately 8 tracks. Each set consists of tracks of the same bandleader, same singer, and same general period. The idea is to create one or two tandas from each set. This will give you a good starting set of tandas to work from.</p>
 
-<h3>Practice Exercises</h3>
+<h3>Exercises</h3>
 
-<ol>
-  <li><strong>Build your tanda list.</strong> In Virtual DJ, right-click &ldquo;My Lists&rdquo; to create separate playlists for Tango tandas, Milonga tandas, and Vals tandas. Organize by orchestra within each.</li>
-  <li><strong>Listen critically.</strong> Play through each group and pick the songs that work best together. Consider energy level, tempo, and mood.</li>
-  <li><strong>Fix metadata.</strong> Some tracks in the starting sets have incomplete metadata as a practice exercise:
+<ol class="exercise-list">
+  <li>
+    <strong>Build out a list of potential tandas.</strong>
+    <p>You can make lists in Virtual DJ by right-clicking &ldquo;My Lists&rdquo; to add a list. Have a list for Tango, Milonga, and Vals tandas, with orchestras underneath.</p>
+  </li>
+
+  <li>
+    <strong>(Optional) Create tanda break markers.</strong>
+    <p>It can be helpful to put a tanda break line into your organization. You can do this by:</p>
+    <ol>
+      <li>Recording a small snippet of silence (see the recording button in the Access area)</li>
+      <li>Renaming the title as a series of em-dashes: <code>———————</code></li>
+      <li>Using this file as your tanda break between sets</li>
+    </ol>
+  </li>
+
+  <li>
+    <strong>(Optional) Color code songs by genre.</strong>
+    <ol>
+      <li>Click the color and filter options in the Access area</li>
+      <li>Set a color rule for each genre (tango, vals, milonga)</li>
+    </ol>
+  </li>
+
+  <li>
+    <strong>Fix metadata.</strong>
+    <p>Some tracks in the starting sets have incomplete or incorrect metadata. This is also a useful exercise for learning to manage your library:</p>
     <ul>
-      <li>Two Fresedo tracks are missing tags &mdash; fill in the metadata</li>
-      <li>The Canaro tracks need correct dates and singers added</li>
-      <li>Some Donato milongas are incorrectly tagged as tangos &mdash; fix the genre</li>
+      <li>Some of the Donato milongas are incorrectly tagged as tangos &mdash; update the genre tag to Milonga (you can use Virtual DJ, or a program like <a href="https://www.mp3tag.de/en/">MP3tag</a>)</li>
+      <li>Metadata has not been added to the Canaro tracks &mdash; tag them with the correct dates and singers</li>
+      <li>Metadata has not been added to 2 of the Fresedo tracks &mdash; tag them with a consistent filename and date</li>
     </ul>
   </li>
-  <li><strong>Find cortinas.</strong> You&rsquo;ll need short (30&ndash;60 second) non-tango clips to place between tandas. Pick a few songs you like and trim them down.</li>
 </ol>
 
-<p>For more on tandas, cortinas, and milonga flow, see the <a href="/dj/courses/beginner-tango-dj/">Beginner Tango DJ course</a>.</p>
+<div class="register-reminder">
+  <p>Don't forget to <a href="/dj/register/">register here</a> so we can keep you updated on new resources!</p>
+</div>
 
 <hr />
 
 <h2 id="additional-resources">Additional Resources</h2>
 
-<div class="resource-list">
-  <h3>Reference &amp; Discography</h3>
-  <ul>
-    <li><a href="https://www.el-recodo.com">El Recodo</a> &mdash; Comprehensive tango discography and artist information</li>
-    <li><a href="https://www.tango-dj.at/">Tango-DJ.at</a> &mdash; Extensive database and DJ resource</li>
-    <li><a href="https://tangosparks.com/">Tango Sparks</a> &mdash; Discology tab with detailed orchestra information</li>
-    <li><a href="https://www.notasdeoro.com/">Notas De Oro</a> &mdash; Curated tango discographies and song information</li>
-  </ul>
-
-  <h3>Books</h3>
-  <ul>
-    <li><a href="https://www.milongapress.com/">Michael Lavocah&rsquo;s books</a> &mdash; Invaluable reference for tango DJs on orchestras and music history</li>
-  </ul>
-
-  <h3>DJ Tools &amp; Community</h3>
-  <ul>
-    <li><a href="https://tangodjsforgoodsound.info/technology/">Tango DJs for Good Sound</a> &mdash; Software and hardware used by tango DJs worldwide</li>
-    <li><a href="https://github.com/sericson0/TigerTango">TigerTango</a> &mdash; Free Virtual DJ interface for tango</li>
-    <li><a href="https://docs.google.com/spreadsheets/d/1i2q6Jrqo8-04sIqrWPmGHNL_RkgxUDh0os4KhIVR5_Y/edit">Michael Plaks&rsquo; 500 Tango Songs</a> &mdash; Curated list of 500 songs that work well in the milonga</li>
-  </ul>
-
-  <h3>On This Site</h3>
-  <ul>
-    <li><a href="/dj/history-of-tango-music/">The History of Tango Music</a> &mdash; How 12,000 recordings survived a century of wars, corporate destruction, and cultural upheaval</li>
-    <li><a href="/dj/courses/beginner-tango-dj/">Beginner DJ Course</a> &mdash; Tandas, cortinas, and milonga flow</li>
-    <li><a href="/dj/getting-started/set-lists/">Starting Set Lists</a> &mdash; Curated song lists to get you started</li>
-  </ul>
-</div>
+<ul class="resource-links">
+  <li><a href="https://www.notasdeoro.com/">Notas De Oro</a> &mdash; We have been putting together information about tango songs and curating discographies. Come check it out!</li>
+  <li><a href="https://www.tango-dj.at/">Tango-DJ.at</a> &mdash; A great resource for tango DJs</li>
+  <li><a href="https://tangodjsforgoodsound.info/technology/">Tango DJs for Good Sound</a> &mdash; A list of software and hardware tango DJs are using</li>
+  <li><a href="https://docs.google.com/spreadsheets/d/1i2q6Jrqo8-04sIqrWPmGHNL_RkgxUDh0os4KhIVR5_Y/edit">DJ Michael Plaks&rsquo; 500 Tango Songs</a> &mdash; A great resource of 500 tango songs that work well in the milonga</li>
+  <li><a href="https://tangosparks.com/">Tango Sparks</a> &mdash; Has a Discology tab that provides valuable information about artist discographies and orchestra information</li>
+  <li><a href="https://www.milongapress.com/">Michael Lavocah&rsquo;s books</a> &mdash; Invaluable resources for tango DJs</li>
+  <li><a href="https://www.el-recodo.com/">El Recodo</a> &mdash; A large discography of tango music information along with other useful resources</li>
+  <li><a href="/dj/history-of-tango-music/">The History of Tango Music</a> &mdash; Our deep dive into how 12,000 tango recordings survived a century of history</li>
+</ul>
 
 <hr />
+
+<div class="coming-soon">
+  <p>I am working on additional tools for tango DJs including a <strong>tango metadata tagger</strong> and a <strong>tool to reduce hiss</strong>. Stay tuned for those, and <a href="mailto:sericson0@gmail.com">reach out</a> if you are interested in being a beta tester.</p>
+</div>
 
 <p class="contact-note">This guide is a work in progress. Feedback, questions, and suggestions are welcome at <a href="mailto:sericson0@gmail.com">sericson0@gmail.com</a>.</p>
 
@@ -269,7 +335,6 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
   }
 
   .back-link:hover { color: var(--color-primary); }
-
   .page-hero h1 { margin: 0 0 0.5rem; }
 
   .lead {
@@ -286,9 +351,29 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
     padding: 0 1.5rem;
   }
 
+  .welcome-box {
+    background: linear-gradient(135deg, var(--color-orange-50) 0%, white 100%);
+    border: 2px solid var(--color-orange-300);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem 2rem;
+    margin-bottom: 2rem;
+  }
+
+  .welcome-box p {
+    margin: 0 0 0.75rem;
+    font-size: 1.05rem;
+  }
+
+  .register-note {
+    display: inline-block;
+    margin-left: 0.75rem;
+    font-size: 0.9rem;
+    color: var(--color-slate-500);
+  }
+
   .toc {
-    background: var(--color-orange-50);
-    border: 1px solid var(--color-orange-200);
+    background: var(--color-slate-50);
+    border: 1px solid var(--color-slate-200);
     border-radius: var(--radius-lg);
     padding: 1.5rem 2rem;
     margin-bottom: 2rem;
@@ -306,6 +391,11 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 
   .prose h3 { margin: 2rem 0 0.75rem; }
 
+  .terms-list > li {
+    margin-bottom: 1rem;
+    line-height: 1.6;
+  }
+
   .callout {
     padding: 1rem 1.25rem;
     border-radius: var(--radius-md);
@@ -313,10 +403,51 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
     font-size: 0.95rem;
   }
 
-  .callout-info {
-    background: var(--color-orange-50);
-    border-left: 4px solid var(--color-orange-400);
+  .callout-warning {
+    background: #fffbeb;
+    border-left: 4px solid #f59e0b;
   }
+
+  .setup-steps > li {
+    margin-bottom: 1.5rem;
+  }
+
+  .setup-steps > li > p {
+    margin: 0.25rem 0 0;
+    color: var(--color-slate-600);
+    font-size: 0.95rem;
+  }
+
+  .setup-steps ol {
+    margin-top: 0.5rem;
+    padding-left: 1.5rem;
+  }
+
+  .setup-steps ol li {
+    margin-bottom: 0.25rem;
+  }
+
+  .table-scroll {
+    overflow-x: auto;
+    margin: 1.5rem 0;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.9rem;
+  }
+
+  thead { background: var(--color-orange-50); }
+
+  th, td {
+    padding: 0.6rem 0.75rem;
+    border: 1px solid var(--color-slate-200);
+    text-align: left;
+    vertical-align: top;
+  }
+
+  th { font-weight: 600; }
 
   .set-cards {
     display: grid;
@@ -346,24 +477,6 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
     color: var(--color-slate-600);
   }
 
-  table {
-    width: 100%;
-    border-collapse: collapse;
-    margin: 1.5rem 0;
-    font-size: 0.9rem;
-  }
-
-  thead { background: var(--color-orange-50); }
-
-  th, td {
-    padding: 0.5rem 0.75rem;
-    border: 1px solid var(--color-slate-200);
-    text-align: left;
-    vertical-align: top;
-  }
-
-  th { font-weight: 600; }
-
   pre {
     background: var(--color-slate-100);
     padding: 1rem;
@@ -373,14 +486,66 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
     line-height: 1.6;
   }
 
+  .exercise-list > li {
+    margin-bottom: 1.5rem;
+  }
+
+  .exercise-list > li > p {
+    margin: 0.25rem 0 0.5rem;
+    color: var(--color-slate-600);
+    font-size: 0.95rem;
+  }
+
+  .exercise-list ol {
+    margin-top: 0.5rem;
+    padding-left: 1.5rem;
+  }
+
+  .register-reminder {
+    background: var(--color-orange-50);
+    border: 1px solid var(--color-orange-200);
+    border-radius: var(--radius-md);
+    padding: 1rem 1.25rem;
+    text-align: center;
+    margin: 2rem 0;
+  }
+
+  .register-reminder p { margin: 0; }
+
+  .resource-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .resource-links li {
+    margin-bottom: 0.75rem;
+    padding-left: 1.25rem;
+    position: relative;
+  }
+
+  .resource-links li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--color-orange-500);
+  }
+
+  .coming-soon {
+    background: var(--color-slate-50);
+    border: 1px solid var(--color-slate-200);
+    border-radius: var(--radius-md);
+    padding: 1rem 1.25rem;
+    margin: 1.5rem 0;
+  }
+
+  .coming-soon p { margin: 0; }
+
   hr {
     border: none;
     border-top: 1px solid var(--color-slate-200);
     margin: 2rem 0;
   }
-
-  .resource-list h3 { margin: 1.5rem 0 0.5rem; font-size: 1.1rem; }
-  .resource-list ul { margin: 0 0 1rem; }
 
   .btn {
     display: inline-block;
@@ -403,5 +568,9 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
     max-width: var(--container-max);
     margin: 0 auto;
     padding: 0 1.5rem;
+  }
+
+  @media (max-width: 600px) {
+    .register-note { display: block; margin: 0.5rem 0 0; }
   }
 </style>

@@ -1,0 +1,73 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Registration Complete" description="Thank you for registering for tango DJ resources.">
+  <section class="success-page">
+    <div class="container narrow">
+      <div class="success-card">
+        <div class="checkmark">&#10003;</div>
+        <h1>You're registered!</h1>
+        <p>Thank you for signing up. We'll keep you posted on new resources, set lists, and tools for tango DJs.</p>
+        <div class="success-links">
+          <a href="/dj/getting-started/" class="btn btn-primary">Continue to Getting Started Guide &rarr;</a>
+          <a href="/dj/getting-started/set-lists/" class="btn btn-secondary">Browse Set Lists</a>
+        </div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .success-page {
+    padding: 5rem 0;
+    min-height: 50vh;
+    display: flex;
+    align-items: center;
+  }
+
+  .narrow { max-width: 36rem; margin: 0 auto; padding: 0 1.5rem; }
+
+  .success-card { text-align: center; }
+
+  .checkmark {
+    width: 4rem;
+    height: 4rem;
+    border-radius: 50%;
+    background: var(--color-orange-100);
+    color: var(--color-orange-600);
+    font-size: 2rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 1.5rem;
+  }
+
+  .success-card h1 { margin: 0 0 0.75rem; }
+
+  .success-card p {
+    font-size: 1.1rem;
+    color: var(--color-slate-600);
+    margin: 0 0 2rem;
+    max-width: 40ch;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  .success-links { display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center; }
+
+  .btn {
+    display: inline-block;
+    padding: 0.6rem 1.25rem;
+    border-radius: var(--radius-md);
+    font-weight: 500;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .btn-primary { background: var(--color-primary); color: white; }
+  .btn-primary:hover { background: var(--color-primary-hover); color: white; }
+  .btn-secondary { background: var(--color-slate-100); color: var(--color-slate-700); }
+  .btn-secondary:hover { background: var(--color-slate-200); }
+
+  .container { max-width: var(--container-max); margin: 0 auto; padding: 0 1.5rem; }
+</style>
