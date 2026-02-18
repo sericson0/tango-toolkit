@@ -1,0 +1,191 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { products } from '../../../data/products';
+---
+
+<BaseLayout title="Apps & Premium Resources" description="Paid apps and materials for tango DJs. Level up your practice with our premium resources.">
+  <section class="page-hero">
+    <div class="container">
+      <a href="/dj/" class="back-link">← Back to DJ Resources</a>
+      <h1>Apps & Premium Resources</h1>
+      <p class="lead">Tools and materials to deepen your tango DJ practice. Secure checkout via Stripe.</p>
+    </div>
+  </section>
+
+  <section class="products-section">
+    <div class="container">
+      <div class="products-grid">
+        {products.map((product) => (
+          <article class={`product-card ${product.featured ? 'product-card-featured' : ''}`}>
+            {product.image && (
+              <div class="product-image">
+                <img src={product.image} alt={product.name} />
+              </div>
+            )}
+            <div class="product-content">
+              {product.featured && <span class="product-badge">Popular</span>}
+              <h2>{product.name}</h2>
+              <p>{product.description}</p>
+              <div class="product-footer">
+                <span class="product-price">{product.price}</span>
+                <a href={product.paymentLink} target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+                  Buy Now
+                </a>
+              </div>
+            </div>
+          </article>
+        ))}
+      </div>
+      <p class="checkout-note">
+        You'll be redirected to Stripe for secure checkout. All payments are processed by Stripe.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-hero {
+    padding: 3rem 0;
+    background: linear-gradient(135deg, var(--color-orange-50) 0%, white 100%);
+    border-bottom: 1px solid var(--color-orange-100);
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    color: var(--color-slate-600);
+  }
+
+  .back-link:hover {
+    color: var(--color-primary);
+  }
+
+  .page-hero h1 {
+    margin: 0 0 0.5rem;
+  }
+
+  .lead {
+    font-size: 1.2rem;
+    color: var(--color-slate-600);
+    margin: 0;
+  }
+
+  .products-section {
+    padding: 3rem 0;
+  }
+
+  .products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .product-card {
+    background: white;
+    border: 1px solid var(--color-slate-200);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: all 0.2s;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .product-card:hover {
+    border-color: var(--color-orange-400);
+    box-shadow: var(--shadow-md);
+  }
+
+  .product-card-featured {
+    border-color: var(--color-orange-400);
+    border-width: 2px;
+  }
+
+  .product-image {
+    aspect-ratio: 16/9;
+    background: var(--color-slate-100);
+    overflow: hidden;
+  }
+
+  .product-image img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .product-content {
+    padding: 1.5rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+  }
+
+  .product-badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.25rem 0.5rem;
+    background: var(--color-orange-500);
+    color: white;
+    border-radius: var(--radius-sm);
+  }
+
+  .product-content h2 {
+    margin: 0 0 0.5rem;
+    font-size: 1.25rem;
+  }
+
+  .product-content p {
+    margin: 0 0 1rem;
+    color: var(--color-slate-600);
+    font-size: 0.95rem;
+    flex: 1;
+  }
+
+  .product-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .product-price {
+    font-size: 1.25rem;
+    font-weight: 600;
+    color: var(--color-slate-900);
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-md);
+    font-weight: 500;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .btn-primary {
+    background: var(--color-primary);
+    color: white;
+  }
+
+  .btn-primary:hover {
+    background: var(--color-primary-hover);
+    color: white;
+  }
+
+  .checkout-note {
+    margin-top: 2rem;
+    font-size: 0.9rem;
+    color: var(--color-slate-500);
+    text-align: center;
+  }
+
+  .container {
+    max-width: var(--container-max);
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+</style>

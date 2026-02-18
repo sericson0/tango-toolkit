@@ -1,0 +1,149 @@
+---
+import BaseLayout from '../../../../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const lessons = await getCollection('dj-lessons', ({ data }) => data.published !== false);
+  return lessons.map((lesson) => ({
+    params: { slug: lesson.data.course, lessonSlug: lesson.slug },
+    props: { lesson },
+  }));
+}
+
+const { lesson } = Astro.props;
+const { Content } = await lesson.render();
+const course = (await getCollection('dj-courses')).find((c) => c.slug === lesson.data.course);
+const allLessons = (await getCollection('dj-lessons', ({ data }) => data.course === lesson.data.course && data.published !== false))
+  .sort((a, b) => a.data.order - b.data.order);
+const currentIndex = allLessons.findIndex((l) => l.slug === lesson.slug);
+const prevLesson = currentIndex > 0 ? allLessons[currentIndex - 1] : null;
+const nextLesson = currentIndex < allLessons.length - 1 && currentIndex >= 0 ? allLessons[currentIndex + 1] : null;
+---
+
+<BaseLayout title={lesson.data.title} description={lesson.data.description}>
+  <article class="lesson-page">
+    <section class="page-hero">
+      <div class="container">
+        <a href={`/dj/courses/${lesson.data.course}/`} class="back-link">← {course?.data.title ?? 'Course'}</a>
+        <h1>{lesson.data.title}</h1>
+        <p class="lead">{lesson.data.description}</p>
+      </div>
+    </section>
+
+    <div class="lesson-body">
+      <div class="container">
+        <div class="lesson-content prose">
+          <Content />
+        </div>
+
+        <nav class="lesson-nav">
+          <div class="container">
+            {prevLesson ? (
+              <a href={`/dj/courses/${lesson.data.course}/${prevLesson.slug}/`} class="nav-link nav-prev">
+                <span class="nav-label">Previous</span>
+                <span class="nav-title">{prevLesson.data.title}</span>
+              </a>
+            ) : (
+              <span />
+            )}
+            {nextLesson ? (
+              <a href={`/dj/courses/${lesson.data.course}/${nextLesson.slug}/`} class="nav-link nav-next">
+                <span class="nav-label">Next</span>
+                <span class="nav-title">{nextLesson.data.title}</span>
+              </a>
+            ) : (
+              <span />
+            )}
+          </div>
+        </nav>
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .page-hero {
+    padding: 3rem 0;
+    background: linear-gradient(135deg, var(--color-orange-50) 0%, white 100%);
+    border-bottom: 1px solid var(--color-orange-100);
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    color: var(--color-slate-600);
+  }
+
+  .back-link:hover {
+    color: var(--color-primary);
+  }
+
+  .page-hero h1 {
+    margin: 0 0 0.5rem;
+  }
+
+  .lead {
+    font-size: 1.2rem;
+    color: var(--color-slate-600);
+    margin: 0;
+  }
+
+  .lesson-body {
+    padding: 3rem 0;
+  }
+
+  .lesson-content {
+    max-width: 50rem;
+    margin: 0 auto;
+  }
+
+  .lesson-nav {
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid var(--color-slate-200);
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+  }
+
+  .nav-link {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+    padding: 1rem;
+    border-radius: var(--radius-md);
+    transition: background 0.2s;
+    max-width: 50%;
+  }
+
+  .nav-link:hover {
+    background: var(--color-orange-50);
+    color: var(--color-primary);
+  }
+
+  .nav-prev {
+    text-align: left;
+  }
+
+  .nav-next {
+    text-align: right;
+  }
+
+  .nav-label {
+    font-size: 0.8rem;
+    color: var(--color-slate-500);
+    margin-bottom: 0.25rem;
+  }
+
+  .nav-title {
+    font-weight: 500;
+  }
+
+  .container {
+    max-width: var(--container-max);
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+</style>

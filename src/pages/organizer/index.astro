@@ -1,0 +1,86 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Tango Organizer Resources" description="Guides and templates for running milongas and tango events.">
+  <section class="page-hero">
+    <div class="container">
+      <h1>Tango Organizer Resources</h1>
+      <p class="lead">Everything you need to run successful milongas and tango events.</p>
+    </div>
+  </section>
+
+  <section class="coming-soon">
+    <div class="container">
+      <div class="coming-soon-card">
+        <h2>Coming Soon</h2>
+        <p>We're building out organizer resources. Check back soon.</p>
+        <a href="/" class="btn btn-primary">Back to Home</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-hero {
+    padding: 3rem 0;
+    background: linear-gradient(135deg, var(--color-orange-50) 0%, white 100%);
+    border-bottom: 1px solid var(--color-orange-100);
+  }
+
+  .page-hero h1 {
+    margin: 0 0 0.5rem;
+  }
+
+  .lead {
+    font-size: 1.2rem;
+    color: var(--color-slate-600);
+    margin: 0;
+  }
+
+  .coming-soon {
+    padding: 4rem 0;
+  }
+
+  .coming-soon-card {
+    max-width: 400px;
+    margin: 0 auto;
+    text-align: center;
+    padding: 2rem;
+    background: white;
+    border: 1px solid var(--color-slate-200);
+    border-radius: var(--radius-lg);
+  }
+
+  .coming-soon-card h2 {
+    margin: 0 0 0.5rem;
+  }
+
+  .coming-soon-card p {
+    margin: 0 0 1.5rem;
+    color: var(--color-slate-600);
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-md);
+    font-weight: 500;
+  }
+
+  .btn-primary {
+    background: var(--color-primary);
+    color: white;
+  }
+
+  .btn-primary:hover {
+    background: var(--color-primary-hover);
+    color: white;
+  }
+
+  .container {
+    max-width: var(--container-max);
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+</style>

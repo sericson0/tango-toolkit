@@ -1,0 +1,123 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="DJ Materials & References" description="Reference materials, cheat sheets, and resources for tango DJs.">
+  <section class="page-hero">
+    <div class="container">
+      <a href="/dj/" class="back-link">← Back to DJ Resources</a>
+      <h1>DJ Materials & References</h1>
+      <p class="lead">Quick reference guides and resources to support your DJ practice.</p>
+    </div>
+  </section>
+
+  <section class="materials-section">
+    <div class="container">
+      <div class="materials-grid">
+        <article class="material-card">
+          <h2>Orchestra Era Reference</h2>
+          <p>Quick guide to major tango orchestras and their eras. Golden age, guardia nueva, and more.</p>
+          <a href="#" class="material-link">View reference →</a>
+        </article>
+        <article class="material-card">
+          <h2>Tanda Building Cheat Sheet</h2>
+          <p>Rules of thumb for building tandas by energy, key, and era.</p>
+          <a href="#" class="material-link">View cheat sheet →</a>
+        </article>
+        <article class="material-card">
+          <h2>Milonga Flow Template</h2>
+          <p>Sample structure for a 3-hour milonga. Adapt to your needs.</p>
+          <a href="#" class="material-link">View template →</a>
+        </article>
+      </div>
+      <p class="materials-note">
+        More materials coming soon. Have a suggestion? <a href="mailto:hello@tangotoolkit.com">Get in touch</a>.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-hero {
+    padding: 3rem 0;
+    background: linear-gradient(135deg, var(--color-orange-50) 0%, white 100%);
+    border-bottom: 1px solid var(--color-orange-100);
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    color: var(--color-slate-600);
+  }
+
+  .back-link:hover {
+    color: var(--color-primary);
+  }
+
+  .page-hero h1 {
+    margin: 0 0 0.5rem;
+  }
+
+  .lead {
+    font-size: 1.2rem;
+    color: var(--color-slate-600);
+    margin: 0;
+  }
+
+  .materials-section {
+    padding: 3rem 0;
+  }
+
+  .materials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .material-card {
+    background: white;
+    border: 1px solid var(--color-slate-200);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    transition: all 0.2s;
+  }
+
+  .material-card:hover {
+    border-color: var(--color-orange-400);
+    box-shadow: var(--shadow-md);
+  }
+
+  .material-card h2 {
+    margin: 0 0 0.5rem;
+    font-size: 1.25rem;
+  }
+
+  .material-card p {
+    margin: 0 0 1rem;
+    color: var(--color-slate-600);
+    font-size: 0.95rem;
+  }
+
+  .material-link {
+    font-weight: 500;
+    color: var(--color-primary);
+  }
+
+  .material-link:hover {
+    color: var(--color-primary-hover);
+  }
+
+  .materials-note {
+    margin-top: 2rem;
+    font-size: 0.9rem;
+    color: var(--color-slate-500);
+    text-align: center;
+  }
+
+  .container {
+    max-width: var(--container-max);
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+</style>

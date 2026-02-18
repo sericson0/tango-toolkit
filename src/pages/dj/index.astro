@@ -1,0 +1,162 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+---
+
+<BaseLayout title="Tango DJ Resources" description="Courses, lessons, and materials for tango DJs. Learn music selection, tanda structure, and the art of DJing for milongas.">
+  <section class="page-hero">
+    <div class="container">
+      <h1>Tango DJ Resources</h1>
+      <p class="lead">Everything you need to start and grow as a tango DJ. From beginner courses to advanced techniques.</p>
+    </div>
+  </section>
+
+  <section class="dj-content">
+    <div class="container">
+      <div class="dj-grid">
+        <div class="dj-main">
+          <h2>Free Courses & Lessons</h2>
+          <p>Our beginner series walks you through the fundamentals of tango DJing. Each course contains multiple lessons with videos, text, and practical exercises.</p>
+          <a href="/dj/courses/" class="btn btn-primary btn-lg">Browse All Courses →</a>
+
+          <h2 style="margin-top: 3rem;">Quick Links</h2>
+          <ul class="resource-links">
+            <li><a href="/dj/courses/">Beginner DJ Course Series</a></li>
+            <li><a href="/dj/materials/">DJ Materials & References</a></li>
+            <li><a href="/dj/paid/">Apps & Premium Resources</a></li>
+          </ul>
+        </div>
+        <aside class="dj-sidebar">
+          <div class="sidebar-card">
+            <h3>Start Here</h3>
+            <p>New to tango DJing? Start with our free beginner course.</p>
+            <a href="/dj/courses/beginner-tango-dj/" class="btn btn-primary">Start Course</a>
+          </div>
+          <div class="sidebar-card">
+            <h3>Premium Resources</h3>
+            <p>Apps and materials to level up your DJ practice.</p>
+            <a href="/dj/paid/" class="btn btn-secondary">View All</a>
+          </div>
+        </aside>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-hero {
+    padding: 3rem 0;
+    background: linear-gradient(135deg, var(--color-orange-50) 0%, white 100%);
+    border-bottom: 1px solid var(--color-orange-100);
+  }
+
+  .page-hero h1 {
+    margin: 0 0 0.5rem;
+  }
+
+  .lead {
+    font-size: 1.2rem;
+    color: var(--color-slate-600);
+    margin: 0;
+    max-width: 50ch;
+  }
+
+  .dj-content {
+    padding: 3rem 0;
+  }
+
+  .dj-grid {
+    display: grid;
+    grid-template-columns: 1fr 300px;
+    gap: 3rem;
+  }
+
+  @media (max-width: 768px) {
+    .dj-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .dj-main h2 {
+    margin: 0 0 1rem;
+  }
+
+  .btn-lg {
+    padding: 0.75rem 1.5rem;
+    font-size: 1rem;
+  }
+
+  .resource-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .resource-links li {
+    margin-bottom: 0.5rem;
+  }
+
+  .resource-links a {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .resource-links a::before {
+    content: "→";
+    color: var(--color-orange-500);
+  }
+
+  .sidebar-card {
+    background: white;
+    border: 1px solid var(--color-slate-200);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .sidebar-card h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1.1rem;
+  }
+
+  .sidebar-card p {
+    margin: 0 0 1rem;
+    font-size: 0.9rem;
+    color: var(--color-slate-600);
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-md);
+    font-weight: 500;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .btn-primary {
+    background: var(--color-primary);
+    color: white;
+  }
+
+  .btn-primary:hover {
+    background: var(--color-primary-hover);
+    color: white;
+  }
+
+  .btn-secondary {
+    background: var(--color-slate-100);
+    color: var(--color-slate-700);
+  }
+
+  .btn-secondary:hover {
+    background: var(--color-slate-200);
+    color: var(--color-slate-800);
+  }
+
+  .container {
+    max-width: var(--container-max);
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+</style>

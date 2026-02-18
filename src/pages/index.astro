@@ -1,0 +1,223 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Home" description="Tango Toolkit - Resources for tango dancers, DJs, and organizers. Courses, lessons, and materials to deepen your tango journey.">
+  <section class="hero">
+    <div class="container">
+      <h1>Welcome to Tango Toolkit</h1>
+      <p class="hero-subtitle">Resources for dancers, DJs, and organizers. Learn, grow, and deepen your tango journey.</p>
+    </div>
+  </section>
+
+  <section class="announcements">
+    <div class="container">
+      <h2>What's New</h2>
+      <div class="announcement-cards">
+        <article class="announcement-card">
+          <span class="badge">New</span>
+          <h3>Tango DJ Beginner Courses</h3>
+          <p>Our complete series for aspiring tango DJs is now live. From music selection to tanda structure, start your DJ journey today.</p>
+          <a href="/dj/courses/" class="btn btn-primary">Explore DJ Courses →</a>
+        </article>
+        <article class="announcement-card">
+          <span class="badge">Coming Soon</span>
+          <h3>Dance Resources</h3>
+          <p>Technique guides, musicality tips, and practice materials for dancers.</p>
+          <a href="/dance/" class="btn btn-secondary">Learn more</a>
+        </article>
+        <article class="announcement-card">
+          <span class="badge">Coming Soon</span>
+          <h3>Organizer Toolkit</h3>
+          <p>Everything you need to run successful milongas and events.</p>
+          <a href="/organizer/" class="btn btn-secondary">Learn more</a>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="pillars">
+    <div class="container">
+      <h2>Explore by Role</h2>
+      <div class="pillar-grid">
+        <a href="/dance/" class="pillar-card">
+          <div class="pillar-icon">💃</div>
+          <h3>Tango Dance</h3>
+          <p>Technique, musicality, and practice resources for dancers.</p>
+        </a>
+        <a href="/dj/" class="pillar-card pillar-card-featured">
+          <div class="pillar-icon">🎵</div>
+          <h3>Tango DJ</h3>
+          <p>Courses, lessons, and tools for tango DJs. Beginner to advanced.</p>
+          <span class="pillar-status">Available now</span>
+        </a>
+        <a href="/organizer/" class="pillar-card">
+          <div class="pillar-icon">📋</div>
+          <h3>Tango Organizer</h3>
+          <p>Guides and templates for running milongas and events.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .hero {
+    padding: 4rem 0;
+    background: linear-gradient(135deg, var(--color-orange-50) 0%, white 50%, var(--color-orange-50) 100%);
+    border-bottom: 1px solid var(--color-orange-100);
+  }
+
+  .hero h1 {
+    font-size: clamp(2rem, 5vw, 3.5rem);
+    margin: 0 0 1rem;
+    color: var(--color-slate-900);
+  }
+
+  .hero-subtitle {
+    font-size: 1.25rem;
+    color: var(--color-slate-600);
+    max-width: 40ch;
+    margin: 0;
+  }
+
+  .announcements, .pillars {
+    padding: 4rem 0;
+  }
+
+  .announcements h2, .pillars h2 {
+    margin: 0 0 2rem;
+    text-align: center;
+  }
+
+  .announcement-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .announcement-card {
+    background: white;
+    border: 1px solid var(--color-slate-200);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    box-shadow: var(--shadow-sm);
+    transition: box-shadow 0.2s, transform 0.2s;
+    position: relative;
+  }
+
+  .announcement-card:hover {
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+
+  .badge {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    font-size: 0.75rem;
+    font-weight: 600;
+    padding: 0.25rem 0.5rem;
+    border-radius: var(--radius-sm);
+    background: var(--color-orange-100);
+    color: var(--color-orange-800);
+  }
+
+  .announcement-card h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1.25rem;
+  }
+
+  .announcement-card p {
+    margin: 0 0 1rem;
+    color: var(--color-slate-600);
+    font-size: 0.95rem;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-md);
+    font-weight: 500;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .btn-primary {
+    background: var(--color-primary);
+    color: white;
+  }
+
+  .btn-primary:hover {
+    background: var(--color-primary-hover);
+    color: white;
+  }
+
+  .btn-secondary {
+    background: var(--color-slate-100);
+    color: var(--color-slate-700);
+  }
+
+  .btn-secondary:hover {
+    background: var(--color-slate-200);
+    color: var(--color-slate-800);
+  }
+
+  .pillar-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .pillar-card {
+    background: white;
+    border: 2px solid var(--color-slate-200);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    text-align: center;
+    transition: all 0.2s;
+    text-decoration: none;
+    color: inherit;
+    display: block;
+  }
+
+  .pillar-card:hover {
+    border-color: var(--color-orange-400);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-4px);
+  }
+
+  .pillar-card-featured {
+    border-color: var(--color-orange-400);
+    background: linear-gradient(180deg, var(--color-orange-50) 0%, white 100%);
+  }
+
+  .pillar-icon {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .pillar-card h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1.25rem;
+  }
+
+  .pillar-card p {
+    margin: 0;
+    color: var(--color-slate-600);
+    font-size: 0.95rem;
+  }
+
+  .pillar-status {
+    display: inline-block;
+    margin-top: 1rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-orange-600);
+  }
+
+  .container {
+    max-width: var(--container-max);
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+</style>

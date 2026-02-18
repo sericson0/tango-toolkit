@@ -1,0 +1,114 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const courses = await getCollection('dj-courses', ({ data }) => data.published !== false);
+const sortedCourses = courses.sort((a, b) => a.data.order - b.data.order);
+---
+
+<BaseLayout title="DJ Courses" description="Free tango DJ courses for beginners. Learn music selection, tanda structure, and milonga flow.">
+  <section class="page-hero">
+    <div class="container">
+      <a href="/dj/" class="back-link">← Back to DJ Resources</a>
+      <h1>DJ Courses</h1>
+      <p class="lead">Structured learning paths for tango DJs. Work through at your own pace.</p>
+    </div>
+  </section>
+
+  <section class="courses-list">
+    <div class="container">
+      {sortedCourses.map((course) => (
+        <a href={`/dj/courses/${course.slug}/`} class="course-card">
+          <div class="course-number">{String(course.data.order).padStart(2, '0')}</div>
+          <div class="course-content">
+            <h2>{course.data.title}</h2>
+            <p>{course.data.description}</p>
+            <span class="course-link">View course →</span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-hero {
+    padding: 3rem 0;
+    background: linear-gradient(135deg, var(--color-orange-50) 0%, white 100%);
+    border-bottom: 1px solid var(--color-orange-100);
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    color: var(--color-slate-600);
+  }
+
+  .back-link:hover {
+    color: var(--color-primary);
+  }
+
+  .page-hero h1 {
+    margin: 0 0 0.5rem;
+  }
+
+  .lead {
+    font-size: 1.2rem;
+    color: var(--color-slate-600);
+    margin: 0;
+  }
+
+  .courses-list {
+    padding: 3rem 0;
+  }
+
+  .course-card {
+    display: grid;
+    grid-template-columns: 60px 1fr;
+    gap: 1.5rem;
+    padding: 1.5rem;
+    background: white;
+    border: 1px solid var(--color-slate-200);
+    border-radius: var(--radius-lg);
+    margin-bottom: 1rem;
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.2s;
+  }
+
+  .course-card:hover {
+    border-color: var(--color-orange-400);
+    box-shadow: var(--shadow-md);
+  }
+
+  .course-number {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    color: var(--color-orange-500);
+    font-weight: 400;
+  }
+
+  .course-content h2 {
+    margin: 0 0 0.5rem;
+    font-size: 1.25rem;
+  }
+
+  .course-content p {
+    margin: 0 0 0.5rem;
+    color: var(--color-slate-600);
+    font-size: 0.95rem;
+  }
+
+  .course-link {
+    font-weight: 500;
+    color: var(--color-primary);
+    font-size: 0.9rem;
+  }
+
+  .container {
+    max-width: var(--container-max);
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+</style>

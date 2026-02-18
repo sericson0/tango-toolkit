@@ -1,0 +1,155 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+export async function getStaticPaths() {
+  const courses = await getCollection('dj-courses', ({ data }) => data.published !== false);
+  return courses.map((course) => ({
+    params: { slug: course.slug },
+    props: { course },
+  }));
+}
+
+const { course } = Astro.props;
+const { Content } = await course.render();
+const lessons = (await getCollection('dj-lessons', ({ data }) => data.course === course.slug && data.published !== false))
+  .sort((a, b) => a.data.order - b.data.order);
+---
+
+<BaseLayout title={course.data.title} description={course.data.description}>
+  <article class="course-page">
+    <section class="page-hero">
+      <div class="container">
+        <a href="/dj/courses/" class="back-link">← All Courses</a>
+        <h1>{course.data.title}</h1>
+        <p class="lead">{course.data.description}</p>
+      </div>
+    </section>
+
+    <div class="course-body">
+      <div class="container">
+        <div class="course-grid">
+          <div class="course-content prose">
+            <Content />
+          </div>
+          <aside class="course-sidebar">
+            <div class="lessons-list">
+              <h3>Lessons in this course</h3>
+              {lessons.map((lesson, i) => (
+                <a href={`/dj/courses/${course.slug}/${lesson.slug}/`} class="lesson-item">
+                  <span class="lesson-num">{i + 1}</span>
+                  <span class="lesson-title">{lesson.data.title}</span>
+                </a>
+              ))}
+            </div>
+          </aside>
+        </div>
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .page-hero {
+    padding: 3rem 0;
+    background: linear-gradient(135deg, var(--color-orange-50) 0%, white 100%);
+    border-bottom: 1px solid var(--color-orange-100);
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    color: var(--color-slate-600);
+  }
+
+  .back-link:hover {
+    color: var(--color-primary);
+  }
+
+  .page-hero h1 {
+    margin: 0 0 0.5rem;
+  }
+
+  .lead {
+    font-size: 1.2rem;
+    color: var(--color-slate-600);
+    margin: 0;
+  }
+
+  .course-body {
+    padding: 3rem 0;
+  }
+
+  .course-grid {
+    display: grid;
+    grid-template-columns: 1fr 280px;
+    gap: 3rem;
+  }
+
+  @media (max-width: 768px) {
+    .course-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .course-content {
+    max-width: none;
+  }
+
+  .lessons-list {
+    position: sticky;
+    top: calc(var(--header-height) + 2rem);
+    background: white;
+    border: 1px solid var(--color-slate-200);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+  }
+
+  .lessons-list h3 {
+    margin: 0 0 1rem;
+    font-size: 1rem;
+  }
+
+  .lesson-item {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.5rem 0;
+    border-bottom: 1px solid var(--color-slate-100);
+    text-decoration: none;
+    color: inherit;
+    transition: color 0.2s;
+  }
+
+  .lesson-item:last-child {
+    border-bottom: none;
+  }
+
+  .lesson-item:hover {
+    color: var(--color-primary);
+  }
+
+  .lesson-num {
+    width: 1.5rem;
+    height: 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: var(--color-orange-100);
+    color: var(--color-orange-700);
+    border-radius: 50%;
+    font-size: 0.8rem;
+    font-weight: 600;
+  }
+
+  .lesson-title {
+    font-size: 0.95rem;
+  }
+
+  .container {
+    max-width: var(--container-max);
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+</style>
