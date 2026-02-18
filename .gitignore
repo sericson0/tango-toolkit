@@ -18,6 +18,9 @@ dist/
 *.swp
 *.swo
 
+# Large binary files (installer packages)
+src/content/dj-courses/previous-vdj/
+
 # OS
 .DS_Store
 Thumbs.db
