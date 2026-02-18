@@ -5,7 +5,10 @@ const imgBase = '/articles/history-of-tango-music';
 
 <BaseLayout title="The History of Tango Music" description="How many tango recordings are there? Stories on the history of tango music, the recording industry, and Argentina.">
   <article class="article-page">
-    <section class="page-hero">
+    <section class="page-hero article-hero">
+      <div class="hero-image">
+        <img src={`${imgBase}/Orquestras-and-Recordings-per-year-1024x614.png`} alt="Tango orchestras and recordings by year" />
+      </div>
       <div class="container">
         <a href="/dj/" class="back-link">&larr; Back to DJ Resources</a>
         <h1>How Many Tango Recordings Are There?</h1>
@@ -371,8 +374,26 @@ const imgBase = '/articles/history-of-tango-music';
 </BaseLayout>
 
 <style>
+  .article-hero {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero-image {
+    width: 100%;
+    max-height: 360px;
+    overflow: hidden;
+  }
+
+  .hero-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+    object-fit: cover;
+  }
+
   .page-hero {
-    padding: 3rem 0;
+    padding: 2rem 0 3rem;
     background: linear-gradient(135deg, var(--color-orange-50) 0%, white 100%);
     border-bottom: 1px solid var(--color-orange-100);
   }

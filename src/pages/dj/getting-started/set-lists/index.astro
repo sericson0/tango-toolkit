@@ -1,0 +1,315 @@
+---
+import BaseLayout from '../../../../layouts/BaseLayout.astro';
+
+const setI = [
+  { group: 1, artist: "D'Arienzo", singer: "Instrumental", era: "1936", songs: [
+    { title: "El Flete", date: "4/3/36" }, { title: "Lorenzo", date: "5/8/36" }, { title: "Retintín", date: "1/31/36" }, { title: "La Payanca", date: "6/9/36" }, { title: "Ataniche", date: "11/27/36" }, { title: "El Irresistible", date: "8/5/36" }, { title: "Rawson", date: "9/3/36" }, { title: "Comme Il Faut", date: "10/27/36" }
+  ]},
+  { group: 2, artist: "D'Arienzo", singer: "Echagüe", era: "1938–39", songs: [
+    { title: "Pensalo Bien", date: "6/22/38" }, { title: "Indiferencia", date: "1/4/38" }, { title: "Trago Amargo", date: "12/22/39" }, { title: "No Mientas", date: "12/28/38" }, { title: "La Bruja", date: "8/26/38" }, { title: "Nada Más", date: "7/8/38" }, { title: "Mandria", date: "8/9/39" }, { title: "Que Dios Te Ayude", date: "11/14/39" }
+  ]},
+  { group: 3, artist: "D'Arienzo", singer: "Maure", era: "1941–44", songs: [
+    { title: "Dime Mi Amor", date: "5/25/41" }, { title: "Amarras", date: "7/21/44" }, { title: "Uno", date: "11/23/43" }, { title: "Compadrón", date: "12/22/42" }, { title: "Humillación", date: "7/14/41" }, { title: "Tango Brujo", date: "7/13/43" }, { title: "Lilián", date: "5/17/44" }, { title: "Ya Lo Ves", date: "4/28/41" }
+  ]},
+  { group: 4, artist: "D'Arienzo", singer: "Instrumental", era: "1950–52", songs: [
+    { title: "La Cumparsita", date: "9/12/51" }, { title: "El Puntazo", date: "8/13/52" }, { title: "Canaro En Paris", date: "5/5/50" }, { title: "Pampa", date: "9/14/51" }, { title: "Yapeyú", date: "12/27/51" }, { title: "Florida", date: "11/12/52" }, { title: "El Simpático", date: "12/19/51" }, { title: "Don Juan", date: "12/28/50" }
+  ]},
+  { group: 5, artist: "Di Sarli", singer: "Instrumental", era: "1939–41", songs: [
+    { title: "El Retirao", date: "12/11/39" }, { title: "Catamarca", date: "2/9/40" }, { title: "El Jugar", date: "8/5/40" }, { title: "Shusheta", date: "10/8/40" }, { title: "Nobleza De Arrabal", date: "11/23/40" }, { title: "Marianito", date: "5/20/41" }, { title: "La Tocacita", date: "6/21/41" }, { title: "Germaine", date: "7/16/41" }
+  ]},
+  { group: 6, artist: "Di Sarli", singer: "Rufino", era: "1939–41", songs: [
+    { title: "El Jugar", date: "8/5/40" }, { title: "En Un Beso La Vida", date: "9/23/40" }, { title: "Corazón", date: "12/11/39" }, { title: "Cosas Olvidadas", date: "6/19/40" }, { title: "Lo Pasado Pasó", date: "11/23/40" }, { title: "El Cielo en Tus Ojos", date: "10/3/41" }, { title: "Cascabelito", date: "6/6/41" }, { title: "Griseta", date: "6/21/41" }
+  ]},
+  { group: 7, artist: "Di Sarli", singer: "Instrumental", era: "1954–55", songs: [
+    { title: "A La Gran Muñeca", date: "6/30/54" }, { title: "Bar Exposición", date: "11/16/54" }, { title: "Comme Il Faut", date: "7/15/55" }, { title: "El Amanecer", date: "8/31/54" }, { title: "El Ingeniero", date: "1/31/55" }, { title: "El Once", date: "11/16/54" }, { title: "Germaine", date: "7/15/55" }, { title: "Organito De La Tarde", date: "8/31/54" }
+  ]},
+  { group: 8, artist: "Di Sarli", singer: "Podestá", era: "1944", songs: [
+    { title: "La Capilla Blanca", date: "7/11/44" }, { title: "Lloran Las Campanas", date: "9/20/44" }, { title: "Llueve Otra Vez", date: "5/24/44" }, { title: "Motivo Sentimental", date: "7/20/44" }, { title: "Nada", date: "4/13/44" }, { title: "Otra Noche", date: "4/13/44" }, { title: "Tú, El Cielo Y Tú", date: "11/8/44" }, { title: "Vamos", date: "5/24/44" }
+  ]},
+  { group: 9, artist: "Troilo", singer: "Fiorentino", era: "1941", songs: [
+    { title: "El Bulin De La Calle Ayacucho", date: "6/17/41" }, { title: "Maragata", date: "10/9/41" }, { title: "No Le Digas Que La Quiero", date: "10/23/41" }, { title: "Te Aconsejo Que Me Olvides", date: "4/16/41" }, { title: "Tinta Roja", date: "10/23/41" }, { title: "Toda Mi Vida", date: "3/4/41" }, { title: "Una Carta", date: "7/11/41" }, { title: "Yo Soy El Tango", date: "3/4/41" }
+  ]},
+  { group: 10, artist: "Troilo", singer: "Instrumental", era: "1938–42", songs: [
+    { title: "Comme Il Faut", date: "3/7/38" }, { title: "Guapeando", date: "7/11/41" }, { title: "Cachirulo", date: "3/4/41" }, { title: "Cordón De Oro", date: "7/18/41" }, { title: "Milongueando En El 40", date: "6/17/41" }, { title: "La Tablada", date: "7/23/42" }, { title: "C.T.V.", date: "1/8/42" }
+  ]},
+  { group: 11, artist: "Troilo", singer: "Fiorentino", era: "1942–43", songs: [
+    { title: "Malena", date: "4/16/42" }, { title: "Garúa", date: "8/4/43" }, { title: "Cada Vez Que Me Recuerdes", date: "4/5/43" }, { title: "Gricel", date: "10/30/42" }, { title: "Barrio De Tango", date: "12/14/42" }, { title: "Por Las Calles De La Vida", date: "12/14/42" }, { title: "Lejos De Buenos Aires", date: "9/1/42" }, { title: "El Encopao", date: "9/1/42" }
+  ]},
+  { group: 12, artist: "Troilo", singer: "Marino", era: "1943–44", songs: [
+    { title: "Alhucema", date: "8/31/44" }, { title: "Cristal", date: "6/7/44" }, { title: "Cuando Tallan Los Recuerdos", date: "4/27/43" }, { title: "La Vi Llegar", date: "6/27/44" }, { title: "Nada Mas Que Un Corazón", date: "8/31/44" }, { title: "Tal Vez Será Su Voz", date: "8/4/43" }, { title: "Torrente", date: "10/6/44" }, { title: "Uno", date: "6/30/43" }
+  ]},
+  { group: 13, artist: "Pugliese", singer: "Chanel", era: "1943–46", songs: [
+    { title: "Fuimos", date: "3/28/46" }, { title: "Farol", date: "7/15/43" }, { title: "Corrientes Y Esmeralda", date: "10/17/44" }, { title: "El Sueño Del Pibe", date: "3/22/45" }, { title: "Tiempo", date: "7/31/46" }, { title: "Nada Más Que Un Corazón", date: "11/24/44" }, { title: "Rondando Tu Esquina", date: "7/18/45" }, { title: "La Abandoné Y No Sabía", date: "7/20/44" }
+  ]},
+  { group: 14, artist: "Pugliese", singer: "Instrumental", era: "1945–50", songs: [
+    { title: "Patético", date: "4/6/48" }, { title: "Negracha", date: "6/24/48" }, { title: "N.N.", date: "4/28/47" }, { title: "Malandraca", date: "5/31/49" }, { title: "Boedo", date: "7/14/48" }, { title: "De Floreo", date: "3/29/50" }, { title: "El Buscapié", date: "12/1/47" }, { title: "Flor De Tango", date: "8/28/45" }
+  ]},
+  { group: 15, artist: "Pugliese", singer: "Maciel", era: "1955–66", songs: [
+    { title: "Esta Noche De Luna", date: "9/2/55" }, { title: "Remembranza", date: "7/4/56" }, { title: "Adiós Corazón", date: "5/29/58" }, { title: "Y Todavía Te Quiero", date: "6/21/56" }, { title: "Recuerdo", date: "1966" }, { title: "El Adiós", date: "1963" }, { title: "La Vi Llegar", date: "1961" }, { title: "El Pañuelito", date: "7/23/59" }
+  ]},
+  { group: 16, artist: "Pugliese", singer: "Instrumental", era: "1952–59", songs: [
+    { title: "La Yumba", date: "11/13/52" }, { title: "La Tupungatina", date: "6/27/52" }, { title: "Gallo Ciego", date: "7/23/59" }, { title: "Para Dos", date: "5/6/52" }, { title: "La Bordona", date: "8/6/58" }, { title: "Pata Ancha", date: "5/13/57" }, { title: "Seguíme Si Podés", date: "10/6/53" }, { title: "Chiqué", date: "5/28/53" }
+  ]},
+];
+
+const setII = [
+  { group: 1, artist: "D'Arienzo", genre: "Milonga", singer: "Instrumental", era: "1935–38", songs: [
+    { title: "La Puñalada", date: "4/27/37" }, { title: "Milonga Vieja Milonga", date: "9/22/37" }, { title: "De Pura Cepa", date: "11/18/35" }, { title: "El Esquinazo", date: "1/4/38" }
+  ]},
+  { group: 2, artist: "D'Arienzo", genre: "Milonga", singer: "Echagüe", era: "1938–39", songs: [
+    { title: "De Antaño", date: "9/27/39" }, { title: "Milonga del Recuerdo", date: "7/17/39" }, { title: "Milonga del Corazón", date: "5/6/38" }, { title: "El Temblor", date: "6/8/38" }, { title: "La Cicatriz", date: "10/31/39" }
+  ]},
+  { group: 3, artist: "Pedro Laurenz", genre: "Milonga", singer: "Various", era: "1938–44", songs: [
+    { title: "Milonga Compadre", date: "5/12/38" }, { title: "La Vida es una Milonga", date: "9/5/41" }, { title: "Maldonado", date: "12/9/43" }, { title: "Yo Soy de San Telmo", date: "11/16/43" }, { title: "Milonga De Mis Amores", date: "1/14/44" }
+  ]},
+  { group: 4, artist: "Pedro Laurenz", genre: "Tango", singer: "Casas/Farrel", era: "1937–40", songs: [
+    { title: "Abandono", date: "9/24/37" }, { title: "Amurado", date: "7/29/40" }, { title: "Arrabal", date: "9/24/37" }, { title: "De Puro Guapo", date: "1/25/40" }, { title: "Desconsuelo", date: "2/21/40" }, { title: "No Me Extraña", date: "1/25/40" }, { title: "Vieja Amiga", date: "5/12/38" }
+  ]},
+  { group: 5, artist: "Pedro Laurenz", genre: "Tango", singer: "Podestá", era: "1943–44", songs: [
+    { title: "Alma de Bohemio", date: "7/15/43" }, { title: "Garúa", date: "8/6/43" }, { title: "Que Nunca me Falte", date: "9/22/43" }, { title: "Recién", date: "9/22/43" }, { title: "Todo", date: "12/9/43" }, { title: "Como El Hornero", date: "1/14/44" }, { title: "Muchachos Mi Último Tango", date: "3/1/44" }, { title: "Yo Quiero Cantar Un Tango", date: "11/16/43" }
+  ]},
+  { group: 6, artist: "Rodolfo Biagi", genre: "Tango", singer: "Instrumental", era: "1938–42", songs: [
+    { title: "El 13", date: "11/15/38" }, { title: "Unión Cívica", date: "10/17/38" }, { title: "El Yaguarón", date: "6/19/40" }, { title: "Re Fa Si", date: "12/26/40" }, { title: "Bélgica", date: "1/20/42" }, { title: "El Incendio", date: "8/15/38" }, { title: "El Rápido", date: "9/18/39" }, { title: "El Entrerriano", date: "1/14/41" }
+  ]},
+  { group: 7, artist: "Rodolfo Biagi", genre: "Vals", singer: "Various", era: "1938–41", songs: [
+    { title: "Dichas Que Viví", date: "7/13/39" }, { title: "Déjame Amarte Aunque Sea Un Día", date: "9/22/39" }, { title: "Viejo Portón", date: "10/17/38" }, { title: "Lágrimas Y Sonrisas", date: "3/26/41" }, { title: "Cuatro Palabras", date: "7/29/41" }, { title: "Por Un Beso De Amor", date: "10/4/40" }, { title: "Lejos de Ti", date: "12/2/38" }, { title: "Loca De Amor", date: "11/15/38" }
+  ]},
+  { group: 8, artist: "Alfredo De Angelis", genre: "Vals", singer: "Dante/Martel", era: "1944–49", songs: [
+    { title: "Soñar y Nada Más", date: "8/29/44" }, { title: "Mi Novia de Ayer", date: "4/28/44" }, { title: "Para Ti Madre", date: "7/23/48" }, { title: "A Magaldi", date: "10/21/47" }, { title: "Mi Cariñito", date: "5/12/49" }, { title: "Flores de Alma", date: "7/3/47" }, { title: "Pobre Flor", date: "1/7/46" }, { title: "Ilusión Azul", date: "6/8/45" }
+  ]},
+  { group: 9, artist: "Miguel Caló", genre: "Tango", singer: "Berón", era: "1942–44", songs: [
+    { title: "Al Compás Del Corazón", date: "4/29/42" }, { title: "Cuatro Compases", date: "12/1/42" }, { title: "Tristezas De La Calle Corrientes", date: "9/2/42" }, { title: "Qué Te Importa Que Te Llore", date: "6/30/42" }, { title: "Tarareando", date: "7/29/42" }, { title: "Jamás Retornarás", date: "10/9/42" }, { title: "Lejos de Buenos Aires", date: "7/29/42" }, { title: "En Tus Ojos de Cielo", date: "7/10/44" }
+  ]},
+  { group: 10, artist: "Miguel Caló", genre: "Tango", singer: "Iriarte", era: "1943–45", songs: [
+    { title: "Es En Vano Llorar", date: "5/17/43" }, { title: "Si Yo Pudiera Comprender", date: "1/28/44" }, { title: "Gime El Viento", date: "11/29/43" }, { title: "Verdemar", date: "9/28/43" }, { title: "Madalit", date: "11/7/44" }, { title: "Lluvia De Abril", date: "2/20/45" }, { title: "Nada", date: "3/9/44" }, { title: "La Vi Llegar", date: "4/19/44" }
+  ]},
+  { group: 11, artist: "Miguel Caló", genre: "Vals", singer: "Various", era: "1941–45", songs: [
+    { title: "Me Duele El Corazón", date: "11/7/44" }, { title: "Pedacito De Cielo", date: "9/2/42" }, { title: "Bajo Un Cielo De Estrellas", date: "3/12/41" }, { title: "El Vals Soñador", date: "4/29/42" }, { title: "Jugando Jugando", date: "8/28/44" }, { title: "El Mismo Dolor", date: "11/15/45" }
+  ]},
+  { group: 12, artist: "Ricardo Tanturi", genre: "Tango", singer: "Castillo", era: "1941–43", songs: [
+    { title: "La Vida Es Corta", date: "2/19/41" }, { title: "Esta Noche Me Emborracho", date: "8/14/42" }, { title: "Madame Ivonne", date: "3/18/42" }, { title: "Recuerdo Malevo", date: "12/23/41" }, { title: "Así Se Baila El Tango", date: "12/4/42" }, { title: "Noches De Colón", date: "8/14/41" }, { title: "Ese Sos Vos", date: "12/23/41" }, { title: "La Copa Del Olvido", date: "7/20/42" }, { title: "El Tango Es El Tango", date: "8/14/42" }, { title: "La Última Copa", date: "4/29/43" }, { title: "Pocas Palabras", date: "6/16/41" }, { title: "Cómo Se Pianta La Vida", date: "9/15/42" }
+  ]},
+  { group: 13, artist: "Edgardo Donato", genre: "Tango", singer: "Various", era: "1938–40", songs: [
+    { title: "La Melodía Del Corazón", date: "4/30/40" }, { title: "Mi Serenata", date: "1/11/40" }, { title: "Carnaval de mi Barrio", date: "3/27/39" }, { title: "Sinfonía De Arrabal", date: "4/5/40" }, { title: "Sinsabor", date: "6/5/39" }, { title: "Yo Te Amo", date: "9/30/40" }, { title: "Alas Rotas", date: "12/9/38" }, { title: "El Adiós", date: "4/2/38" }
+  ]},
+  { group: 14, artist: "Edgardo Donato", genre: "Milonga", singer: "Various", era: "1938–41", songs: [
+    { title: "Ella Es Así", date: "10/10/38" }, { title: "Sacale Punta", date: "3/9/38" }, { title: "La Milonga Que Faltaba", date: "2/5/38" }, { title: "El Torito", date: "11/14/39" }, { title: "El Lengue", date: "12/13/40" }, { title: "Repique Del Corazón", date: "2/18/41" }
+  ]},
+  { group: 15, artist: "Edgardo Donato", genre: "Vals", singer: "Various", era: "1936–41", songs: [
+    { title: "La Tapera", date: "3/10/36" }, { title: "Con Tus Besos", date: "4/2/38" }, { title: "Quién Será", date: "10/13/41" }, { title: "Estrellita Mía", date: "9/30/40" }, { title: "La Shunca", date: "1/21/41" }
+  ]},
+  { group: 16, artist: "Carlos Di Sarli", genre: "Milonga", singer: "Rufino", era: "1941–43", songs: [
+    { title: "Zorzal", date: "12/3/41" }, { title: "La Mulateada", date: "11/20/41" }, { title: "Pena Mulata", date: "2/18/41" }, { title: "Rosa Morena", date: "5/26/42" }, { title: "Cuando Un Viejo Se Enamora", date: "7/29/42" }, { title: "Yo Soy De San Telmo", date: "10/7/43" }
+  ]},
+  { group: 17, artist: "Francisco Canaro", genre: "Milonga", singer: "Various", era: "1936–38", songs: [
+    { title: "Silueta Porteña", date: "7/17/36" }, { title: "Milonga Criolla", date: "10/6/36" }, { title: "Milonga de Mis Amores", date: "5/26/37" }, { title: "Reliquias Porteñas", date: "7/14/38" }, { title: "Milonga del Corazón", date: "3/3/38" }, { title: "Milongón", date: "6/20/38" }
+  ]},
+  { group: 18, artist: "Francisco Canaro", genre: "Tango", singer: "Fama", era: "1939–40", songs: [
+    { title: "Mala Suerte", date: "2/27/39" }, { title: "Tormenta", date: "3/28/39" }, { title: "El Vino Triste", date: "10/25/39" }, { title: "Todo te Nombra", date: "10/9/39" }, { title: "No me Pregunten Por Qué", date: "10/25/39" }, { title: "A Quién le Puede Importar", date: "1/26/40" }, { title: "Pájaro Ciego", date: "5/22/40" }
+  ]},
+  { group: 19, artist: "Osvaldo Fresedo", genre: "Tango", singer: "Ray", era: "1933–38", songs: [
+    { title: "Vida Mía", date: "9/13/33" }, { title: "Siempre es Carnaval", date: "2/22/37" }, { title: "Sueño Azul", date: "4/1/37" }, { title: "Telón", date: "11/23/38" }, { title: "Cordobesita", date: "8/2/33" }, { title: "Sollozos", date: "2/22/37" }, { title: "En La Huella Del Dolor", date: "4/27/34" }, { title: "Canto De Amor", date: "6/18/34" }
+  ]},
+  { group: 20, artist: "Osvaldo Fresedo", genre: "Tango", singer: "Ruiz", era: "1939–41", songs: [
+    { title: "Un Amor", date: "9/13/40" }, { title: "No Preciso", date: "11/17/41" }, { title: "Vida Querida", date: "11/23/39" }, { title: "Buscándote", date: "12/31/41" }, { title: "Cuartito Azul", date: "10/13/39" }, { title: "Más Allá", date: "7/12/39" }, { title: "En Este Rincón Amigo", date: "1/13/41" }, { title: "Rosarina Linda", date: "4/15/40" }
+  ]},
+];
+
+function groupLabel(g: any): string {
+  const genre = g.genre ? ` (${g.genre})` : ' (Tango)';
+  return `${g.artist} — ${g.singer} ${g.era}${genre}`;
+}
+---
+
+<BaseLayout title="Starting Set Lists" description="Curated tango DJ set lists for beginners. Download and browse organized tandas from the golden age.">
+  <section class="page-hero">
+    <div class="container">
+      <a href="/dj/getting-started/" class="back-link">&larr; Back to Getting Started</a>
+      <h1>Starting Set Lists</h1>
+      <p class="lead">Curated songs organized into groups for building tandas. Download the spreadsheets or browse below.</p>
+    </div>
+  </section>
+
+  <section class="downloads">
+    <div class="container narrow">
+      <div class="download-cards">
+        <a href="/downloads/DJ Training Set List I.xlsx" download class="download-card">
+          <span class="download-icon">&#128196;</span>
+          <div>
+            <strong>Set List I &mdash; The Big Four</strong>
+            <span>D'Arienzo, Di Sarli, Troilo, Pugliese (.xlsx)</span>
+          </div>
+          <span class="download-btn">Download</span>
+        </a>
+        <a href="/downloads/DJ Training Set List II.xlsx" download class="download-card">
+          <span class="download-icon">&#128196;</span>
+          <div>
+            <strong>Set List II &mdash; Expanded</strong>
+            <span>Laurenz, Biagi, De Angelis, Cal&oacute;, Tanturi, Donato, Canaro, Fresedo (.xlsx)</span>
+          </div>
+          <span class="download-btn">Download</span>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <section class="set-tables">
+    <div class="container narrow">
+      <h2>Set List I &mdash; The Big Four</h2>
+      <p>Tangos from D'Arienzo, Di Sarli, Troilo, and Pugliese. Each group contains songs from the same orchestra, singer, and era &mdash; build 1&ndash;2 tandas from each.</p>
+
+      {setI.map((g) => (
+        <details class="group-details" open>
+          <summary>
+            <span class="group-num">Group {g.group}</span>
+            <span class="group-label">{groupLabel(g)}</span>
+          </summary>
+          <div class="table-scroll">
+            <table>
+              <thead><tr><th>Title</th><th>Date</th></tr></thead>
+              <tbody>
+                {g.songs.map((s) => (
+                  <tr><td>{s.title}</td><td>{s.date}</td></tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </details>
+      ))}
+
+      <h2 style="margin-top: 3rem;">Set List II &mdash; Expanded Orchestras</h2>
+      <p>Additional orchestras plus Valses and Milongas.</p>
+
+      {setII.map((g) => (
+        <details class="group-details">
+          <summary>
+            <span class="group-num">Group {g.group}</span>
+            <span class="group-label">{groupLabel(g)}</span>
+          </summary>
+          <div class="table-scroll">
+            <table>
+              <thead><tr><th>Title</th><th>Date</th></tr></thead>
+              <tbody>
+                {g.songs.map((s) => (
+                  <tr><td>{s.title}</td><td>{s.date}</td></tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </details>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-hero {
+    padding: 3rem 0;
+    background: linear-gradient(135deg, var(--color-orange-50) 0%, white 100%);
+    border-bottom: 1px solid var(--color-orange-100);
+  }
+
+  .back-link { display: inline-block; margin-bottom: 1rem; font-size: 0.9rem; color: var(--color-slate-600); }
+  .back-link:hover { color: var(--color-primary); }
+  .page-hero h1 { margin: 0 0 0.5rem; }
+  .lead { font-size: 1.2rem; color: var(--color-slate-600); margin: 0; }
+
+  .downloads { padding: 2rem 0; }
+
+  .download-cards {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1rem;
+  }
+
+  .download-card {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    background: white;
+    border: 2px solid var(--color-orange-300);
+    border-radius: var(--radius-lg);
+    text-decoration: none;
+    color: inherit;
+    transition: all 0.2s;
+  }
+
+  .download-card:hover {
+    border-color: var(--color-orange-500);
+    box-shadow: var(--shadow-md);
+  }
+
+  .download-icon { font-size: 1.5rem; }
+
+  .download-card div {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .download-card strong { font-size: 0.95rem; }
+
+  .download-card span:not(.download-icon):not(.download-btn) {
+    font-size: 0.8rem;
+    color: var(--color-slate-500);
+  }
+
+  .download-btn {
+    padding: 0.4rem 0.75rem;
+    background: var(--color-primary);
+    color: white !important;
+    border-radius: var(--radius-md);
+    font-weight: 500;
+    font-size: 0.85rem !important;
+    white-space: nowrap;
+  }
+
+  .set-tables { padding: 0 0 3rem; }
+
+  .narrow { max-width: 50rem; margin: 0 auto; padding: 0 1.5rem; }
+
+  .set-tables h2 { margin: 0 0 0.5rem; }
+  .set-tables > .container > p { color: var(--color-slate-600); margin: 0 0 1.5rem; }
+
+  .group-details {
+    margin-bottom: 0.5rem;
+    border: 1px solid var(--color-slate-200);
+    border-radius: var(--radius-md);
+    overflow: hidden;
+  }
+
+  .group-details[open] { border-color: var(--color-orange-300); }
+
+  .group-details summary {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    background: var(--color-slate-50);
+    font-size: 0.95rem;
+    list-style: none;
+  }
+
+  .group-details summary::-webkit-details-marker { display: none; }
+  .group-details summary::before { content: "▸"; font-size: 0.8rem; color: var(--color-slate-400); }
+  .group-details[open] summary::before { content: "▾"; }
+
+  .group-num {
+    font-weight: 600;
+    color: var(--color-orange-600);
+    white-space: nowrap;
+  }
+
+  .group-label { color: var(--color-slate-700); }
+
+  .table-scroll { overflow-x: auto; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 0.9rem; }
+  thead { background: var(--color-orange-50); }
+  th, td { padding: 0.4rem 0.75rem; border: 1px solid var(--color-slate-200); text-align: left; }
+  th { font-weight: 600; }
+
+  .container { max-width: var(--container-max); margin: 0 auto; padding: 0 1.5rem; }
+</style>

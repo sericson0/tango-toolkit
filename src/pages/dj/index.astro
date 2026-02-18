@@ -15,19 +15,30 @@ import { getCollection } from 'astro:content';
     <div class="container">
       <div class="dj-grid">
         <div class="dj-main">
-          <h2>Free Courses & Lessons</h2>
-          <p>Our beginner series walks you through the fundamentals of tango DJing. Each course contains multiple lessons with videos, text, and practical exercises.</p>
-          <a href="/dj/courses/" class="btn btn-primary btn-lg">Browse All Courses →</a>
+          <div class="start-here-banner">
+            <h2>New to Tango DJing?</h2>
+            <p>Our step-by-step getting started guide will walk you through setting up your software, understanding tango music, and building your first tandas.</p>
+            <a href="/dj/getting-started/" class="btn btn-primary btn-lg">Getting Started Guide →</a>
+          </div>
+
+          <h2 style="margin-top: 3rem;">Courses & Lessons</h2>
+          <p>Dive deeper into the fundamentals of tango DJing with structured courses containing videos, text, and practical exercises.</p>
+          <a href="/dj/courses/" class="btn btn-primary">Browse All Courses →</a>
 
           <h2 style="margin-top: 3rem;">Articles</h2>
-          <div class="article-card">
-            <h3><a href="/dj/history-of-tango-music/">The History of Tango Music</a></h3>
-            <p>How many tango recordings are there? A deep dive into the history of tango music, the recording industry, and Argentina — from the first tango recording in 1905 to the modern restoration movement.</p>
-            <a href="/dj/history-of-tango-music/" class="btn btn-primary">Read Article →</a>
-          </div>
+          <a href="/dj/history-of-tango-music/" class="article-card">
+            <img src="/articles/history-of-tango-music/Orquestras-and-Recordings-per-year-1024x614.png" alt="Tango orchestras and recordings by year" class="article-card-img" />
+            <div class="article-card-body">
+              <h3>The History of Tango Music</h3>
+              <p>How many tango recordings are there? A deep dive into the history of tango music, the recording industry, and Argentina — from the first tango recording in 1905 to the modern restoration movement.</p>
+              <span class="btn btn-primary">Read Article →</span>
+            </div>
+          </a>
 
           <h2 style="margin-top: 3rem;">Quick Links</h2>
           <ul class="resource-links">
+            <li><a href="/dj/getting-started/">Getting Started Guide</a></li>
+            <li><a href="/dj/getting-started/set-lists/">Starting Set Lists</a></li>
             <li><a href="/dj/courses/">Beginner DJ Course Series</a></li>
             <li><a href="/dj/materials/">DJ Materials & References</a></li>
             <li><a href="/dj/paid/">Apps & Premium Resources</a></li>
@@ -35,10 +46,15 @@ import { getCollection } from 'astro:content';
           </ul>
         </div>
         <aside class="dj-sidebar">
-          <div class="sidebar-card">
+          <div class="sidebar-card highlight">
             <h3>Start Here</h3>
-            <p>New to tango DJing? Start with our free beginner course.</p>
-            <a href="/dj/courses/beginner-tango-dj/" class="btn btn-primary">Start Course</a>
+            <p>New to tango DJing? Our complete guide has everything you need.</p>
+            <a href="/dj/getting-started/" class="btn btn-primary">Get Started →</a>
+          </div>
+          <div class="sidebar-card">
+            <h3>Set Lists</h3>
+            <p>Download curated starting sets with 250+ songs organized into tandas.</p>
+            <a href="/dj/getting-started/set-lists/" class="btn btn-secondary">View Set Lists</a>
           </div>
           <div class="sidebar-card">
             <h3>Premium Resources</h3>
@@ -89,17 +105,58 @@ import { getCollection } from 'astro:content';
     margin: 0 0 1rem;
   }
 
+  .start-here-banner {
+    background: linear-gradient(135deg, var(--color-orange-50) 0%, white 100%);
+    border: 2px solid var(--color-orange-400);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+  }
+
+  .start-here-banner h2 { margin: 0 0 0.5rem; }
+
+  .start-here-banner p {
+    color: var(--color-slate-600);
+    margin: 0 0 1.25rem;
+    max-width: 50ch;
+  }
+
+  .sidebar-card.highlight {
+    border-color: var(--color-orange-400);
+    background: var(--color-orange-50);
+  }
+
   .btn-lg {
     padding: 0.75rem 1.5rem;
     font-size: 1rem;
   }
 
   .article-card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
     background: white;
     border: 2px solid var(--color-orange-300);
     border-radius: var(--radius-lg);
-    padding: 1.5rem;
+    overflow: hidden;
     margin-bottom: 1.5rem;
+    transition: all 0.2s;
+  }
+
+  .article-card:hover {
+    border-color: var(--color-orange-500);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+
+  .article-card-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-bottom: 1px solid var(--color-slate-200);
+  }
+
+  .article-card-body {
+    padding: 1.5rem;
   }
 
   .article-card h3 {
