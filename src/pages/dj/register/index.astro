@@ -2,19 +2,19 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 ---
 
-<BaseLayout title="Register for DJ Resources" description="Sign up to access curated tango DJ resources, set lists, and updates on new materials.">
+<BaseLayout title="Register for Tango Toolkit" description="Sign up to access tango resources for dancers, DJs, and organizers. Stay updated on new materials and tools.">
   <section class="page-hero">
     <div class="container">
-      <a href="/dj/getting-started/" class="back-link">&larr; Back to Getting Started</a>
-      <h1>Register for DJ Resources</h1>
-      <p class="lead">Sign up so we can keep you in the loop on new resources, set lists, and tools for tango DJs.</p>
+      <a href="/" class="back-link">&larr; Back to Home</a>
+      <h1>Register for Tango Toolkit</h1>
+      <p class="lead">Sign up so we can keep you in the loop on new resources, courses, and tools for the tango community.</p>
     </div>
   </section>
 
   <section class="form-section">
     <div class="container narrow">
-      <form name="dj-registration" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/dj/register/success/">
-        <input type="hidden" name="form-name" value="dj-registration" />
+      <form name="tango-registration" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/dj/register/success/">
+        <input type="hidden" name="form-name" value="tango-registration" />
         <p class="hidden-field"><label>Don't fill this out: <input name="bot-field" /></label></p>
 
         <div class="form-group">
@@ -28,17 +28,50 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
         </div>
 
         <div class="form-group">
-          <label for="city">City / Community</label>
-          <input type="text" id="city" name="city" placeholder="e.g. Buenos Aires, Portland, Berlin" />
+          <label for="location">Country / State</label>
+          <input type="text" id="location" name="location" placeholder="e.g. Argentina, California, Germany" />
         </div>
 
         <div class="form-group">
-          <label for="experience">DJ Experience</label>
-          <select id="experience" name="experience">
+          <label for="focus">Primary Interest <span class="required">*</span></label>
+          <select id="focus" name="focus" required>
+            <option value="">Select one...</option>
+            <option value="dance">Dance</option>
+            <option value="dj">DJ</option>
+            <option value="organizer">Organizer</option>
+            <option value="everything">Everything</option>
+          </select>
+        </div>
+
+        <div id="experience-dance" class="form-group experience-field" style="display:none;">
+          <label for="dance-experience">Dance Experience</label>
+          <select id="dance-experience" name="dance-experience">
+            <option value="">Select one...</option>
+            <option value="brand-new">Brand new &mdash; just starting out</option>
+            <option value="beginner">Beginner &mdash; been dancing a few months</option>
+            <option value="intermediate">Intermediate &mdash; dance regularly</option>
+            <option value="advanced">Advanced &mdash; been dancing for years</option>
+          </select>
+        </div>
+
+        <div id="experience-dj" class="form-group experience-field" style="display:none;">
+          <label for="dj-experience">DJ Experience</label>
+          <select id="dj-experience" name="dj-experience">
             <option value="">Select one...</option>
             <option value="brand-new">Brand new &mdash; haven't DJ'd yet</option>
             <option value="beginner">Beginner &mdash; DJ'd a few times</option>
             <option value="intermediate">Intermediate &mdash; DJ regularly</option>
+            <option value="experienced">Experienced &mdash; looking for new resources</option>
+          </select>
+        </div>
+
+        <div id="experience-organizer" class="form-group experience-field" style="display:none;">
+          <label for="organizer-experience">Organizer Experience</label>
+          <select id="organizer-experience" name="organizer-experience">
+            <option value="">Select one...</option>
+            <option value="brand-new">Brand new &mdash; haven't organized yet</option>
+            <option value="beginner">Beginner &mdash; organized a few events</option>
+            <option value="intermediate">Intermediate &mdash; organize regularly</option>
             <option value="experienced">Experienced &mdash; looking for new resources</option>
           </select>
         </div>
@@ -53,6 +86,23 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
     </div>
   </section>
 </BaseLayout>
+
+<script>
+  const focusSelect = document.getElementById('focus') as HTMLSelectElement;
+  const danceExp = document.getElementById('experience-dance')!;
+  const djExp = document.getElementById('experience-dj')!;
+  const orgExp = document.getElementById('experience-organizer')!;
+
+  function updateExperienceFields() {
+    const val = focusSelect.value;
+    danceExp.style.display = (val === 'dance' || val === 'everything') ? '' : 'none';
+    djExp.style.display = (val === 'dj' || val === 'everything') ? '' : 'none';
+    orgExp.style.display = (val === 'organizer' || val === 'everything') ? '' : 'none';
+  }
+
+  focusSelect.addEventListener('change', updateExperienceFields);
+  updateExperienceFields();
+</script>
 
 <style>
   .page-hero {
