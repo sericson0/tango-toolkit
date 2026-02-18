@@ -1,24 +1,24 @@
-import { defineCollection } from 'astro:content';
+import { defineCollection, z } from 'astro:content';
 
 const djCourses = defineCollection({
   type: 'content',
-  schema: {
-    title: { type: 'string', required: true },
-    description: { type: 'string', required: true },
-    order: { type: 'number', required: true },
-    published: { type: 'boolean', default: true },
-  },
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    order: z.number(),
+    published: z.boolean().default(true),
+  }),
 });
 
 const djLessons = defineCollection({
   type: 'content',
-  schema: {
-    title: { type: 'string', required: true },
-    description: { type: 'string', required: true },
-    course: { type: 'string', required: true },
-    order: { type: 'number', required: true },
-    published: { type: 'boolean', default: true },
-  },
+  schema: z.object({
+    title: z.string(),
+    description: z.string(),
+    course: z.string(),
+    order: z.number(),
+    published: z.boolean().default(true),
+  }),
 });
 
 export const collections = {
