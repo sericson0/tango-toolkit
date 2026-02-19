@@ -1,0 +1,2 @@
+public/downloads/*.pkg filter=lfs diff=lfs merge=lfs -text
+public/downloads/*.msi filter=lfs diff=lfs merge=lfs -text
