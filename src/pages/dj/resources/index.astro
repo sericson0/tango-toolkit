@@ -1,0 +1,308 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Resources — Tango DJ" description="Discographies, articles, and guides for tango DJs. Deepen your knowledge of tango music and DJing.">
+  <section class="page-hero">
+    <div class="container">
+      <a href="/dj/" class="back-link">&larr; Back to DJ Resources</a>
+      <h1>Resources</h1>
+      <p class="lead">Discographies, articles, and guides to deepen your tango DJ knowledge.</p>
+    </div>
+  </section>
+
+  <section class="resources-section">
+    <div class="container">
+
+      <!-- Articles -->
+      <h2>Articles</h2>
+      <div class="articles-grid">
+        <a href="/dj/history-of-tango-music/" class="article-card">
+          <img src="/articles/history-of-tango-music/Orquestras-and-Recordings-per-year-1024x614.png" alt="Tango orchestras and recordings by year" class="article-card-img" />
+          <div class="article-card-body">
+            <h3>The History of Tango Music</h3>
+            <p>How many tango recordings are there? A deep dive into the history of tango music, the recording industry, and Argentina — from the first tango recording in 1905 to the modern restoration movement.</p>
+            <span class="card-cta">Read Article →</span>
+          </div>
+        </a>
+      </div>
+
+      <!-- Courses & Lessons -->
+      <h2 style="margin-top: 3rem;">Courses & Lessons</h2>
+      <p class="section-desc">Structured courses with videos, text, and practical exercises.</p>
+      <a href="/dj/courses/" class="btn btn-primary">Browse All Courses →</a>
+
+      <!-- Materials & References -->
+      <h2 style="margin-top: 3rem;">Materials & References</h2>
+      <div class="materials-grid">
+        <article class="material-card">
+          <h3>Orchestra Era Reference</h3>
+          <p>Quick guide to major tango orchestras and their eras. Golden age, guardia nueva, and more.</p>
+          <a href="/dj/materials/" class="material-link">View reference →</a>
+        </article>
+        <article class="material-card">
+          <h3>Tanda Building Cheat Sheet</h3>
+          <p>Rules of thumb for building tandas by energy, key, and era.</p>
+          <a href="/dj/materials/" class="material-link">View cheat sheet →</a>
+        </article>
+        <article class="material-card">
+          <h3>Milonga Flow Template</h3>
+          <p>Sample structure for a 3-hour milonga. Adapt to your needs.</p>
+          <a href="/dj/materials/" class="material-link">View template →</a>
+        </article>
+      </div>
+
+      <!-- Discographies & External Links -->
+      <h2 style="margin-top: 3rem;">Discographies & External Resources</h2>
+      <ul class="resource-links">
+        <li><a href="https://www.notasdeoro.com/">Notas De Oro</a> — Information about tango songs and curated discographies</li>
+        <li><a href="https://www.el-recodo.com/">El Recodo</a> — A large discography of tango music information</li>
+        <li><a href="https://tangosparks.com/">Tango Sparks</a> — Discology tab with artist discographies and orchestra information</li>
+        <li><a href="https://www.tango-dj.at/">Tango-DJ.at</a> — A great resource for tango DJs</li>
+        <li><a href="https://tangodjsforgoodsound.info/technology/">Tango DJs for Good Sound</a> — Software and hardware tango DJs are using</li>
+        <li><a href="https://docs.google.com/spreadsheets/d/1i2q6Jrqo8-04sIqrWPmGHNL_RkgxUDh0os4KhIVR5_Y/edit">DJ Michael Plaks' 500 Tango Songs</a> — 500 tango songs that work well in the milonga</li>
+        <li><a href="https://www.milongapress.com/">Michael Lavocah's books</a> — Invaluable resources for tango DJs</li>
+      </ul>
+
+      <!-- Guides -->
+      <h2 style="margin-top: 3rem;">Guides</h2>
+      <div class="guides-grid">
+        <a href="/dj/starter-kit/" class="guide-card">
+          <h3>Getting Started Guide</h3>
+          <p>Complete walkthrough for new tango DJs. Software setup, music quality, library organization, and building tandas.</p>
+          <span class="card-cta">Read Guide →</span>
+        </a>
+        <a href="/dj/software-setup/" class="guide-card">
+          <h3>DJ Software Setup</h3>
+          <p>Step-by-step installation guide for Virtual DJ and TigerTango.</p>
+          <span class="card-cta">Read Guide →</span>
+        </a>
+        <a href="/dj/getting-started/set-lists/" class="guide-card">
+          <h3>Starting Set Lists</h3>
+          <p>Curated starting sets with 250+ songs organized into tandas.</p>
+          <span class="card-cta">View Set Lists →</span>
+        </a>
+      </div>
+
+      <p class="resources-note">
+        More resources coming soon. Have a suggestion? <a href="mailto:sericson0@gmail.com">Get in touch</a>.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .page-hero {
+    padding: 3rem 0;
+    background: linear-gradient(135deg, var(--color-orange-50) 0%, white 100%);
+    border-bottom: 1px solid var(--color-orange-100);
+  }
+
+  .back-link {
+    display: inline-block;
+    margin-bottom: 1rem;
+    font-size: 0.9rem;
+    color: var(--color-slate-600);
+  }
+
+  .back-link:hover { color: var(--color-primary); }
+  .page-hero h1 { margin: 0 0 0.5rem; }
+
+  .lead {
+    font-size: 1.2rem;
+    color: var(--color-slate-600);
+    margin: 0;
+  }
+
+  .resources-section {
+    padding: 3rem 0 4rem;
+  }
+
+  .resources-section h2 {
+    margin: 0 0 1rem;
+  }
+
+  .section-desc {
+    color: var(--color-slate-600);
+    margin: 0 0 1rem;
+    font-size: 0.95rem;
+  }
+
+  /* Article cards */
+  .articles-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+
+  .article-card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    background: white;
+    border: 2px solid var(--color-orange-300);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: all 0.2s;
+  }
+
+  .article-card:hover {
+    border-color: var(--color-orange-500);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+
+  .article-card-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-bottom: 1px solid var(--color-slate-200);
+  }
+
+  .article-card-body {
+    padding: 1.5rem;
+  }
+
+  .article-card h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1.15rem;
+  }
+
+  .article-card p {
+    margin: 0 0 1rem;
+    color: var(--color-slate-600);
+    font-size: 0.95rem;
+  }
+
+  .card-cta {
+    font-weight: 600;
+    color: var(--color-primary);
+    font-size: 0.95rem;
+  }
+
+  /* Materials grid */
+  .materials-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .material-card {
+    background: white;
+    border: 1px solid var(--color-slate-200);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    transition: all 0.2s;
+  }
+
+  .material-card:hover {
+    border-color: var(--color-orange-400);
+    box-shadow: var(--shadow-md);
+  }
+
+  .material-card h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1.1rem;
+  }
+
+  .material-card p {
+    margin: 0 0 1rem;
+    color: var(--color-slate-600);
+    font-size: 0.95rem;
+  }
+
+  .material-link {
+    font-weight: 500;
+    color: var(--color-primary);
+  }
+
+  .material-link:hover {
+    color: var(--color-primary-hover);
+  }
+
+  /* Resource links */
+  .resource-links {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .resource-links li {
+    margin-bottom: 0.75rem;
+    padding-left: 1.25rem;
+    position: relative;
+  }
+
+  .resource-links li::before {
+    content: "→";
+    position: absolute;
+    left: 0;
+    color: var(--color-orange-500);
+  }
+
+  /* Guides grid */
+  .guides-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .guide-card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    background: white;
+    border: 1px solid var(--color-slate-200);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    transition: all 0.2s;
+  }
+
+  .guide-card:hover {
+    border-color: var(--color-orange-400);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+
+  .guide-card h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1.1rem;
+  }
+
+  .guide-card p {
+    margin: 0 0 1rem;
+    color: var(--color-slate-600);
+    font-size: 0.95rem;
+  }
+
+  .resources-note {
+    margin-top: 3rem;
+    font-size: 0.9rem;
+    color: var(--color-slate-500);
+    text-align: center;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-md);
+    font-weight: 500;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .btn-primary {
+    background: var(--color-primary);
+    color: white;
+  }
+
+  .btn-primary:hover {
+    background: var(--color-primary-hover);
+    color: white;
+  }
+
+  .container {
+    max-width: var(--container-max);
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+</style>
