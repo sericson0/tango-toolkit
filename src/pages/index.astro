@@ -1,57 +1,72 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import { products } from '../data/products';
 ---
 
 <BaseLayout title="Home" description="The Tango Toolkit - Tools and resources for tango DJs. Software, starter kits, and guides to elevate your tango DJing.">
   <section class="hero">
     <div class="container">
       <h1>Welcome to The Tango Toolkit</h1>
-      <p class="hero-subtitle">Tools and resources to elevate your tango DJing.</p>
+      <p class="hero-subtitle">The tools you need to elevate your tango.</p>
     </div>
   </section>
 
   <section class="cta-section">
     <div class="container">
-      <a href="/dj/" class="dj-cta-card">
-        <div class="dj-cta-icon">🎵</div>
-        <h2>DJ Resources</h2>
-        <p>Courses, lessons, software, and tools for tango DJs. Beginner to advanced.</p>
-        <span class="dj-cta-link">Explore DJ Resources &rarr;</span>
-      </a>
+      <div class="cta-grid">
+        <a href="/dj/starter-kit/" class="cta-card">
+          <div class="cta-icon">🚀</div>
+          <h2>DJ Starter Kit</h2>
+          <p>Everything you need to start tango DJing — software, music, and step-by-step guides.</p>
+          <span class="cta-link">Get Started &rarr;</span>
+        </a>
+        <a href="/dj/software/" class="cta-card">
+          <div class="cta-icon">💻</div>
+          <h2>DJ Tools</h2>
+          <p>Software and plugins built for tango DJs. Download free tools and pro-level utilities.</p>
+          <span class="cta-link">Browse Tools &rarr;</span>
+        </a>
+        <a href="/dj/resources/" class="cta-card">
+          <div class="cta-icon">📚</div>
+          <h2>Discographies</h2>
+          <p>Discographies, articles, and guides to deepen your knowledge of tango music.</p>
+          <span class="cta-link">Explore Discographies &rarr;</span>
+        </a>
+      </div>
     </div>
   </section>
 
-  <section class="toolkit-section">
+  <section class="tools-section">
     <div class="container">
-      <h2 class="section-heading">From the Toolkit</h2>
-      <div class="toolkit-grid">
-        <a href="/dj/starter-kit/" class="toolkit-card">
-          <div class="toolkit-icon">🚀</div>
-          <h3>DJ Starter Kit</h3>
-          <p>Everything you need to start tango DJing — software, music, and step-by-step guides.</p>
-          <span class="toolkit-link">Get Started &rarr;</span>
-        </a>
-        <a href="/dj/hisstory/" class="toolkit-card">
-          <div class="toolkit-badge">Audio Restoration</div>
-          <h3>Hisstory</h3>
-          <p class="toolkit-tagline">Keep the Music, Ditch the Noise</p>
-          <p>Remove hiss, clicks, and noise from vintage tango recordings while preserving the music.</p>
-          <span class="toolkit-link">Learn More &rarr;</span>
-        </a>
-        <a href="/dj/software/" class="toolkit-card">
-          <div class="toolkit-badge">Metadata</div>
-          <h3>TigerTag</h3>
-          <p class="toolkit-tagline">Tag Your Tango Tunes</p>
-          <p>Batch-tag your tango music library with orchestra, singer, year, genre, and more.</p>
-          <span class="toolkit-link">Learn More &rarr;</span>
-        </a>
-        <a href="/dj/software/" class="toolkit-card">
-          <div class="toolkit-badge">Tanda Builder</div>
-          <h3>TigerTanda</h3>
-          <p class="toolkit-tagline">Find the tracks for the perfect tanda</p>
-          <p>Intelligent tanda builder that suggests complementary tracks based on orchestra, era, and style.</p>
-          <span class="toolkit-link">Learn More &rarr;</span>
-        </a>
+      <hr class="section-divider" />
+      <h2 class="section-heading">DJ Tools</h2>
+      <div class="tools-list">
+        {products.map((product) => (
+          <article class="tool-row">
+            <div class="tool-info">
+              <h3>{product.name}</h3>
+              <p class="tool-tagline">{product.tagline}</p>
+              <p class="tool-desc">{product.description}</p>
+            </div>
+            <div class="tool-side">
+              {product.image && (
+                <div class="tool-image">
+                  <img src={product.image} alt={product.name} />
+                </div>
+              )}
+              <div class="tool-actions">
+                <a href={product.downloadLink} target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+                  {product.trial ? 'Download Trial' : 'Download Free'}
+                </a>
+                {product.trial && product.paymentLink && (
+                  <a href={product.paymentLink} target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+                    Purchase Key — {product.price}
+                  </a>
+                )}
+              </div>
+            </div>
+          </article>
+        ))}
       </div>
     </div>
   </section>
@@ -79,126 +94,197 @@ import BaseLayout from '../layouts/BaseLayout.astro';
     margin: 0;
   }
 
-  /* DJ Resources CTA */
+  /* CTA Cards */
   .cta-section {
     padding: 3rem 0;
   }
 
-  .dj-cta-card {
+  .cta-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.5rem;
+  }
+
+  @media (max-width: 768px) {
+    .cta-grid {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  .cta-card {
     display: block;
-    max-width: 36rem;
-    margin: 0 auto;
     background: linear-gradient(180deg, var(--color-orange-50) 0%, white 100%);
     border: 2px solid var(--color-orange-400);
     border-radius: var(--radius-lg);
-    padding: 2.5rem 2rem;
+    padding: 2rem;
     text-align: center;
     text-decoration: none;
     color: inherit;
     transition: all 0.2s;
   }
 
-  .dj-cta-card:hover {
+  .cta-card:hover {
     box-shadow: var(--shadow-lg);
     transform: translateY(-4px);
   }
 
-  .dj-cta-icon {
-    font-size: 3rem;
-    margin-bottom: 1rem;
-  }
-
-  .dj-cta-card h2 {
-    margin: 0 0 0.5rem;
-    font-size: 1.75rem;
-  }
-
-  .dj-cta-card p {
-    margin: 0 0 1.25rem;
-    color: var(--color-slate-600);
-    font-size: 1.05rem;
-  }
-
-  .dj-cta-link {
-    font-weight: 600;
-    color: var(--color-primary);
-    font-size: 1.1rem;
-  }
-
-  /* Toolkit Products */
-  .toolkit-section {
-    padding: 3rem 0 4rem;
-    background: var(--color-slate-50);
-    border-top: 1px solid var(--color-slate-200);
-  }
-
-  .section-heading {
-    text-align: center;
-    margin: 0 0 2rem;
-  }
-
-  .toolkit-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-    gap: 1.5rem;
-  }
-
-  .toolkit-card {
-    background: white;
-    border: 1px solid var(--color-slate-200);
-    border-radius: var(--radius-lg);
-    padding: 1.75rem;
-    transition: all 0.2s;
-    text-decoration: none;
-    color: inherit;
-    display: block;
-    position: relative;
-  }
-
-  .toolkit-card:hover {
-    border-color: var(--color-orange-400);
-    box-shadow: var(--shadow-md);
-    transform: translateY(-2px);
-  }
-
-  .toolkit-icon {
+  .cta-icon {
     font-size: 2.5rem;
     margin-bottom: 0.75rem;
   }
 
-  .toolkit-badge {
-    display: inline-block;
-    font-size: 0.75rem;
+  .cta-card h2 {
+    margin: 0 0 0.5rem;
+    font-size: 1.5rem;
+  }
+
+  .cta-card p {
+    margin: 0 0 1.25rem;
+    color: var(--color-slate-600);
+    font-size: 0.95rem;
+  }
+
+  .cta-link {
     font-weight: 600;
-    padding: 0.25rem 0.5rem;
-    border-radius: var(--radius-sm);
-    background: var(--color-orange-100);
-    color: var(--color-orange-800);
-    margin-bottom: 0.75rem;
+    color: var(--color-primary);
+    font-size: 1rem;
   }
 
-  .toolkit-card h3 {
+  /* DJ Tools Section */
+  .tools-section {
+    padding: 0 0 4rem;
+  }
+
+  .section-divider {
+    border: none;
+    border-top: 1px solid var(--color-slate-200);
+    margin: 0 0 2rem;
+  }
+
+  .section-heading {
+    margin: 0 0 2rem;
+  }
+
+  .tools-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+  }
+
+  .tool-row {
+    display: flex;
+    gap: 2rem;
+    background: white;
+    border: 1px solid var(--color-slate-200);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    transition: all 0.2s;
+  }
+
+  .tool-row:hover {
+    border-color: var(--color-orange-400);
+    box-shadow: var(--shadow-md);
+  }
+
+  .tool-info {
+    flex: 2;
+    min-width: 0;
+  }
+
+  .tool-info h3 {
     margin: 0 0 0.25rem;
-    font-size: 1.25rem;
+    font-size: 1.35rem;
   }
 
-  .toolkit-tagline {
+  .tool-tagline {
     font-style: italic;
     color: var(--color-orange-600);
     font-size: 0.9rem;
     margin: 0 0 0.75rem;
   }
 
-  .toolkit-card p {
-    margin: 0 0 1rem;
+  .tool-desc {
+    margin: 0;
     color: var(--color-slate-600);
-    font-size: 0.9rem;
+    font-size: 0.95rem;
+    line-height: 1.6;
   }
 
-  .toolkit-link {
-    font-weight: 600;
-    color: var(--color-primary);
+  .tool-side {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .tool-image {
+    width: 100%;
+    max-width: 240px;
+    border-radius: var(--radius-md);
+    overflow: hidden;
+    background: var(--color-slate-100);
+  }
+
+  .tool-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .tool-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+    max-width: 240px;
+  }
+
+  .btn {
+    display: inline-block;
+    padding: 0.5rem 1rem;
+    border-radius: var(--radius-md);
+    font-weight: 500;
     font-size: 0.9rem;
+    text-align: center;
+    text-decoration: none;
+    transition: background 0.2s, color 0.2s;
+  }
+
+  .btn-primary {
+    background: var(--color-primary);
+    color: white;
+  }
+
+  .btn-primary:hover {
+    background: var(--color-primary-hover);
+    color: white;
+  }
+
+  .btn-secondary {
+    background: var(--color-slate-100);
+    color: var(--color-slate-700);
+  }
+
+  .btn-secondary:hover {
+    background: var(--color-slate-200);
+    color: var(--color-slate-800);
+  }
+
+  @media (max-width: 768px) {
+    .tool-row {
+      flex-direction: column;
+    }
+
+    .tool-side {
+      align-items: flex-start;
+    }
+
+    .tool-image,
+    .tool-actions {
+      max-width: 100%;
+    }
   }
 
   .container {

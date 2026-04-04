@@ -1,84 +1,47 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { products } from '../../../data/products';
-
-const freeProducts = products.filter(p => p.free);
-const paidProducts = products.filter(p => !p.free);
 ---
 
-<BaseLayout title="Software — Tango DJ" description="The best software and plugins available for tango DJs. Free and premium tools for music management, audio restoration, and tanda building.">
+<BaseLayout title="DJ Tools" description="Software and plugins built for tango DJs. Download free tools and pro-level utilities for music management, audio restoration, and tanda building.">
   <section class="page-hero">
     <div class="container">
-      <a href="/dj/" class="back-link">&larr; Back to DJ Resources</a>
-      <h1>Software</h1>
-      <p class="lead">The best software and plugins available for tango DJs.</p>
+      <a href="/" class="back-link">&larr; Back to Home</a>
+      <h1>DJ Tools</h1>
+      <p class="lead">Software and plugins built for tango DJs.</p>
     </div>
   </section>
 
-  <section class="software-section">
+  <section class="tools-section">
     <div class="container">
-
-      <!-- Free Software -->
-      <h2 class="section-heading">Free Software</h2>
-      <div class="products-grid">
-        {freeProducts.map((product) => (
-          <article class="product-card product-card-free">
-            <div class="product-badge-free">Free</div>
-            {product.image && (
-              <div class="product-image">
-                <img src={product.image} alt={product.name} />
-              </div>
-            )}
-            <div class="product-content">
+      <div class="tools-list">
+        {products.map((product) => (
+          <article class="tool-row">
+            <div class="tool-info">
               <h3>{product.name}</h3>
-              <p class="product-tagline">{product.tagline}</p>
-              <p>{product.description}</p>
-              <div class="product-footer">
-                <a href={product.downloadLink} target="_blank" rel="noopener noreferrer" class="btn btn-primary">
-                  Download Free
-                </a>
-                <a href="/dj/software-setup/" class="btn btn-secondary">
-                  Setup Guide
-                </a>
-              </div>
+              <p class="tool-tagline">{product.tagline}</p>
+              <p class="tool-desc">{product.description}</p>
             </div>
-          </article>
-        ))}
-      </div>
-
-      <!-- Paid Software -->
-      <h2 class="section-heading" style="margin-top: 3rem;">Premium Software</h2>
-      <p class="section-desc">Professional tools to level up your tango DJ workflow. Purchase via Stripe, then receive your download link.</p>
-      <div class="products-grid">
-        {paidProducts.map((product) => (
-          <article class="product-card">
-            {product.image && (
-              <div class="product-image">
-                <img src={product.image} alt={product.name} />
-              </div>
-            )}
-            <div class="product-content">
-              <h3>{product.name}</h3>
-              <p class="product-tagline">{product.tagline}</p>
-              <p>{product.description}</p>
-              <div class="product-footer">
-                <span class="product-price">{product.price}</span>
-                {product.paymentLink && product.paymentLink !== 'https://buy.stripe.com/EXAMPLE' ? (
-                  <a href={product.paymentLink} target="_blank" rel="noopener noreferrer" class="btn btn-primary">
-                    Buy Now
+            <div class="tool-side">
+              {product.image && (
+                <div class="tool-image">
+                  <img src={product.image} alt={product.name} />
+                </div>
+              )}
+              <div class="tool-actions">
+                <a href={product.downloadLink} target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+                  {product.trial ? 'Download Trial' : 'Download Free'}
+                </a>
+                {product.trial && product.paymentLink && (
+                  <a href={product.paymentLink} target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
+                    Purchase Key — {product.price}
                   </a>
-                ) : (
-                  <span class="coming-soon-badge">Coming Soon</span>
                 )}
               </div>
             </div>
           </article>
         ))}
       </div>
-
-      <p class="checkout-note">
-        Paid products are processed securely via Stripe. After purchase, you'll receive a license key via email.
-      </p>
     </div>
   </section>
 </BaseLayout>
@@ -106,125 +69,84 @@ const paidProducts = products.filter(p => !p.free);
     margin: 0;
   }
 
-  .software-section {
+  .tools-section {
     padding: 3rem 0 4rem;
   }
 
-  .section-heading {
-    margin: 0 0 1rem;
+  .tools-list {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
   }
 
-  .section-desc {
-    color: var(--color-slate-600);
-    margin: 0 0 1.5rem;
-    font-size: 0.95rem;
-  }
-
-  .products-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 1.5rem;
-  }
-
-  .product-card {
+  .tool-row {
+    display: flex;
+    gap: 2rem;
     background: white;
     border: 1px solid var(--color-slate-200);
     border-radius: var(--radius-lg);
-    overflow: hidden;
+    padding: 1.5rem;
     transition: all 0.2s;
-    display: flex;
-    flex-direction: column;
-    position: relative;
   }
 
-  .product-card:hover {
+  .tool-row:hover {
     border-color: var(--color-orange-400);
     box-shadow: var(--shadow-md);
   }
 
-  .product-card-free {
-    border-color: var(--color-orange-300);
-    border-width: 2px;
+  .tool-info {
+    flex: 2;
+    min-width: 0;
   }
 
-  .product-badge-free {
-    position: absolute;
-    top: 1rem;
-    right: 1rem;
-    font-size: 0.75rem;
-    font-weight: 600;
-    padding: 0.25rem 0.5rem;
-    border-radius: var(--radius-sm);
-    background: var(--color-orange-100);
-    color: var(--color-orange-800);
-    z-index: 1;
-  }
-
-  .product-image {
-    aspect-ratio: 16/9;
-    background: var(--color-slate-100);
-    overflow: hidden;
-  }
-
-  .product-image img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-  }
-
-  .product-content {
-    padding: 1.5rem;
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-  }
-
-  .product-content h3 {
+  .tool-info h3 {
     margin: 0 0 0.25rem;
-    font-size: 1.25rem;
+    font-size: 1.35rem;
   }
 
-  .product-tagline {
+  .tool-tagline {
     font-style: italic;
     color: var(--color-orange-600);
     font-size: 0.9rem;
     margin: 0 0 0.75rem;
   }
 
-  .product-content p {
-    margin: 0 0 1rem;
+  .tool-desc {
+    margin: 0;
     color: var(--color-slate-600);
     font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .tool-side {
     flex: 1;
-  }
-
-  .product-footer {
     display: flex;
+    flex-direction: column;
+    gap: 1rem;
     align-items: center;
-    gap: 0.75rem;
-    flex-wrap: wrap;
+    justify-content: center;
   }
 
-  .product-price {
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: var(--color-slate-900);
-  }
-
-  .coming-soon-badge {
-    font-size: 0.85rem;
-    font-weight: 600;
-    padding: 0.4rem 0.75rem;
+  .tool-image {
+    width: 100%;
+    max-width: 240px;
     border-radius: var(--radius-md);
+    overflow: hidden;
     background: var(--color-slate-100);
-    color: var(--color-slate-500);
   }
 
-  .checkout-note {
-    margin-top: 2rem;
-    font-size: 0.9rem;
-    color: var(--color-slate-500);
-    text-align: center;
+  .tool-image img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .tool-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+    max-width: 240px;
   }
 
   .btn {
@@ -232,6 +154,9 @@ const paidProducts = products.filter(p => !p.free);
     padding: 0.5rem 1rem;
     border-radius: var(--radius-md);
     font-weight: 500;
+    font-size: 0.9rem;
+    text-align: center;
+    text-decoration: none;
     transition: background 0.2s, color 0.2s;
   }
 
@@ -253,6 +178,21 @@ const paidProducts = products.filter(p => !p.free);
   .btn-secondary:hover {
     background: var(--color-slate-200);
     color: var(--color-slate-800);
+  }
+
+  @media (max-width: 768px) {
+    .tool-row {
+      flex-direction: column;
+    }
+
+    .tool-side {
+      align-items: flex-start;
+    }
+
+    .tool-image,
+    .tool-actions {
+      max-width: 100%;
+    }
   }
 
   .container {

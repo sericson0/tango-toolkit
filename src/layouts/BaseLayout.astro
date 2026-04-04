@@ -34,7 +34,9 @@ const { title, description = "Tools and resources for tango DJs. Software, cours
         </a>
         <nav class="nav">
           <a href="/" class={Astro.url.pathname === '/' ? 'active' : ''}>Home</a>
-          <a href="/dj/" class={Astro.url.pathname.startsWith('/dj') ? 'active' : ''}>DJ</a>
+          <a href="/dj/starter-kit/" class={Astro.url.pathname.startsWith('/dj/starter-kit') ? 'active' : ''}>DJ Starter Kit</a>
+          <a href="/dj/software/" class={Astro.url.pathname.startsWith('/dj/software') ? 'active' : ''}>DJ Tools</a>
+          <a href="/dj/resources/" class={Astro.url.pathname.startsWith('/dj/resources') ? 'active' : ''}>Discographies</a>
         </nav>
         <button class="nav-toggle" aria-label="Toggle menu" type="button">
           <span></span>
@@ -57,9 +59,9 @@ const { title, description = "Tools and resources for tango DJs. Software, cours
           </div>
           <div>
             <strong>Resources</strong>
-            <a href="/dj/">DJ Resources</a>
-            <a href="/dj/starter-kit/">Starter Kit</a>
-            <a href="/dj/software/">Software</a>
+            <a href="/dj/starter-kit/">DJ Starter Kit</a>
+            <a href="/dj/software/">DJ Tools</a>
+            <a href="/dj/resources/">Discographies</a>
           </div>
           <div>
             <strong>Connect</strong>
