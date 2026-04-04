@@ -6,7 +6,7 @@ interface Props {
   description?: string;
 }
 
-const { title, description = "Resources for tango dancers, DJs, and organizers. Courses, lessons, and materials to deepen your tango journey." } = Astro.props;
+const { title, description = "Tools and resources for tango DJs. Software, courses, and guides to elevate your tango DJing." } = Astro.props;
 ---
 
 <!doctype html>
@@ -17,26 +17,24 @@ const { title, description = "Resources for tango dancers, DJs, and organizers. 
     <meta name="description" content={description} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="generator" content={Astro.generator} />
-    <meta property="og:title" content={`${title} | Tango Toolkit`} />
+    <meta property="og:title" content={`${title} | The Tango Toolkit`} />
     <meta property="og:description" content={description} />
     <meta property="og:image" content="/images/Logo.png" />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content="/images/Logo.png" />
-    <title>{title} | Tango Toolkit</title>
+    <title>{title} | The Tango Toolkit</title>
   </head>
   <body>
     <header class="site-header">
       <div class="container">
         <a href="/" class="logo">
           <img src="/images/Logo.png" alt="Tango Toolkit" class="logo-img" />
-          <span class="logo-text">Tango Toolkit</span>
+          <span class="logo-text">The Tango Toolkit</span>
         </a>
         <nav class="nav">
           <a href="/" class={Astro.url.pathname === '/' ? 'active' : ''}>Home</a>
-          <a href="/dance/" class={Astro.url.pathname.startsWith('/dance') ? 'active' : ''}>Dance</a>
           <a href="/dj/" class={Astro.url.pathname.startsWith('/dj') ? 'active' : ''}>DJ</a>
-          <a href="/organizer/" class={Astro.url.pathname.startsWith('/organizer') ? 'active' : ''}>Organizer</a>
         </nav>
         <button class="nav-toggle" aria-label="Toggle menu" type="button">
           <span></span>
@@ -54,18 +52,18 @@ const { title, description = "Resources for tango dancers, DJs, and organizers. 
       <div class="container">
         <div class="footer-grid">
           <div>
-            <strong>Tango Toolkit</strong>
-            <p>Resources for dancers, DJs, and organizers.</p>
+            <strong>The Tango Toolkit</strong>
+            <p>Resources for tango DJs.</p>
           </div>
           <div>
             <strong>Resources</strong>
             <a href="/dj/">DJ Resources</a>
-            <a href="/dance/">Dance Resources</a>
-            <a href="/organizer/">Organizer Resources</a>
+            <a href="/dj/starter-kit/">Starter Kit</a>
+            <a href="/dj/software/">Software</a>
           </div>
           <div>
             <strong>Connect</strong>
-            <p>© {new Date().getFullYear()} Tango Toolkit</p>
+            <p>&copy; {new Date().getFullYear()} The Tango Toolkit</p>
           </div>
         </div>
       </div>
