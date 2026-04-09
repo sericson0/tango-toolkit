@@ -1,6 +1,11 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import { products } from '../../../data/products';
+
+const tigertango = products.find((p) => p.id === 'tigertango');
+const hisstory = products.find((p) => p.id === 'hisstory');
+const tigertag = products.find((p) => p.id === 'tigertag');
+const tigertanda = products.find((p) => p.id === 'tigertanda');
 ---
 
 <BaseLayout title="DJ Tools" description="Software and plugins built for tango DJs. Download free tools and pro-level utilities for music management, audio restoration, and tanda building.">
@@ -12,35 +17,339 @@ import { products } from '../../../data/products';
     </div>
   </section>
 
-  <section class="tools-section">
+  <!-- ===== Jump Nav ===== -->
+  <nav class="jump-nav">
     <div class="container">
-      <div class="tools-list">
-        {products.map((product) => (
-          <article class="tool-row">
-            <div class="tool-info">
-              <h3>{product.name}</h3>
-              <p class="tool-tagline">{product.tagline}</p>
-              <p class="tool-desc">{product.description}</p>
+      <a href="#tigertango" class="jump-link">TigerTango</a>
+      <a href="#hisstory" class="jump-link">Hisstory</a>
+      <a href="#tigertag" class="jump-link">TigerTag</a>
+      <a href="#tigertanda" class="jump-link">TigerTanda</a>
+    </div>
+  </nav>
+
+  <!-- ============================================================ -->
+  <!-- TigerTango                                                    -->
+  <!-- ============================================================ -->
+  <section id="tigertango" class="tool-section">
+    <div class="container">
+      <div class="tool-header">
+        {tigertango?.image && (
+          <div class="tool-logo">
+            <img src={tigertango.image} alt="TigerTango" />
+          </div>
+        )}
+        <div>
+          <h2>TigerTango</h2>
+          <p class="tool-tagline">A VirtualDJ Interface Designed for Tango DJs</p>
+          <span class="price-badge">Free</span>
+        </div>
+      </div>
+
+      <p class="tool-desc-full">Nothing kills the magic of the milonga like technical issues. Whether you are just starting out as a tango DJ, or are traveling to DJ the biggest festivals, you deserve software that enables your creativity instead of hindering the flow you are striving so hard to create. TigerTango is a customized Virtual DJ skin specifically designed for the needs of tango DJs.</p>
+
+      <div class="features-grid">
+        <div class="feature-item">Full power and reliability of dedicated DJ software</div>
+        <div class="feature-item">Clean interface with unused features removed</div>
+        <div class="feature-item">Configuration set up specifically for tango DJing</div>
+        <div class="feature-item">Safety features so you can focus on the dancers</div>
+        <div class="feature-item">Built-in semiparametric equalizer</div>
+        <div class="feature-item">VST3 plugin integration</div>
+        <div class="feature-item">Cortina fade-out buttons</div>
+        <div class="feature-item">Video skin for displaying song info and lyrics</div>
+      </div>
+
+      <div class="testimonials">
+        <blockquote>
+          <p>&ldquo;The TigerTango VirtualDJ skin interface is perfect for Tango DJs. As a Traktor user for the last 10 years I never stopped looking for a more practical alternative, until now.&rdquo;</p>
+          <cite>&mdash; &Eacute;ric Heleno, Sound Systems Engineer &amp; Tango DJ</cite>
+        </blockquote>
+        <blockquote>
+          <p>&ldquo;Until now, software for Tango DJing meant compromise: too little, or way too much. TigerTango fixes this. Designed and tuned for Tango DJs, its interface and unique features finally fit our craft.&rdquo;</p>
+          <cite>&mdash; DJ Ragnar (Germany)</cite>
+        </blockquote>
+        <blockquote>
+          <p>&ldquo;It is totally awesome, making tango DJ-ing wonderfully streamlined on the technical side. VDJ with TigerTango blows all other options out of water. Loving it!!!&rdquo;</p>
+          <cite>&mdash; TDJ Michael Plaks (Houston, Texas)</cite>
+        </blockquote>
+      </div>
+
+      <!-- Download TigerTango -->
+      <h3 class="section-label">Download TigerTango</h3>
+      <div class="download-buttons">
+        <a href="https://github.com/sericson0/TigerTango/releases/download/v1.0.0/TigerTango.zip" class="download-btn-large">
+          <span class="dl-icon">&#127926;</span>
+          <div>
+            <strong>TigerTango</strong>
+            <span>DJ interface skin (.zip)</span>
+          </div>
+        </a>
+        <a href="https://github.com/sericson0/TigerTango/releases/download/v1.0.0/TigerTangoVideo.zip" class="download-btn-large">
+          <span class="dl-icon">&#127916;</span>
+          <div>
+            <strong>TigerTango Video</strong>
+            <span>Video display skin (.zip)</span>
+          </div>
+        </a>
+      </div>
+
+      <p class="install-link">
+        &#128214; <a href="/dj/software-setup/">Follow installation instructions here</a>
+        &nbsp;&mdash;&nbsp;or view the
+        <a href="https://github.com/sericson0/TigerTango/blob/main/docs/sections/Installation.md" target="_blank" rel="noopener noreferrer">full guide on GitHub</a>
+      </p>
+
+      <!-- Download Virtual DJ 2025 -->
+      <h3 class="section-label">Download Virtual DJ 2025</h3>
+      <div class="callout callout-warning">
+        <strong>Use the 2025 version of Virtual DJ.</strong>
+        <p>The 2026 release added an audio watermark to the free version. Install the 2025 version below and disable automatic updates to avoid this issue.</p>
+      </div>
+
+      <div class="download-buttons">
+        <a href="https://drive.google.com/uc?export=download&id=1-dSX1T8CV3mvqYst62TgHBXYHTrItlkQ" target="_blank" rel="noopener" class="download-btn-large">
+          <span class="dl-icon">&#128187;</span>
+          <div>
+            <strong>Download for Windows</strong>
+            <span>Virtual DJ 2025 (.msi, 464 MB)</span>
+          </div>
+        </a>
+        <a href="https://drive.google.com/uc?export=download&id=1zHCTXZbJLP-IyKM0wCetCgjwc3lOzm97" target="_blank" rel="noopener" class="download-btn-large">
+          <span class="dl-icon">&#128187;</span>
+          <div>
+            <strong>Download for Mac</strong>
+            <span>Virtual DJ 2025 (.pkg, 910 MB)</span>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- Hisstory                                                      -->
+  <!-- ============================================================ -->
+  <section id="hisstory" class="tool-section alt-bg">
+    <div class="container">
+      <div class="tool-header">
+        {hisstory?.image && (
+          <div class="tool-logo">
+            <img src={hisstory.image} alt="Hisstory" />
+          </div>
+        )}
+        <div>
+          <h2>Hisstory</h2>
+          <p class="tool-tagline">Keep the music, ditch the noise</p>
+          <span class="price-badge">$40 &mdash; 2-day free trial</span>
+        </div>
+      </div>
+
+      <p class="tool-desc-full">A real-time spectral gating plugin designed for removing hiss while keeping high-frequency music and transients intact and sounding as natural as possible. Use as a VST3 plugin in Virtual DJ, Ableton, Reaper, or any compatible DAW &mdash; or run it as a standalone application. Works on Windows and macOS.</p>
+
+      <div class="features-grid">
+        <div class="feature-item">Real-time de-hissing with spectral gating</div>
+        <div class="feature-item">Adaptive noise tracking that learns the noise floor</div>
+        <div class="feature-item">6-band threshold curve for per-frequency control</div>
+        <div class="feature-item">Analyzer + spectrogram visualizations</div>
+        <div class="feature-item">Smoothing, dry/wet blend, residual listen mode</div>
+        <div class="feature-item">Live quality metrics with color-coded warnings</div>
+        <div class="feature-item">VST3 plugin + standalone application</div>
+        <div class="feature-item">Smooth bypass with crossfaded switching</div>
+      </div>
+
+      <!-- Download -->
+      <h3 class="section-label">Download</h3>
+      <p class="section-note">Try Hisstory free for 2 days with full access to all features. No credit card required.</p>
+      <div class="download-buttons">
+        <a href="https://github.com/sericson0/hisstory-releases/releases" target="_blank" rel="noopener noreferrer" class="download-btn-large">
+          <span class="dl-icon">&#128229;</span>
+          <div>
+            <strong>Download Hisstory</strong>
+            <span>Windows &amp; macOS &mdash; free trial</span>
+          </div>
+        </a>
+        {hisstory?.paymentLink && (
+          <a href={hisstory.paymentLink} target="_blank" rel="noopener noreferrer" class="download-btn-large purchase-btn">
+            <span class="dl-icon">&#128179;</span>
+            <div>
+              <strong>Purchase License &mdash; $40</strong>
+              <span>One-time purchase, lifetime access</span>
             </div>
-            <div class="tool-side">
-              {product.image && (
-                <div class="tool-image">
-                  <img src={product.image} alt={product.name} />
-                </div>
-              )}
-              <div class="tool-actions">
-                <a href={product.downloadLink} target="_blank" rel="noopener noreferrer" class="btn btn-primary">
-                  {product.trial ? 'Download Trial' : 'Download Free'}
-                </a>
-                {product.trial && product.paymentLink && (
-                  <a href={product.paymentLink} target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
-                    Purchase Key — {product.price}
-                  </a>
-                )}
-              </div>
+          </a>
+        )}
+      </div>
+
+      <!-- Quick Start -->
+      <h3 class="section-label">Quick Start</h3>
+      <div class="guide-content">
+        <h4>1. Install the Plugin</h4>
+        <ul>
+          <li><strong>Windows:</strong> Copy <code>Hisstory.vst3</code> to <code>C:\Program Files\Common Files\VST3\</code>, then rescan in your DAW.</li>
+          <li><strong>macOS:</strong> Copy <code>Hisstory.vst3</code> to <code>~/Library/Audio/Plug-Ins/VST3/</code>, then restart or rescan in your DAW.</li>
+        </ul>
+
+        <h4>2. Load Hisstory on the Noisy Track</h4>
+        <p>Insert <strong>Hisstory</strong> on the track or bus with hiss/noise, and start playback on a representative section.</p>
+
+        <h4>3. Dial In Settings</h4>
+        <p>Start with these defaults:</p>
+        <ul>
+          <li><strong>Threshold:</strong> -23 dB</li>
+          <li><strong>Reduction:</strong> 12 dB</li>
+          <li><strong>Adaptive:</strong> ON</li>
+        </ul>
+        <p>Then raise <strong>Threshold</strong> slowly until the hiss drops clearly, raise <strong>Reduction</strong> only as needed, and use <strong>Bypass</strong> to A/B &mdash; keep the result sounding natural.</p>
+
+        <h4>4. If You Hear Artifacts</h4>
+        <ul>
+          <li><strong>Dull or lispy:</strong> lower Threshold (more negative) or lower Reduction</li>
+          <li><strong>Chirpy/warbly:</strong> back off both controls a bit</li>
+          <li><strong>Not enough cleanup:</strong> raise Threshold slightly and/or increase Reduction</li>
+        </ul>
+      </div>
+
+      <!-- Controls Reference -->
+      <details class="guide-expander">
+        <summary><strong>Controls Reference</strong> &mdash; click to expand</summary>
+        <div class="guide-content">
+          <h4>Main Sliders</h4>
+          <ul>
+            <li><strong>Threshold</strong> (-40 to -10 dB, default -23) &mdash; Controls how much of the signal gets classified as noise. Higher = more aggressive, lower = more conservative.</li>
+            <li><strong>Reduction</strong> (0 to 32 dB, default 12) &mdash; How much detected noise gets attenuated. Higher values remove more hiss but can introduce dullness.</li>
+          </ul>
+
+          <h4>6-Band Threshold Curve</h4>
+          <p>Drag the numbered control points on the analyzer to shape the threshold by frequency region:</p>
+          <ul>
+            <li>Band 1: 200&ndash;900 Hz &nbsp;|&nbsp; Band 2: 900 Hz&ndash;2.1 kHz &nbsp;|&nbsp; Band 3: 2.1&ndash;3.9 kHz</li>
+            <li>Band 4: 3.9&ndash;6.3 kHz &nbsp;|&nbsp; Band 5: 6.3&ndash;9.8 kHz &nbsp;|&nbsp; Band 6: 9.8&ndash;22 kHz</li>
+          </ul>
+          <p>Drag <strong>up</strong> to remove more noise in that region, <strong>down</strong> to preserve more signal.</p>
+
+          <h4>Top Bar</h4>
+          <ul>
+            <li><strong>Analyzer / Spectrogram</strong> &mdash; toggle between frequency curve and time-frequency heatmap</li>
+            <li><strong>Reset</strong> &mdash; reset all 6 band points to defaults</li>
+            <li><strong>Adaptive</strong> &mdash; continuously learns the noise floor from quiet moments</li>
+            <li><strong>Bypass</strong> &mdash; pass original audio through for A/B comparison</li>
+          </ul>
+
+          <h4>Advanced Settings (+)</h4>
+          <ul>
+            <li><strong>Smoothing</strong> (0&ndash;100%, default 50) &mdash; Controls how quickly the noise gate closes. Higher = smoother but softer transients.</li>
+            <li><strong>Dry/Wet</strong> (0&ndash;100%, default 100) &mdash; Blend original and processed signal. 85&ndash;95% can add back natural room tone.</li>
+            <li><strong>Residual Listen</strong> &mdash; hear what&rsquo;s being removed. If you hear music, back off your settings.</li>
+          </ul>
+
+          <h4>Metrics</h4>
+          <ul>
+            <li><strong>HF Removed</strong> &mdash; high-frequency energy removed (4&ndash;16 kHz). Green &lt; -3 dB, Orange -3 to -1 dB.</li>
+            <li><strong>Harmonic Loss</strong> &mdash; tonal energy lost above 2 kHz. Green &lt; 3%, Orange 3&ndash;10%, Red &gt; 10%.</li>
+          </ul>
+        </div>
+      </details>
+
+      <!-- Tips -->
+      <details class="guide-expander">
+        <summary><strong>Tips</strong> &mdash; click to expand</summary>
+        <div class="guide-content">
+          <ul>
+            <li>Slightly under-processing almost always sounds more natural than heavy removal</li>
+            <li>Right-click any slider to reset it to its default value</li>
+            <li>Use Residual Listen periodically as a sanity check &mdash; you want to hear only noise</li>
+            <li>The Dry/Wet control at 85&ndash;95% can add back natural room tone without reintroducing obvious hiss</li>
+            <li>For album or playlist processing with Adaptive on, Hisstory re-adapts at each silence gap &mdash; no need to reset between tracks</li>
+            <li>The spectrogram is especially useful for spotting over-processing: if musical peaks start fading, ease off</li>
+          </ul>
+        </div>
+      </details>
+
+      <!-- Troubleshooting -->
+      <details class="guide-expander">
+        <summary><strong>Troubleshooting</strong> &mdash; click to expand</summary>
+        <div class="guide-content">
+          <ul>
+            <li><strong>Sound is dull or lispy:</strong> Lower Threshold or Reduction. Pull down upper bands (5&ndash;6). Check Harmonic Loss metric.</li>
+            <li><strong>Chirpy/warbly artifacts:</strong> Back off Threshold and Reduction. Increase Smoothing in advanced panel.</li>
+            <li><strong>Not enough hiss removal:</strong> Raise Threshold slightly, increase Reduction in small steps, lift upper frequency bands.</li>
+            <li><strong>Plugin sounds different on a new track:</strong> Adaptive mode needs a moment to learn the noise profile. The first second or two may sound under-processed.</li>
+            <li><strong>Residual listen shows music content:</strong> Settings are too aggressive. Lower Threshold and Reduction.</li>
+            <li><strong>High latency:</strong> Hisstory introduces ~160 ms latency at 44.1 kHz. Most DAWs compensate automatically with PDC.</li>
+          </ul>
+        </div>
+      </details>
+
+      <p class="contact-note">Questions or feedback? Reach out at <a href="mailto:tangotoolkit@gmail.com">tangotoolkit@gmail.com</a></p>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- TigerTag                                                      -->
+  <!-- ============================================================ -->
+  <section id="tigertag" class="tool-section">
+    <div class="container">
+      <div class="tool-header">
+        {tigertag?.image && (
+          <div class="tool-logo">
+            <img src={tigertag.image} alt="TigerTag" />
+          </div>
+        )}
+        <div>
+          <h2>TigerTag</h2>
+          <p class="tool-tagline">Tag your tango tunes</p>
+          <span class="price-badge">{tigertag?.price}</span>
+        </div>
+      </div>
+
+      <p class="tool-desc-full">Batch-tag your tango music library with orchestra, singer, year, genre, and more. Save hours of manual metadata work.</p>
+
+      <div class="download-buttons">
+        <a href={tigertag?.downloadLink} target="_blank" rel="noopener noreferrer" class="download-btn-large">
+          <span class="dl-icon">&#128229;</span>
+          <div>
+            <strong>Download TigerTag</strong>
+            <span>Free trial available</span>
+          </div>
+        </a>
+        {tigertag?.paymentLink && (
+          <a href={tigertag.paymentLink} target="_blank" rel="noopener noreferrer" class="download-btn-large purchase-btn">
+            <span class="dl-icon">&#128179;</span>
+            <div>
+              <strong>Purchase Key &mdash; {tigertag.price}</strong>
+              <span>One-time purchase</span>
             </div>
-          </article>
-        ))}
+          </a>
+        )}
+      </div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- TigerTanda                                                    -->
+  <!-- ============================================================ -->
+  <section id="tigertanda" class="tool-section alt-bg">
+    <div class="container">
+      <div class="tool-header">
+        {tigertanda?.image && (
+          <div class="tool-logo">
+            <img src={tigertanda.image} alt="TigerTanda" />
+          </div>
+        )}
+        <div>
+          <h2>TigerTanda</h2>
+          <p class="tool-tagline">Find the tracks for the perfect tanda</p>
+          <span class="price-badge">Free</span>
+        </div>
+      </div>
+
+      <p class="tool-desc-full">Intelligent tanda builder that suggests complementary tracks based on orchestra, era, energy, and style.</p>
+
+      <div class="download-buttons">
+        <a href={tigertanda?.downloadLink} target="_blank" rel="noopener noreferrer" class="download-btn-large">
+          <span class="dl-icon">&#128229;</span>
+          <div>
+            <strong>Download TigerTanda</strong>
+            <span>Free</span>
+          </div>
+        </a>
       </div>
     </div>
   </section>
@@ -53,146 +362,305 @@ import { products } from '../../../data/products';
     border-bottom: 1px solid var(--color-orange-100);
   }
 
-  .back-link {
-    display: inline-block;
-    margin-bottom: 1rem;
-    font-size: 0.9rem;
-    color: var(--color-slate-600);
-  }
-
+  .back-link { display: inline-block; margin-bottom: 1rem; font-size: 0.9rem; color: var(--color-slate-600); }
   .back-link:hover { color: var(--color-primary); }
   .page-hero h1 { margin: 0 0 0.5rem; }
+  .lead { font-size: 1.2rem; color: var(--color-slate-600); margin: 0; }
 
-  .lead {
-    font-size: 1.2rem;
-    color: var(--color-slate-600);
-    margin: 0;
-  }
-
-  .tools-section {
-    padding: 3rem 0 4rem;
-  }
-
-  .tools-list {
-    display: flex;
-    flex-direction: column;
-    gap: 2rem;
-  }
-
-  .tool-row {
-    display: flex;
-    gap: 2rem;
+  /* ===== Jump Nav ===== */
+  .jump-nav {
+    position: sticky;
+    top: 4.5rem;
+    z-index: 50;
     background: white;
-    border: 1px solid var(--color-slate-200);
-    border-radius: var(--radius-lg);
-    padding: 1.5rem;
+    border-bottom: 1px solid var(--color-slate-200);
+    padding: 0.75rem 0;
+  }
+
+  .jump-nav .container {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .jump-link {
+    display: inline-block;
+    padding: 0.4rem 1rem;
+    border-radius: 999px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    color: var(--color-slate-600);
+    background: var(--color-slate-100);
+    text-decoration: none;
     transition: all 0.2s;
   }
 
-  .tool-row:hover {
-    border-color: var(--color-orange-400);
-    box-shadow: var(--shadow-md);
-  }
-
-  .tool-info {
-    flex: 2;
-    min-width: 0;
-  }
-
-  .tool-info h3 {
-    margin: 0 0 0.25rem;
-    font-size: 1.35rem;
-  }
-
-  .tool-tagline {
-    font-style: italic;
-    color: var(--color-orange-600);
-    font-size: 0.9rem;
-    margin: 0 0 0.75rem;
-  }
-
-  .tool-desc {
-    margin: 0;
-    color: var(--color-slate-600);
-    font-size: 0.95rem;
-    line-height: 1.6;
-  }
-
-  .tool-side {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    align-items: center;
-    justify-content: center;
-  }
-
-  .tool-image {
-    width: 100%;
-    max-width: 240px;
-    border-radius: var(--radius-md);
-    overflow: hidden;
-    background: var(--color-slate-100);
-  }
-
-  .tool-image img {
-    width: 100%;
-    height: auto;
-    display: block;
-  }
-
-  .tool-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 0.5rem;
-    width: 100%;
-    max-width: 240px;
-  }
-
-  .btn {
-    display: inline-block;
-    padding: 0.5rem 1rem;
-    border-radius: var(--radius-md);
-    font-weight: 500;
-    font-size: 0.9rem;
-    text-align: center;
-    text-decoration: none;
-    transition: background 0.2s, color 0.2s;
-  }
-
-  .btn-primary {
+  .jump-link:hover {
     background: var(--color-primary);
     color: white;
   }
 
-  .btn-primary:hover {
-    background: var(--color-primary-hover);
-    color: white;
+  /* ===== Tool Sections ===== */
+  .tool-section {
+    padding: 3rem 0;
+    border-bottom: 1px solid var(--color-slate-200);
+    scroll-margin-top: 7rem;
   }
 
-  .btn-secondary {
+  .tool-section.alt-bg {
+    background: var(--color-slate-50);
+  }
+
+  .tool-header {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+    margin-bottom: 1.5rem;
+  }
+
+  .tool-logo {
+    width: 90px;
+    height: 90px;
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    flex-shrink: 0;
     background: var(--color-slate-100);
-    color: var(--color-slate-700);
   }
 
-  .btn-secondary:hover {
-    background: var(--color-slate-200);
+  .tool-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .tool-header h2 {
+    margin: 0 0 0.15rem;
+    font-size: 1.85rem;
+  }
+
+  .tool-tagline {
+    margin: 0 0 0.35rem;
+    font-size: 1.05rem;
+    font-style: italic;
+    color: var(--color-orange-600);
+  }
+
+  .price-badge {
+    display: inline-block;
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.15rem 0.6rem;
+    border-radius: 999px;
+    background: var(--color-orange-100);
+    color: var(--color-orange-700);
+  }
+
+  .tool-desc-full {
+    font-size: 1.02rem;
+    color: var(--color-slate-600);
+    line-height: 1.7;
+    max-width: 70ch;
+    margin: 0 0 1.5rem;
+  }
+
+  /* Features checklist */
+  .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 0.5rem 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .feature-item {
+    font-size: 0.95rem;
+    color: var(--color-slate-700);
+    padding: 0.4rem 0 0.4rem 1.5rem;
+    position: relative;
+  }
+
+  .feature-item::before {
+    content: "\2713";
+    position: absolute;
+    left: 0;
+    color: var(--color-primary);
+    font-weight: 700;
+  }
+
+  /* Testimonials */
+  .testimonials {
+    display: grid;
+    gap: 1rem;
+    margin-bottom: 2.5rem;
+  }
+
+  .testimonials blockquote {
+    margin: 0;
+    padding: 1rem 1.25rem;
+    background: var(--color-slate-50);
+    border-left: 3px solid var(--color-orange-400);
+    border-radius: var(--radius-md);
+  }
+
+  .alt-bg .testimonials blockquote {
+    background: white;
+  }
+
+  .testimonials blockquote p { margin: 0 0 0.5rem; font-style: italic; }
+  .testimonials cite { font-size: 0.85rem; color: var(--color-slate-500); font-style: normal; }
+
+  /* Section labels */
+  .section-label {
+    font-size: 1.15rem;
+    margin: 2rem 0 0.75rem;
     color: var(--color-slate-800);
   }
 
+  .section-note {
+    font-size: 0.9rem;
+    color: var(--color-slate-500);
+    margin: -0.25rem 0 1rem;
+  }
+
+  /* Download buttons */
+  .download-buttons {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  .download-btn-large {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.25rem 1.5rem;
+    background: white;
+    color: var(--color-slate-800);
+    border: 2px solid var(--color-slate-300);
+    border-radius: var(--radius-lg);
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .download-btn-large:hover {
+    border-color: var(--color-orange-400);
+    color: var(--color-slate-900);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-md);
+  }
+
+  .purchase-btn { border-color: var(--color-orange-300); }
+  .purchase-btn:hover { border-color: var(--color-primary); }
+
+  .dl-icon { font-size: 1.5rem; color: var(--color-orange-500); }
+  .download-btn-large div { display: flex; flex-direction: column; }
+  .download-btn-large strong { font-size: 1.05rem; }
+  .download-btn-large span { font-size: 0.8rem; color: var(--color-slate-500); }
+
+  .install-link {
+    font-size: 0.95rem;
+    margin: 0.75rem 0 2rem;
+    color: var(--color-slate-600);
+  }
+
+  .install-link a { color: var(--color-primary); font-weight: 500; }
+  .install-link a:hover { color: var(--color-primary-hover); }
+
+  /* Callout */
+  .callout {
+    padding: 1rem 1.25rem;
+    border-radius: var(--radius-md);
+    margin-bottom: 1rem;
+    font-size: 0.95rem;
+  }
+
+  .callout strong { display: block; margin-bottom: 0.25rem; }
+  .callout p { margin: 0; color: var(--color-slate-600); }
+
+  .callout-warning {
+    background: #fffbeb;
+    border-left: 4px solid #f59e0b;
+  }
+
+  .callout-warning strong { color: #b45309; }
+
+  /* Guide content (Hisstory user guide) */
+  .guide-content {
+    font-size: 0.95rem;
+    line-height: 1.7;
+    color: var(--color-slate-700);
+    margin-bottom: 1.5rem;
+  }
+
+  .guide-content h4 {
+    margin: 1.25rem 0 0.5rem;
+    font-size: 1rem;
+    color: var(--color-slate-800);
+  }
+
+  .guide-content ul, .guide-content ol {
+    padding-left: 1.25rem;
+    margin: 0.5rem 0;
+  }
+
+  .guide-content li { margin-bottom: 0.35rem; }
+
+  .guide-content code {
+    background: var(--color-slate-100);
+    padding: 0.1rem 0.35rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+  }
+
+  .guide-content p { margin: 0.5rem 0; }
+
+  /* Expandable sections */
+  .guide-expander {
+    border: 1px solid var(--color-slate-200);
+    border-radius: var(--radius-md);
+    margin-bottom: 0.75rem;
+    overflow: hidden;
+  }
+
+  .guide-expander summary {
+    padding: 0.85rem 1.25rem;
+    cursor: pointer;
+    background: white;
+    font-size: 0.95rem;
+    list-style: none;
+    transition: background 0.15s;
+  }
+
+  .alt-bg .guide-expander summary { background: var(--color-slate-50); }
+
+  .guide-expander summary::-webkit-details-marker { display: none; }
+  .guide-expander summary::before { content: "\25B8 "; color: var(--color-slate-400); }
+  .guide-expander[open] summary::before { content: "\25BE "; }
+  .guide-expander summary:hover { background: var(--color-slate-50); }
+  .alt-bg .guide-expander summary:hover { background: white; }
+
+  .guide-expander .guide-content {
+    padding: 0 1.25rem 1rem;
+    margin: 0;
+  }
+
+  .contact-note {
+    font-size: 0.9rem;
+    color: var(--color-slate-500);
+    margin-top: 1.5rem;
+  }
+
+  .contact-note a { color: var(--color-primary); }
+
+  /* ===== Responsive ===== */
   @media (max-width: 768px) {
-    .tool-row {
+    .tool-header {
       flex-direction: column;
-    }
-
-    .tool-side {
       align-items: flex-start;
+      gap: 1rem;
     }
 
-    .tool-image,
-    .tool-actions {
-      max-width: 100%;
-    }
+    .tool-logo { width: 70px; height: 70px; }
   }
 
   .container {

@@ -25,7 +25,7 @@ export const products: Product[] = [
     description: 'A customized Virtual DJ skin specifically designed for tango DJs. Provides tanda-focused layout, warning lights for settings, and streamlined controls.',
     price: 'Free',
     downloadLink: 'https://github.com/sericson0/TigerTango/releases',
-    image: '/images/tigertango-screenshot.png',
+    image: '/images/TigerTangoLogo.png',
   },
   {
     id: 'hisstory',
@@ -34,7 +34,7 @@ export const products: Product[] = [
     description: 'Audio restoration tool for tango DJs. Remove hiss, clicks, and noise from vintage tango recordings while preserving the music.',
     price: '$40',
     paymentLink: 'https://buy.stripe.com/EXAMPLE', // Replace with your Stripe Payment Link
-    downloadLink: 'https://github.com/sericson0/Hisstory/releases',
+    downloadLink: 'https://github.com/sericson0/hisstory-releases/releases',
     image: '/images/hisstory-logo.png',
     trial: true,
   },
@@ -46,7 +46,7 @@ export const products: Product[] = [
     price: '$TBD',
     paymentLink: 'https://buy.stripe.com/EXAMPLE', // Replace with your Stripe Payment Link
     downloadLink: 'https://github.com/sericson0/TigerTag/releases',
-    image: '/images/tigertag-screenshot.png',
+    image: '/images/TigerTag.png',
     trial: true,
   },
   {
@@ -56,6 +56,6 @@ export const products: Product[] = [
     description: 'Intelligent tanda builder that suggests complementary tracks based on orchestra, era, energy, and style.',
     price: 'Free',
     downloadLink: 'https://github.com/sericson0/TigerTanda/releases',
-    image: '/images/tigertanda-screenshot.png',
+    image: '/images/TigerTanda.png',
   },
 ];

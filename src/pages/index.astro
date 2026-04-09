@@ -55,14 +55,9 @@ import { products } from '../data/products';
                 </div>
               )}
               <div class="tool-actions">
-                <a href={product.downloadLink} target="_blank" rel="noopener noreferrer" class="btn btn-primary">
-                  {product.trial ? 'Download Trial' : 'Download Free'}
+                <a href={`/dj/software/#${product.id}`} class="btn btn-primary">
+                  Get It Here &rarr;
                 </a>
-                {product.trial && product.paymentLink && (
-                  <a href={product.paymentLink} target="_blank" rel="noopener noreferrer" class="btn btn-secondary">
-                    Purchase Key — {product.price}
-                  </a>
-                )}
               </div>
             </div>
           </article>
