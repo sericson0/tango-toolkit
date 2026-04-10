@@ -173,14 +173,14 @@ const tigertanda = products.find((p) => p.id === 'tigertanda');
             <span>Hisstory installer (.dmg, 27 MB)</span>
           </div>
         </a>
-        {hisstory?.paymentLink && (
-          <a href={hisstory.paymentLink} target="_blank" rel="noopener noreferrer" class="download-btn-large purchase-btn">
+        {hisstory?.stripePriceId && (
+          <button type="button" class="download-btn-large purchase-btn checkout-btn" data-product-id="hisstory">
             <span class="dl-icon">&#128179;</span>
             <div>
               <strong>Purchase License &mdash; $40</strong>
               <span>One-time purchase, lifetime access</span>
             </div>
-          </a>
+          </button>
         )}
       </div>
 
@@ -316,14 +316,14 @@ const tigertanda = products.find((p) => p.id === 'tigertanda');
             <span>Free trial available</span>
           </div>
         </a>
-        {tigertag?.paymentLink && (
-          <a href={tigertag.paymentLink} target="_blank" rel="noopener noreferrer" class="download-btn-large purchase-btn">
+        {tigertag?.stripePriceId && (
+          <button type="button" class="download-btn-large purchase-btn checkout-btn" data-product-id="tigertag">
             <span class="dl-icon">&#128179;</span>
             <div>
               <strong>Purchase Key &mdash; {tigertag.price}</strong>
               <span>One-time purchase</span>
             </div>
-          </a>
+          </button>
         )}
       </div>
     </div>
@@ -361,6 +361,40 @@ const tigertanda = products.find((p) => p.id === 'tigertanda');
     </div>
   </section>
 </BaseLayout>
+
+<script>
+  document.querySelectorAll('.checkout-btn').forEach((btn) => {
+    btn.addEventListener('click', async (e) => {
+      const button = e.currentTarget as HTMLButtonElement;
+      const productId = button.dataset.productId;
+
+      button.disabled = true;
+      const strongEl = button.querySelector('strong');
+      const originalText = strongEl?.textContent || '';
+      if (strongEl) strongEl.textContent = 'Loading...';
+
+      try {
+        const response = await fetch('/api/create-checkout-session', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ productId }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to create checkout session');
+        }
+
+        const { url } = await response.json();
+        window.location.href = url;
+      } catch (err) {
+        console.error('Checkout error:', err);
+        button.disabled = false;
+        if (strongEl) strongEl.textContent = originalText;
+        alert('Something went wrong. Please try again.');
+      }
+    });
+  });
+</script>
 
 <style>
   .page-hero {
@@ -558,6 +592,19 @@ const tigertanda = products.find((p) => p.id === 'tigertanda');
 
   .purchase-btn { border-color: var(--color-orange-300); }
   .purchase-btn:hover { border-color: var(--color-primary); }
+
+  button.download-btn-large {
+    font-family: inherit;
+    font-size: inherit;
+    text-align: left;
+    cursor: pointer;
+    width: 100%;
+  }
+
+  button.download-btn-large:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
 
   .dl-icon { font-size: 1.5rem; color: var(--color-orange-500); }
   .download-btn-large div { display: flex; flex-direction: column; }

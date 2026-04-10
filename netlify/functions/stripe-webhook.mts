@@ -1,12 +1,13 @@
 import type { Context } from "@netlify/functions";
 import Stripe from "stripe";
-import { createHash, randomBytes } from "node:crypto";
+import { generateLicenseKey } from "../lib/license-key.mts";
 
 /**
  * Stripe Webhook Handler for Hisstory License Key Delivery
  *
  * Listens for checkout.session.completed events:
- *   1. Generates a SHA-512 keyed-hash license key (matches hisstory keygen.py)
+ *   1. Generates a SHA-512 keyed-hash license key seeded from session.id
+ *      (deterministic — same session always produces the same key)
  *   2. Adds customer to Resend Audience (newsletter or critical-only)
  *   3. Emails the license key via Resend
  *
@@ -18,32 +19,6 @@ import { createHash, randomBytes } from "node:crypto";
  *   RESEND_FROM_EMAIL        - Sender email address
  *   RESEND_AUDIENCE_ID       - Resend Audience ID for subscriber storage
  */
-
-const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-
-function generateLicenseKey(secretHex: string): string {
-  const secretBytes = Buffer.from(secretHex, "hex");
-
-  // Generate 12 random chars from ALPHABET
-  const randBytes = randomBytes(12);
-  let payload = "";
-  for (let i = 0; i < 12; i++) {
-    payload += ALPHABET[randBytes[i] % ALPHABET.length];
-  }
-
-  // SHA-512(secret + payload) -> first 4 bytes -> map to ALPHABET for checksum
-  const hash = createHash("sha512")
-    .update(Buffer.concat([secretBytes, Buffer.from(payload, "utf-8")]))
-    .digest();
-
-  let checksum = "";
-  for (let i = 0; i < 4; i++) {
-    checksum += ALPHABET[hash[i] % ALPHABET.length];
-  }
-
-  const full = payload + checksum;
-  return `${full.slice(0, 4)}-${full.slice(4, 8)}-${full.slice(8, 12)}-${full.slice(12, 16)}`;
-}
 
 async function addToResendAudience(
   email: string,
@@ -181,8 +156,8 @@ export default async (req: Request, _context: Context) => {
   const optedIntoNewsletter = session.consent?.promotions === "opt_in";
 
   try {
-    // 1. Generate license key
-    const licenseKey = generateLicenseKey(keygenSecret);
+    // 1. Generate license key (deterministic from session.id)
+    const licenseKey = generateLicenseKey(keygenSecret, session.id);
     console.log(
       `Generated license key for ${customerEmail} (session: ${session.id})`
     );

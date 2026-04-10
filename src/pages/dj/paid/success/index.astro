@@ -8,14 +8,24 @@ import BaseLayout from '../../../../layouts/BaseLayout.astro';
       <div class="success-card">
         <div class="checkmark">&#10003;</div>
         <h1>Thank you for your purchase!</h1>
-        <p>Your license key is on its way. Check your email inbox (and spam folder) for your Hisstory activation key.</p>
+        <p id="confirmation-message">
+          Your license key is on its way. Check your email inbox (and spam folder) for your Hisstory activation key.
+        </p>
+
+        <div id="license-key-display" class="license-key-box" hidden>
+          <label>Your license key</label>
+          <div class="license-key-row">
+            <code id="license-key-value">&nbsp;</code>
+            <button type="button" id="copy-btn" class="copy-btn">Copy</button>
+          </div>
+        </div>
 
         <div class="instructions">
           <h3>How to activate</h3>
           <ol>
             <li>Open Hisstory (standalone or VST3 plugin)</li>
             <li>Click <strong>"Enter Key"</strong></li>
-            <li>Paste the key from your email and click <strong>"Activate"</strong></li>
+            <li>Paste the key above and click <strong>"Activate"</strong></li>
           </ol>
         </div>
 
@@ -27,6 +37,52 @@ import BaseLayout from '../../../../layouts/BaseLayout.astro';
     </div>
   </section>
 </BaseLayout>
+
+<script>
+  const params = new URLSearchParams(window.location.search);
+  const sessionId = params.get('session_id');
+  const messageEl = document.getElementById('confirmation-message');
+  const keyBox = document.getElementById('license-key-display');
+  const keyValueEl = document.getElementById('license-key-value');
+  const copyBtn = document.getElementById('copy-btn') as HTMLButtonElement | null;
+
+  if (sessionId && messageEl && keyBox && keyValueEl && copyBtn) {
+    fetch(`/api/get-license-info?session_id=${encodeURIComponent(sessionId)}`)
+      .then(async (res) => {
+        if (!res.ok) throw new Error(`Status ${res.status}`);
+        return res.json() as Promise<{ email: string | null; licenseKey: string }>;
+      })
+      .then(({ email, licenseKey }) => {
+        keyValueEl.textContent = licenseKey;
+        keyBox.hidden = false;
+
+        const emailText = email
+          ? ` A copy was also sent to <strong>${email}</strong> — check your inbox (and spam folder) if you don't see it.`
+          : " A copy was also sent to your email — check your inbox (and spam folder) if you don't see it.";
+        messageEl.innerHTML =
+          "Here is your Hisstory activation key." + emailText;
+      })
+      .catch((err) => {
+        console.error('Failed to load license info:', err);
+        // Leave the default message as a fallback
+      });
+
+    copyBtn.addEventListener('click', async () => {
+      const key = keyValueEl.textContent?.trim() ?? '';
+      if (!key) return;
+      try {
+        await navigator.clipboard.writeText(key);
+        const original = copyBtn.textContent;
+        copyBtn.textContent = 'Copied!';
+        setTimeout(() => {
+          copyBtn.textContent = original;
+        }, 1500);
+      } catch {
+        alert('Copy failed. Please select and copy the key manually.');
+      }
+    });
+  }
+</script>
 
 <style>
   .success-page {
@@ -59,10 +115,57 @@ import BaseLayout from '../../../../layouts/BaseLayout.astro';
     font-size: 1.1rem;
     color: var(--color-slate-600);
     margin: 0 0 2rem;
-    max-width: 40ch;
+    max-width: 48ch;
     margin-left: auto;
     margin-right: auto;
   }
+
+  .license-key-box {
+    text-align: left;
+    background: #1e293b;
+    border-radius: var(--radius-lg);
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 2rem;
+  }
+
+  .license-key-box label {
+    display: block;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #94a3b8;
+    margin-bottom: 0.5rem;
+  }
+
+  .license-key-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .license-key-row code {
+    flex: 1;
+    font-size: 1rem;
+    color: #fb923c;
+    word-break: break-all;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+
+  .copy-btn {
+    flex-shrink: 0;
+    padding: 0.4rem 0.9rem;
+    background: var(--color-orange-500);
+    color: white;
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.2s;
+  }
+
+  .copy-btn:hover { background: var(--color-orange-600); }
 
   .instructions {
     text-align: left;
