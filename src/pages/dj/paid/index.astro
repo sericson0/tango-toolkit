@@ -6,9 +6,9 @@ import { products } from '../../../data/products';
 <BaseLayout title="Apps & Premium Resources" description="Paid apps and materials for tango DJs. Level up your practice with our premium resources.">
   <section class="page-hero">
     <div class="container">
-      <a href="/" class="back-link">← Back to Home</a>
+      <a href="/" class="back-link">&larr; Back to Home</a>
       <h1>Apps & Premium Resources</h1>
-      <p class="lead">Tools and materials to deepen your tango DJ practice. Secure checkout via Stripe.</p>
+      <p class="lead">Tools and materials to deepen your tango DJ practice.</p>
     </div>
   </section>
 
@@ -28,20 +28,61 @@ import { products } from '../../../data/products';
               <p>{product.description}</p>
               <div class="product-footer">
                 <span class="product-price">{product.price}</span>
-                <a href={product.paymentLink} target="_blank" rel="noopener noreferrer" class="btn btn-primary">
-                  Buy Now
-                </a>
+                {product.stripePriceId ? (
+                  <button
+                    class="btn btn-primary checkout-btn"
+                    data-product-id={product.id}
+                  >
+                    Buy Now
+                  </button>
+                ) : (
+                  <a href={product.downloadLink} target="_blank" rel="noopener noreferrer" class="btn btn-primary">
+                    {product.price === 'Free' ? 'Download' : 'Coming Soon'}
+                  </a>
+                )}
               </div>
             </div>
           </article>
         ))}
       </div>
       <p class="checkout-note">
-        You'll be redirected to Stripe for secure checkout. All payments are processed by Stripe.
+        Secure checkout powered by Stripe. Discount codes can be applied at checkout.
       </p>
     </div>
   </section>
 </BaseLayout>
+
+<script>
+  document.querySelectorAll('.checkout-btn').forEach((btn) => {
+    btn.addEventListener('click', async (e) => {
+      const button = e.currentTarget as HTMLButtonElement;
+      const productId = button.dataset.productId;
+
+      button.disabled = true;
+      button.textContent = 'Loading...';
+
+      try {
+        const response = await fetch('/api/create-checkout-session', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ productId }),
+        });
+
+        if (!response.ok) {
+          throw new Error('Failed to create checkout session');
+        }
+
+        const { url } = await response.json();
+        window.location.href = url;
+      } catch (err) {
+        console.error('Checkout error:', err);
+        button.disabled = false;
+        button.textContent = 'Buy Now';
+        alert('Something went wrong. Please try again.');
+      }
+    });
+  });
+</script>
 
 <style>
   .page-hero {
@@ -164,6 +205,10 @@ import { products } from '../../../data/products';
     border-radius: var(--radius-md);
     font-weight: 500;
     transition: background 0.2s, color 0.2s;
+    border: none;
+    cursor: pointer;
+    font-size: inherit;
+    font-family: inherit;
   }
 
   .btn-primary {
@@ -174,6 +219,11 @@ import { products } from '../../../data/products';
   .btn-primary:hover {
     background: var(--color-primary-hover);
     color: white;
+  }
+
+  .btn-primary:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
   }
 
   .checkout-note {
