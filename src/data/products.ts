@@ -1,7 +1,8 @@
 /**
  * Paid products configuration.
- * Add your Stripe Payment Links here after creating products in the Stripe Dashboard.
- * Get Payment Links from: Stripe Dashboard → Products → [Product] → Create payment link
+ * Add your Stripe Price IDs here after creating products in the Stripe Dashboard.
+ * Get Price IDs from: Stripe Dashboard → Products → [Product] → Pricing → Copy Price ID
+ * Price IDs are used to create Checkout Sessions via the API.
  */
 
 export interface Product {
@@ -10,9 +11,10 @@ export interface Product {
   tagline: string;
   description: string;
   price: string;
-  paymentLink?: string;
+  stripePriceId?: string;
   downloadLink: string;
   image?: string;
+  featured?: boolean;
   /** true if download is a trial that requires a purchased key to unlock */
   trial?: boolean;
 }
@@ -33,7 +35,7 @@ export const products: Product[] = [
     tagline: 'Keep the music, ditch the noise',
     description: 'Audio restoration tool for tango DJs. Remove hiss, clicks, and noise from vintage tango recordings while preserving the music.',
     price: '$40',
-    paymentLink: 'https://buy.stripe.com/EXAMPLE', // Replace with your Stripe Payment Link
+    stripePriceId: '', // Set from Stripe Dashboard after creating the Price
     downloadLink: 'https://github.com/sericson0/hisstory-releases/releases',
     image: '/images/hisstory-logo.png',
     trial: true,
@@ -44,7 +46,6 @@ export const products: Product[] = [
     tagline: 'Tag your tango tunes',
     description: 'Batch-tag your tango music library with orchestra, singer, year, genre, and more. Save hours of manual metadata work.',
     price: '$TBD',
-    paymentLink: 'https://buy.stripe.com/EXAMPLE', // Replace with your Stripe Payment Link
     downloadLink: 'https://github.com/sericson0/TigerTag/releases',
     image: '/images/TigerTag.png',
     trial: true,
