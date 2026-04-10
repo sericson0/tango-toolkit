@@ -24,3 +24,6 @@ src/content/dj-courses/previous-vdj/
 # OS
 .DS_Store
 Thumbs.db
+
+# Local Netlify folder
+.netlify

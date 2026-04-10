@@ -35,7 +35,7 @@ export const products: Product[] = [
     tagline: 'Keep the music, ditch the noise',
     description: 'Audio restoration tool for tango DJs. Remove hiss, clicks, and noise from vintage tango recordings while preserving the music.',
     price: '$40',
-    stripePriceId: '', // Set from Stripe Dashboard after creating the Price
+    stripePriceId: 'price_1TKTJtBKuwpZhxG13l8OSjvy',
     downloadLink: 'https://github.com/sericson0/hisstory-releases/releases',
     image: '/images/hisstory-logo.png',
     trial: true,

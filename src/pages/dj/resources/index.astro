@@ -2,91 +2,112 @@
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 ---
 
-<BaseLayout title="Resources — Tango DJ" description="Discographies, articles, and guides for tango DJs. Deepen your knowledge of tango music and DJing.">
+<BaseLayout title="Discographies — Tango DJ" description="Argentine tango discographies for 40+ bandleaders with nearly 15,000 songs. Browse, filter, and download discography data.">
   <section class="page-hero">
     <div class="container">
       <a href="/" class="back-link">&larr; Back to Home</a>
-      <h1>Resources</h1>
-      <p class="lead">Discographies, articles, and guides to deepen your tango DJ knowledge.</p>
+      <h1>Discographies</h1>
+      <p class="lead">Browse detailed discographies for more than 40 tango bandleaders &mdash; nearly 15,000 songs.</p>
     </div>
   </section>
 
-  <section class="resources-section">
+  <!-- ===== Description, References, Article — above the embed ===== -->
+  <section class="intro-section">
     <div class="container">
 
-      <!-- Articles -->
-      <h2>Articles</h2>
-      <div class="articles-grid">
-        <a href="/dj/history-of-tango-music/" class="article-card">
-          <img src="/articles/history-of-tango-music/Orquestras-and-Recordings-per-year-1024x614.png" alt="Tango orchestras and recordings by year" class="article-card-img" />
-          <div class="article-card-body">
-            <h3>The History of Tango Music</h3>
-            <p>How many tango recordings are there? A deep dive into the history of tango music, the recording industry, and Argentina — from the first tango recording in 1905 to the modern restoration movement.</p>
-            <span class="card-cta">Read Article →</span>
+      <div class="disco-description">
+        <p>The following discography consists of close to 15 thousand songs across more than 40 tango artists. We have tried our best to make these discographies correct and complete, but with any project of this scale there are guaranteed to be errors. If you find any, please let us know at <a href="mailto:TangoToolbox@gmail.com">TangoToolbox@gmail.com</a></p>
+        <p>Feel free to use these discographies however you see fit. We would love to hear if you find them useful. If you do, make sure to let your friends know about this resource!</p>
+        <p>The data presented here are a compilation of sources. While it certainly took effort, it was nothing compared to the monumental efforts of the researchers who meticulously compiled the information. We highly recommend you look up the references below. In addition to providing invaluable information on artist discographies, they also provide valuable notes and resources for tango DJs, historians, and aficionados.</p>
+      </div>
+
+      <!-- References (expandable) -->
+      <details class="expander">
+        <summary><strong>References &amp; Sources</strong></summary>
+        <div class="expander-body">
+          <div class="ref-list">
+            <div class="ref-item">
+              <h4><a href="https://tangosparks.com/" target="_blank" rel="noopener noreferrer">Tango Sparks</a></h4>
+              <p class="ref-subtitle">A project dedicated to delivering the definitive sound of tango music to DJs, collectors, and devotees</p>
+              <p>The discographies provided by Tango Sparks are simply invaluable. In addition, Tango Sparks delivers some of the highest quality tango sound available today.</p>
+            </div>
+
+            <div class="ref-item">
+              <h4><a href="https://tangotimetravel.be/" target="_blank" rel="noopener noreferrer">Tango Time Travel</a></h4>
+              <p class="ref-subtitle">A preservation and restoration project reviving the original sound of tango recordings</p>
+              <p>Tango Time Travel provides meticulously researched discographies of artists for select periods of their recording careers. The TTT transfers are of the highest quality and are available for purchase on their website.</p>
+            </div>
+
+            <div class="ref-item">
+              <h4><a href="https://www.el-recodo.com" target="_blank" rel="noopener noreferrer">El Recodo</a></h4>
+              <p class="ref-subtitle">A rich collection of tools for the tango community</p>
+              <p>El Recodo provides artist discography information along with an extensive suite of tools useful to tango DJs and tango music lovers. Many of the discographies presented were cross-referenced with information from El Recodo to check for completeness and accuracy.</p>
+            </div>
+
+            <div class="ref-item">
+              <h4><a href="https://www.tango-dj.at/" target="_blank" rel="noopener noreferrer">Tango-DJ.at</a></h4>
+              <p class="ref-subtitle">Association for the preservation and provision of Argentine Tango</p>
+              <p>Tango-DJ.at provides a vast database of tango discography information. This has been especially useful for searching and cross-referencing composer and author information. Tango-DJ.at is especially useful for DJs who want to compare different versions of a given recording to select the highest quality release.</p>
+            </div>
+
+            <div class="ref-item">
+              <h4><a href="https://www.guardiavieja.org/" target="_blank" rel="noopener noreferrer">Guardia Vieja</a></h4>
+              <p class="ref-subtitle">Historic tango recordings in their correct speed and the best possible sound</p>
+              <p>Guardia Vieja presents extensive research conducted by Jos&eacute; Manuel Araque, Enrique Binda, Camilo Gatica, and Mark John to prepare discographies and orchestra information on early tango orchestras. The discographies for Osvaldo Fresedo, Julio De Caro, and Juan Carlos Cobi&aacute;n depend on their extensive research. Guardia Vieja also provides high-quality transfers of early-era tango recordings.</p>
+            </div>
+
+            <div class="ref-item">
+              <h4><a href="https://www.todotango.com/" target="_blank" rel="noopener noreferrer">Todo Tango</a></h4>
+              <p class="ref-subtitle">The go-to site for tango history</p>
+              <p>TodoTango is the go-to site for anyone wanting to know about the history of tango artists and tango music. TodoTango is especially valuable for information on orchestra members along with composer and author information.</p>
+            </div>
+
+            <div class="ref-item">
+              <h4><a href="https://www.amazon.com/Encyclopedia-Tango-Gabriel-Valiente/dp/1496083172" target="_blank" rel="noopener noreferrer">Encyclopedia of Tango</a> by Gabriel Valiente</h4>
+              <p>A detailed account of tango recordings before, during, and after the golden age of tango, along with tango orchestras, musicians, and singers. A must-have resource for anyone serious about understanding the artists and tracks of the golden age of tango.</p>
+            </div>
+
+            <div class="ref-item">
+              <h4><a href="https://www.milongapress.com/authors/lavocah/" target="_blank" rel="noopener noreferrer">Milonga Press</a> &mdash; Books by Michael Lavocah</h4>
+              <p>The go-to resources for tango history. They provide meticulously documented discographies, orchestra lineups, and also help to understand the various eras of the orchestras.</p>
+            </div>
+
+            <div class="ref-item">
+              <h4><a href="https://fundacioncarlosgardel.org/" target="_blank" rel="noopener noreferrer">Carlos Gardel International Foundation</a></h4>
+              <p class="ref-subtitle">Keeping alive the legacy and figure of Carlos Gardel</p>
+              <p>The Carlos Gardel International Foundation provides an extensive discography and information on the life and music of Carlos Gardel. These resources were used to check and extend the Gardel discography presented here.</p>
+            </div>
+
+            <div class="ref-item">
+              <h4><a href="https://astorpiazzolla.com/discography/" target="_blank" rel="noopener noreferrer">The Astor Piazzolla Foundation</a></h4>
+              <p>Provides a comprehensive discography of the works of Astor Piazzolla along with orchestra composition and historical details.</p>
+            </div>
           </div>
-        </a>
-      </div>
+        </div>
+      </details>
 
-      <!-- Courses & Lessons -->
-      <h2 style="margin-top: 3rem;">Courses & Lessons</h2>
-      <p class="section-desc">Structured courses with videos, text, and practical exercises.</p>
-      <a href="/dj/courses/" class="btn btn-primary">Browse All Courses →</a>
+      <!-- History of Tango Music article link -->
+      <a href="/dj/history-of-tango-music/" class="article-link">
+        <img src="/articles/history-of-tango-music/Orquestras-and-Recordings-per-year-1024x614.png" alt="Tango orchestras and recordings by year" class="article-link-img" />
+        <div class="article-link-body">
+          <h3>The History of Tango Music</h3>
+          <p>How many tango recordings are there? A deep dive into the history of tango music, the recording industry, and Argentina &mdash; from the first tango recording in 1905 to the modern restoration movement.</p>
+          <span class="card-cta">Read Article &rarr;</span>
+        </div>
+      </a>
 
-      <!-- Materials & References -->
-      <h2 style="margin-top: 3rem;">Materials & References</h2>
-      <div class="materials-grid">
-        <article class="material-card">
-          <h3>Orchestra Era Reference</h3>
-          <p>Quick guide to major tango orchestras and their eras. Golden age, guardia nueva, and more.</p>
-          <a href="/dj/materials/" class="material-link">View reference →</a>
-        </article>
-        <article class="material-card">
-          <h3>Tanda Building Cheat Sheet</h3>
-          <p>Rules of thumb for building tandas by energy, key, and era.</p>
-          <a href="/dj/materials/" class="material-link">View cheat sheet →</a>
-        </article>
-        <article class="material-card">
-          <h3>Milonga Flow Template</h3>
-          <p>Sample structure for a 3-hour milonga. Adapt to your needs.</p>
-          <a href="/dj/materials/" class="material-link">View template →</a>
-        </article>
-      </div>
+    </div>
+  </section>
 
-      <!-- Discographies & External Links -->
-      <h2 style="margin-top: 3rem;">Discographies & External Resources</h2>
-      <ul class="resource-links">
-        <li><a href="https://www.notasdeoro.com/">Notas De Oro</a> — Information about tango songs and curated discographies</li>
-        <li><a href="https://www.el-recodo.com/">El Recodo</a> — A large discography of tango music information</li>
-        <li><a href="https://tangosparks.com/">Tango Sparks</a> — Discology tab with artist discographies and orchestra information</li>
-        <li><a href="https://www.tango-dj.at/">Tango-DJ.at</a> — A great resource for tango DJs</li>
-        <li><a href="https://tangodjsforgoodsound.info/technology/">Tango DJs for Good Sound</a> — Software and hardware tango DJs are using</li>
-        <li><a href="https://docs.google.com/spreadsheets/d/1i2q6Jrqo8-04sIqrWPmGHNL_RkgxUDh0os4KhIVR5_Y/edit">DJ Michael Plaks' 500 Tango Songs</a> — 500 tango songs that work well in the milonga</li>
-        <li><a href="https://www.milongapress.com/">Michael Lavocah's books</a> — Invaluable resources for tango DJs</li>
-      </ul>
-
-      <!-- Guides -->
-      <h2 style="margin-top: 3rem;">Guides</h2>
-      <div class="guides-grid">
-        <a href="/dj/starter-kit/" class="guide-card">
-          <h3>Getting Started Guide</h3>
-          <p>Complete walkthrough for new tango DJs. Software setup, music quality, library organization, and building tandas.</p>
-          <span class="card-cta">Read Guide →</span>
-        </a>
-        <a href="/dj/software-setup/" class="guide-card">
-          <h3>DJ Software Setup</h3>
-          <p>Step-by-step installation guide for Virtual DJ and TigerTango.</p>
-          <span class="card-cta">Read Guide →</span>
-        </a>
-        <a href="/dj/getting-started/set-lists/" class="guide-card">
-          <h3>Starting Set Lists</h3>
-          <p>Curated starting sets with 250+ songs organized into tandas.</p>
-          <span class="card-cta">View Set Lists →</span>
-        </a>
-      </div>
-
-      <p class="resources-note">
-        More resources coming soon. Have a suggestion? <a href="mailto:sericson0@gmail.com">Get in touch</a>.
-      </p>
+  <!-- ===== Embedded Discography App ===== -->
+  <section class="embed-section">
+    <div class="container-full">
+      <iframe
+        src="https://sericson0.github.io/tango-discographies/"
+        title="Argentine Tango Discographies"
+        class="disco-embed"
+        loading="lazy"
+      ></iframe>
     </div>
   </section>
 </BaseLayout>
@@ -98,80 +119,139 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
     border-bottom: 1px solid var(--color-orange-100);
   }
 
-  .back-link {
-    display: inline-block;
-    margin-bottom: 1rem;
-    font-size: 0.9rem;
-    color: var(--color-slate-600);
-  }
-
+  .back-link { display: inline-block; margin-bottom: 1rem; font-size: 0.9rem; color: var(--color-slate-600); }
   .back-link:hover { color: var(--color-primary); }
   .page-hero h1 { margin: 0 0 0.5rem; }
+  .lead { font-size: 1.2rem; color: var(--color-slate-600); margin: 0; max-width: 60ch; }
 
-  .lead {
-    font-size: 1.2rem;
+  /* ===== Intro Section ===== */
+  .intro-section {
+    padding: 2.5rem 0;
+    border-bottom: 1px solid var(--color-slate-200);
+  }
+
+  .disco-description {
+    margin-bottom: 1.5rem;
+  }
+
+  .disco-description p {
     color: var(--color-slate-600);
-    margin: 0;
-  }
-
-  .resources-section {
-    padding: 3rem 0 4rem;
-  }
-
-  .resources-section h2 {
-    margin: 0 0 1rem;
-  }
-
-  .section-desc {
-    color: var(--color-slate-600);
-    margin: 0 0 1rem;
     font-size: 0.95rem;
+    line-height: 1.7;
+    margin: 0 0 0.75rem;
+    max-width: 70ch;
   }
 
-  /* Article cards */
-  .articles-grid {
-    display: grid;
-    grid-template-columns: 1fr;
+  .disco-description a {
+    color: var(--color-primary);
+    font-weight: 500;
+  }
+
+  /* ===== Expander ===== */
+  .expander {
+    border: 1px solid var(--color-slate-200);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin-bottom: 1.5rem;
+  }
+
+  .expander summary {
+    padding: 1rem 1.5rem;
+    cursor: pointer;
+    background: white;
+    font-size: 1rem;
+    list-style: none;
+    transition: background 0.15s;
+  }
+
+  .expander summary::-webkit-details-marker { display: none; }
+  .expander summary::before { content: "\25B8 "; color: var(--color-slate-400); margin-right: 0.35rem; }
+  .expander[open] summary::before { content: "\25BE "; }
+  .expander summary:hover { background: var(--color-slate-50); }
+
+  .expander-body {
+    padding: 0 1.5rem 1.5rem;
+  }
+
+  /* ===== References ===== */
+  .ref-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  .ref-item {
+    padding-left: 1rem;
+    border-left: 3px solid var(--color-orange-300);
+  }
+
+  .ref-item h4 {
+    margin: 0 0 0.15rem;
+    font-size: 1rem;
+  }
+
+  .ref-item h4 a {
+    color: var(--color-primary);
+    text-decoration: none;
+    font-weight: 600;
+  }
+
+  .ref-item h4 a:hover { text-decoration: underline; }
+
+  .ref-subtitle {
+    font-style: italic;
+    font-size: 0.85rem;
+    color: var(--color-slate-500);
+    margin: 0 0 0.35rem;
+  }
+
+  .ref-item p {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--color-slate-600);
+    line-height: 1.6;
+  }
+
+  /* ===== Article link card ===== */
+  .article-link {
+    display: flex;
     gap: 1.5rem;
-  }
-
-  .article-card {
-    display: block;
+    align-items: center;
     text-decoration: none;
     color: inherit;
     background: white;
-    border: 2px solid var(--color-orange-300);
+    border: 1px solid var(--color-slate-200);
     border-radius: var(--radius-lg);
     overflow: hidden;
     transition: all 0.2s;
   }
 
-  .article-card:hover {
-    border-color: var(--color-orange-500);
+  .article-link:hover {
+    border-color: var(--color-orange-400);
     box-shadow: var(--shadow-md);
-    transform: translateY(-2px);
   }
 
-  .article-card-img {
-    width: 100%;
+  .article-link-img {
+    width: 240px;
     height: auto;
+    flex-shrink: 0;
     display: block;
-    border-bottom: 1px solid var(--color-slate-200);
   }
 
-  .article-card-body {
-    padding: 1.5rem;
+  .article-link-body {
+    padding: 1rem 1.5rem 1rem 0;
   }
 
-  .article-card h3 {
-    margin: 0 0 0.5rem;
-    font-size: 1.15rem;
+  .article-link h3 {
+    margin: 0 0 0.35rem;
+    font-size: 1.1rem;
   }
 
-  .article-card p {
-    margin: 0 0 1rem;
+  .article-link p {
+    margin: 0 0 0.75rem;
     color: var(--color-slate-600);
-    font-size: 0.95rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
   }
 
   .card-cta {
@@ -180,124 +260,37 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
     font-size: 0.95rem;
   }
 
-  /* Materials grid */
-  .materials-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1.5rem;
+  @media (max-width: 640px) {
+    .article-link {
+      flex-direction: column;
+    }
+
+    .article-link-img {
+      width: 100%;
+    }
+
+    .article-link-body {
+      padding: 1rem 1.5rem 1.5rem;
+    }
   }
 
-  .material-card {
-    background: white;
-    border: 1px solid var(--color-slate-200);
-    border-radius: var(--radius-lg);
-    padding: 1.5rem;
-    transition: all 0.2s;
-  }
-
-  .material-card:hover {
-    border-color: var(--color-orange-400);
-    box-shadow: var(--shadow-md);
-  }
-
-  .material-card h3 {
-    margin: 0 0 0.5rem;
-    font-size: 1.1rem;
-  }
-
-  .material-card p {
-    margin: 0 0 1rem;
-    color: var(--color-slate-600);
-    font-size: 0.95rem;
-  }
-
-  .material-link {
-    font-weight: 500;
-    color: var(--color-primary);
-  }
-
-  .material-link:hover {
-    color: var(--color-primary-hover);
-  }
-
-  /* Resource links */
-  .resource-links {
-    list-style: none;
+  /* ===== Embedded Discography ===== */
+  .embed-section {
     padding: 0;
-    margin: 0;
   }
 
-  .resource-links li {
-    margin-bottom: 0.75rem;
-    padding-left: 1.25rem;
-    position: relative;
+  .container-full {
+    max-width: 100%;
+    padding: 0;
   }
 
-  .resource-links li::before {
-    content: "→";
-    position: absolute;
-    left: 0;
-    color: var(--color-orange-500);
-  }
-
-  /* Guides grid */
-  .guides-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 1.5rem;
-  }
-
-  .guide-card {
+  .disco-embed {
+    width: 100%;
+    height: 85vh;
+    min-height: 600px;
+    border: none;
+    border-top: 1px solid var(--color-slate-200);
     display: block;
-    text-decoration: none;
-    color: inherit;
-    background: white;
-    border: 1px solid var(--color-slate-200);
-    border-radius: var(--radius-lg);
-    padding: 1.5rem;
-    transition: all 0.2s;
-  }
-
-  .guide-card:hover {
-    border-color: var(--color-orange-400);
-    box-shadow: var(--shadow-md);
-    transform: translateY(-2px);
-  }
-
-  .guide-card h3 {
-    margin: 0 0 0.5rem;
-    font-size: 1.1rem;
-  }
-
-  .guide-card p {
-    margin: 0 0 1rem;
-    color: var(--color-slate-600);
-    font-size: 0.95rem;
-  }
-
-  .resources-note {
-    margin-top: 3rem;
-    font-size: 0.9rem;
-    color: var(--color-slate-500);
-    text-align: center;
-  }
-
-  .btn {
-    display: inline-block;
-    padding: 0.5rem 1rem;
-    border-radius: var(--radius-md);
-    font-weight: 500;
-    transition: background 0.2s, color 0.2s;
-  }
-
-  .btn-primary {
-    background: var(--color-primary);
-    color: white;
-  }
-
-  .btn-primary:hover {
-    background: var(--color-primary-hover);
-    color: white;
   }
 
   .container {
