@@ -1,49 +1,77 @@
 import type { Context } from "@netlify/functions";
 import Stripe from "stripe";
-import nacl from "tweetnacl";
+import { createHash, randomBytes } from "node:crypto";
 
 /**
  * Stripe Webhook Handler for Hisstory License Key Delivery
  *
- * Listens for checkout.session.completed events, generates an Ed25519-signed
- * license key, and emails it to the customer via Resend.
+ * Listens for checkout.session.completed events:
+ *   1. Generates a SHA-512 keyed-hash license key (matches hisstory keygen.py)
+ *   2. Adds customer to Resend Audience (newsletter or critical-only)
+ *   3. Emails the license key via Resend
  *
  * Required environment variables:
- *   STRIPE_WEBHOOK_SECRET  - Stripe webhook signing secret (whsec_...)
- *   HISSTORY_SIGNING_KEY   - Base64-encoded 32-byte Ed25519 private key
- *   RESEND_API_KEY         - Resend API key for sending emails
- *   RESEND_FROM_EMAIL      - Sender email address (e.g. "Hisstory <keys@tangotoolkit.com>")
+ *   STRIPE_SECRET_KEY        - Stripe API secret key
+ *   STRIPE_WEBHOOK_SECRET    - Stripe webhook signing secret (whsec_...)
+ *   HISSTORY_KEYGEN_SECRET   - Hex-encoded 32-byte secret (matches keygen.py / LicenseManager.cpp)
+ *   RESEND_API_KEY           - Resend API key for sending emails
+ *   RESEND_FROM_EMAIL        - Sender email address
+ *   RESEND_AUDIENCE_ID       - Resend Audience ID for subscriber storage
  */
 
-const PAYLOAD_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+const ALPHABET = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
 
-function generateLicenseKey(signingKeyBase64: string): string {
-  const signingKeyBytes = Uint8Array.from(atob(signingKeyBase64), (c) =>
-    c.charCodeAt(0)
-  );
+function generateLicenseKey(secretHex: string): string {
+  const secretBytes = Buffer.from(secretHex, "hex");
 
-  // Generate random 8-char alphanumeric payload
-  const randomBytes = nacl.randomBytes(8);
-  let randomPart = "";
-  for (let i = 0; i < 8; i++) {
-    randomPart += PAYLOAD_CHARS[randomBytes[i] % PAYLOAD_CHARS.length];
+  // Generate 12 random chars from ALPHABET
+  const randBytes = randomBytes(12);
+  let payload = "";
+  for (let i = 0; i < 12; i++) {
+    payload += ALPHABET[randBytes[i] % ALPHABET.length];
   }
-  const payload = `HISS-${randomPart}`;
 
-  // Sign with Ed25519 (tweetnacl uses 64-byte secret key = 32-byte seed + 32-byte public key)
-  const keyPair = nacl.sign.keyPair.fromSeed(signingKeyBytes);
-  const signature = nacl.sign.detached(
-    new TextEncoder().encode(payload),
-    keyPair.secretKey
+  // SHA-512(secret + payload) -> first 4 bytes -> map to ALPHABET for checksum
+  const hash = createHash("sha512")
+    .update(Buffer.concat([secretBytes, Buffer.from(payload, "utf-8")]))
+    .digest();
+
+  let checksum = "";
+  for (let i = 0; i < 4; i++) {
+    checksum += ALPHABET[hash[i] % ALPHABET.length];
+  }
+
+  const full = payload + checksum;
+  return `${full.slice(0, 4)}-${full.slice(4, 8)}-${full.slice(8, 12)}-${full.slice(12, 16)}`;
+}
+
+async function addToResendAudience(
+  email: string,
+  firstName: string | undefined,
+  optedIntoNewsletter: boolean,
+  apiKey: string,
+  audienceId: string
+): Promise<void> {
+  const response = await fetch(
+    `https://api.resend.com/audiences/${audienceId}/contacts`,
+    {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${apiKey}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        email,
+        first_name: firstName || "",
+        unsubscribed: !optedIntoNewsletter,
+      }),
+    }
   );
 
-  // Base64url encode signature (no padding)
-  const sigB64 = btoa(String.fromCharCode(...signature))
-    .replace(/\+/g, "-")
-    .replace(/\//g, "_")
-    .replace(/=+$/, "");
-
-  return `${payload}-${sigB64}`;
+  if (!response.ok) {
+    const error = await response.text();
+    console.error(`Failed to add contact to Resend Audience: ${response.status} ${error}`);
+  }
 }
 
 async function sendLicenseEmail(
@@ -104,12 +132,13 @@ export default async (req: Request, _context: Context) => {
   }
 
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
-  const signingKey = process.env.HISSTORY_SIGNING_KEY;
+  const keygenSecret = process.env.HISSTORY_KEYGEN_SECRET;
   const resendApiKey = process.env.RESEND_API_KEY;
   const fromEmail =
     process.env.RESEND_FROM_EMAIL || "Hisstory <noreply@tangotoolkit.com>";
+  const audienceId = process.env.RESEND_AUDIENCE_ID;
 
-  if (!webhookSecret || !signingKey || !resendApiKey) {
+  if (!webhookSecret || !keygenSecret || !resendApiKey || !audienceId) {
     console.error("Missing required environment variables");
     return new Response("Server configuration error", { status: 500 });
   }
@@ -147,12 +176,29 @@ export default async (req: Request, _context: Context) => {
     return new Response("No customer email", { status: 400 });
   }
 
+  const customerName = session.customer_details?.name?.split(" ")[0];
+  const optedIntoNewsletter = session.consent?.promotions === "opt_in";
+
   try {
-    const licenseKey = generateLicenseKey(signingKey);
+    // 1. Generate license key
+    const licenseKey = generateLicenseKey(keygenSecret);
     console.log(
       `Generated license key for ${customerEmail} (session: ${session.id})`
     );
 
+    // 2. Add to Resend Audience
+    await addToResendAudience(
+      customerEmail,
+      customerName,
+      optedIntoNewsletter,
+      resendApiKey,
+      audienceId
+    );
+    console.log(
+      `Added ${customerEmail} to audience (newsletter: ${optedIntoNewsletter})`
+    );
+
+    // 3. Email license key
     await sendLicenseEmail(customerEmail, licenseKey, resendApiKey, fromEmail);
     console.log(`License key emailed to ${customerEmail}`);
 
@@ -161,7 +207,7 @@ export default async (req: Request, _context: Context) => {
       { status: 200 }
     );
   } catch (err) {
-    console.error("Failed to generate/send license key:", err);
+    console.error("Failed to process checkout:", err);
     return new Response("Internal error", { status: 500 });
   }
 };
