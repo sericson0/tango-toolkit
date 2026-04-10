@@ -157,7 +157,7 @@ const tigertanda = products.find((p) => p.id === 'tigertanda');
 
       <!-- Download -->
       <h3 class="section-label">Download</h3>
-      <p class="section-note">Try Hisstory free for 2 days with full access to all features. No credit card required.</p>
+      <p class="section-note">Hisstory is free to try for 2 days with full access &mdash; no credit card required. To keep using it after the trial, click <strong>Purchase License</strong> below and you&rsquo;ll receive an activation key by email to paste into the app.</p>
       <div class="download-buttons">
         <a href="https://github.com/sericson0/hisstory-releases/releases/download/v1.0.0/Hisstory-Windows-Installer.exe" class="download-btn-large">
           <span class="dl-icon">&#128187;</span>
@@ -184,105 +184,15 @@ const tigertanda = products.find((p) => p.id === 'tigertanda');
         )}
       </div>
 
-      <!-- Quick Start -->
-      <h3 class="section-label">Quick Start</h3>
+      <!-- Install -->
+      <h3 class="section-label">Install</h3>
       <div class="guide-content">
-        <h4>1. Install the Plugin</h4>
-        <ul>
-          <li><strong>Windows:</strong> Copy <code>Hisstory.vst3</code> to <code>C:\Program Files\Common Files\VST3\</code>, then rescan in your DAW.</li>
-          <li><strong>macOS:</strong> Copy <code>Hisstory.vst3</code> to <code>~/Library/Audio/Plug-Ins/VST3/</code>, then restart or rescan in your DAW.</li>
-        </ul>
+        <h4>Windows</h4>
+        <p>Copy <code>Hisstory.vst3</code> to <code>C:\Program Files\Common Files\VST3\Hisstory.vst3</code>, then rescan plugins in your DAW.</p>
 
-        <h4>2. Load Hisstory on the Noisy Track</h4>
-        <p>Insert <strong>Hisstory</strong> on the track or bus with hiss/noise, and start playback on a representative section.</p>
-
-        <h4>3. Dial In Settings</h4>
-        <p>Start with these defaults:</p>
-        <ul>
-          <li><strong>Threshold:</strong> -23 dB</li>
-          <li><strong>Reduction:</strong> 12 dB</li>
-          <li><strong>Adaptive:</strong> ON</li>
-        </ul>
-        <p>Then raise <strong>Threshold</strong> slowly until the hiss drops clearly, raise <strong>Reduction</strong> only as needed, and use <strong>Bypass</strong> to A/B &mdash; keep the result sounding natural.</p>
-
-        <h4>4. If You Hear Artifacts</h4>
-        <ul>
-          <li><strong>Dull or lispy:</strong> lower Threshold (more negative) or lower Reduction</li>
-          <li><strong>Chirpy/warbly:</strong> back off both controls a bit</li>
-          <li><strong>Not enough cleanup:</strong> raise Threshold slightly and/or increase Reduction</li>
-        </ul>
+        <h4>macOS</h4>
+        <p>Double-click the downloaded <code>.dmg</code> file to mount it &mdash; a window will open showing <code>Hisstory.vst3</code>. Drag it into <code>/Library/Audio/Plug-Ins/VST3/</code> (system-wide) or <code>~/Library/Audio/Plug-Ins/VST3/</code> (current user only), then eject the disk image and restart or rescan plugins in your DAW.</p>
       </div>
-
-      <!-- Controls Reference -->
-      <details class="guide-expander">
-        <summary><strong>Controls Reference</strong> &mdash; click to expand</summary>
-        <div class="guide-content">
-          <h4>Main Sliders</h4>
-          <ul>
-            <li><strong>Threshold</strong> (-40 to -10 dB, default -23) &mdash; Controls how much of the signal gets classified as noise. Higher = more aggressive, lower = more conservative.</li>
-            <li><strong>Reduction</strong> (0 to 32 dB, default 12) &mdash; How much detected noise gets attenuated. Higher values remove more hiss but can introduce dullness.</li>
-          </ul>
-
-          <h4>6-Band Threshold Curve</h4>
-          <p>Drag the numbered control points on the analyzer to shape the threshold by frequency region:</p>
-          <ul>
-            <li>Band 1: 200&ndash;900 Hz &nbsp;|&nbsp; Band 2: 900 Hz&ndash;2.1 kHz &nbsp;|&nbsp; Band 3: 2.1&ndash;3.9 kHz</li>
-            <li>Band 4: 3.9&ndash;6.3 kHz &nbsp;|&nbsp; Band 5: 6.3&ndash;9.8 kHz &nbsp;|&nbsp; Band 6: 9.8&ndash;22 kHz</li>
-          </ul>
-          <p>Drag <strong>up</strong> to remove more noise in that region, <strong>down</strong> to preserve more signal.</p>
-
-          <h4>Top Bar</h4>
-          <ul>
-            <li><strong>Analyzer / Spectrogram</strong> &mdash; toggle between frequency curve and time-frequency heatmap</li>
-            <li><strong>Reset</strong> &mdash; reset all 6 band points to defaults</li>
-            <li><strong>Adaptive</strong> &mdash; continuously learns the noise floor from quiet moments</li>
-            <li><strong>Bypass</strong> &mdash; pass original audio through for A/B comparison</li>
-          </ul>
-
-          <h4>Advanced Settings (+)</h4>
-          <ul>
-            <li><strong>Smoothing</strong> (0&ndash;100%, default 50) &mdash; Controls how quickly the noise gate closes. Higher = smoother but softer transients.</li>
-            <li><strong>Dry/Wet</strong> (0&ndash;100%, default 100) &mdash; Blend original and processed signal. 85&ndash;95% can add back natural room tone.</li>
-            <li><strong>Residual Listen</strong> &mdash; hear what&rsquo;s being removed. If you hear music, back off your settings.</li>
-          </ul>
-
-          <h4>Metrics</h4>
-          <ul>
-            <li><strong>HF Removed</strong> &mdash; high-frequency energy removed (4&ndash;16 kHz). Green &lt; -3 dB, Orange -3 to -1 dB.</li>
-            <li><strong>Harmonic Loss</strong> &mdash; tonal energy lost above 2 kHz. Green &lt; 3%, Orange 3&ndash;10%, Red &gt; 10%.</li>
-          </ul>
-        </div>
-      </details>
-
-      <!-- Tips -->
-      <details class="guide-expander">
-        <summary><strong>Tips</strong> &mdash; click to expand</summary>
-        <div class="guide-content">
-          <ul>
-            <li>Slightly under-processing almost always sounds more natural than heavy removal</li>
-            <li>Right-click any slider to reset it to its default value</li>
-            <li>Use Residual Listen periodically as a sanity check &mdash; you want to hear only noise</li>
-            <li>The Dry/Wet control at 85&ndash;95% can add back natural room tone without reintroducing obvious hiss</li>
-            <li>For album or playlist processing with Adaptive on, Hisstory re-adapts at each silence gap &mdash; no need to reset between tracks</li>
-            <li>The spectrogram is especially useful for spotting over-processing: if musical peaks start fading, ease off</li>
-          </ul>
-        </div>
-      </details>
-
-      <!-- Troubleshooting -->
-      <details class="guide-expander">
-        <summary><strong>Troubleshooting</strong> &mdash; click to expand</summary>
-        <div class="guide-content">
-          <ul>
-            <li><strong>Sound is dull or lispy:</strong> Lower Threshold or Reduction. Pull down upper bands (5&ndash;6). Check Harmonic Loss metric.</li>
-            <li><strong>Chirpy/warbly artifacts:</strong> Back off Threshold and Reduction. Increase Smoothing in advanced panel.</li>
-            <li><strong>Not enough hiss removal:</strong> Raise Threshold slightly, increase Reduction in small steps, lift upper frequency bands.</li>
-            <li><strong>Plugin sounds different on a new track:</strong> Adaptive mode needs a moment to learn the noise profile. The first second or two may sound under-processed.</li>
-            <li><strong>Residual listen shows music content:</strong> Settings are too aggressive. Lower Threshold and Reduction.</li>
-            <li><strong>High latency:</strong> Hisstory introduces ~160 ms latency at 44.1 kHz. Most DAWs compensate automatically with PDC.</li>
-          </ul>
-        </div>
-      </details>
 
       <p class="contact-note">Questions or feedback? Reach out at <a href="mailto:tangotoolkit@gmail.com">tangotoolkit@gmail.com</a></p>
     </div>
