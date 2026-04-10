@@ -131,6 +131,7 @@ export default async (req: Request, _context: Context) => {
     return new Response("Method not allowed", { status: 405 });
   }
 
+  const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
   const keygenSecret = process.env.HISSTORY_KEYGEN_SECRET;
   const resendApiKey = process.env.RESEND_API_KEY;
@@ -138,12 +139,12 @@ export default async (req: Request, _context: Context) => {
     process.env.RESEND_FROM_EMAIL || "Hisstory <noreply@tangotoolkit.com>";
   const audienceId = process.env.RESEND_AUDIENCE_ID;
 
-  if (!webhookSecret || !keygenSecret || !resendApiKey || !audienceId) {
+  if (!stripeSecretKey || !webhookSecret || !keygenSecret || !resendApiKey || !audienceId) {
     console.error("Missing required environment variables");
     return new Response("Server configuration error", { status: 500 });
   }
 
-  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || "", {
+  const stripe = new Stripe(stripeSecretKey, {
     apiVersion: "2025-03-31.basil",
   });
 
