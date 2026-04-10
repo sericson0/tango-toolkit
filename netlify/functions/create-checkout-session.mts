@@ -46,7 +46,7 @@ export default async (req: Request, _context: Context) => {
       consent_collection: { promotions: "auto" },
       allow_promotion_codes: true,
       success_url: `${origin}/dj/paid/success/?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${origin}/dj/paid/`,
+      cancel_url: `${origin}/dj/software/`,
       metadata: { product_id: productId },
     });
 
