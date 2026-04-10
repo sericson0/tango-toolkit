@@ -11,8 +11,7 @@
   "dependencies": {
     "@astrojs/mdx": "^3.1.0",
     "astro": "^4.16.0",
-    "stripe": "^21.0.0",
-    "tweetnacl": "^1.0.3"
+    "stripe": "^21.0.0"
   },
   "devDependencies": {
     "netlify-cli": "^23.15.1",
