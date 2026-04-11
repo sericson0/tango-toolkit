@@ -219,22 +219,27 @@ const tigertanda = products.find((p) => p.id === 'tigertanda');
       <p class="tool-desc-full">Batch-tag your tango music library with orchestra, singer, year, genre, and more. Save hours of manual metadata work.</p>
 
       <div class="download-buttons">
-        <a href={tigertag?.downloadLink} target="_blank" rel="noopener noreferrer" class="download-btn-large">
-          <span class="dl-icon">&#128229;</span>
+        <a href="https://github.com/sericson0/tigertag-releases/releases/download/v1.0.0/TigerTag-Windows-x64.zip" class="download-btn-large">
+          <span class="dl-icon">&#128187;</span>
           <div>
-            <strong>Download TigerTag</strong>
-            <span>Free trial available</span>
+            <strong>Download for Windows</strong>
+            <span>TigerTag (.zip, 4.4 MB)</span>
           </div>
         </a>
-        {tigertag?.stripePriceId && (
-          <button type="button" class="download-btn-large purchase-btn checkout-btn" data-product-id="tigertag">
-            <span class="dl-icon">&#128179;</span>
-            <div>
-              <strong>Purchase Key &mdash; {tigertag.price}</strong>
-              <span>One-time purchase</span>
-            </div>
-          </button>
-        )}
+        <a href="https://github.com/sericson0/tigertag-releases/releases/download/v1.0.0/TigerTag-macOS.dmg" class="download-btn-large">
+          <span class="dl-icon">&#128187;</span>
+          <div>
+            <strong>Download for macOS</strong>
+            <span>TigerTag (.dmg, 4.8 MB)</span>
+          </div>
+        </a>
+        <button type="button" class="download-btn-large purchase-btn checkout-btn" data-product-id="tigertag">
+          <span class="dl-icon">&#128179;</span>
+          <div>
+            <strong>Purchase Key &mdash; {tigertag?.price}</strong>
+            <span>One-time purchase</span>
+          </div>
+        </button>
       </div>
     </div>
   </section>
