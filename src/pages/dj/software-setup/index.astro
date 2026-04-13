@@ -1,16 +1,11 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PageHero from '../../../components/PageHero.astro';
 ---
 
 <BaseLayout title="DJ Software Setup" description="Step-by-step guide to installing Virtual DJ and TigerTango for tango DJing. Download installers, configure audio, and get playing.">
   <article class="article-page">
-    <section class="page-hero">
-      <div class="container">
-        <a href="/" class="back-link">&larr; Back to Home</a>
-        <h1>DJ Software Setup</h1>
-        <p class="lead">Install Virtual DJ and TigerTango &mdash; a free interface built specifically for tango DJs.</p>
-      </div>
-    </section>
+    <PageHero title="DJ Software Setup" lead="Install Virtual DJ and TigerTango — a free interface built specifically for tango DJs." />
 
     <div class="article-body">
       <div class="container narrow">
@@ -416,32 +411,7 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 </BaseLayout>
 
 <style>
-  .page-hero {
-    padding: 3rem 0;
-    background: linear-gradient(135deg, var(--color-orange-50) 0%, white 100%);
-    border-bottom: 1px solid var(--color-orange-100);
-  }
-
-  .back-link { display: inline-block; margin-bottom: 1rem; font-size: 0.9rem; color: var(--color-slate-600); }
-  .back-link:hover { color: var(--color-primary); }
-  .page-hero h1 { margin: 0 0 0.5rem; }
-  .lead { font-size: 1.2rem; color: var(--color-slate-600); margin: 0; max-width: 55ch; }
-
-  .article-body { padding: 3rem 0; }
-
-  .narrow { max-width: 68rem; margin: 0 auto; padding: 0 1.5rem; }
-
-  .toc {
-    background: var(--color-slate-50);
-    border: 1px solid var(--color-slate-200);
-    border-radius: var(--radius-lg);
-    padding: 1.5rem 2rem;
-    margin-bottom: 2rem;
-  }
-
-  .toc h3 { margin: 0 0 0.75rem; font-size: 1rem; }
-  .toc ol { margin: 0; padding-left: 1.25rem; }
-  .toc li { margin-bottom: 0.25rem; font-size: 0.95rem; }
+  .narrow { max-width: 68rem; }
 
   .prose h2 {
     margin: 2.5rem 0 1rem;
@@ -451,106 +421,6 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 
   .prose h3 { margin: 2rem 0 0.75rem; }
   .prose h4 { margin: 1.25rem 0 0.5rem; }
-
-  /* Callout boxes */
-  .callout {
-    padding: 1rem 1.25rem;
-    border-radius: var(--radius-md);
-    margin: 1.5rem 0;
-    font-size: 0.95rem;
-  }
-
-  .callout strong { display: block; margin-bottom: 0.25rem; }
-  .callout p { margin: 0; color: var(--color-slate-600); }
-
-  .callout-critical {
-    background: #fef2f2;
-    border-left: 4px solid #ef4444;
-  }
-
-  .callout-critical strong { color: #b91c1c; }
-
-  .callout-config {
-    background: #eff6ff;
-    border-left: 4px solid #3b82f6;
-  }
-
-  .callout-config strong { color: #1d4ed8; }
-
-  .callout-tip {
-    background: #f0fdf4;
-    border-left: 4px solid #22c55e;
-  }
-
-  .callout-tip strong { color: #15803d; }
-
-  /* Download buttons */
-  .download-buttons {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
-    gap: 1rem;
-    margin: 1.5rem 0;
-  }
-
-  .download-btn-large {
-    display: flex;
-    align-items: center;
-    gap: 1rem;
-    padding: 1.25rem 1.5rem;
-    background: white;
-    color: var(--color-slate-800);
-    border: 2px solid var(--color-slate-300);
-    border-radius: var(--radius-lg);
-    text-decoration: none;
-    transition: all 0.2s;
-  }
-
-  .download-btn-large:hover {
-    border-color: var(--color-orange-400);
-    color: var(--color-slate-900);
-    transform: translateY(-2px);
-    box-shadow: var(--shadow-md);
-  }
-
-  .dl-icon { font-size: 1.5rem; color: var(--color-orange-500); }
-
-  .download-btn-large div {
-    display: flex;
-    flex-direction: column;
-  }
-
-  .download-btn-large strong { font-size: 1.05rem; }
-
-  .download-btn-large span {
-    font-size: 0.8rem;
-    color: var(--color-slate-500);
-  }
-
-  /* Testimonials */
-  .testimonials {
-    display: grid;
-    gap: 1rem;
-    margin: 1.5rem 0;
-  }
-
-  .testimonials blockquote {
-    margin: 0;
-    padding: 1rem 1.25rem;
-    background: var(--color-slate-50);
-    border-left: 3px solid var(--color-orange-400);
-    border-radius: var(--radius-md);
-  }
-
-  .testimonials blockquote p {
-    margin: 0 0 0.5rem;
-    font-style: italic;
-  }
-
-  .testimonials cite {
-    font-size: 0.85rem;
-    color: var(--color-slate-500);
-    font-style: normal;
-  }
 
   /* Layout overview grid */
   .layout-grid {
@@ -610,18 +480,4 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
     overflow-x: auto;
     line-height: 1.6;
   }
-
-  hr {
-    border: none;
-    border-top: 1px solid var(--color-slate-200);
-    margin: 2rem 0;
-  }
-
-  .contact-note {
-    text-align: center;
-    font-size: 0.9rem;
-    color: var(--color-slate-500);
-  }
-
-  .container { max-width: var(--container-max); margin: 0 auto; padding: 0 1.5rem; }
 </style>

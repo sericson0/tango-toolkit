@@ -8,7 +8,7 @@ import BaseLayout from '../../../../layouts/BaseLayout.astro';
       <div class="success-card">
         <div class="checkmark">&#10003;</div>
         <h1>You're registered!</h1>
-        <p>Thank you for signing up. We'll keep you posted on new resources, courses, and tools for the tango community.</p>
+        <p>Thank you for signing up. We'll keep you posted on new resources and tools for the tango community.</p>
         <div class="success-links">
           <a href="/dj/starter-kit/" class="btn btn-primary">DJ Starter Kit &rarr;</a>
           <a href="/" class="btn btn-secondary">Home</a>
@@ -56,18 +56,4 @@ import BaseLayout from '../../../../layouts/BaseLayout.astro';
 
   .success-links { display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center; }
 
-  .btn {
-    display: inline-block;
-    padding: 0.6rem 1.25rem;
-    border-radius: var(--radius-md);
-    font-weight: 500;
-    transition: background 0.2s, color 0.2s;
-  }
-
-  .btn-primary { background: var(--color-primary); color: white; }
-  .btn-primary:hover { background: var(--color-primary-hover); color: white; }
-  .btn-secondary { background: var(--color-slate-100); color: var(--color-slate-700); }
-  .btn-secondary:hover { background: var(--color-slate-200); }
-
-  .container { max-width: var(--container-max); margin: 0 auto; padding: 0 1.5rem; }
 </style>

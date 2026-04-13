@@ -1,16 +1,11 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PageHero from '../../../components/PageHero.astro';
 ---
 
-<BaseLayout title="Starter Kit — Tango DJ" description="A complete walkthrough for new tango DJs. Set up your software, get good music, organize your library, and build your first tandas.">
+<BaseLayout title="Starter Kit — Tango DJ" description="A walkthrough for new tango DJs. Set up your software, organize your library, and build your first tandas.">
   <article class="article-page">
-    <section class="page-hero">
-      <div class="container">
-        <a href="/" class="back-link">&larr; Back to Home</a>
-        <h1>Starter Kit</h1>
-        <p class="lead">Everything you need to know and have to start tango DJing.</p>
-      </div>
-    </section>
+    <PageHero title="Starter Kit" lead="Everything you need to know and have to start tango DJing." />
 
     <div class="article-body">
       <div class="container narrow">
@@ -18,17 +13,49 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 
 <div class="welcome-box">
   <p>Hello dear aspiring tango DJ!</p>
-  <p>This guide is intended to be a useful resource to help you on your journey. It won't teach you the art of DJing, but hopefully it can remove some of the barriers to getting started.</p>
-  <a href="/dj/register/" class="btn btn-primary">Register here &rarr;</a>
-  <span class="register-note">Let us know who you are so we can keep you updated on new resources.</span>
+  <p>This guide is intended to be a useful resource to help you get started on your tango DJ journey.</p>
+  <a href="/dj/register/" class="btn btn-primary">Join Here</a> to stay up to date on 
+  the latest tools and resources. We will also send you a starter pack of quality tango music to help you on your DJ journey.
 </div>
+
+<h2 id="overview">Overview</h2>
+<p>This guide helps you get set up for success with DJing. You can't skip 
+the countless hours of listening and practice required to become a great tango DJ.
+But we can give you the right approach, tools, and information so you can make the most of
+the hours you do spend. </p>
+
+<p>Tango DJs are conduits, connecting music the past to dancers in the present.
+   A good DJ can shape the emotions and experience in the room, providing a unique and memorable experience.
+   There are many factors to consider, from deciding which track to play, to which tracks to buy in the first place. 
+</p>
+<p>   
+   The figure below shows the full process music takes from the orchestra's instruments to the dancers' ears.
+   You will want to understand each step in the prosses, because the end result is only as strong as the weakest link in the chain. 
+   Lucky for you, this website has lots of resources to support you on your journey.
+</p>   
+<img src="/images/Stages of Music.png" alt="Stages of Music" class="hero-image" />
+<ol>
+  <li>Orchestra performs. See <a href="#overview">Overview</a></li>
+  <li>Go to <strong>Settings</strong> (gear icon in upper right)</li>
+  <li>Select <strong>Options</strong></li>
+  <li>Type <code>checkUpdates</code></li>
+  <li>Select <strong>No</strong></li>
+</ol>
+
+<a href="/dj/history-of-tango-music/" class="article-link">
+  <img src="/articles/history-of-tango-music/Orquestras-and-Recordings-per-year-1024x614.png" alt="Tango orchestras and recordings by year" class="article-link-img" />
+  <div class="article-link-body">
+    <h3>The History of Tango Music</h3>
+    <p>How many tango recordings are there? A deep dive into the history of tango music, the recording industry, and Argentina &mdash; from the first tango recording in 1905 to the modern restoration movement.</p>
+    <span class="article-link-cta">Read Article &rarr;</span>
+  </div>
+</a>
 
 <nav class="toc">
   <h3>In this guide</h3>
   <ol>
     <li><a href="#overview">Overview</a></li>
-    <li><a href="#terms">Terms, Conditions &amp; Requests</a></li>
-    <li><a href="#audio-player">Audio Player</a></li>
+    <li><a href="#audio-player">DJ Software</a></li>
     <li><a href="#music">Music</a></li>
     <li><a href="#music-provided">Music Provided</a></li>
     <li><a href="#organizing">Organizing Your Music</a></li>
@@ -37,107 +64,23 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
   </ol>
 </nav>
 
-<h2 id="overview">Overview</h2>
-
-<p>What is in this guide:</p>
+<h2 id="audio-player">DJ Software</h2>
+<p>Tango DJs use a range of different software. The website <a href="https://tangodjsforgoodsound.info/technology/">Tango DJs for Good Sound</a> shows what a range of tools DJs use. A few of the most popular software are:</p>
 <ul>
-  <li>Files for downloading a free version of Virtual DJ</li>
-  <li>A curated set of songs to get you started DJing</li>
-  <li>A getting started walkthrough (what you are reading now)</li>
+  <li><a href="https://virtualdj.com/">Virtual DJ</a></li>
+  <li><a href="https://www.ricciadams.com/projects/embrace/">Embrace (only for Mac)</a></li>
+  <li><a href="https://www.native-instruments.com/">Traktor</a></li>
+  <li><a href="https://mixxx.org/">Mixxx</a></li>
+  <li><a href="https://getmusicbee.com/">Music Bee</a></li>
 </ul>
-
-<p>There are a few steps you want to take to set yourself up for success:</p>
-<ol>
-  <li><strong>Download your audio player</strong></li>
-  <li><strong>Get good quality tango music</strong></li>
-  <li><strong>Organize your library</strong></li>
-  <li><strong>Create tandas</strong></li>
-</ol>
-
-<p>This document quickly covers each.</p>
-
-<hr />
-
-<h2 id="terms">Terms, Conditions &amp; Requests</h2>
-
-<ol class="terms-list">
-  <li>The resources here are <strong>free for you to use</strong>. You can pass along the link or files to other aspiring tango DJs as you see fit. But please do not post the link or any of these resources online, and please do not sell any of the materials.</li>
-
-  <li>The music provided here is good quality. But the gold standard of tango music comes from groups doing tango transfers and restorations such as <a href="https://tangotimetravel.be/">Tango Time Travel</a>, <a href="https://tangotunes.com/">Tango Tunes</a>, and <a href="https://tangosparks.com/">Tango Sparks</a>. Their work offers a huge service to the tango community. <strong>If you find the music here helpful, I ask you to purchase at least one album</strong> to support these efforts to improve the quality of sound in the milonga.</li>
-
-  <li>These resources are a work in progress. Please let me know your thoughts and feedback so that I can make this a valuable resource. You can reach me at <a href="mailto:sericson0@gmail.com">sericson0@gmail.com</a>.</li>
-
-  <li>I am working on additional resources for tango DJs and tango dancers, and am working with artists and experts to build them.
-    <ul>
-      <li>If you are simply interested in supporting, please reach out.</li>
-      <li>If you are willing to offer expertise, you can reach out at <a href="mailto:sericson0@gmail.com">sericson0@gmail.com</a>.</li>
-      <li>You can make a financial contribution to support tango learning resources &mdash; Venmo: <strong>@Sean-Ericson-1</strong> (pin: 5227), Zelle: <strong>sericson0@gmail.com</strong>. 100% of proceeds go towards building tango learning resources.</li>
-    </ul>
-  </li>
-</ol>
-
-<hr />
-
-<h2 id="audio-player">Audio Player</h2>
-
-<p>A good DJ software should:</p>
-<ul>
-  <li>Be stable</li>
-  <li>Work with all audio file types</li>
-  <li>Not result in any sound issues</li>
-  <li>Be easy to work with and have as few &ldquo;gotchas&rdquo; or temperamental issues as possible</li>
-</ul>
-
-<p>Different DJs use different software. The website <a href="https://tangodjsforgoodsound.info/technology/">Tango DJs for Good Sound</a> shows what a range of DJs use.</p>
-
-<p>I am definitely biased in which audio player I recommend, given I created <a href="https://github.com/sericson0/TigerTango">TigerTango</a>, a Virtual DJ interface designed specifically for tango DJs. It is free, and tango DJs around the world are using it, including several of the most respected tango DJs, so I feel confident that you would be in good hands using it.</p>
-
-<p>You can find the documentation and user guide at <a href="https://github.com/sericson0/TigerTango">github.com/sericson0/TigerTango</a>, which also has images walking through the setup. For a complete walkthrough, see our <a href="/dj/software-setup/"><strong>DJ Software Setup guide</strong></a>.</p>
+<p>I am biased in which audio player I recommend, given I created <a href="/dj/software/#tigertango">TigerTango</a>, a Virtual DJ interface designed specifically for tango DJs. It is free, and tango DJs around the world are using it, including several of the most respected tango DJs, so I feel confident that you would be in good hands using it.</p>
 
 <div class="callout callout-warning">
-  <strong>Important note on Virtual DJ licensing:</strong> Before 2026, you could use Virtual DJ for free as long as you wanted, but the 2026 version added an occasional audio watermark to the free version. Eventually you can solve this by paying for the software, but the free workaround is below.
+  <strong>Virtual DJ is free to use but you are supposed to pay to use professionally.</strong>
+  <p>Before 2026, you could test the full Virtual DJ version for free as long as you wanted. The 2026 version added an occasional audio watermark to the free version. For those who would like to test the free version before considering whether to buy, we have the 2025 version available for download.</p>
 </div>
 
-<h3>Setup Steps</h3>
-
-<ol class="setup-steps">
-  <li>
-    <strong>Install the 2025 version of Virtual DJ</strong>
-    <p>Download the <code>.mac</code> (Mac) or <code>.msi</code> (PC) installer for the pre-2026 version and run the executable.</p>
-  </li>
-  <li>
-    <strong>Turn off automatic updates</strong>
-    <ol>
-      <li>Open Virtual DJ</li>
-      <li>Go to <strong>Settings</strong> (gear icon in upper right)</li>
-      <li>Select <strong>Options</strong></li>
-      <li>Type <code>checkUpdates</code></li>
-      <li>Select <strong>No</strong></li>
-    </ol>
-  </li>
-  <li>
-    <strong>Get TigerTango</strong>
-    <ol>
-      <li>Go to <strong>Interface</strong> (in Settings)</li>
-      <li>Click the <strong>Get more</strong> button</li>
-      <li>Search for <strong>TigerTango</strong></li>
-      <li>Click <strong>Install</strong> on TigerTango</li>
-    </ol>
-  </li>
-  <li>
-    <strong>Select TigerTango</strong>
-    <ol>
-      <li>Go back to the <strong>Interface</strong> tab</li>
-      <li>Select the <strong>TigerTango</strong> option</li>
-    </ol>
-  </li>
-  <li>
-    <strong>Turn off any warning lights</strong>
-    <p>If there are any warning lights in the upper right box, click them to change settings to those appropriate for tango DJing.</p>
-  </li>
-</ol>
-
-<p>Sweet! You now have a great free interface!</p>
+<p>For downloads, installation, and setup instructions, see our <a href="/dj/software/#tigertango"><strong>DJ Tools page</strong></a> and the <a href="/dj/software-setup/"><strong>DJ Software Setup guide</strong></a>.</p>
 
 <hr />
 
@@ -322,34 +265,60 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 </BaseLayout>
 
 <style>
-  .page-hero {
-    padding: 3rem 0;
-    background: linear-gradient(135deg, var(--color-orange-50) 0%, white 100%);
-    border-bottom: 1px solid var(--color-orange-100);
+  .hero-image {
+    width: 100%;
+    border-radius: var(--radius-lg);
+    margin-bottom: 2rem;
   }
 
-  .back-link {
-    display: inline-block;
-    margin-bottom: 1rem;
+  /* ===== Article link card ===== */
+  .article-link {
+    display: flex;
+    gap: 1.5rem;
+    align-items: center;
+    text-decoration: none;
+    color: inherit;
+    background: white;
+    border: 1px solid var(--color-slate-200);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: all 0.2s;
+    margin: 1.5rem 0;
+  }
+
+  .article-link:hover {
+    border-color: var(--color-orange-400);
+    box-shadow: var(--shadow-md);
+  }
+
+  .article-link-img {
+    max-width: 240px;
+    width: 100%;
+    height: auto;
+    flex-shrink: 0;
+    display: block;
+  }
+
+  .article-link-body {
+    padding: 1rem 1.5rem 1rem 0;
+  }
+
+  .article-link h3 {
+    margin: 0 0 0.35rem;
+    font-size: 1.1rem;
+  }
+
+  .article-link p {
+    margin: 0 0 0.75rem;
+    color: var(--color-slate-600);
     font-size: 0.9rem;
-    color: var(--color-slate-600);
+    line-height: 1.5;
   }
 
-  .back-link:hover { color: var(--color-primary); }
-  .page-hero h1 { margin: 0 0 0.5rem; }
-
-  .lead {
-    font-size: 1.2rem;
-    color: var(--color-slate-600);
-    margin: 0;
-  }
-
-  .article-body { padding: 3rem 0; }
-
-  .narrow {
-    max-width: 50rem;
-    margin: 0 auto;
-    padding: 0 1.5rem;
+  .article-link-cta {
+    font-weight: 600;
+    color: var(--color-primary);
+    font-size: 0.95rem;
   }
 
   .welcome-box {
@@ -365,25 +334,6 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
     font-size: 1.05rem;
   }
 
-  .register-note {
-    display: inline-block;
-    margin-left: 0.75rem;
-    font-size: 0.9rem;
-    color: var(--color-slate-500);
-  }
-
-  .toc {
-    background: var(--color-slate-50);
-    border: 1px solid var(--color-slate-200);
-    border-radius: var(--radius-lg);
-    padding: 1.5rem 2rem;
-    margin-bottom: 2rem;
-  }
-
-  .toc h3 { margin: 0 0 0.75rem; font-size: 1rem; }
-  .toc ol { margin: 0; padding-left: 1.25rem; }
-  .toc li { margin-bottom: 0.25rem; font-size: 0.95rem; }
-
   .prose h2 {
     margin: 2.5rem 0 1rem;
     padding-top: 1rem;
@@ -391,23 +341,6 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
   }
 
   .prose h3 { margin: 2rem 0 0.75rem; }
-
-  .terms-list > li {
-    margin-bottom: 1rem;
-    line-height: 1.6;
-  }
-
-  .callout {
-    padding: 1rem 1.25rem;
-    border-radius: var(--radius-md);
-    margin: 1.5rem 0;
-    font-size: 0.95rem;
-  }
-
-  .callout-warning {
-    background: #fffbeb;
-    border-left: 4px solid #f59e0b;
-  }
 
   .setup-steps > li {
     margin-bottom: 1.5rem;
@@ -526,7 +459,7 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
   }
 
   .resource-links li::before {
-    content: "→";
+    content: "\2192";
     position: absolute;
     left: 0;
     color: var(--color-orange-500);
@@ -542,36 +475,17 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 
   .coming-soon p { margin: 0; }
 
-  hr {
-    border: none;
-    border-top: 1px solid var(--color-slate-200);
-    margin: 2rem 0;
-  }
+  @media (max-width: 640px) {
+    .article-link {
+      flex-direction: column;
+    }
 
-  .btn {
-    display: inline-block;
-    padding: 0.5rem 1rem;
-    border-radius: var(--radius-md);
-    font-weight: 500;
-    transition: background 0.2s, color 0.2s;
-  }
+    .article-link-img {
+      max-width: 100%;
+    }
 
-  .btn-primary { background: var(--color-primary); color: white; }
-  .btn-primary:hover { background: var(--color-primary-hover); color: white; }
-
-  .contact-note {
-    text-align: center;
-    font-size: 0.9rem;
-    color: var(--color-slate-500);
-  }
-
-  .container {
-    max-width: var(--container-max);
-    margin: 0 auto;
-    padding: 0 1.5rem;
-  }
-
-  @media (max-width: 600px) {
-    .register-note { display: block; margin: 0.5rem 0 0; }
+    .article-link-body {
+      padding: 1rem 1.5rem 1.5rem;
+    }
   }
 </style>

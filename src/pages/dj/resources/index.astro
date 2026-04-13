@@ -1,15 +1,10 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PageHero from '../../../components/PageHero.astro';
 ---
 
 <BaseLayout title="Discographies — Tango DJ" description="Argentine tango discographies for 40+ bandleaders with nearly 15,000 songs. Browse, filter, and download discography data.">
-  <section class="page-hero">
-    <div class="container">
-      <a href="/" class="back-link">&larr; Back to Home</a>
-      <h1>Discographies</h1>
-      <p class="lead">Nearly 15,000 tangos from more than 40 artists</p>
-    </div>
-  </section>
+  <PageHero title="Discographies" lead="Nearly 15,000 tangos from more than 40 artists" />
 
   <!-- ===== Description, References, Article — above the embed ===== -->
   <section class="intro-section">
@@ -86,15 +81,7 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
         </div>
       </details>
 
-      <!-- History of Tango Music article link -->
-      <a href="/dj/history-of-tango-music/" class="article-link">
-        <img src="/articles/history-of-tango-music/Orquestras-and-Recordings-per-year-1024x614.png" alt="Tango orchestras and recordings by year" class="article-link-img" />
-        <div class="article-link-body">
-          <h3>The History of Tango Music</h3>
-          <p>How many tango recordings are there? A deep dive into the history of tango music, the recording industry, and Argentina &mdash; from the first tango recording in 1905 to the modern restoration movement.</p>
-          <span class="card-cta">Read Article &rarr;</span>
-        </div>
-      </a>
+      <p class="history-link">For a deep dive into the full history of tango recordings, read our article: <a href="/dj/history-of-tango-music/"><strong>How Many Tango Recordings Are There? Stories on the History of Tango Music</strong></a>.</p>
 
     </div>
   </section>
@@ -113,17 +100,6 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 </BaseLayout>
 
 <style>
-  .page-hero {
-    padding: 3rem 0;
-    background: linear-gradient(135deg, var(--color-orange-50) 0%, white 100%);
-    border-bottom: 1px solid var(--color-orange-100);
-  }
-
-  .back-link { display: inline-block; margin-bottom: 1rem; font-size: 0.9rem; color: var(--color-slate-600); }
-  .back-link:hover { color: var(--color-primary); }
-  .page-hero h1 { margin: 0 0 0.5rem; }
-  .lead { font-size: 1.2rem; color: var(--color-slate-600); margin: 0; max-width: 60ch; }
-
   /* ===== Intro Section ===== */
   .intro-section {
     padding: 2.5rem 0;
@@ -212,66 +188,15 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
     line-height: 1.6;
   }
 
-  /* ===== Article link card ===== */
-  .article-link {
-    display: flex;
-    gap: 1.5rem;
-    align-items: center;
-    text-decoration: none;
-    color: inherit;
-    background: white;
-    border: 1px solid var(--color-slate-200);
-    border-radius: var(--radius-lg);
-    overflow: hidden;
-    transition: all 0.2s;
-  }
-
-  .article-link:hover {
-    border-color: var(--color-orange-400);
-    box-shadow: var(--shadow-md);
-  }
-
-  .article-link-img {
-    width: 240px;
-    height: auto;
-    flex-shrink: 0;
-    display: block;
-  }
-
-  .article-link-body {
-    padding: 1rem 1.5rem 1rem 0;
-  }
-
-  .article-link h3 {
-    margin: 0 0 0.35rem;
-    font-size: 1.1rem;
-  }
-
-  .article-link p {
-    margin: 0 0 0.75rem;
-    color: var(--color-slate-600);
-    font-size: 0.9rem;
-    line-height: 1.5;
-  }
-
-  .card-cta {
-    font-weight: 600;
-    color: var(--color-primary);
+  .history-link {
     font-size: 0.95rem;
+    color: var(--color-slate-600);
+    line-height: 1.7;
+    margin-top: 0.5rem;
   }
 
-  @media (max-width: 640px) {
-    .article-link {
-      flex-direction: column;
-    }
-
-    .article-link-img {
-      width: 100%;
-    }
-
-    .article-link-body {
-      padding: 1rem 1.5rem 1.5rem;
-    }
+  .history-link a {
+    color: var(--color-primary);
   }
 
   /* ===== Embedded Discography ===== */
@@ -287,15 +212,10 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
   .disco-embed {
     width: 100%;
     height: 85vh;
-    min-height: 600px;
+    min-height: 400px;
     border: none;
     border-top: 1px solid var(--color-slate-200);
     display: block;
   }
 
-  .container {
-    max-width: var(--container-max);
-    margin: 0 auto;
-    padding: 0 1.5rem;
-  }
 </style>

@@ -1,15 +1,10 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PageHero from '../../../components/PageHero.astro';
 ---
 
 <BaseLayout title="Register for Tango Toolkit" description="Sign up to access tango resources for dancers, DJs, and organizers. Stay updated on new materials and tools.">
-  <section class="page-hero">
-    <div class="container">
-      <a href="/" class="back-link">&larr; Back to Home</a>
-      <h1>Register for Tango Toolkit</h1>
-      <p class="lead">Sign up so we can keep you in the loop on new resources, courses, and tools for the tango community.</p>
-    </div>
-  </section>
+  <PageHero title="Register for Tango Toolkit" lead="Sign up so we can keep you in the loop on new resources and tools for the tango community." />
 
   <section class="form-section">
     <div class="container narrow">
@@ -105,17 +100,6 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 </script>
 
 <style>
-  .page-hero {
-    padding: 3rem 0;
-    background: linear-gradient(135deg, var(--color-orange-50) 0%, white 100%);
-    border-bottom: 1px solid var(--color-orange-100);
-  }
-
-  .back-link { display: inline-block; margin-bottom: 1rem; font-size: 0.9rem; color: var(--color-slate-600); }
-  .back-link:hover { color: var(--color-primary); }
-  .page-hero h1 { margin: 0 0 0.5rem; }
-  .lead { font-size: 1.15rem; color: var(--color-slate-600); margin: 0; max-width: 50ch; }
-
   .form-section { padding: 3rem 0; }
 
   .narrow { max-width: 36rem; margin: 0 auto; padding: 0 1.5rem; }
@@ -162,21 +146,4 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
     box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
   }
 
-  .btn {
-    display: inline-block;
-    padding: 0.5rem 1rem;
-    border: none;
-    border-radius: var(--radius-md);
-    font-weight: 500;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background 0.2s;
-    font-family: inherit;
-  }
-
-  .btn-primary { background: var(--color-primary); color: white; }
-  .btn-primary:hover { background: var(--color-primary-hover); }
-  .btn-lg { padding: 0.75rem 2rem; font-size: 1.05rem; }
-
-  .container { max-width: var(--container-max); margin: 0 auto; padding: 0 1.5rem; }
 </style>

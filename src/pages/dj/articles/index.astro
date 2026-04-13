@@ -1,0 +1,105 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PageHero from '../../../components/PageHero.astro';
+---
+
+<BaseLayout title="Resources & Links — Tango DJ" description="Useful resources for tango DJs, dancers, and music lovers.">
+  <PageHero title="Resources & Links" lead="Useful resources for tango DJs, dancers, and music lovers." />
+
+  <section class="articles-section">
+    <div class="container">
+      <h2 class="section-heading">Articles</h2>
+      <div class="articles-grid">
+
+        <a href="/dj/history-of-tango-music/" class="article-card">
+          <img src="/articles/history-of-tango-music/Orquestras-and-Recordings-per-year-1024x614.png" alt="Tango orchestras and recordings by year" class="article-card-img" />
+          <div class="article-card-body">
+            <h3>The History of Tango Music</h3>
+            <p>How many tango recordings are there? A deep dive into the history of tango music, the recording industry, and Argentina &mdash; from the first tango recording in 1905 to the modern restoration movement.</p>
+            <span class="card-cta">Read Article &rarr;</span>
+          </div>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <section class="links-section">
+    <div class="container">
+      <h2 class="section-heading">Links</h2>
+      <p class="placeholder-text">More links and resources coming soon.</p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .articles-section {
+    padding: 3rem 0;
+  }
+
+  .links-section {
+    padding: 0 0 3rem;
+  }
+
+  .section-heading {
+    margin: 0 0 1.25rem;
+    font-size: 1.5rem;
+  }
+
+  .placeholder-text {
+    color: var(--color-slate-500);
+    font-style: italic;
+  }
+
+  .articles-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 1.5rem;
+  }
+
+  .article-card {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+    background: white;
+    border: 1px solid var(--color-slate-200);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: all 0.2s;
+  }
+
+  .article-card:hover {
+    border-color: var(--color-orange-400);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+
+  .article-card-img {
+    width: 100%;
+    height: auto;
+    display: block;
+  }
+
+  .article-card-body {
+    padding: 1.25rem 1.5rem 1.5rem;
+  }
+
+  .article-card h3 {
+    margin: 0 0 0.5rem;
+    font-size: 1.25rem;
+  }
+
+  .article-card p {
+    margin: 0 0 1rem;
+    color: var(--color-slate-600);
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .card-cta {
+    font-weight: 600;
+    color: var(--color-primary);
+    font-size: 0.95rem;
+  }
+</style>

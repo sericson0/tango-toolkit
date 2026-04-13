@@ -1,0 +1,18 @@
+---
+interface Props {
+  title: string;
+  lead?: string;
+  backHref?: string;
+  backText?: string;
+}
+
+const { title, lead, backHref = '/', backText = 'Back to Home' } = Astro.props;
+---
+
+<section class="page-hero">
+  <div class="container">
+    <a href={backHref} class="back-link">&larr; {backText}</a>
+    <h1>{title}</h1>
+    {lead && <p class="lead">{lead}</p>}
+  </div>
+</section>

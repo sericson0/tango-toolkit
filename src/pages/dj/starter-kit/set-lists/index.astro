@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
+import PageHero from '../../../../components/PageHero.astro';
 
 const setI = [
   { group: 1, artist: "D'Arienzo", singer: "Instrumental", era: "1936", songs: [
@@ -122,13 +123,7 @@ function groupLabel(g: any): string {
 ---
 
 <BaseLayout title="Starting Set Lists" description="Curated tango DJ set lists for beginners. Download and browse organized tandas from the golden age.">
-  <section class="page-hero">
-    <div class="container">
-      <a href="/dj/starter-kit/" class="back-link">&larr; Back to Starter Kit</a>
-      <h1>Starting Set Lists</h1>
-      <p class="lead">Curated songs organized into groups for building tandas. Download the spreadsheets or browse below.</p>
-    </div>
-  </section>
+  <PageHero title="Starting Set Lists" lead="Curated songs organized into groups for building tandas. Download the spreadsheets or browse below." backHref="/dj/starter-kit/" backText="Back to Starter Kit" />
 
   <section class="downloads">
     <div class="container narrow">
@@ -203,17 +198,6 @@ function groupLabel(g: any): string {
 </BaseLayout>
 
 <style>
-  .page-hero {
-    padding: 3rem 0;
-    background: linear-gradient(135deg, var(--color-orange-50) 0%, white 100%);
-    border-bottom: 1px solid var(--color-orange-100);
-  }
-
-  .back-link { display: inline-block; margin-bottom: 1rem; font-size: 0.9rem; color: var(--color-slate-600); }
-  .back-link:hover { color: var(--color-primary); }
-  .page-hero h1 { margin: 0 0 0.5rem; }
-  .lead { font-size: 1.2rem; color: var(--color-slate-600); margin: 0; }
-
   .downloads { padding: 2rem 0; }
 
   .download-cards {
@@ -310,6 +294,4 @@ function groupLabel(g: any): string {
   thead { background: var(--color-orange-50); }
   th, td { padding: 0.4rem 0.75rem; border: 1px solid var(--color-slate-200); text-align: left; }
   th { font-weight: 600; }
-
-  .container { max-width: var(--container-max); margin: 0 auto; padding: 0 1.5rem; }
 </style>

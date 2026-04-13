@@ -6,7 +6,7 @@ interface Props {
   description?: string;
 }
 
-const { title, description = "Tools and resources for tango DJs. Software, courses, and guides to elevate your tango DJing." } = Astro.props;
+const { title, description = "Tools and resources for tango DJs. Software and guides to elevate your tango DJing." } = Astro.props;
 ---
 
 <!doctype html>
@@ -37,6 +37,7 @@ const { title, description = "Tools and resources for tango DJs. Software, cours
           <a href="/dj/starter-kit/" class={Astro.url.pathname.startsWith('/dj/starter-kit') ? 'active' : ''}>DJ Starter Kit</a>
           <a href="/dj/software/" class={Astro.url.pathname.startsWith('/dj/software') ? 'active' : ''}>DJ Tools</a>
           <a href="/dj/resources/" class={Astro.url.pathname.startsWith('/dj/resources') ? 'active' : ''}>Discographies</a>
+          <a href="/dj/articles/" class={Astro.url.pathname.startsWith('/dj/articles') || Astro.url.pathname.startsWith('/dj/history') ? 'active' : ''}>Resources</a>
         </nav>
         <button class="nav-toggle" aria-label="Toggle menu" type="button">
           <span></span>
@@ -62,6 +63,7 @@ const { title, description = "Tools and resources for tango DJs. Software, cours
             <a href="/dj/starter-kit/">DJ Starter Kit</a>
             <a href="/dj/software/">DJ Tools</a>
             <a href="/dj/resources/">Discographies</a>
+            <a href="/dj/articles/">Resources</a>
           </div>
           <div>
             <strong>Connect</strong>
@@ -142,7 +144,7 @@ const { title, description = "Tools and resources for tango DJs. Software, cours
     background: none;
     border: none;
     cursor: pointer;
-    padding: 0.5rem;
+    padding: 0.75rem;
   }
 
   .nav-toggle span {
@@ -200,9 +202,4 @@ const { title, description = "Tools and resources for tango DJs. Software, cours
     gap: 2rem;
   }
 
-  .container {
-    max-width: var(--container-max);
-    margin: 0 auto;
-    padding: 0 1.5rem;
-  }
 </style>
