@@ -46,6 +46,7 @@ export const products: Product[] = [
     tagline: 'Tag your tango tunes',
     description: 'Batch-tag your tango music library with orchestra, singer, year, genre, and more. Save hours of manual metadata work.',
     price: '$40',
+    stripePriceId: 'price_1TML8VBGhFYtRptAguU7QGWV',
     downloadLink: 'https://github.com/sericson0/tigertag-releases/releases',
     image: '/images/TigerTag.png',
     trial: true,

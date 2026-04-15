@@ -13,7 +13,13 @@ import { generateLicenseKey } from "../lib/license-key.mts";
  * Required environment variables:
  *   STRIPE_SECRET_KEY        - Stripe API secret key
  *   HISSTORY_KEYGEN_SECRET   - Hex-encoded 32-byte secret
+ *   TIGERTAG_KEYGEN_SECRET   - Hex-encoded 32-byte secret
  */
+
+const KEYGEN_SECRETS: Record<string, string | undefined> = {
+  hisstory: process.env.HISSTORY_KEYGEN_SECRET,
+  tigertag: process.env.TIGERTAG_KEYGEN_SECRET,
+};
 
 export default async (req: Request, _context: Context) => {
   if (req.method !== "GET") {
@@ -21,9 +27,8 @@ export default async (req: Request, _context: Context) => {
   }
 
   const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
-  const keygenSecret = process.env.HISSTORY_KEYGEN_SECRET;
 
-  if (!stripeSecretKey || !keygenSecret) {
+  if (!stripeSecretKey) {
     console.error("Missing required environment variables");
     return new Response("Server configuration error", { status: 500 });
   }
@@ -49,11 +54,19 @@ export default async (req: Request, _context: Context) => {
       );
     }
 
+    const productId = session.metadata?.product_id;
+    const keygenSecret = productId ? KEYGEN_SECRETS[productId] : undefined;
+
+    if (!keygenSecret) {
+      console.error(`Unknown or unconfigured product: ${productId}`);
+      return new Response("Unknown product", { status: 400 });
+    }
+
     const email = session.customer_details?.email ?? null;
     const licenseKey = generateLicenseKey(keygenSecret, session.id);
 
     return new Response(
-      JSON.stringify({ email, licenseKey }),
+      JSON.stringify({ email, licenseKey, productId }),
       { status: 200, headers: { "Content-Type": "application/json" } }
     );
   } catch (err) {

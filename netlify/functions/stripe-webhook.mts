@@ -3,22 +3,63 @@ import Stripe from "stripe";
 import { generateLicenseKey } from "../lib/license-key.mts";
 
 /**
- * Stripe Webhook Handler for Hisstory License Key Delivery
+ * Stripe Webhook Handler for License Key Delivery
  *
  * Listens for checkout.session.completed events:
- *   1. Generates a SHA-512 keyed-hash license key seeded from session.id
+ *   1. Identifies the product from session metadata
+ *   2. Generates a SHA-512 keyed-hash license key seeded from session.id
  *      (deterministic — same session always produces the same key)
- *   2. Adds customer to Resend Audience (newsletter or critical-only)
- *   3. Emails the license key via Resend
+ *   3. Adds customer to Resend Audience (newsletter or critical-only)
+ *   4. Emails the license key via Resend
  *
  * Required environment variables:
  *   STRIPE_SECRET_KEY        - Stripe API secret key
  *   STRIPE_WEBHOOK_SECRET    - Stripe webhook signing secret (whsec_...)
  *   HISSTORY_KEYGEN_SECRET   - Hex-encoded 32-byte secret (matches keygen.py / LicenseManager.cpp)
+ *   TIGERTAG_KEYGEN_SECRET   - Hex-encoded 32-byte secret (matches keygen.py / LicenseManager.cpp)
  *   RESEND_API_KEY           - Resend API key for sending emails
  *   RESEND_FROM_EMAIL        - Sender email address
  *   RESEND_AUDIENCE_ID       - Resend Audience ID for subscriber storage
  */
+
+interface ProductConfig {
+  name: string;
+  keygenSecret: string;
+  fromEmail: string;
+  subject: string;
+  color: string;
+  tagline: string;
+  activationSteps: string;
+}
+
+function getProductConfig(): Record<string, ProductConfig> {
+  return {
+    hisstory: {
+      name: "Hisstory",
+      keygenSecret: process.env.HISSTORY_KEYGEN_SECRET || "",
+      fromEmail: process.env.RESEND_FROM_EMAIL || "Hisstory <noreply@tangotoolkit.com>",
+      subject: "Your Hisstory License Key",
+      color: "#f97316",
+      tagline: "Keep the music, ditch the noise",
+      activationSteps: `
+            <li>Open Hisstory (standalone or VST3 plugin)</li>
+            <li>Click <strong>"Enter Key"</strong></li>
+            <li>Paste the key above and click <strong>"Activate"</strong></li>`,
+    },
+    tigertag: {
+      name: "TigerTag",
+      keygenSecret: process.env.TIGERTAG_KEYGEN_SECRET || "",
+      fromEmail: process.env.RESEND_FROM_EMAIL || "TigerTag <noreply@tangotoolkit.com>",
+      subject: "Your TigerTag License Key",
+      color: "#f97316",
+      tagline: "Tag your tango tunes",
+      activationSteps: `
+            <li>Open TigerTag</li>
+            <li>Click <strong>"Enter Key"</strong></li>
+            <li>Paste the key above and click <strong>"Activate"</strong></li>`,
+    },
+  };
+}
 
 async function addToResendAudience(
   email: string,
@@ -53,7 +94,7 @@ async function sendLicenseEmail(
   to: string,
   licenseKey: string,
   apiKey: string,
-  fromEmail: string
+  product: ProductConfig
 ): Promise<void> {
   const response = await fetch("https://api.resend.com/emails", {
     method: "POST",
@@ -62,25 +103,22 @@ async function sendLicenseEmail(
       "Content-Type": "application/json",
     },
     body: JSON.stringify({
-      from: fromEmail,
+      from: product.fromEmail,
       to: [to],
-      subject: "Your Hisstory License Key",
+      subject: product.subject,
       html: `
         <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 600px; margin: 0 auto; padding: 2rem;">
-          <h1 style="color: #f97316; margin-bottom: 0.5rem;">Hisstory</h1>
-          <p style="color: #94a3b8; font-style: italic; margin-top: 0;">Keep the music, ditch the noise</p>
+          <h1 style="color: ${product.color}; margin-bottom: 0.5rem;">${product.name}</h1>
+          <p style="color: #94a3b8; font-style: italic; margin-top: 0;">${product.tagline}</p>
 
-          <p>Thank you for purchasing Hisstory! Here is your license key:</p>
+          <p>Thank you for purchasing ${product.name}! Here is your license key:</p>
 
           <div style="background: #1e293b; border-radius: 8px; padding: 1.25rem; margin: 1.5rem 0;">
             <code style="color: #fb923c; font-size: 0.85rem; word-break: break-all;">${licenseKey}</code>
           </div>
 
           <h3>How to activate:</h3>
-          <ol style="color: #475569; line-height: 1.8;">
-            <li>Open Hisstory (standalone or VST3 plugin)</li>
-            <li>Click <strong>"Enter Key"</strong></li>
-            <li>Paste the key above and click <strong>"Activate"</strong></li>
+          <ol style="color: #475569; line-height: 1.8;">${product.activationSteps}
           </ol>
 
           <p style="color: #475569;">Your license is permanent — no subscription, no expiration. It works offline and includes all future updates.</p>
@@ -108,13 +146,10 @@ export default async (req: Request, _context: Context) => {
 
   const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
   const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET;
-  const keygenSecret = process.env.HISSTORY_KEYGEN_SECRET;
   const resendApiKey = process.env.RESEND_API_KEY;
-  const fromEmail =
-    process.env.RESEND_FROM_EMAIL || "Hisstory <noreply@tangotoolkit.com>";
   const audienceId = process.env.RESEND_AUDIENCE_ID;
 
-  if (!stripeSecretKey || !webhookSecret || !keygenSecret || !resendApiKey || !audienceId) {
+  if (!stripeSecretKey || !webhookSecret || !resendApiKey || !audienceId) {
     console.error("Missing required environment variables");
     return new Response("Server configuration error", { status: 500 });
   }
@@ -155,11 +190,26 @@ export default async (req: Request, _context: Context) => {
   const customerName = session.customer_details?.name?.split(" ")[0];
   const optedIntoNewsletter = session.consent?.promotions === "opt_in";
 
+  // Resolve product from checkout metadata
+  const productId = session.metadata?.product_id;
+  const products = getProductConfig();
+  const product = productId ? products[productId] : undefined;
+
+  if (!product) {
+    console.error(`Unknown product_id in session metadata: ${productId}`);
+    return new Response("Unknown product", { status: 400 });
+  }
+
+  if (!product.keygenSecret) {
+    console.error(`Missing keygen secret for product: ${productId}`);
+    return new Response("Server configuration error", { status: 500 });
+  }
+
   try {
     // 1. Generate license key (deterministic from session.id)
-    const licenseKey = generateLicenseKey(keygenSecret, session.id);
+    const licenseKey = generateLicenseKey(product.keygenSecret, session.id);
     console.log(
-      `Generated license key for ${customerEmail} (session: ${session.id})`
+      `Generated ${product.name} license key for ${customerEmail} (session: ${session.id})`
     );
 
     // 2. Add to Resend Audience
@@ -175,8 +225,8 @@ export default async (req: Request, _context: Context) => {
     );
 
     // 3. Email license key
-    await sendLicenseEmail(customerEmail, licenseKey, resendApiKey, fromEmail);
-    console.log(`License key emailed to ${customerEmail}`);
+    await sendLicenseEmail(customerEmail, licenseKey, resendApiKey, product);
+    console.log(`${product.name} license key emailed to ${customerEmail}`);
 
     return new Response(
       JSON.stringify({ received: true, email_sent: true }),

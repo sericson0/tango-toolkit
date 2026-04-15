@@ -3,6 +3,7 @@ import Stripe from "stripe";
 
 const PRODUCT_PRICE_MAP: Record<string, string> = {
   hisstory: process.env.HISSTORY_STRIPE_PRICE_ID || "",
+  tigertag: process.env.TIGERTAG_STRIPE_PRICE_ID || "",
 };
 
 export default async (req: Request, _context: Context) => {
