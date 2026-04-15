@@ -1,20 +1,10 @@
 import type { Context } from "@netlify/functions";
-import Stripe from "stripe";
-
-const PRODUCT_PRICE_MAP: Record<string, string> = {
-  hisstory: process.env.HISSTORY_STRIPE_PRICE_ID || "",
-  tigertag: process.env.TIGERTAG_STRIPE_PRICE_ID || "",
-};
+import { createStripeClient } from "../lib/stripe-client.mts";
+import { getProductRegistry } from "../lib/products.mts";
 
 export default async (req: Request, _context: Context) => {
   if (req.method !== "POST") {
     return new Response("Method not allowed", { status: 405 });
-  }
-
-  const stripeSecretKey = process.env.STRIPE_SECRET_KEY;
-  if (!stripeSecretKey) {
-    console.error("Missing STRIPE_SECRET_KEY");
-    return new Response("Server configuration error", { status: 500 });
   }
 
   let body: { productId?: string };
@@ -24,19 +14,24 @@ export default async (req: Request, _context: Context) => {
     return new Response("Invalid JSON body", { status: 400 });
   }
 
+  const products = getProductRegistry();
   const productId = body.productId;
-  if (!productId || !PRODUCT_PRICE_MAP[productId]) {
+  if (!productId || !products[productId]) {
     return new Response("Invalid product ID", { status: 400 });
   }
 
-  const priceId = PRODUCT_PRICE_MAP[productId];
+  const priceId = products[productId].stripePriceId;
   if (!priceId) {
     return new Response("Product not configured for checkout", { status: 400 });
   }
 
-  const stripe = new Stripe(stripeSecretKey, {
-    apiVersion: "2025-03-31.basil",
-  });
+  let stripe;
+  try {
+    stripe = createStripeClient();
+  } catch (err) {
+    console.error(err);
+    return new Response("Server configuration error", { status: 500 });
+  }
 
   const origin = new URL(req.url).origin;
 

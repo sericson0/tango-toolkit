@@ -1,0 +1,249 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PageHero from '../../../components/PageHero.astro';
+---
+
+<BaseLayout title="FAQ &amp; Changelog — Tango DJ" description="Frequently asked questions about Tango Toolkit software, licensing, and setup, plus a changelog of recent updates.">
+  <PageHero title="FAQ & Changelog" lead="Answers to common questions and a log of recent updates." backHref="/dj/software/" backText="Back to DJ Tools" />
+
+  <section class="faq-section">
+    <div class="container">
+      <div class="narrow">
+
+        <!-- Getting Started -->
+        <h2 class="faq-category">Getting Started</h2>
+
+        <details class="faq-item">
+          <summary>What software do I need to get started?</summary>
+          <div class="faq-answer">
+            <p>You need VirtualDJ 2025 (free) and TigerTango (free). See our <a href="/dj/software/">DJ Tools</a> page for downloads and the <a href="/dj/software-setup/">Software Setup</a> guide for installation.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>Do I need to pay for anything?</summary>
+          <div class="faq-answer">
+            <p>TigerTango and TigerTanda are completely free. Hisstory and TigerTag are $40 each with free trials so you can try before you buy.</p>
+          </div>
+        </details>
+
+        <!-- Licensing & Purchases -->
+        <h2 class="faq-category">Licensing &amp; Purchases</h2>
+
+        <details class="faq-item">
+          <summary>What kind of license do I get?</summary>
+          <div class="faq-answer">
+            <p>All purchases are one-time payments with lifetime access. No subscriptions, no recurring charges. Your license works offline and includes all future updates.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>How do I activate my license?</summary>
+          <div class="faq-answer">
+            <p>After purchase, you'll receive a license key by email and on the confirmation page. Open the app, click "Enter Key", paste your key, and click "Activate".</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>Can I use my license on multiple computers?</summary>
+          <div class="faq-answer">
+            <p>Your license key can be activated on one machine at a time. Contact us at <a href="mailto:tangotoolkit@gmail.com">tangotoolkit@gmail.com</a> if you need to transfer it.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>I lost my license key. How do I recover it?</summary>
+          <div class="faq-answer">
+            <p>Check your email for the purchase confirmation from Tango Toolkit. If you can't find it, email <a href="mailto:tangotoolkit@gmail.com">tangotoolkit@gmail.com</a> with your purchase email and we'll resend it.</p>
+          </div>
+        </details>
+
+        <!-- Technical -->
+        <h2 class="faq-category">Technical</h2>
+
+        <details class="faq-item">
+          <summary>Which operating systems are supported?</summary>
+          <div class="faq-answer">
+            <p>All tools support Windows and macOS.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>Is TigerTango compatible with VirtualDJ 2026?</summary>
+          <div class="faq-answer">
+            <p>We recommend using VirtualDJ 2025. The 2026 release added an audio watermark to the free version. Download VirtualDJ 2025 from our <a href="/dj/software/">DJ Tools</a> page.</p>
+          </div>
+        </details>
+
+        <details class="faq-item">
+          <summary>How do I report a bug or request a feature?</summary>
+          <div class="faq-answer">
+            <p>Email us at <a href="mailto:tangotoolkit@gmail.com">tangotoolkit@gmail.com</a> or open an issue on the relevant GitHub repository.</p>
+          </div>
+        </details>
+
+        <!-- Changelog -->
+        <hr />
+
+        <h2 class="changelog-heading">Changelog</h2>
+        <p class="changelog-intro">Recent updates to Tango Toolkit software.</p>
+
+        <ul class="changelog-list">
+          <li>
+            <span class="changelog-date">April 2026</span>
+            <span class="changelog-text"><strong>TigerTag v1.0 released</strong> &mdash; Batch metadata tagging for tango music libraries</span>
+          </li>
+          <li>
+            <span class="changelog-date">March 2026</span>
+            <span class="changelog-text"><strong>Hisstory v1.0 released</strong> &mdash; Real-time spectral gating plugin for hiss removal</span>
+          </li>
+          <li>
+            <span class="changelog-date">February 2026</span>
+            <span class="changelog-text"><strong>TigerTanda updated</strong> &mdash; Improved track suggestions and Virtual DJ integration</span>
+          </li>
+          <li>
+            <span class="changelog-date">January 2026</span>
+            <span class="changelog-text"><strong>TigerTango v1.0 released</strong> &mdash; VirtualDJ interface designed for tango DJs</span>
+          </li>
+        </ul>
+
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .faq-section {
+    padding: 3rem 0;
+  }
+
+  .narrow {
+    max-width: 60rem;
+    margin: 0 auto;
+    padding: 0 1.5rem;
+  }
+
+  /* FAQ Category Headings */
+  .faq-category {
+    font-size: 1.5rem;
+    margin: 2.5rem 0 1rem;
+    color: var(--color-slate-900);
+  }
+
+  .faq-category:first-child {
+    margin-top: 0;
+  }
+
+  /* FAQ Items (details/summary) */
+  .faq-item {
+    border: 1px solid var(--color-slate-200);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    margin-bottom: 0.75rem;
+  }
+
+  .faq-item summary {
+    padding: 1rem 1.5rem;
+    cursor: pointer;
+    background: white;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--color-slate-800);
+    list-style: none;
+    transition: background 0.15s;
+  }
+
+  .faq-item summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-item summary::before {
+    content: "\25B8 ";
+    color: var(--color-slate-400);
+    margin-right: 0.35rem;
+  }
+
+  .faq-item[open] summary::before {
+    content: "\25BE ";
+  }
+
+  .faq-item summary:hover {
+    background: var(--color-slate-50);
+  }
+
+  .faq-answer {
+    padding: 0 1.5rem 1.25rem;
+  }
+
+  .faq-answer p {
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--color-slate-600);
+    line-height: 1.7;
+  }
+
+  .faq-answer a {
+    color: var(--color-primary);
+    font-weight: 500;
+  }
+
+  .faq-answer a:hover {
+    color: var(--color-primary-hover);
+  }
+
+  /* Changelog */
+  .changelog-heading {
+    font-size: 2rem;
+    margin: 0 0 0.5rem;
+  }
+
+  .changelog-intro {
+    font-size: 1rem;
+    color: var(--color-slate-600);
+    margin: 0 0 1.5rem;
+  }
+
+  .changelog-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+
+  .changelog-list li {
+    display: flex;
+    gap: 1.25rem;
+    padding: 1rem 0;
+    border-bottom: 1px solid var(--color-slate-200);
+    align-items: baseline;
+  }
+
+  .changelog-list li:last-child {
+    border-bottom: none;
+  }
+
+  .changelog-date {
+    flex-shrink: 0;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-orange-600);
+    min-width: 7rem;
+  }
+
+  .changelog-text {
+    font-size: 0.95rem;
+    color: var(--color-slate-700);
+    line-height: 1.5;
+  }
+
+  .changelog-text strong {
+    color: var(--color-slate-900);
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .changelog-list li {
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+  }
+</style>

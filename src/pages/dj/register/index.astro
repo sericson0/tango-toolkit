@@ -7,7 +7,7 @@ import PageHero from '../../../components/PageHero.astro';
   <PageHero title="Register for Tango Toolkit" lead="Sign up so we can keep you in the loop on new resources and tools for the tango community." />
 
   <section class="form-section">
-    <div class="container narrow">
+    <div class="container narrow-sm">
       <form name="tango-registration" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/dj/register/success/">
         <input type="hidden" name="form-name" value="tango-registration" />
         <p class="hidden-field"><label>Don't fill this out: <input name="bot-field" /></label></p>
@@ -102,8 +102,6 @@ import PageHero from '../../../components/PageHero.astro';
 <style>
   .form-section { padding: 3rem 0; }
 
-  .narrow { max-width: 36rem; margin: 0 auto; padding: 0 1.5rem; }
-
   .hidden-field { display: none; }
 
   form {
@@ -141,9 +139,21 @@ import PageHero from '../../../components/PageHero.astro';
   .form-group input:focus,
   .form-group select:focus,
   .form-group textarea:focus {
-    outline: none;
+    outline: 2px solid var(--color-primary);
+    outline-offset: 1px;
     border-color: var(--color-orange-400);
     box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+  }
+
+  .form-group input::placeholder,
+  .form-group textarea::placeholder {
+    color: var(--color-slate-500);
+    opacity: 0.8;
+  }
+
+  @media (max-width: 480px) {
+    .narrow-sm { padding: 0 1rem; }
+    form { padding: 1.25rem; }
   }
 
 </style>

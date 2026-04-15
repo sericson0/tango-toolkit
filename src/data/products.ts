@@ -19,6 +19,16 @@ export interface Product {
   trial?: boolean;
 }
 
+export function getProduct(id: string): Product | undefined {
+  return products.find((p) => p.id === id);
+}
+
+export function getProductsMap(): Record<string, Product> {
+  const map: Record<string, Product> = {};
+  products.forEach((p) => { map[p.id] = p; });
+  return map;
+}
+
 export const products: Product[] = [
   {
     id: 'tigertango',

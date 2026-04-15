@@ -1,0 +1,61 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Page Not Found" description="The page you're looking for doesn't exist or has been moved.">
+  <section class="not-found">
+    <div class="container">
+      <h1>404</h1>
+      <h2>Page not found</h2>
+      <p>The page you're looking for doesn't exist or has been moved.</p>
+      <div class="not-found-links">
+        <a href="/" class="btn btn-primary btn-lg">Home</a>
+        <a href="/dj/software/" class="btn btn-secondary btn-lg">DJ Tools</a>
+        <a href="/dj/starter-kit/" class="btn btn-secondary btn-lg">DJ Starter Kit</a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .not-found {
+    padding: 6rem 0;
+    text-align: center;
+  }
+
+  .not-found h1 {
+    font-size: 8rem;
+    line-height: 1;
+    margin: 0;
+    color: var(--color-orange-400);
+  }
+
+  .not-found h2 {
+    font-size: 2rem;
+    margin: 0.5rem 0 1rem;
+    color: var(--color-slate-800);
+  }
+
+  .not-found p {
+    font-size: 1.1rem;
+    color: var(--color-slate-600);
+    margin: 0 0 2.5rem;
+  }
+
+  .not-found-links {
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+
+  @media (max-width: 480px) {
+    .not-found h1 {
+      font-size: 5rem;
+    }
+
+    .not-found {
+      padding: 4rem 0;
+    }
+  }
+</style>

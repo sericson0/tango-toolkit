@@ -4,7 +4,7 @@ import BaseLayout from '../../../../layouts/BaseLayout.astro';
 
 <BaseLayout title="Purchase Complete" description="Thank you for your purchase from Tango Toolkit.">
   <section class="success-page">
-    <div class="container narrow">
+    <div class="container narrow-sm">
       <div class="success-card">
         <div class="checkmark">&#10003;</div>
         <h1>Thank you for your purchase!</h1>
@@ -47,7 +47,14 @@ import BaseLayout from '../../../../layouts/BaseLayout.astro';
   const copyBtn = document.getElementById('copy-btn') as HTMLButtonElement | null;
 
   if (sessionId && messageEl && keyBox && keyValueEl && copyBtn) {
-    fetch(`/api/get-license-info?session_id=${encodeURIComponent(sessionId)}`)
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 8000);
+
+    messageEl.textContent = 'Loading your license key\u2026';
+
+    fetch(`/api/get-license-info?session_id=${encodeURIComponent(sessionId)}`, {
+      signal: controller.signal,
+    })
       .then(async (res) => {
         if (!res.ok) throw new Error(`Status ${res.status}`);
         return res.json() as Promise<{ email: string | null; licenseKey: string }>;
@@ -60,12 +67,17 @@ import BaseLayout from '../../../../layouts/BaseLayout.astro';
           ? ` A copy was also sent to <strong>${email}</strong> — check your inbox (and spam folder) if you don't see it.`
           : " A copy was also sent to your email — check your inbox (and spam folder) if you don't see it.";
         messageEl.innerHTML =
-          "Here is your Hisstory activation key." + emailText;
+          "Here is your activation key." + emailText;
       })
       .catch((err) => {
-        console.error('Failed to load license info:', err);
-        // Leave the default message as a fallback
-      });
+        if (err.name === 'AbortError') {
+          messageEl.textContent = 'Taking longer than expected. Your license key was sent to your email — check your inbox (and spam folder).';
+        } else {
+          console.error('Failed to load license info:', err);
+          messageEl.textContent = 'Your license key was sent to your email — check your inbox (and spam folder) if you don\'t see it.';
+        }
+      })
+      .finally(() => clearTimeout(timeoutId));
 
     copyBtn.addEventListener('click', async () => {
       const key = keyValueEl.textContent?.trim() ?? '';
@@ -91,8 +103,6 @@ import BaseLayout from '../../../../layouts/BaseLayout.astro';
     display: flex;
     align-items: center;
   }
-
-  .narrow { max-width: 36rem; margin: 0 auto; padding: 0 1.5rem; }
 
   .success-card { text-align: center; }
 

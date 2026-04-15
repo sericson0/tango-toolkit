@@ -1,0 +1,281 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PageHero from '../../../components/PageHero.astro';
+---
+
+<BaseLayout title="Account — Tango DJ" description="Recover your Tango Toolkit license keys.">
+  <PageHero title="Account" lead="Recover your license keys" backHref="/dj/software/" backText="Back to DJ Tools" />
+
+  <section class="account-section">
+    <div class="container narrow-sm">
+      <form id="recover-form" class="recover-form">
+        <label for="email">Enter the email you used at checkout</label>
+        <div class="input-row">
+          <input
+            type="email"
+            id="email"
+            name="email"
+            required
+            placeholder="you@example.com"
+            autocomplete="email"
+          />
+          <button type="submit" class="btn btn-primary">Look up</button>
+        </div>
+      </form>
+
+      <div id="status-message" class="status-message" hidden></div>
+
+      <div id="results" hidden></div>
+
+      <div class="help-link">
+        <p>Need help? <a href="/support/">Contact support</a></p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  const form = document.getElementById('recover-form') as HTMLFormElement;
+  const emailInput = document.getElementById('email') as HTMLInputElement;
+  const statusEl = document.getElementById('status-message') as HTMLDivElement;
+  const resultsEl = document.getElementById('results') as HTMLDivElement;
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const email = emailInput.value.trim();
+    if (!email) return;
+
+    // Reset state
+    statusEl.hidden = true;
+    statusEl.textContent = '';
+    statusEl.className = 'status-message';
+    resultsEl.hidden = true;
+    resultsEl.innerHTML = '';
+
+    // Show loading
+    statusEl.textContent = 'Looking up purchases\u2026';
+    statusEl.hidden = false;
+
+    try {
+      const res = await fetch('/api/recover-license', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
+      });
+
+      if (!res.ok) throw new Error(`Status ${res.status}`);
+
+      const data = await res.json() as { productName: string; licenseKey: string; purchaseDate: string }[];
+
+      statusEl.hidden = true;
+
+      if (data.length === 0) {
+        statusEl.textContent = 'No purchases found for this email. If you used a different email, try that one.';
+        statusEl.className = 'status-message status-empty';
+        statusEl.hidden = false;
+        return;
+      }
+
+      for (const item of data) {
+        const card = document.createElement('div');
+        card.className = 'result-card';
+
+        const date = new Date(item.purchaseDate).toLocaleDateString(undefined, {
+          year: 'numeric',
+          month: 'long',
+          day: 'numeric',
+        });
+
+        card.innerHTML = `
+          <div class="result-header">
+            <strong class="result-product">${item.productName}</strong>
+            <span class="result-date">Purchased ${date}</span>
+          </div>
+          <div class="license-key-box">
+            <label>License key</label>
+            <div class="license-key-row">
+              <code class="license-key-value">${item.licenseKey}</code>
+              <button type="button" class="copy-btn">Copy</button>
+            </div>
+          </div>
+        `;
+
+        resultsEl.appendChild(card);
+      }
+
+      resultsEl.hidden = false;
+
+      // Wire up copy buttons
+      resultsEl.querySelectorAll('.copy-btn').forEach((btn) => {
+        btn.addEventListener('click', async () => {
+          const code = btn.closest('.license-key-row')?.querySelector('.license-key-value');
+          const key = code?.textContent?.trim() ?? '';
+          if (!key) return;
+          try {
+            await navigator.clipboard.writeText(key);
+            const original = btn.textContent;
+            btn.textContent = 'Copied!';
+            setTimeout(() => { btn.textContent = original; }, 1500);
+          } catch {
+            alert('Copy failed. Please select and copy the key manually.');
+          }
+        });
+      });
+    } catch (err) {
+      console.error('Recovery failed:', err);
+      statusEl.textContent = 'Something went wrong. Please try again or contact support.';
+      statusEl.className = 'status-message status-error';
+      statusEl.hidden = false;
+    }
+  });
+</script>
+
+<style>
+  .account-section {
+    padding: 3rem 0 5rem;
+  }
+
+  .recover-form label {
+    display: block;
+    font-weight: 500;
+    margin-bottom: 0.5rem;
+    color: var(--color-slate-700);
+  }
+
+  .input-row {
+    display: flex;
+    gap: 0.75rem;
+  }
+
+  .input-row input {
+    flex: 1;
+    padding: 0.65rem 1rem;
+    border: 1px solid var(--color-slate-300);
+    border-radius: var(--radius-md);
+    font-size: 1rem;
+    font-family: inherit;
+    color: var(--color-slate-900);
+    background: white;
+  }
+
+  .input-row input:focus {
+    outline: 2px solid var(--color-orange-500);
+    outline-offset: -1px;
+    border-color: var(--color-orange-500);
+  }
+
+  .status-message {
+    margin-top: 1.5rem;
+    padding: 1rem 1.25rem;
+    border-radius: var(--radius-md);
+    font-size: 0.95rem;
+    color: var(--color-slate-600);
+    background: var(--color-slate-50, #f8fafc);
+    border: 1px solid var(--color-slate-200);
+  }
+
+  .status-empty {
+    color: var(--color-slate-600);
+  }
+
+  .status-error {
+    color: #b91c1c;
+    background: #fef2f2;
+    border-color: #fecaca;
+  }
+
+  .result-card {
+    margin-top: 1.5rem;
+  }
+
+  .result-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+
+  .result-product {
+    font-size: 1.1rem;
+    color: var(--color-slate-900);
+  }
+
+  .result-date {
+    font-size: 0.85rem;
+    color: var(--color-slate-500);
+  }
+
+  .license-key-box {
+    text-align: left;
+    background: #1e293b;
+    border-radius: var(--radius-lg);
+    padding: 1.25rem 1.5rem;
+  }
+
+  .license-key-box label {
+    display: block;
+    font-size: 0.75rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: #94a3b8;
+    margin-bottom: 0.5rem;
+    font-weight: 400;
+  }
+
+  .license-key-row {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .license-key-value {
+    flex: 1;
+    font-size: 1rem;
+    color: #fb923c;
+    word-break: break-all;
+    font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  }
+
+  .copy-btn {
+    flex-shrink: 0;
+    padding: 0.4rem 0.9rem;
+    background: var(--color-orange-500);
+    color: white;
+    border: none;
+    border-radius: var(--radius-md);
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    font-family: inherit;
+    transition: background 0.2s;
+  }
+
+  .copy-btn:hover {
+    background: var(--color-orange-600);
+  }
+
+  .help-link {
+    margin-top: 2.5rem;
+    text-align: center;
+    color: var(--color-slate-500);
+    font-size: 0.95rem;
+  }
+
+  .help-link a {
+    color: var(--color-orange-600);
+    font-weight: 500;
+  }
+
+  .help-link a:hover {
+    color: var(--color-orange-700);
+  }
+
+  @media (max-width: 480px) {
+    .input-row {
+      flex-direction: column;
+    }
+  }
+</style>

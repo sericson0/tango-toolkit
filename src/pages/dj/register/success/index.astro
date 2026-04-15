@@ -4,7 +4,7 @@ import BaseLayout from '../../../../layouts/BaseLayout.astro';
 
 <BaseLayout title="Registration Complete" description="Thank you for registering for Tango Toolkit resources.">
   <section class="success-page">
-    <div class="container narrow">
+    <div class="container narrow-sm">
       <div class="success-card">
         <div class="checkmark">&#10003;</div>
         <h1>You're registered!</h1>
@@ -25,8 +25,6 @@ import BaseLayout from '../../../../layouts/BaseLayout.astro';
     display: flex;
     align-items: center;
   }
-
-  .narrow { max-width: 36rem; margin: 0 auto; padding: 0 1.5rem; }
 
   .success-card { text-align: center; }
 
@@ -55,5 +53,14 @@ import BaseLayout from '../../../../layouts/BaseLayout.astro';
   }
 
   .success-links { display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center; }
+
+  @media (max-width: 480px) {
+    .success-links {
+      flex-direction: column;
+    }
+    .success-links a {
+      width: 100%;
+    }
+  }
 
 </style>

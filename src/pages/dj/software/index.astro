@@ -1,12 +1,9 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import PageHero from '../../../components/PageHero.astro';
-import { products } from '../../../data/products';
+import { getProductsMap } from '../../../data/products';
 
-const tigertango = products.find((p) => p.id === 'tigertango');
-const hisstory = products.find((p) => p.id === 'hisstory');
-const tigertag = products.find((p) => p.id === 'tigertag');
-const tigertanda = products.find((p) => p.id === 'tigertanda');
+const { tigertango, hisstory, tigertag, tigertanda } = getProductsMap();
 ---
 
 <BaseLayout title="DJ Tools" description="Software and plugins built for tango DJs. Download free tools and pro-level utilities for music management, audio restoration, and tanda building.">
@@ -117,6 +114,14 @@ const tigertanda = products.find((p) => p.id === 'tigertanda');
         </a>
       </div>
 
+      <div class="email-opt-in">
+        Get setup tips and new feature updates for TigerTango:
+        <form class="email-gate-form" data-product-id="tigertango" data-optional="true">
+          <input type="email" placeholder="your@email.com (optional)" />
+          <button type="submit">Subscribe</button>
+        </form>
+      </div>
+
       <p class="install-link">
         &#128214; <a href="/dj/software-setup/">Follow installation instructions here</a>
         &nbsp;&mdash;&nbsp;or view the
@@ -164,6 +169,7 @@ const tigertanda = products.find((p) => p.id === 'tigertanda');
           <h2>Hisstory</h2>
           <p class="tool-tagline">Keep the music, ditch the noise</p>
           <span class="price-badge">$40 &mdash; 2-day free trial</span>
+          <span class="license-note">One-time purchase, lifetime access</span>
         </div>
       </div>
 
@@ -238,6 +244,7 @@ const tigertanda = products.find((p) => p.id === 'tigertanda');
           <h2>TigerTag</h2>
           <p class="tool-tagline">Tag your tango tunes</p>
           <span class="price-badge">{tigertag?.price}</span>
+          <span class="license-note">One-time purchase, lifetime access</span>
         </div>
       </div>
 
@@ -262,7 +269,7 @@ const tigertanda = products.find((p) => p.id === 'tigertanda');
           <span class="dl-icon">&#128179;</span>
           <div>
             <strong>Purchase Key &mdash; {tigertag?.price}</strong>
-            <span>One-time purchase</span>
+            <span>One-time purchase, lifetime access</span>
           </div>
         </button>
       </div>
@@ -289,7 +296,15 @@ const tigertanda = products.find((p) => p.id === 'tigertanda');
 
       <p class="tool-desc-full">Intelligent tanda builder that suggests complementary tracks based on orchestra, era, energy, and style.</p>
 
-      <div class="download-buttons">
+      <div class="email-gate" id="tigertanda-email-gate">
+        <p>Enter your email to download TigerTanda and receive setup tips and updates.</p>
+        <form class="email-gate-form" data-product-id="tigertanda">
+          <input type="email" placeholder="your@email.com" required />
+          <button type="submit">Get Download Link</button>
+        </form>
+      </div>
+
+      <div class="download-buttons" id="tigertanda-downloads" style="display: none;">
         <a href={tigertanda?.downloadLink} target="_blank" rel="noopener noreferrer" class="download-btn-large">
           <span class="dl-icon">&#128229;</span>
           <div>
@@ -309,9 +324,14 @@ const tigertanda = products.find((p) => p.id === 'tigertanda');
       const productId = button.dataset.productId;
 
       button.disabled = true;
+      button.style.cursor = 'wait';
       const strongEl = button.querySelector('strong');
       const originalText = strongEl?.textContent || '';
-      if (strongEl) strongEl.textContent = 'Loading...';
+      if (strongEl) strongEl.innerHTML = '<span class="spinner"></span> Loading\u2026';
+
+      // Clear any previous error
+      const prevError = button.parentElement?.querySelector('.checkout-error');
+      if (prevError) prevError.remove();
 
       try {
         const response = await fetch('/api/create-checkout-session', {
@@ -329,8 +349,67 @@ const tigertanda = products.find((p) => p.id === 'tigertanda');
       } catch (err) {
         console.error('Checkout error:', err);
         button.disabled = false;
+        button.style.cursor = '';
         if (strongEl) strongEl.textContent = originalText;
-        alert('Something went wrong. Please try again.');
+
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'checkout-error';
+        errorDiv.textContent = 'Something went wrong. Please try again.';
+        button.parentElement?.insertBefore(errorDiv, button.nextSibling);
+      }
+    });
+  });
+
+  // Email capture forms
+  document.querySelectorAll('.email-gate-form').forEach((form) => {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const formEl = e.currentTarget as HTMLFormElement;
+      const input = formEl.querySelector('input[type="email"]') as HTMLInputElement;
+      const submitBtn = formEl.querySelector('button') as HTMLButtonElement;
+      const productId = formEl.dataset.productId;
+      const isOptional = formEl.dataset.optional === 'true';
+
+      const email = input.value.trim();
+      if (!email) {
+        if (isOptional) return;
+        return;
+      }
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Sending\u2026';
+
+      // Clear previous errors
+      const prevError = formEl.parentElement?.querySelector('.email-gate-error');
+      if (prevError) prevError.remove();
+
+      try {
+        const response = await fetch('/api/capture-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, productId }),
+        });
+
+        if (!response.ok) throw new Error('Failed');
+
+        if (isOptional) {
+          // Replace the form with a success message
+          formEl.innerHTML = '<span class="email-gate-success">Subscribed! Check your inbox for updates.</span>';
+        } else {
+          // Show download buttons and hide the email gate
+          const gate = formEl.closest('.email-gate') as HTMLElement;
+          const downloads = gate?.nextElementSibling as HTMLElement;
+          if (gate) gate.innerHTML = '<p class="email-gate-success">Thanks! Your download links are ready below.</p>';
+          if (downloads) downloads.style.display = '';
+        }
+      } catch (err) {
+        submitBtn.disabled = false;
+        submitBtn.textContent = isOptional ? 'Subscribe' : 'Get Download Link';
+
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'email-gate-error';
+        errorDiv.textContent = 'Something went wrong. Please try again.';
+        formEl.parentElement?.appendChild(errorDiv);
       }
     });
   });
@@ -406,7 +485,7 @@ const tigertanda = products.find((p) => p.id === 'tigertanda');
     }
   }
 
-  @media (max-width: 480px) {
+  @media (max-width: 600px) {
     .tool-cards-grid {
       grid-template-columns: 1fr;
     }
@@ -583,6 +662,119 @@ const tigertanda = products.find((p) => p.id === 'tigertanda');
   .guide-expander .guide-content {
     padding: 0 1.25rem 1rem;
     margin: 0;
+  }
+
+  /* ===== Spinner & Checkout Error ===== */
+  .spinner {
+    display: inline-block;
+    width: 1em;
+    height: 1em;
+    border: 2px solid rgba(0,0,0,0.15);
+    border-top-color: var(--color-orange-500);
+    border-radius: 50%;
+    animation: spin 0.6s linear infinite;
+    vertical-align: middle;
+    margin-right: 0.4em;
+  }
+
+  @keyframes spin {
+    to { transform: rotate(360deg); }
+  }
+
+  .checkout-error {
+    color: var(--color-red-700);
+    background: var(--color-red-50);
+    border: 1px solid var(--color-red-500);
+    border-radius: var(--radius-md);
+    padding: 0.75rem 1rem;
+    margin-top: 0.75rem;
+    font-size: 0.9rem;
+  }
+
+  /* ===== License Badge ===== */
+  .license-note {
+    font-size: 0.8rem;
+    color: var(--color-slate-500);
+    margin-top: 0.15rem;
+  }
+
+  /* ===== Email Capture ===== */
+  .email-gate {
+    background: var(--color-slate-50);
+    border: 1px solid var(--color-slate-200);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    margin: 1.5rem 0;
+  }
+
+  .email-gate p {
+    margin: 0 0 1rem;
+    font-size: 0.95rem;
+    color: var(--color-slate-600);
+  }
+
+  .email-gate-form {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .email-gate-form input[type="email"] {
+    flex: 1;
+    min-width: 200px;
+    padding: 0.6rem 1rem;
+    border: 1px solid var(--color-slate-300);
+    border-radius: var(--radius-md);
+    font-family: inherit;
+    font-size: 0.95rem;
+  }
+
+  .email-gate-form input[type="email"]:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 1px;
+    border-color: var(--color-primary);
+  }
+
+  .email-gate-form button {
+    padding: 0.6rem 1.5rem;
+    background: var(--color-primary);
+    color: white;
+    border: none;
+    border-radius: var(--radius-md);
+    font-family: inherit;
+    font-size: 0.95rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background 0.2s;
+  }
+
+  .email-gate-form button:hover {
+    background: var(--color-primary-hover);
+  }
+
+  .email-gate-success {
+    color: var(--color-green-700);
+    font-weight: 500;
+  }
+
+  .email-gate-error {
+    color: var(--color-red-700);
+    font-size: 0.85rem;
+    margin-top: 0.5rem;
+  }
+
+  .email-opt-in {
+    margin: 1rem 0;
+    padding: 1rem 1.25rem;
+    background: var(--color-orange-50);
+    border: 1px solid var(--color-orange-200);
+    border-radius: var(--radius-md);
+    font-size: 0.9rem;
+    color: var(--color-slate-600);
+  }
+
+  .email-opt-in .email-gate-form {
+    margin-top: 0.75rem;
   }
 
   /* ===== Responsive ===== */

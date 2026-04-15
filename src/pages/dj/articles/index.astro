@@ -27,7 +27,24 @@ import PageHero from '../../../components/PageHero.astro';
   <section class="links-section">
     <div class="container">
       <h2 class="section-heading">Links</h2>
-      <p class="placeholder-text">More links and resources coming soon.</p>
+      <div class="links-grid">
+        <a href="/dj/starter-kit/" class="link-card">
+          <strong>DJ Starter Kit</strong>
+          <p>Everything you need to know to start tango DJing.</p>
+        </a>
+        <a href="/dj/software/" class="link-card">
+          <strong>DJ Tools</strong>
+          <p>Software and plugins built for tango DJs.</p>
+        </a>
+        <a href="/dj/resources/" class="link-card">
+          <strong>Discographies</strong>
+          <p>Nearly 15,000 tangos from more than 40 artists.</p>
+        </a>
+        <a href="/dj/faq/" class="link-card">
+          <strong>FAQ & Changelog</strong>
+          <p>Common questions and recent software updates.</p>
+        </a>
+      </div>
     </div>
   </section>
 </BaseLayout>
@@ -46,9 +63,38 @@ import PageHero from '../../../components/PageHero.astro';
     font-size: 1.5rem;
   }
 
-  .placeholder-text {
+  .links-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1rem;
+  }
+
+  .link-card {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    background: white;
+    border: 1px solid var(--color-slate-200);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem 1.5rem;
+    transition: all 0.2s;
+  }
+
+  .link-card:hover {
+    border-color: var(--color-orange-400);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+
+  .link-card strong {
+    font-size: 1.05rem;
+    color: var(--color-slate-800);
+  }
+
+  .link-card p {
+    margin: 0.35rem 0 0;
+    font-size: 0.9rem;
     color: var(--color-slate-500);
-    font-style: italic;
   }
 
   .articles-grid {

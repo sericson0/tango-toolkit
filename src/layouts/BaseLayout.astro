@@ -16,6 +16,7 @@ const { title, description = "Tools and resources for tango DJs. Software and gu
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/Logo.png" />
     <meta name="generator" content={Astro.generator} />
     <meta property="og:title" content={`${title} | The Tango Toolkit`} />
     <meta property="og:description" content={description} />
@@ -23,7 +24,22 @@ const { title, description = "Tools and resources for tango DJs. Software and gu
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:image" content="/images/Logo.png" />
+    <meta property="og:url" content={new URL(Astro.url.pathname, Astro.site).href} />
+    <meta property="og:site_name" content="The Tango Toolkit" />
+    <meta name="twitter:title" content={`${title} | The Tango Toolkit`} />
+    <meta name="twitter:description" content={description} />
+    <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site).href} />
+    <meta name="theme-color" content="#f97316" />
     <title>{title} | The Tango Toolkit</title>
+    {import.meta.env.PUBLIC_GA_ID && (
+      <script async src={`https://www.googletagmanager.com/gtag/js?id=${import.meta.env.PUBLIC_GA_ID}`}></script>
+      <script define:vars={{ gaId: import.meta.env.PUBLIC_GA_ID }}>
+        window.dataLayer = window.dataLayer || [];
+        function gtag(){dataLayer.push(arguments);}
+        gtag('js', new Date());
+        gtag('config', gaId);
+      </script>
+    )}
   </head>
   <body>
     <header class="site-header">
@@ -66,7 +82,12 @@ const { title, description = "Tools and resources for tango DJs. Software and gu
             <a href="/dj/articles/">Resources</a>
           </div>
           <div>
-            <strong>Connect</strong>
+            <strong>Help</strong>
+            <a href="/dj/faq/">FAQ & Changelog</a>
+            <a href="/dj/account/">My Licenses</a>
+            <a href="/support/">Support</a>
+          </div>
+          <div>
             <p>&copy; {new Date().getFullYear()} The Tango Toolkit</p>
           </div>
         </div>
@@ -77,6 +98,13 @@ const { title, description = "Tools and resources for tango DJs. Software and gu
       // Mobile nav toggle
       document.querySelector('.nav-toggle')?.addEventListener('click', () => {
         document.querySelector('.nav')?.classList.toggle('open');
+      });
+
+      // Close mobile nav when a link is clicked
+      document.querySelectorAll('.nav a').forEach((link) => {
+        link.addEventListener('click', () => {
+          document.querySelector('.nav')?.classList.remove('open');
+        });
       });
     </script>
   </body>
@@ -145,12 +173,28 @@ const { title, description = "Tools and resources for tango DJs. Software and gu
     border: none;
     cursor: pointer;
     padding: 0.75rem;
+    border-radius: var(--radius-md);
+    transition: background 0.15s;
+  }
+
+  .nav-toggle:hover {
+    background: var(--color-slate-100);
+  }
+
+  .nav-toggle:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
   }
 
   .nav-toggle span {
     width: 24px;
     height: 2px;
     background: var(--color-slate-700);
+    transition: background 0.15s;
+  }
+
+  .nav-toggle:hover span {
+    background: var(--color-primary);
   }
 
   @media (max-width: 768px) {
