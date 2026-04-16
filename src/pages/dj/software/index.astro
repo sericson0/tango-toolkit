@@ -581,7 +581,7 @@ const { tigertango, hisstory, tigertag, tigertanda } = getProductsMap();
   /* Features checklist */
   .features-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-template-columns: repeat(3, 1fr);
     gap: 0.5rem 1.5rem;
     margin-bottom: 2rem;
   }
@@ -816,6 +816,10 @@ const { tigertango, hisstory, tigertag, tigertanda } = getProductsMap();
     }
 
     .tool-logo { width: 70px; height: 70px; }
+
+    .features-grid {
+      grid-template-columns: 1fr;
+    }
   }
 
 </style>
