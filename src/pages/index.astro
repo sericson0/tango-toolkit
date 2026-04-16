@@ -36,6 +36,123 @@ import { products } from '../data/products';
     </div>
   </section>
 
+  <section class="engage-section">
+    <div class="container">
+      <div class="subscribe-bar">
+        <div class="subscribe-text">
+          <h2>Stay in the Loop</h2>
+          <p>Get updates on new tools, features, and tango resources.</p>
+        </div>
+        <form class="subscribe-form" id="subscribeForm">
+          <input type="email" id="subscribeEmail" placeholder="Your email address" required />
+          <button type="submit" class="btn btn-primary" id="subscribeBtn">Subscribe</button>
+        </form>
+        <p class="subscribe-msg" id="subscribeMsg"></p>
+      </div>
+      <div class="support-bar">
+        <button class="support-btn" id="openSupportModal">Help Support the Tango Toolkit</button>
+      </div>
+    </div>
+  </section>
+
+  <!-- Support Modal -->
+  <div class="modal-overlay" id="supportModal">
+    <div class="modal">
+      <button class="modal-close" id="closeSupportModal">&times;</button>
+      <h2>Help Support the Tango Toolkit</h2>
+      <p class="modal-intro">Whether you'd like to contribute suggestions, resources, articles, software, or funds — every bit helps keep this project going.</p>
+
+      <div class="modal-options">
+        <div class="modal-option">
+          <div class="modal-option-icon">&#9993;</div>
+          <h3>Contribute</h3>
+          <p>Share ideas, resources, articles, or software suggestions.</p>
+          <a href="mailto:tangotoolkit@gmail.com" class="btn btn-primary">Email Us</a>
+        </div>
+
+        <div class="modal-option">
+          <div class="modal-option-icon">&#9829;</div>
+          <h3>Donate</h3>
+          <p>Help fund development and keep the tools free.</p>
+          <div class="donate-buttons">
+            <a href="https://buy.stripe.com/5kQ8wOfGU7bsdZ9gplgnK01" target="_blank" rel="noopener" class="donate-link donate-stripe">
+              <span>Card / Apple Pay</span>
+            </a>
+            <a href="https://venmo.com/Sean-Ericson-1" target="_blank" rel="noopener" class="donate-link donate-venmo">
+              <span>Venmo</span>
+            </a>
+            <div class="donate-link donate-zelle">
+              <span>Zelle</span>
+              <span class="zelle-number">925-528-9221</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script is:inline>
+  (function() {
+    // Subscribe form
+    var form = document.getElementById('subscribeForm');
+    var emailInput = document.getElementById('subscribeEmail');
+    var btn = document.getElementById('subscribeBtn');
+    var msg = document.getElementById('subscribeMsg');
+
+    form.addEventListener('submit', function(e) {
+      e.preventDefault();
+      var email = emailInput.value.trim();
+      if (!email) return;
+
+      btn.disabled = true;
+      btn.textContent = 'Subscribing...';
+      msg.textContent = '';
+      msg.className = 'subscribe-msg';
+
+      fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email })
+      })
+      .then(function(res) {
+        if (!res.ok) throw new Error(res.statusText);
+        return res.json();
+      })
+      .then(function() {
+        msg.textContent = 'You\'re subscribed! Thanks for joining.';
+        msg.className = 'subscribe-msg subscribe-success';
+        emailInput.value = '';
+      })
+      .catch(function() {
+        msg.textContent = 'Something went wrong. Please try again.';
+        msg.className = 'subscribe-msg subscribe-error';
+      })
+      .finally(function() {
+        btn.disabled = false;
+        btn.textContent = 'Subscribe';
+      });
+    });
+
+    // Support modal
+    var modal = document.getElementById('supportModal');
+    var openBtn = document.getElementById('openSupportModal');
+    var closeBtn = document.getElementById('closeSupportModal');
+
+    openBtn.addEventListener('click', function() {
+      modal.classList.add('modal-open');
+    });
+    closeBtn.addEventListener('click', function() {
+      modal.classList.remove('modal-open');
+    });
+    modal.addEventListener('click', function(e) {
+      if (e.target === modal) modal.classList.remove('modal-open');
+    });
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') modal.classList.remove('modal-open');
+    });
+  })();
+  </script>
+
   <section class="tools-section">
     <div class="container">
       <hr class="section-divider" />
@@ -248,6 +365,276 @@ import { products } from '../data/products';
     .tool-image,
     .tool-actions {
       max-width: 100%;
+    }
+  }
+
+  /* Engage Section (Subscribe + Support) */
+  .engage-section {
+    padding: 0 0 1.5rem;
+  }
+
+  .subscribe-bar {
+    background: linear-gradient(135deg, var(--color-orange-50) 0%, white 100%);
+    border: 1px solid var(--color-orange-200);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem 2rem;
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    flex-wrap: wrap;
+  }
+
+  .subscribe-text {
+    flex: 1;
+    min-width: 200px;
+  }
+
+  .subscribe-text h2 {
+    margin: 0 0 0.25rem;
+    font-size: 1.25rem;
+  }
+
+  .subscribe-text p {
+    margin: 0;
+    color: var(--color-slate-600);
+    font-size: 0.95rem;
+  }
+
+  .subscribe-form {
+    display: flex;
+    gap: 0.5rem;
+    flex: 1;
+    min-width: 280px;
+    max-width: 420px;
+  }
+
+  .subscribe-form input {
+    flex: 1;
+    padding: 0.6rem 0.8rem;
+    border: 1px solid var(--color-slate-300);
+    border-radius: var(--radius-md);
+    font-size: 0.95rem;
+    font-family: 'Outfit', system-ui, sans-serif;
+  }
+
+  .subscribe-form input:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 1px;
+    border-color: var(--color-accent);
+  }
+
+  .subscribe-form button {
+    white-space: nowrap;
+  }
+
+  .subscribe-msg {
+    width: 100%;
+    margin: 0.5rem 0 0;
+    font-size: 0.85rem;
+    min-height: 1.2em;
+  }
+  .subscribe-msg:empty {
+    display: none;
+  }
+
+  .subscribe-success {
+    color: var(--color-green-700);
+  }
+
+  .subscribe-error {
+    color: var(--color-red-600);
+  }
+
+  .support-bar {
+    text-align: center;
+    margin-top: 1rem;
+  }
+
+  .support-btn {
+    background: none;
+    border: 2px dashed var(--color-slate-300);
+    border-radius: var(--radius-lg);
+    padding: 0.75rem 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--color-slate-600);
+    cursor: pointer;
+    font-family: 'Outfit', system-ui, sans-serif;
+    transition: all 0.2s;
+    width: 100%;
+  }
+
+  .support-btn:hover {
+    border-color: var(--color-primary);
+    color: var(--color-primary);
+    background: var(--color-orange-50);
+  }
+
+  /* Modal */
+  .modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+
+  .modal-overlay.modal-open {
+    display: flex;
+  }
+
+  .modal {
+    background: white;
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    max-width: 560px;
+    width: 100%;
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .modal h2 {
+    margin: 0 0 0.5rem;
+    font-size: 1.5rem;
+    padding-right: 2rem;
+  }
+
+  .modal-intro {
+    margin: 0 0 1.5rem;
+    color: var(--color-slate-600);
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  .modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--color-slate-400);
+    cursor: pointer;
+    line-height: 1;
+    padding: 0.25rem;
+  }
+
+  .modal-close:hover {
+    color: var(--color-slate-700);
+  }
+
+  .modal-options {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .modal-option {
+    border: 1px solid var(--color-slate-200);
+    border-radius: var(--radius-md);
+    padding: 1.25rem;
+  }
+
+  .modal-option-icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .modal-option h3 {
+    margin: 0 0 0.25rem;
+    font-size: 1.1rem;
+  }
+
+  .modal-option p {
+    margin: 0 0 1rem;
+    color: var(--color-slate-600);
+    font-size: 0.9rem;
+  }
+
+  .donate-buttons {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .donate-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+    padding: 0.6rem 1rem;
+    border: 1px solid var(--color-slate-200);
+    border-radius: var(--radius-md);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+    color: var(--color-slate-700);
+    cursor: pointer;
+    transition: all 0.15s;
+    flex: 1;
+    min-width: 100px;
+    text-align: center;
+  }
+
+  .donate-link:hover {
+    border-color: var(--color-primary);
+    background: var(--color-orange-50);
+  }
+
+  .donate-stripe {
+    border-color: #635bff;
+    color: #635bff;
+  }
+  .donate-stripe:hover {
+    background: #f5f4ff;
+    border-color: #635bff;
+  }
+
+  .donate-venmo {
+    border-color: #008cff;
+    color: #008cff;
+  }
+  .donate-venmo:hover {
+    background: #f0f8ff;
+    border-color: #008cff;
+  }
+
+  .donate-zelle {
+    border-color: #6c1cd3;
+    color: #6c1cd3;
+  }
+  .donate-zelle:hover {
+    background: #f6f0ff;
+    border-color: #6c1cd3;
+  }
+
+  .zelle-number {
+    font-weight: 400;
+    font-size: 0.75rem;
+    opacity: 0.8;
+  }
+
+  @media (max-width: 600px) {
+    .subscribe-bar {
+      padding: 1.25rem;
+      gap: 1rem;
+    }
+
+    .subscribe-form {
+      flex-direction: column;
+      max-width: 100%;
+    }
+
+    .modal {
+      padding: 1.5rem;
+    }
+
+    .donate-buttons {
+      flex-direction: column;
     }
   }
 

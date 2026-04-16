@@ -44,6 +44,7 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
           <tbody id="searchBody"></tbody>
         </table>
         <div class="tb-empty" id="searchEmpty" style="display:none;">No recordings match your filters</div>
+        <div class="tb-empty" id="searchPrompt">Select an artist, singer, genre, or search to find songs</div>
       </div>
     </div>
 
@@ -58,6 +59,8 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
         <label class="tb-filter-cb"><input type="checkbox" id="fGenre" checked> Genre</label>
         <label class="tb-filter-cb"><input type="checkbox" id="fYear" checked> Year</label>
         <select id="yearRange" class="tb-year-select">
+          <option value="0">&plusmn; 0</option>
+          <option value="1">&plusmn; 1</option>
           <option value="2">&plusmn; 2</option>
           <option value="3">&plusmn; 3</option>
           <option value="5" selected>&plusmn; 5</option>
@@ -184,6 +187,7 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
     var searchBody = document.getElementById('searchBody');
     var searchStats = document.getElementById('searchStats');
     var searchEmpty = document.getElementById('searchEmpty');
+    var searchPrompt = document.getElementById('searchPrompt');
     var searchTableWrap = document.getElementById('searchTableWrap');
     var searchTable = document.getElementById('searchTable');
 
@@ -246,11 +250,27 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
     }
 
     // --- Apply filters ---
+    function hasActiveFilters() {
+      return artistSelect.value || singerSelect.value || genreSelect.value || searchInput.value.trim();
+    }
+
     function applyFilters() {
       var artist = artistSelect.value;
       var singer = singerSelect.value;
       var genre = genreSelect.value;
       var q = norm(searchInput.value.trim());
+
+      if (!hasActiveFilters()) {
+        filteredData = [];
+        searchBody.innerHTML = '';
+        searchTable.style.display = 'none';
+        searchEmpty.style.display = 'none';
+        searchPrompt.style.display = '';
+        searchStats.textContent = '';
+        return;
+      }
+
+      searchPrompt.style.display = 'none';
 
       filteredData = allData.filter(function(r) {
         if (artist && r.Bandleader !== artist) return false;
@@ -289,11 +309,12 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
     function renderSearchTable() {
       if (filteredData.length === 0) {
         searchBody.innerHTML = '';
-        searchEmpty.style.display = 'block';
+        searchEmpty.style.display = hasActiveFilters() ? 'block' : 'none';
         searchTable.style.display = 'none';
         return;
       }
       searchEmpty.style.display = 'none';
+      searchPrompt.style.display = 'none';
       searchTable.style.display = '';
 
       var html = '';
@@ -801,8 +822,12 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
     background: var(--color-orange-50);
   }
   .tb-table tbody tr.tb-selected {
-    background: var(--color-orange-50);
+    background: #fef3c7;
     border-left: 3px solid var(--color-primary);
+    font-weight: 600;
+  }
+  .tb-table tbody tr.tb-selected td {
+    color: var(--color-slate-900);
   }
   .tb-table tbody tr.tb-selected td:first-child {
     padding-left: calc(0.4rem - 3px);
