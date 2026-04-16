@@ -1,0 +1,965 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+---
+
+<BaseLayout title="Tanda Builder" description="Search the tango discography and find songs for your tandas.">
+  <div class="tb-container">
+
+    <!-- Section 1: Find a Song -->
+    <div class="tb-section tb-search-section">
+      <div class="tb-section-header">
+        <h2>Find a Song</h2>
+        <span class="tb-stats" id="searchStats"></span>
+      </div>
+      <div class="tb-controls">
+        <div class="tb-control">
+          <label for="artistSelect">Artist</label>
+          <select id="artistSelect"><option value="">All Artists</option></select>
+        </div>
+        <div class="tb-control">
+          <label for="singerSelect">Singer</label>
+          <select id="singerSelect"><option value="">All Singers</option></select>
+        </div>
+        <div class="tb-control">
+          <label for="genreSelect">Genre</label>
+          <select id="genreSelect"><option value="">All Genres</option></select>
+        </div>
+        <div class="tb-control tb-control-wide">
+          <label for="searchInput">Search</label>
+          <input type="text" id="searchInput" placeholder="Search by title, composer, lyricist...">
+        </div>
+        <button class="tb-btn-reset" id="resetBtn">Reset All</button>
+      </div>
+      <div class="tb-table-wrap" id="searchTableWrap">
+        <table class="tb-table" id="searchTable">
+          <thead>
+            <tr>
+              <th data-col="Title" class="tb-sortable tb-sort-active tb-sort-asc">Title <span class="tb-arrow">▲</span></th>
+              <th data-col="Bandleader" class="tb-sortable">Artist</th>
+              <th data-col="Singer" class="tb-sortable">Singer</th>
+              <th data-col="Genre" class="tb-sortable tb-col-genre">Genre</th>
+              <th data-col="Date" class="tb-sortable tb-col-date">Date</th>
+            </tr>
+          </thead>
+          <tbody id="searchBody"></tbody>
+        </table>
+        <div class="tb-empty" id="searchEmpty" style="display:none;">No recordings match your filters</div>
+      </div>
+    </div>
+
+    <!-- Section 2: Tanda Matches -->
+    <div class="tb-section tb-tanda-section" id="tandaSection" style="display:none;">
+      <div class="tb-match-header">
+        <h2>Tanda Matches</h2>
+        <div class="tb-filter-sep"></div>
+        <span class="tb-filter-label">Match:</span>
+        <label class="tb-filter-cb"><input type="checkbox" id="fArtist" checked> Artist</label>
+        <label class="tb-filter-cb"><input type="checkbox" id="fSinger" checked> Singer</label>
+        <label class="tb-filter-cb"><input type="checkbox" id="fGenre" checked> Genre</label>
+        <label class="tb-filter-cb"><input type="checkbox" id="fYear" checked> Year</label>
+        <select id="yearRange" class="tb-year-select">
+          <option value="2">&plusmn; 2</option>
+          <option value="3">&plusmn; 3</option>
+          <option value="5" selected>&plusmn; 5</option>
+          <option value="8">&plusmn; 8</option>
+          <option value="10">&plusmn; 10</option>
+        </select>
+        <label class="tb-filter-cb"><input type="checkbox" id="fGrouping"> Grouping</label>
+        <label class="tb-filter-cb"><input type="checkbox" id="fOrchestra"> Orchestra</label>
+        <label class="tb-filter-cb"><input type="checkbox" id="fLabel"> Label</label>
+        <span class="tb-stats" id="matchStats"></span>
+      </div>
+      <div class="tb-table-wrap" id="matchTableWrap">
+        <table class="tb-table" id="matchTable">
+          <thead>
+            <tr>
+              <th data-col="Title" class="tb-sortable">Title</th>
+              <th data-col="Bandleader" class="tb-sortable">Artist</th>
+              <th data-col="Singer" class="tb-sortable">Singer</th>
+              <th data-col="Genre" class="tb-sortable tb-col-genre">Genre</th>
+              <th data-col="Date" class="tb-sortable tb-sort-active tb-sort-asc tb-col-date">Date <span class="tb-arrow">▲</span></th>
+            </tr>
+          </thead>
+          <tbody id="matchBody"></tbody>
+        </table>
+        <div class="tb-empty" id="matchEmpty" style="display:none;">No matches found with current filters</div>
+      </div>
+    </div>
+
+    <!-- Section 3: Track Details -->
+    <div class="tb-section tb-details-section" id="detailsSection" style="display:none;">
+      <table class="tb-diff-table" id="diffTable">
+        <thead>
+          <tr>
+            <th class="tb-diff-label">Track Details</th>
+            <th class="tb-diff-song tb-diff-source" id="diffSourceTitle"></th>
+            <th class="tb-diff-song tb-diff-match" id="diffMatchTitle"></th>
+          </tr>
+        </thead>
+        <tbody id="diffBody"></tbody>
+      </table>
+      <div class="tb-shared-divider"><span>Shared</span><hr></div>
+      <div class="tb-shared-grid" id="sharedGrid"></div>
+    </div>
+
+  </div>
+
+  <!-- Papa Parse CDN -->
+  <script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+
+  <script is:inline>
+  (function() {
+    'use strict';
+
+    // --- State ---
+    let allData = [];
+    let filteredData = [];
+    let searchSortCol = 'Title';
+    let searchSortAsc = true;
+    let matchSortCol = 'Date';
+    let matchSortAsc = true;
+    let selectedSong = null;
+    let selectedMatch = null;
+    let matchResults = [];
+
+    // --- Accent stripping ---
+    const accentMap = {
+      '\u00e0':'a','\u00e1':'a','\u00e2':'a','\u00e3':'a','\u00e4':'a','\u00e5':'a',
+      '\u00e8':'e','\u00e9':'e','\u00ea':'e','\u00eb':'e',
+      '\u00ec':'i','\u00ed':'i','\u00ee':'i','\u00ef':'i',
+      '\u00f2':'o','\u00f3':'o','\u00f4':'o','\u00f5':'o','\u00f6':'o',
+      '\u00f9':'u','\u00fa':'u','\u00fb':'u','\u00fc':'u',
+      '\u00f1':'n','\u00e7':'c','\u00fd':'y','\u00ff':'y'
+    };
+    function stripAccents(s) {
+      if (!s) return '';
+      return s.replace(/[\u00e0-\u00ff]/g, function(c) { return accentMap[c] || c; });
+    }
+    function norm(s) { return stripAccents((s || '').toLowerCase()); }
+
+    // --- Year extraction ---
+    function extractYear(dateStr) {
+      if (!dateStr) return 0;
+      var m = dateStr.match(/(\d{4})/);
+      return m ? parseInt(m[1], 10) : 0;
+    }
+
+    // --- Date parsing for sort ---
+    function parseDate(dateStr) {
+      if (!dateStr) return 0;
+      // M/D/YYYY
+      var parts = dateStr.split('/');
+      if (parts.length === 3) {
+        return new Date(parseInt(parts[2],10), parseInt(parts[0],10)-1, parseInt(parts[1],10)).getTime();
+      }
+      // YYYY-M-D
+      parts = dateStr.split('-');
+      if (parts.length === 3) {
+        return new Date(parseInt(parts[0],10), parseInt(parts[1],10)-1, parseInt(parts[2],10)).getTime();
+      }
+      return 0;
+    }
+
+    // --- HTML escape ---
+    function esc(s) { return (s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
+
+    // --- Unique sorted values ---
+    function uniqueSorted(arr, field) {
+      var seen = {};
+      var result = [];
+      for (var i = 0; i < arr.length; i++) {
+        var v = (arr[i][field] || '').trim();
+        if (v && !seen[v]) { seen[v] = true; result.push(v); }
+      }
+      result.sort(function(a, b) { return a.localeCompare(b); });
+      return result;
+    }
+
+    // --- DOM refs ---
+    var artistSelect = document.getElementById('artistSelect');
+    var singerSelect = document.getElementById('singerSelect');
+    var genreSelect = document.getElementById('genreSelect');
+    var searchInput = document.getElementById('searchInput');
+    var resetBtn = document.getElementById('resetBtn');
+    var searchBody = document.getElementById('searchBody');
+    var searchStats = document.getElementById('searchStats');
+    var searchEmpty = document.getElementById('searchEmpty');
+    var searchTableWrap = document.getElementById('searchTableWrap');
+    var searchTable = document.getElementById('searchTable');
+
+    var tandaSection = document.getElementById('tandaSection');
+    var matchBody = document.getElementById('matchBody');
+    var matchStats = document.getElementById('matchStats');
+    var matchEmpty = document.getElementById('matchEmpty');
+    var matchTable = document.getElementById('matchTable');
+
+    var detailsSection = document.getElementById('detailsSection');
+    var diffSourceTitle = document.getElementById('diffSourceTitle');
+    var diffMatchTitle = document.getElementById('diffMatchTitle');
+    var diffBody = document.getElementById('diffBody');
+    var sharedGrid = document.getElementById('sharedGrid');
+
+    var fArtist = document.getElementById('fArtist');
+    var fSinger = document.getElementById('fSinger');
+    var fGenre = document.getElementById('fGenre');
+    var fYear = document.getElementById('fYear');
+    var yearRange = document.getElementById('yearRange');
+    var fGrouping = document.getElementById('fGrouping');
+    var fOrchestra = document.getElementById('fOrchestra');
+    var fLabel = document.getElementById('fLabel');
+
+    // --- Populate dropdowns ---
+    function populateDropdowns() {
+      var subset = allData;
+      var selArtist = artistSelect.value;
+      var selSinger = singerSelect.value;
+      var selGenre = genreSelect.value;
+
+      // Artist: always from full data
+      var artists = uniqueSorted(allData, 'Bandleader');
+      fillSelect(artistSelect, artists, selArtist, 'All Artists');
+
+      // Filter by artist for singer/genre options
+      if (selArtist) {
+        subset = subset.filter(function(r) { return r.Bandleader === selArtist; });
+      }
+
+      var singers = uniqueSorted(subset, 'Singer');
+      fillSelect(singerSelect, singers, selSinger, 'All Singers');
+
+      // Filter by singer for genre options
+      var subsetForGenre = subset;
+      if (selSinger) {
+        subsetForGenre = subsetForGenre.filter(function(r) { return r.Singer === selSinger; });
+      }
+      var genres = uniqueSorted(subsetForGenre, 'Genre');
+      fillSelect(genreSelect, genres, selGenre, 'All Genres');
+    }
+
+    function fillSelect(sel, values, current, allLabel) {
+      var html = '<option value="">' + allLabel + '</option>';
+      for (var i = 0; i < values.length; i++) {
+        var s = values[i] === current ? ' selected' : '';
+        html += '<option value="' + esc(values[i]) + '"' + s + '>' + esc(values[i]) + '</option>';
+      }
+      sel.innerHTML = html;
+    }
+
+    // --- Apply filters ---
+    function applyFilters() {
+      var artist = artistSelect.value;
+      var singer = singerSelect.value;
+      var genre = genreSelect.value;
+      var q = norm(searchInput.value.trim());
+
+      filteredData = allData.filter(function(r) {
+        if (artist && r.Bandleader !== artist) return false;
+        if (singer && r.Singer !== singer) return false;
+        if (genre && r.Genre !== genre) return false;
+        if (q) {
+          var haystack = norm(r.Title) + ' ' + norm(r.Composer) + ' ' + norm(r.Lyricist);
+          if (haystack.indexOf(q) === -1) return false;
+        }
+        return true;
+      });
+
+      sortData(filteredData, searchSortCol, searchSortAsc);
+      renderSearchTable();
+      updateSearchStats();
+    }
+
+    // --- Sort ---
+    function sortData(data, col, asc) {
+      data.sort(function(a, b) {
+        var va, vb;
+        if (col === 'Date') {
+          va = parseDate(a.Date);
+          vb = parseDate(b.Date);
+        } else {
+          va = (a[col] || '').toLowerCase();
+          vb = (b[col] || '').toLowerCase();
+        }
+        if (va < vb) return asc ? -1 : 1;
+        if (va > vb) return asc ? 1 : -1;
+        return 0;
+      });
+    }
+
+    // --- Render search table ---
+    function renderSearchTable() {
+      if (filteredData.length === 0) {
+        searchBody.innerHTML = '';
+        searchEmpty.style.display = 'block';
+        searchTable.style.display = 'none';
+        return;
+      }
+      searchEmpty.style.display = 'none';
+      searchTable.style.display = '';
+
+      var html = '';
+      for (var i = 0; i < filteredData.length; i++) {
+        var r = filteredData[i];
+        var cls = (selectedSong && selectedSong._idx === r._idx) ? ' class="tb-selected"' : '';
+        html += '<tr data-idx="' + r._idx + '"' + cls + '>';
+        html += '<td>' + esc(r.Title) + '</td>';
+        html += '<td>' + esc(r.Bandleader) + '</td>';
+        html += '<td>' + esc(r.Singer) + '</td>';
+        html += '<td class="tb-col-genre">' + esc(r.Genre) + '</td>';
+        html += '<td class="tb-col-date">' + esc(r.Date) + '</td>';
+        html += '</tr>';
+      }
+      searchBody.innerHTML = html;
+    }
+
+    function updateSearchStats() {
+      if (filteredData.length === 0) {
+        searchStats.textContent = '0 recordings';
+        return;
+      }
+      var years = [];
+      for (var i = 0; i < filteredData.length; i++) {
+        var y = extractYear(filteredData[i].Date);
+        if (y) years.push(y);
+      }
+      var range = '';
+      if (years.length > 0) {
+        var mn = Math.min.apply(null, years);
+        var mx = Math.max.apply(null, years);
+        range = ' \u00b7 ' + mn + (mn !== mx ? '\u2013' + mx : '');
+      }
+      searchStats.textContent = filteredData.length + ' recordings' + range;
+    }
+
+    // --- Search table click ---
+    searchBody.addEventListener('click', function(e) {
+      var tr = e.target.closest('tr');
+      if (!tr) return;
+      var idx = parseInt(tr.getAttribute('data-idx'), 10);
+      var song = allData[idx];
+      if (!song) return;
+
+      // Deselect if clicking the same song
+      if (selectedSong && selectedSong._idx === idx) {
+        selectedSong = null;
+        selectedMatch = null;
+        tandaSection.style.display = 'none';
+        detailsSection.style.display = 'none';
+        renderSearchTable();
+        return;
+      }
+
+      selectedSong = song;
+      selectedMatch = null;
+      detailsSection.style.display = 'none';
+      renderSearchTable();
+      runTandaSearch();
+      tandaSection.style.display = '';
+      tandaSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+
+    // --- Tanda search ---
+    function runTandaSearch() {
+      if (!selectedSong) return;
+
+      var ref = selectedSong;
+      var refYear = extractYear(ref.Date);
+      var range = parseInt(yearRange.value, 10);
+
+      matchResults = allData.filter(function(r) {
+        // Exclude the source song
+        if (r._idx === ref._idx) return false;
+
+        if (fArtist.checked && norm(r.Bandleader) !== norm(ref.Bandleader)) return false;
+        if (fSinger.checked && norm(r.Singer) !== norm(ref.Singer)) return false;
+        if (fGenre.checked && norm(r.Genre) !== norm(ref.Genre)) return false;
+        if (fGrouping.checked && norm(r.Grouping) !== norm(ref.Grouping)) return false;
+        if (fOrchestra.checked && norm(r.Orchestra) !== norm(ref.Orchestra)) return false;
+        if (fLabel.checked && norm(r.Label) !== norm(ref.Label)) return false;
+
+        if (fYear.checked && range > 0 && refYear > 0) {
+          var ry = extractYear(r.Date);
+          if (ry === 0 || Math.abs(ry - refYear) > range) return false;
+        }
+
+        return true;
+      });
+
+      sortData(matchResults, matchSortCol, matchSortAsc);
+      renderMatchTable();
+      updateMatchStats();
+    }
+
+    function renderMatchTable() {
+      if (matchResults.length === 0) {
+        matchBody.innerHTML = '';
+        matchEmpty.style.display = 'block';
+        matchTable.style.display = 'none';
+        return;
+      }
+      matchEmpty.style.display = 'none';
+      matchTable.style.display = '';
+
+      var html = '';
+      for (var i = 0; i < matchResults.length; i++) {
+        var r = matchResults[i];
+        var cls = (selectedMatch && selectedMatch._idx === r._idx) ? ' class="tb-selected"' : '';
+        html += '<tr data-idx="' + r._idx + '"' + cls + '>';
+        html += '<td>' + esc(r.Title) + '</td>';
+        html += '<td>' + esc(r.Bandleader) + '</td>';
+        html += '<td>' + esc(r.Singer) + '</td>';
+        html += '<td class="tb-col-genre">' + esc(r.Genre) + '</td>';
+        html += '<td class="tb-col-date">' + esc(r.Date) + '</td>';
+        html += '</tr>';
+      }
+      matchBody.innerHTML = html;
+    }
+
+    function updateMatchStats() {
+      matchStats.textContent = matchResults.length + ' matches';
+    }
+
+    // --- Match table click ---
+    matchBody.addEventListener('click', function(e) {
+      var tr = e.target.closest('tr');
+      if (!tr) return;
+      var idx = parseInt(tr.getAttribute('data-idx'), 10);
+      var song = allData[idx];
+      if (!song) return;
+
+      if (selectedMatch && selectedMatch._idx === idx) {
+        selectedMatch = null;
+        detailsSection.style.display = 'none';
+        renderMatchTable();
+        return;
+      }
+
+      selectedMatch = song;
+      renderMatchTable();
+      renderDetails();
+      detailsSection.style.display = '';
+      detailsSection.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+
+    // --- Track Details ---
+    var detailFields = [
+      { key: 'Date', label: 'Date' },
+      { key: 'Genre', label: 'Genre' },
+      { key: 'Composer', label: 'Composer' },
+      { key: 'Lyricist', label: 'Lyricist' },
+      { key: 'Arranger', label: 'Arranger' },
+      { key: 'Bandleader', label: 'Artist' },
+      { key: 'Singer', label: 'Singer' },
+      { key: 'Label', label: 'Label' },
+      { key: 'Grouping', label: 'Grouping' },
+      { key: 'Orchestra', label: 'Orchestra' },
+      { key: 'Pianist', label: 'Pianist' },
+      { key: 'Bassist', label: 'Bassist' },
+      { key: 'Bandoneons', label: 'Bandoneons' },
+      { key: 'Strings', label: 'Strings' },
+      { key: 'Lineup', label: 'Lineup' }
+    ];
+
+    function renderDetails() {
+      if (!selectedSong || !selectedMatch) return;
+
+      diffSourceTitle.textContent = selectedSong.Title;
+      diffMatchTitle.textContent = selectedMatch.Title;
+
+      var diffs = [];
+      var shared = [];
+
+      for (var i = 0; i < detailFields.length; i++) {
+        var f = detailFields[i];
+        var sv = (selectedSong[f.key] || '').trim();
+        var mv = (selectedMatch[f.key] || '').trim();
+        // Skip if both empty
+        if (!sv && !mv) continue;
+        if (sv === mv) {
+          shared.push(f);
+        } else {
+          diffs.push(f);
+        }
+      }
+
+      // Render diffs
+      var html = '';
+      for (var i = 0; i < diffs.length; i++) {
+        var f = diffs[i];
+        html += '<tr>';
+        html += '<td>' + esc(f.label) + '</td>';
+        html += '<td class="tb-val-source">' + esc(selectedSong[f.key]) + '</td>';
+        html += '<td class="tb-val-match">' + esc(selectedMatch[f.key]) + '</td>';
+        html += '</tr>';
+      }
+      diffBody.innerHTML = html;
+
+      // Render shared
+      var wideFields = { 'Bandoneons': true, 'Strings': true, 'Lineup': true };
+      var shtml = '';
+      for (var i = 0; i < shared.length; i++) {
+        var f = shared[i];
+        var wide = wideFields[f.key] ? ' tb-sg-wide' : '';
+        shtml += '<div class="tb-sg-item' + wide + '">';
+        shtml += '<span class="tb-sg-label">' + esc(f.label) + '</span> ';
+        shtml += '<span class="tb-sg-value">' + esc(selectedSong[f.key]) + '</span>';
+        shtml += '</div>';
+      }
+      sharedGrid.innerHTML = shtml;
+    }
+
+    // --- Sort header clicks ---
+    function setupSortHeaders(table, getSortCol, setSortCol, getSortAsc, setSortAsc, onSort) {
+      var ths = table.querySelectorAll('th.tb-sortable');
+      ths.forEach(function(th) {
+        th.addEventListener('click', function() {
+          var col = th.getAttribute('data-col');
+          if (getSortCol() === col) {
+            setSortAsc(!getSortAsc());
+          } else {
+            setSortCol(col);
+            setSortAsc(true);
+          }
+          // Update header UI
+          ths.forEach(function(h) {
+            h.classList.remove('tb-sort-active', 'tb-sort-asc', 'tb-sort-desc');
+            var arrow = h.querySelector('.tb-arrow');
+            if (arrow) arrow.remove();
+          });
+          th.classList.add('tb-sort-active', getSortAsc() ? 'tb-sort-asc' : 'tb-sort-desc');
+          var span = document.createElement('span');
+          span.className = 'tb-arrow';
+          span.textContent = getSortAsc() ? ' \u25B2' : ' \u25BC';
+          th.appendChild(span);
+          onSort();
+        });
+      });
+    }
+
+    setupSortHeaders(searchTable,
+      function() { return searchSortCol; },
+      function(c) { searchSortCol = c; },
+      function() { return searchSortAsc; },
+      function(a) { searchSortAsc = a; },
+      function() {
+        sortData(filteredData, searchSortCol, searchSortAsc);
+        renderSearchTable();
+      }
+    );
+
+    setupSortHeaders(matchTable,
+      function() { return matchSortCol; },
+      function(c) { matchSortCol = c; },
+      function() { return matchSortAsc; },
+      function(a) { matchSortAsc = a; },
+      function() {
+        sortData(matchResults, matchSortCol, matchSortAsc);
+        renderMatchTable();
+      }
+    );
+
+    // --- Filter events ---
+    artistSelect.addEventListener('change', function() {
+      singerSelect.value = '';
+      genreSelect.value = '';
+      populateDropdowns();
+      clearSelection();
+      applyFilters();
+    });
+    singerSelect.addEventListener('change', function() {
+      populateDropdowns();
+      clearSelection();
+      applyFilters();
+    });
+    genreSelect.addEventListener('change', function() {
+      clearSelection();
+      applyFilters();
+    });
+
+    var searchDebounce = null;
+    searchInput.addEventListener('input', function() {
+      clearTimeout(searchDebounce);
+      searchDebounce = setTimeout(function() {
+        clearSelection();
+        applyFilters();
+      }, 300);
+    });
+
+    resetBtn.addEventListener('click', function() {
+      artistSelect.value = '';
+      singerSelect.value = '';
+      genreSelect.value = '';
+      searchInput.value = '';
+      populateDropdowns();
+      clearSelection();
+      applyFilters();
+    });
+
+    function clearSelection() {
+      selectedSong = null;
+      selectedMatch = null;
+      tandaSection.style.display = 'none';
+      detailsSection.style.display = 'none';
+    }
+
+    // --- Tanda filter events ---
+    var tandaFilters = [fArtist, fSinger, fGenre, fYear, fGrouping, fOrchestra, fLabel];
+    tandaFilters.forEach(function(cb) {
+      cb.addEventListener('change', function() {
+        selectedMatch = null;
+        detailsSection.style.display = 'none';
+        runTandaSearch();
+      });
+    });
+    yearRange.addEventListener('change', function() {
+      selectedMatch = null;
+      detailsSection.style.display = 'none';
+      runTandaSearch();
+    });
+
+    // --- Load data ---
+    Papa.parse('/data/metadata.csv', {
+      download: true,
+      header: true,
+      skipEmptyLines: true,
+      complete: function(results) {
+        allData = results.data;
+        // Add index for identity
+        for (var i = 0; i < allData.length; i++) {
+          allData[i]._idx = i;
+        }
+        populateDropdowns();
+        applyFilters();
+      },
+      error: function() {
+        searchEmpty.textContent = 'Could not load discography data. Please try refreshing.';
+        searchEmpty.style.display = 'block';
+      }
+    });
+
+  })();
+  </script>
+</BaseLayout>
+
+<style>
+  /* Container */
+  .tb-container {
+    max-width: 90rem;
+    margin: 0 auto;
+    padding: 0.75rem 1.5rem;
+  }
+
+  /* Sections */
+  .tb-section {
+    background: var(--color-bg-alt);
+    border: 1px solid var(--color-slate-200);
+    border-radius: 0.5rem;
+    padding: 0.6rem 1rem;
+    margin-bottom: 0.6rem;
+  }
+  .tb-tanda-section {
+    border-top: 3px solid var(--color-primary);
+  }
+  .tb-details-section {
+    border-left: 3px solid var(--color-primary);
+  }
+
+  /* Section header */
+  .tb-section-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.4rem;
+  }
+  .tb-section-header h2,
+  .tb-match-header h2 {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: 1rem;
+    font-weight: 400;
+    color: var(--color-slate-900);
+    white-space: nowrap;
+    margin: 0;
+  }
+  .tb-stats {
+    font-size: 0.7rem;
+    color: var(--color-slate-400);
+    margin-left: auto;
+    white-space: nowrap;
+  }
+
+  /* Controls */
+  .tb-controls {
+    display: flex;
+    gap: 0.4rem;
+    align-items: flex-end;
+    flex-wrap: wrap;
+    margin-bottom: 0.4rem;
+  }
+  .tb-control {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    flex: 1;
+    min-width: 100px;
+  }
+  .tb-control-wide {
+    flex: 2;
+  }
+  .tb-control label {
+    font-size: 0.6rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--color-slate-500);
+  }
+  .tb-control select,
+  .tb-control input {
+    padding: 0.3rem 0.4rem;
+    border: 1px solid var(--color-slate-300);
+    border-radius: 0.3rem;
+    font-size: 0.8rem;
+    font-family: 'Outfit', system-ui, sans-serif;
+    background: var(--color-slate-50);
+    color: var(--color-slate-800);
+  }
+  .tb-control select:focus,
+  .tb-control input:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 1px;
+    border-color: var(--color-accent);
+  }
+  .tb-control input::placeholder {
+    color: var(--color-slate-400);
+  }
+  .tb-btn-reset {
+    padding: 0.3rem 0.6rem;
+    background: var(--color-slate-100);
+    border: 1px solid var(--color-slate-300);
+    border-radius: 0.3rem;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--color-slate-600);
+    cursor: pointer;
+    white-space: nowrap;
+    font-family: 'Outfit', system-ui, sans-serif;
+  }
+  .tb-btn-reset:hover {
+    background: var(--color-slate-200);
+  }
+
+  /* Tables */
+  .tb-table-wrap {
+    max-height: 160px;
+    overflow-y: auto;
+    position: relative;
+  }
+  .tb-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.8rem;
+  }
+  .tb-table thead {
+    position: sticky;
+    top: 0;
+    z-index: 1;
+  }
+  .tb-table thead th {
+    text-align: left;
+    padding: 0.25rem 0.4rem;
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #9a6b1b;
+    background: #fefcf8;
+    border-bottom: 2px solid #f1c232;
+    white-space: nowrap;
+    cursor: default;
+  }
+  .tb-table thead th.tb-sortable {
+    cursor: pointer;
+    user-select: none;
+  }
+  .tb-table thead th.tb-sortable:hover {
+    color: var(--color-orange-700);
+  }
+  .tb-arrow {
+    font-size: 0.55rem;
+  }
+  .tb-table tbody td {
+    padding: 0.22rem 0.4rem;
+    border-bottom: 1px solid var(--color-slate-100);
+    color: var(--color-slate-700);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 200px;
+  }
+  .tb-table tbody tr {
+    cursor: pointer;
+  }
+  .tb-table tbody tr:hover {
+    background: var(--color-orange-50);
+  }
+  .tb-table tbody tr.tb-selected {
+    background: var(--color-orange-50);
+    border-left: 3px solid var(--color-primary);
+  }
+  .tb-table tbody tr.tb-selected td:first-child {
+    padding-left: calc(0.4rem - 3px);
+  }
+  .tb-col-genre { width: 65px; }
+  .tb-col-date { width: 80px; }
+
+  .tb-empty {
+    text-align: center;
+    padding: 1.5rem;
+    color: var(--color-slate-400);
+    font-size: 0.85rem;
+    font-style: italic;
+  }
+
+  /* Match header row */
+  .tb-match-header {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.4rem;
+    flex-wrap: wrap;
+  }
+  .tb-filter-sep {
+    width: 1px;
+    height: 1.2rem;
+    background: var(--color-slate-200);
+  }
+  .tb-filter-label {
+    font-size: 0.6rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--color-slate-500);
+  }
+  .tb-filter-cb {
+    display: flex;
+    align-items: center;
+    gap: 0.2rem;
+    font-size: 0.75rem;
+    color: var(--color-slate-700);
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .tb-filter-cb input[type="checkbox"] {
+    accent-color: var(--color-primary);
+    width: 0.8rem;
+    height: 0.8rem;
+  }
+  .tb-year-select {
+    padding: 0.15rem 0.3rem;
+    border: 1px solid var(--color-slate-300);
+    border-radius: 0.2rem;
+    font-size: 0.75rem;
+    font-family: 'Outfit', system-ui, sans-serif;
+    background: white;
+  }
+
+  /* Track Details diff table */
+  .tb-diff-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.78rem;
+    margin-bottom: 0.5rem;
+  }
+  .tb-diff-table thead th {
+    text-align: left;
+    padding: 0.25rem 0.5rem;
+    border-bottom: 1px solid var(--color-slate-200);
+  }
+  .tb-diff-label {
+    width: 80px;
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: 0.95rem;
+    font-weight: 400;
+    color: var(--color-slate-900);
+  }
+  .tb-diff-song {
+    font-family: 'DM Serif Display', Georgia, serif;
+    font-size: 1.05rem;
+    font-weight: 400;
+  }
+  .tb-diff-source { color: var(--color-blue-700); }
+  .tb-diff-match { color: var(--color-orange-700); }
+
+  .tb-diff-table tbody td {
+    padding: 0.18rem 0.5rem;
+    border-bottom: 1px solid var(--color-slate-50);
+    color: var(--color-slate-700);
+  }
+  .tb-diff-table tbody td:first-child {
+    font-weight: 600;
+    color: var(--color-slate-400);
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    vertical-align: top;
+    padding-top: 0.25rem;
+  }
+  .tb-val-source { color: var(--color-blue-700); }
+  .tb-val-match { color: var(--color-orange-700); }
+
+  /* Shared divider */
+  .tb-shared-divider {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.4rem;
+  }
+  .tb-shared-divider span {
+    font-size: 0.58rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--color-slate-400);
+    white-space: nowrap;
+  }
+  .tb-shared-divider hr {
+    flex: 1;
+    border: none;
+    border-top: 1px solid var(--color-slate-200);
+  }
+
+  /* Shared grid */
+  .tb-shared-grid {
+    display: grid;
+    grid-template-columns: repeat(4, auto);
+    gap: 0.15rem 1.5rem;
+    font-size: 0.78rem;
+  }
+  .tb-sg-item {
+    display: flex;
+    align-items: baseline;
+    gap: 0.3rem;
+  }
+  .tb-sg-wide {
+    grid-column: span 2;
+  }
+  .tb-sg-label {
+    font-weight: 600;
+    color: var(--color-slate-400);
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+  }
+  .tb-sg-value {
+    color: var(--color-slate-700);
+  }
+
+  /* Responsive */
+  @media (max-width: 600px) {
+    .tb-col-genre { display: none; }
+    .tb-shared-grid { grid-template-columns: repeat(2, auto); }
+    .tb-sg-wide { grid-column: span 2; }
+    .tb-controls { gap: 0.3rem; }
+    .tb-control { min-width: 80px; }
+    .tb-match-header { gap: 0.4rem; }
+  }
+</style>
