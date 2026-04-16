@@ -8,7 +8,13 @@ const { tigertango, hisstory, tigertag, tigertanda } = getProductsMap();
 
 <BaseLayout title="DJ Tools" description="Software and plugins built for tango DJs. Download free tools and pro-level utilities for music management, audio restoration, and tanda building.">
   <PageHero title="DJ Tools" lead="Software and plugins built for tango DJs." />
-
+    <div class="email-opt-in">
+      Sign up here to stay up to date on the latest updates, features, and releases
+      <form class="email-gate-form" data-product-id="tigertango" data-optional="true">
+        <input type="email" placeholder="your@email.com (optional)" />
+        <button type="submit">Subscribe</button>
+      </form>
+    </div>
   <!-- ===== Tool Cards Nav ===== -->
   <section class="tool-cards-nav">
     <div class="container">
@@ -26,7 +32,7 @@ const { tigertango, hisstory, tigertag, tigertanda } = getProductsMap();
           <div>
             <strong>Hisstory</strong>
             <span class="tool-card-tagline">Audio de-hissing plugin</span>
-            <span class="tool-card-price">$40 (try for free)</span>
+            <span class="tool-card-price">$40 (Try for Free)</span>
           </div>
         </a>
         <a href="#tigertag" class="tool-card-nav">
@@ -95,43 +101,17 @@ const { tigertango, hisstory, tigertag, tigertanda } = getProductsMap();
         </blockquote>
       </div>
 
-      <!-- Download TigerTango -->
-      <h3 class="section-label">Download TigerTango</h3>
-      <p class="install-note">You can also install TigerTango directly in Virtual DJ: <strong>Settings &rarr; Extensions &rarr; Search "TigerTango"</strong></p>
-      <div class="download-buttons">
-        <a href="https://github.com/sericson0/TigerTango/releases/download/v1.0.0/TigerTango.zip" class="download-btn-large">
-          <span class="dl-icon">&#127926;</span>
-          <div>
-            <strong>TigerTango</strong>
-            <span>DJ interface skin (.zip)</span>
-          </div>
-        </a>
-        <a href="https://github.com/sericson0/TigerTango/releases/download/v1.0.0/TigerTangoVideo.zip" class="download-btn-large">
-          <span class="dl-icon">&#127916;</span>
-          <div>
-            <strong>TigerTango Video</strong>
-            <span>Video display skin (.zip)</span>
-          </div>
-        </a>
-      </div>
-
-      <div class="email-opt-in">
-        Get setup tips and new feature updates for TigerTango:
-        <form class="email-gate-form" data-product-id="tigertango" data-optional="true">
-          <input type="email" placeholder="your@email.com (optional)" />
-          <button type="submit">Subscribe</button>
-        </form>
-      </div>
-
-      <p class="install-link">
-        &#128214; <a href="https://github.com/sericson0/TigerTango/blob/main/docs/sections/Installation.md" target="_blank" rel="noopener noreferrer">Installation guide on GitHub</a>
+      <!-- Download Virtual DJ -->
+      <p>
+      Tiger Tango is build on Virtual DJ, so you want to download that first. 
+      You can get it from their website  <a href="https://virtualdj.com/">here</a>.
+    
       </p>
-
-      <!-- Download Virtual DJ 2025 -->
       <h3 class="section-label">Download Virtual DJ 2025</h3>
       <div class="callout callout-warning">
         <strong>Use the 2025 version of Virtual DJ.</strong>
-        <p>The 2026 release added an audio watermark to the free version. Install the 2025 version below and disable automatic updates to avoid this issue.</p>
+        <p>The 2026 release added an audio watermark to the free version. For those who would like to try out the full free version,
+        we have added a link to the 2025 version below. (Follow steps to disable automatic updates). </p>
       </div>
 
       <div class="download-buttons">
@@ -151,6 +131,35 @@ const { tigertango, hisstory, tigertag, tigertanda } = getProductsMap();
         </a>
       </div>
     </div>
+
+      <!-- Download TigerTango -->
+      <h3 class="section-label">Download TigerTango</h3>
+      <p class="install-note">You can install TigerTango directly in Virtual DJ: <strong>Settings &rarr; Extensions &rarr; Search "TigerTango"</strong>
+        You can also download the latest version with the link below. Find installation instructions and user guide here:
+        <p class="install-link">
+        &#128214; <a href="https://github.com/sericson0/TigerTango/blob/main/docs/sections/Installation.md" target="_blank" rel="noopener noreferrer">Installation and User guide</a>
+      </p>
+      </p>
+      <div class="download-buttons">
+        <a href="https://github.com/sericson0/TigerTango/releases/download/v1.0.0/TigerTango.zip" class="download-btn-large">
+          <span class="dl-icon">&#127926;</span>
+          <div>
+            <strong>TigerTango</strong>
+            <span>DJ interface skin (.zip)</span>
+          </div>
+        </a>
+        <a href="https://github.com/sericson0/TigerTango/releases/download/v1.0.0/TigerTangoVideo.zip" class="download-btn-large">
+          <span class="dl-icon">&#127916;</span>
+          <div>
+            <strong>TigerTango Video</strong>
+            <span>Video display skin (.zip)</span>
+          </div>
+        </a>
+      </div>
+
+
+
+
   </section>
 
   <!-- ============================================================ -->
@@ -167,22 +176,21 @@ const { tigertango, hisstory, tigertag, tigertanda } = getProductsMap();
         <div>
           <h2>Hisstory</h2>
           <p class="tool-tagline">Keep the music, ditch the noise</p>
-          <span class="price-badge">$40 &mdash; 2-day free trial</span>
+          <span class="price-badge">$40 (Try For Free)</span>
           <span class="license-note">One-time purchase, lifetime access</span>
         </div>
       </div>
 
-      <p class="tool-desc-full">A real-time spectral gating plugin designed for removing hiss while keeping high-frequency music and transients intact and sounding as natural as possible. Use as a VST3 plugin in Virtual DJ, Ableton, Reaper, or any compatible DAW &mdash; or run it as a standalone application. Works on Windows and macOS.</p>
+      <p class="tool-desc-full">A real-time spectral gating plugin designed for removing hiss while keeping high-frequency music and transients intact and sounding as natural as possible. Works on Windows and macOS.</p>
 
       <div class="features-grid">
         <div class="feature-item">Real-time de-hissing with spectral gating</div>
         <div class="feature-item">Adaptive noise tracking that learns the noise floor</div>
-        <div class="feature-item">6-band threshold curve for per-frequency control</div>
+        <div class="feature-item">Simple to use</div>
+        <div class="feature-item">Advanced features for precice adjustment</div>
         <div class="feature-item">Analyzer + spectrogram visualizations</div>
-        <div class="feature-item">Smoothing, dry/wet blend, residual listen mode</div>
-        <div class="feature-item">Live quality metrics with color-coded warnings</div>
-        <div class="feature-item">VST3 plugin + standalone application</div>
-        <div class="feature-item">Smooth bypass with crossfaded switching</div>
+        <div class="feature-item">Protects music save sound quality</div>
+        <div class="feature-item">VST3 and AU plugins</div>
       </div>
 
       <!-- Download -->
@@ -293,7 +301,7 @@ const { tigertango, hisstory, tigertag, tigertanda } = getProductsMap();
         </div>
       </div>
 
-      <p class="tool-desc-full">Intelligent tanda builder that suggests complementary tracks based on orchestra, era, energy, and style.</p>
+      <p class="tool-desc-full">Virtual DJ plugin that helps you quickly find the perfect matches to build out a tanda..</p>
 
       <div class="email-gate" id="tigertanda-email-gate">
         <p>Enter your email to download TigerTanda and receive setup tips and updates.</p>
