@@ -9,7 +9,7 @@ import BaseLayout from '../../../../layouts/BaseLayout.astro';
         <div class="checkmark">&#10003;</div>
         <h1>Thank you for your purchase!</h1>
         <p id="confirmation-message">
-          Your license key is on its way. Check your email inbox (and spam folder) for your Hisstory activation key.
+          Your license key is on its way. Check your email inbox (and spam folder) for your activation key.
         </p>
 
         <div id="license-key-display" class="license-key-box" hidden>
@@ -20,10 +20,10 @@ import BaseLayout from '../../../../layouts/BaseLayout.astro';
           </div>
         </div>
 
-        <div class="instructions">
+        <div id="instructions" class="instructions">
           <h3>How to activate</h3>
-          <ol>
-            <li>Open Hisstory (standalone or VST3 plugin)</li>
+          <ol id="activation-steps">
+            <li>Open the app (standalone or plugin)</li>
             <li>Click <strong>"Enter Key"</strong></li>
             <li>Paste the key above and click <strong>"Activate"</strong></li>
           </ol>
@@ -39,12 +39,32 @@ import BaseLayout from '../../../../layouts/BaseLayout.astro';
 </BaseLayout>
 
 <script>
+  const PRODUCT_INFO: Record<string, { name: string; steps: string[] }> = {
+    hisstory: {
+      name: 'Hisstory',
+      steps: [
+        'Open Hisstory (standalone or VST3 plugin)',
+        'Click <strong>"Enter Key"</strong>',
+        'Paste the key above and click <strong>"Activate"</strong>',
+      ],
+    },
+    tigertag: {
+      name: 'TigerTag',
+      steps: [
+        'Open TigerTag',
+        'Click <strong>"Enter Key"</strong>',
+        'Paste the key above and click <strong>"Activate"</strong>',
+      ],
+    },
+  };
+
   const params = new URLSearchParams(window.location.search);
   const sessionId = params.get('session_id');
   const messageEl = document.getElementById('confirmation-message');
   const keyBox = document.getElementById('license-key-display');
   const keyValueEl = document.getElementById('license-key-value');
   const copyBtn = document.getElementById('copy-btn') as HTMLButtonElement | null;
+  const stepsEl = document.getElementById('activation-steps');
 
   if (sessionId && messageEl && keyBox && keyValueEl && copyBtn) {
     const controller = new AbortController();
@@ -57,24 +77,31 @@ import BaseLayout from '../../../../layouts/BaseLayout.astro';
     })
       .then(async (res) => {
         if (!res.ok) throw new Error(`Status ${res.status}`);
-        return res.json() as Promise<{ email: string | null; licenseKey: string }>;
+        return res.json() as Promise<{ email: string | null; licenseKey: string; productId: string }>;
       })
-      .then(({ email, licenseKey }) => {
+      .then(({ email, licenseKey, productId }) => {
         keyValueEl.textContent = licenseKey;
         keyBox.hidden = false;
 
+        // Update activation steps for the purchased product
+        const info = productId ? PRODUCT_INFO[productId] : undefined;
+        if (info && stepsEl) {
+          stepsEl.innerHTML = info.steps.map((s) => `<li>${s}</li>`).join('');
+        }
+
+        const productName = info?.name || 'your product';
         const emailText = email
           ? ` A copy was also sent to <strong>${email}</strong> — check your inbox (and spam folder) if you don't see it.`
           : " A copy was also sent to your email — check your inbox (and spam folder) if you don't see it.";
         messageEl.innerHTML =
-          "Here is your activation key." + emailText;
+          `Here is your <strong>${productName}</strong> activation key.` + emailText;
       })
       .catch((err) => {
         if (err.name === 'AbortError') {
-          messageEl.textContent = 'Taking longer than expected. Your license key was sent to your email — check your inbox (and spam folder).';
+          messageEl.innerHTML = 'Taking longer than expected. Your license key was sent to your email — check your inbox (and spam folder). You can also recover it anytime from <a href="/dj/account/">My Licenses</a>.';
         } else {
           console.error('Failed to load license info:', err);
-          messageEl.textContent = 'Your license key was sent to your email — check your inbox (and spam folder) if you don\'t see it.';
+          messageEl.innerHTML = 'Your license key was sent to your email — check your inbox (and spam folder). You can also recover it anytime from <a href="/dj/account/">My Licenses</a>.';
         }
       })
       .finally(() => clearTimeout(timeoutId));
@@ -88,7 +115,7 @@ import BaseLayout from '../../../../layouts/BaseLayout.astro';
         copyBtn.textContent = 'Copied!';
         setTimeout(() => {
           copyBtn.textContent = original;
-        }, 1500);
+        }, 2500);
       } catch {
         alert('Copy failed. Please select and copy the key manually.');
       }

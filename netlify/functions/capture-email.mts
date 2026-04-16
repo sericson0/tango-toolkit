@@ -1,5 +1,6 @@
 import type { Context } from "@netlify/functions";
 import { resendFetch } from "../lib/resend.mts";
+import { checkRateLimit } from "../lib/rate-limit.mts";
 
 /**
  * Captures an email address for free product downloads.
@@ -19,6 +20,12 @@ export default async (req: Request, _context: Context) => {
   if (req.method !== "POST") {
     return new Response("Method not allowed", { status: 405 });
   }
+
+  const rateLimited = checkRateLimit(req, "capture-email", {
+    max: 5,
+    windowSeconds: 60,
+  });
+  if (rateLimited) return rateLimited;
 
   const resendApiKey = process.env.RESEND_API_KEY;
   const audienceId = process.env.RESEND_AUDIENCE_ID;

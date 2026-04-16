@@ -1,11 +1,18 @@
 import type { Context } from "@netlify/functions";
 import { createStripeClient } from "../lib/stripe-client.mts";
 import { getProductRegistry } from "../lib/products.mts";
+import { checkRateLimit } from "../lib/rate-limit.mts";
 
 export default async (req: Request, _context: Context) => {
   if (req.method !== "POST") {
     return new Response("Method not allowed", { status: 405 });
   }
+
+  const rateLimited = checkRateLimit(req, "create-checkout", {
+    max: 10,
+    windowSeconds: 60,
+  });
+  if (rateLimited) return rateLimited;
 
   let body: { productId?: string };
   try {

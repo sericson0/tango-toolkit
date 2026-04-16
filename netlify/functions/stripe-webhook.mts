@@ -35,7 +35,7 @@ async function addToResendAudience(
 
   if (!response.ok) {
     const error = await response.text();
-    console.error(
+    throw new Error(
       `Failed to add contact to Resend Audience: ${response.status} ${error}`
     );
   }

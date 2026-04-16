@@ -51,7 +51,7 @@ import PageHero from '../../components/PageHero.astro';
         <hr />
         <h2>Send Us a Message</h2>
 
-        <form name="support" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/support/">
+        <form name="support" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/support/?sent=1">
           <input type="hidden" name="form-name" value="support" />
           <p class="hidden-field"><label>Don't fill this out: <input name="bot-field" /></label></p>
 
@@ -82,13 +82,35 @@ import PageHero from '../../components/PageHero.astro';
             <textarea id="message" name="message" rows="5" required placeholder="Describe your question or issue..."></textarea>
           </div>
 
-          <button type="submit" class="btn btn-primary btn-lg">Send Message</button>
+          <button type="submit" class="btn btn-primary btn-lg" id="support-btn">Send Message</button>
         </form>
+
+        <div id="support-success" class="form-success" hidden>
+          <span class="success-icon">&#10003;</span>
+          <p><strong>Message sent!</strong> We typically respond within 24 hours.</p>
+        </div>
 
       </div>
     </div>
   </section>
 </BaseLayout>
+
+<script>
+  const supportForm = document.querySelector('form[name="support"]') as HTMLFormElement;
+  const supportBtn = document.getElementById('support-btn') as HTMLButtonElement;
+  const successMsg = document.getElementById('support-success') as HTMLElement;
+
+  // Show success message if returning after form submission
+  if (new URLSearchParams(window.location.search).has('sent')) {
+    if (supportForm) supportForm.hidden = true;
+    if (successMsg) successMsg.hidden = false;
+  }
+
+  supportForm?.addEventListener('submit', () => {
+    supportBtn.disabled = true;
+    supportBtn.textContent = 'Sending\u2026';
+  });
+</script>
 
 <style>
   .support-section {
@@ -202,5 +224,31 @@ import PageHero from '../../components/PageHero.astro';
     outline: none;
     border-color: var(--color-orange-400);
     box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+  }
+
+  .form-success {
+    text-align: center;
+    padding: 2.5rem 2rem;
+    background: white;
+    border: 1px solid var(--color-slate-200);
+    border-radius: var(--radius-lg);
+  }
+
+  .success-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 3rem;
+    height: 3rem;
+    border-radius: 50%;
+    background: var(--color-orange-100);
+    color: var(--color-orange-600);
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .form-success p {
+    color: var(--color-slate-600);
+    margin: 0;
   }
 </style>

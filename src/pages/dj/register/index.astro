@@ -76,7 +76,7 @@ import PageHero from '../../../components/PageHero.astro';
           <textarea id="message" name="message" rows="3" placeholder="Questions, what you're looking for, how you heard about us..."></textarea>
         </div>
 
-        <button type="submit" class="btn btn-primary btn-lg">Register</button>
+        <button type="submit" class="btn btn-primary btn-lg" id="register-btn">Register</button>
       </form>
     </div>
   </section>
@@ -97,6 +97,14 @@ import PageHero from '../../../components/PageHero.astro';
 
   focusSelect.addEventListener('change', updateExperienceFields);
   updateExperienceFields();
+
+  const registerForm = document.querySelector('form[name="tango-registration"]') as HTMLFormElement;
+  const registerBtn = document.getElementById('register-btn') as HTMLButtonElement;
+
+  registerForm?.addEventListener('submit', () => {
+    registerBtn.disabled = true;
+    registerBtn.textContent = 'Registering\u2026';
+  });
 </script>
 
 <style>

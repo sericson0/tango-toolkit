@@ -2,6 +2,7 @@ import type { Context } from "@netlify/functions";
 import { createStripeClient } from "../lib/stripe-client.mts";
 import { getProductRegistry } from "../lib/products.mts";
 import { generateLicenseKey } from "../lib/license-key.mts";
+import { checkRateLimit } from "../lib/rate-limit.mts";
 
 /**
  * License Key Recovery
@@ -17,6 +18,12 @@ export default async (req: Request, _context: Context) => {
     return new Response("Method not allowed", { status: 405 });
   }
 
+  const rateLimited = checkRateLimit(req, "recover-license", {
+    max: 5,
+    windowSeconds: 60,
+  });
+  if (rateLimited) return rateLimited;
+
   let body: { email?: string };
   try {
     body = await req.json();
@@ -27,6 +34,10 @@ export default async (req: Request, _context: Context) => {
   const email = body.email?.trim().toLowerCase();
   if (!email) {
     return new Response("Missing email", { status: 400 });
+  }
+
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    return new Response("Invalid email address", { status: 400 });
   }
 
   let stripe;
