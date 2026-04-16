@@ -1,0 +1,139 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+---
+
+<BaseLayout title="Privacy Policy" description="How The Tango Toolkit collects, uses, and protects your data.">
+  <PageHero title="Privacy Policy" lead="How we collect, use, and protect your data." />
+
+  <section class="legal-section">
+    <div class="container">
+      <div class="narrow-sm">
+        <p class="last-updated">Last updated: April 16, 2026</p>
+
+        <h2>What We Collect</h2>
+
+        <h3>Email Addresses</h3>
+        <p>We collect your email address when you:</p>
+        <ul>
+          <li>Subscribe to our newsletter</li>
+          <li>Register on our site</li>
+          <li>Download email-gated tools (e.g. TigerTanda)</li>
+          <li>Purchase software</li>
+          <li>Contact us through the support form</li>
+        </ul>
+
+        <h3>Payment Information</h3>
+        <p>When you purchase software (Hisstory, TigerTag), payment is processed entirely by <a href="https://stripe.com/privacy" target="_blank" rel="noopener noreferrer">Stripe</a>. We never see, store, or have access to your credit card number or payment details. We receive only your email address and confirmation of payment from Stripe.</p>
+
+        <h3>Analytics Data</h3>
+        <p>We use Google Analytics to understand how visitors use the site. This collects anonymous usage data such as pages visited, time on site, and general geographic region. Google Analytics uses cookies to distinguish unique visitors. No personally identifiable information is collected through analytics.</p>
+
+        <h3>Form Submissions</h3>
+        <p>Support and registration forms are processed by <a href="https://www.netlify.com/privacy/" target="_blank" rel="noopener noreferrer">Netlify</a>. Submissions include the information you provide (name, email, message) and are stored in our Netlify dashboard.</p>
+
+        <h3>License Activation Data</h3>
+        <p>When you activate a purchased product, basic activation data (machine fingerprint and email) is processed by our licensing provider to enforce the single-machine license. We do not collect or store details about your computer beyond what is needed for activation.</p>
+
+        <h2>How We Use Your Data</h2>
+        <ul>
+          <li><strong>Deliver products:</strong> Send license keys and download links for purchased software.</li>
+          <li><strong>Product updates:</strong> Send updates about new features and releases, only if you subscribed.</li>
+          <li><strong>Support:</strong> Respond to your questions and help with license issues.</li>
+          <li><strong>Improve the site:</strong> Use aggregate, anonymous analytics to understand which pages and tools are most useful.</li>
+        </ul>
+
+        <h2>Third-Party Services</h2>
+        <p>We use the following services to operate the site. Each receives only the data necessary for its function:</p>
+        <ul>
+          <li><strong><a href="https://stripe.com/privacy" target="_blank" rel="noopener noreferrer">Stripe</a></strong> &mdash; Payment processing. Receives your payment and email.</li>
+          <li><strong><a href="https://resend.com/legal/privacy-policy" target="_blank" rel="noopener noreferrer">Resend</a></strong> &mdash; Email delivery. Receives your email address for newsletters and transactional emails.</li>
+          <li><strong><a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google Analytics</a></strong> &mdash; Site analytics. Receives anonymous usage data via cookies.</li>
+          <li><strong><a href="https://www.netlify.com/privacy/" target="_blank" rel="noopener noreferrer">Netlify</a></strong> &mdash; Hosting and form processing. Receives form submissions and serves the site.</li>
+        </ul>
+
+        <h2>Cookies</h2>
+        <p>This site uses cookies in the following ways:</p>
+        <ul>
+          <li><strong>Google Analytics cookies</strong> (<code>_ga</code>, <code>_ga_*</code>) &mdash; Used to distinguish unique visitors and track site usage. These are set only when analytics is enabled.</li>
+          <li><strong>Cookie consent preference</strong> &mdash; Stored in your browser's localStorage (not a cookie) to remember that you have acknowledged the cookie notice.</li>
+        </ul>
+        <p>No advertising or tracking cookies are used.</p>
+
+        <h2>Data Retention</h2>
+        <ul>
+          <li><strong>Email and license data</strong> are retained as long as your account or subscription is active.</li>
+          <li><strong>Form submissions</strong> are retained in Netlify for as long as needed to resolve your request.</li>
+          <li><strong>Analytics data</strong> retention is governed by Google Analytics default settings (14 months).</li>
+        </ul>
+
+        <h2>Your Rights</h2>
+        <p>You can request access to, correction of, or deletion of your personal data at any time. To make a request, email us at <a href="mailto:tangotoolkit@gmail.com">tangotoolkit@gmail.com</a>. We will respond within 30 days.</p>
+        <p>You can unsubscribe from emails at any time using the unsubscribe link in any email we send.</p>
+
+        <h2>We Do Not Sell Your Data</h2>
+        <p>We do not sell, rent, or share your personal information with third parties for marketing purposes. Your data is used solely to operate and improve The Tango Toolkit.</p>
+
+        <h2>Children's Privacy</h2>
+        <p>This site is not directed at children under 13. We do not knowingly collect personal information from children.</p>
+
+        <h2>Changes to This Policy</h2>
+        <p>We may update this policy from time to time. Changes will be posted on this page with an updated date. Continued use of the site after changes constitutes acceptance of the updated policy.</p>
+
+        <h2>Contact</h2>
+        <p>If you have questions about this privacy policy or your data, contact us at <a href="mailto:tangotoolkit@gmail.com">tangotoolkit@gmail.com</a>.</p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .legal-section {
+    padding: 3rem 0;
+  }
+
+  .last-updated {
+    font-size: 0.85rem;
+    color: var(--color-slate-500);
+    margin: 0 0 2rem;
+  }
+
+  h2 {
+    font-size: 1.4rem;
+    margin: 2rem 0 0.75rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-slate-200);
+  }
+
+  h2:first-of-type {
+    border-top: none;
+    padding-top: 0;
+  }
+
+  h3 {
+    font-size: 1.1rem;
+    margin: 1.25rem 0 0.5rem;
+  }
+
+  p, li {
+    color: var(--color-slate-600);
+    line-height: 1.7;
+    font-size: 0.95rem;
+  }
+
+  ul {
+    padding-left: 1.5rem;
+    margin: 0.5rem 0 1rem;
+  }
+
+  li {
+    margin-bottom: 0.35rem;
+  }
+
+  code {
+    background: var(--color-slate-100);
+    padding: 0.1rem 0.35rem;
+    border-radius: var(--radius-sm);
+    font-size: 0.85rem;
+  }
+</style>

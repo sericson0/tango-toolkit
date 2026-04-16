@@ -4,9 +4,10 @@ import '../styles/global.css';
 interface Props {
   title: string;
   description?: string;
+  ogImage?: string;
 }
 
-const { title, description = "Tools and resources for tango DJs. Software and guides to elevate your tango DJing." } = Astro.props;
+const { title, description = "Tools and resources for tango DJs. Software and guides to elevate your tango DJing.", ogImage = "/images/Logo.png" } = Astro.props;
 ---
 
 <!doctype html>
@@ -20,10 +21,10 @@ const { title, description = "Tools and resources for tango DJs. Software and gu
     <meta name="generator" content={Astro.generator} />
     <meta property="og:title" content={`${title} | The Tango Toolkit`} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content="/images/Logo.png" />
+    <meta property="og:image" content={ogImage} />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:image" content="/images/Logo.png" />
+    <meta name="twitter:image" content={ogImage} />
     <meta property="og:url" content={new URL(Astro.url.pathname, Astro.site).href} />
     <meta property="og:site_name" content="The Tango Toolkit" />
     <meta name="twitter:title" content={`${title} | The Tango Toolkit`} />
@@ -45,7 +46,7 @@ const { title, description = "Tools and resources for tango DJs. Software and gu
     <header class="site-header">
       <div class="container">
         <a href="/" class="logo">
-          <img src="/images/Logo.png" alt="Tango Toolkit" class="logo-img" />
+          <img src="/images/Logo.png" alt="Tango Toolkit" class="logo-img" width="40" height="40" />
           <span class="logo-text">The Tango Toolkit</span>
         </a>
         <nav class="nav">
@@ -89,11 +90,25 @@ const { title, description = "Tools and resources for tango DJs. Software and gu
             <a href="/support/">Support</a>
           </div>
           <div>
+            <strong>Legal</strong>
+            <a href="/privacy/">Privacy Policy</a>
+            <a href="/terms/">Terms of Service</a>
+          </div>
+          <div>
             <p>&copy; {new Date().getFullYear()} The Tango Toolkit</p>
           </div>
         </div>
       </div>
     </footer>
+
+    {import.meta.env.PUBLIC_GA_ID && (
+      <div class="cookie-banner" id="cookieBanner" style="display:none;">
+        <div class="cookie-banner-inner">
+          <p>This site uses cookies for analytics to help us improve. <a href="/privacy/">Learn more</a></p>
+          <button class="btn btn-primary btn-sm" id="cookieAccept">Got it</button>
+        </div>
+      </div>
+    )}
 
     <script>
       // Mobile nav toggle
@@ -107,6 +122,19 @@ const { title, description = "Tools and resources for tango DJs. Software and gu
           document.querySelector('.nav')?.classList.remove('open');
         });
       });
+
+      // Cookie consent banner
+      (function() {
+        var banner = document.getElementById('cookieBanner');
+        var acceptBtn = document.getElementById('cookieAccept');
+        if (!banner || !acceptBtn) return;
+        if (localStorage.getItem('cookie_consent')) return;
+        banner.style.display = '';
+        acceptBtn.addEventListener('click', function() {
+          localStorage.setItem('cookie_consent', 'true');
+          banner.style.display = 'none';
+        });
+      })();
     </script>
   </body>
 </html>
@@ -245,6 +273,49 @@ const { title, description = "Tools and resources for tango DJs. Software and gu
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 2rem;
+  }
+
+  /* Cookie Consent Banner */
+  .cookie-banner {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 200;
+    background: var(--color-slate-800);
+    border-top: 1px solid var(--color-slate-700);
+    box-shadow: 0 -2px 8px rgba(0, 0, 0, 0.15);
+  }
+
+  .cookie-banner-inner {
+    max-width: var(--container-max);
+    margin: 0 auto;
+    padding: 0.75rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+  }
+
+  .cookie-banner p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--color-slate-300);
+  }
+
+  .cookie-banner a {
+    color: var(--color-orange-300);
+    text-decoration: underline;
+  }
+
+  .cookie-banner a:hover {
+    color: var(--color-orange-200);
+  }
+
+  .btn-sm {
+    padding: 0.35rem 1rem;
+    font-size: 0.85rem;
   }
 
 </style>

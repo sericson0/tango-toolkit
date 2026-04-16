@@ -1,0 +1,113 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+---
+
+<BaseLayout title="Terms of Service" description="Terms and conditions for using The Tango Toolkit website and software.">
+  <PageHero title="Terms of Service" lead="Terms and conditions for using our website and software." />
+
+  <section class="legal-section">
+    <div class="container">
+      <div class="narrow-sm">
+        <p class="last-updated">Last updated: April 16, 2026</p>
+
+        <h2>Acceptance of Terms</h2>
+        <p>By accessing or using The Tango Toolkit website (tangotoolkit.com) or purchasing and using our software, you agree to be bound by these terms. If you do not agree, please do not use the site or software.</p>
+
+        <h2>Products &amp; Licensing</h2>
+
+        <h3>Paid Software (Hisstory, TigerTag)</h3>
+        <ul>
+          <li><strong>One-time purchase, lifetime access.</strong> A single payment grants you a perpetual license to use the software.</li>
+          <li><strong>Single-machine activation.</strong> Each license key may be activated on one machine at a time.</li>
+          <li><strong>License delivery.</strong> Your license key is delivered by email after purchase and can be recovered at any time on our <a href="/dj/account/">My Licenses</a> page.</li>
+          <li><strong>License transfer.</strong> If you need to move your license to a different machine, contact us at <a href="mailto:tangotoolkit@gmail.com">tangotoolkit@gmail.com</a> and we will help.</li>
+        </ul>
+
+        <h3>Trial Software</h3>
+        <p>Hisstory and TigerTag offer free trial periods with full functionality. After the trial expires, a purchased license key is required to continue using the software. No credit card is required for the trial.</p>
+
+        <h3>Free Tools (TigerTango, TigerTanda)</h3>
+        <p>TigerTango and TigerTanda are provided free of charge. They are offered &ldquo;as is&rdquo; without warranty of any kind. We may update or discontinue free tools at any time.</p>
+
+        <h2>Digital Products &amp; Refunds</h2>
+        <p>All purchases are for digital products delivered electronically. Because digital products cannot be returned, all sales are final. If you experience a technical issue that prevents you from using the software, contact us at <a href="mailto:tangotoolkit@gmail.com">tangotoolkit@gmail.com</a> and we will work to resolve it.</p>
+
+        <h2>Acceptable Use</h2>
+        <p>You agree not to:</p>
+        <ul>
+          <li>Redistribute, resell, or sublicense any software obtained from The Tango Toolkit.</li>
+          <li>Reverse-engineer, decompile, or disassemble any of our software.</li>
+          <li>Share license keys with others or use a single key on multiple machines simultaneously.</li>
+          <li>Use the site or software for any unlawful purpose.</li>
+        </ul>
+
+        <h2>Intellectual Property</h2>
+        <p>All content on this website &mdash; including text, images, software, design, and branding &mdash; is owned by The Tango Toolkit unless otherwise noted. You may not reproduce, distribute, or create derivative works from our content without permission.</p>
+        <p>Third-party trademarks (Virtual DJ, Stripe, etc.) belong to their respective owners and are referenced here for identification purposes only.</p>
+
+        <h2>User Content</h2>
+        <p>When you submit content through forms (support messages, registration info, feedback), you grant us the right to use that content to operate and improve our services. We will not publish your submissions without your consent.</p>
+
+        <h2>Disclaimer of Warranties</h2>
+        <p>The Tango Toolkit website and software are provided &ldquo;as is&rdquo; and &ldquo;as available&rdquo; without warranties of any kind, either express or implied. We do not warrant that the site or software will be uninterrupted, error-free, or free of harmful components.</p>
+
+        <h2>Limitation of Liability</h2>
+        <p>To the maximum extent permitted by law, The Tango Toolkit and its owner shall not be liable for any indirect, incidental, special, or consequential damages arising from your use of the site or software, including but not limited to loss of data, loss of profits, or damage to equipment.</p>
+
+        <h2>Changes to These Terms</h2>
+        <p>We may update these terms from time to time. Changes will be posted on this page with an updated date. Continued use of the site or software after changes constitutes acceptance of the updated terms.</p>
+
+        <h2>Governing Law</h2>
+        <p>These terms are governed by the laws of the United States. Any disputes will be resolved in accordance with applicable law.</p>
+
+        <h2>Contact</h2>
+        <p>If you have questions about these terms, contact us at <a href="mailto:tangotoolkit@gmail.com">tangotoolkit@gmail.com</a>.</p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .legal-section {
+    padding: 3rem 0;
+  }
+
+  .last-updated {
+    font-size: 0.85rem;
+    color: var(--color-slate-500);
+    margin: 0 0 2rem;
+  }
+
+  h2 {
+    font-size: 1.4rem;
+    margin: 2rem 0 0.75rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-slate-200);
+  }
+
+  h2:first-of-type {
+    border-top: none;
+    padding-top: 0;
+  }
+
+  h3 {
+    font-size: 1.1rem;
+    margin: 1.25rem 0 0.5rem;
+  }
+
+  p, li {
+    color: var(--color-slate-600);
+    line-height: 1.7;
+    font-size: 0.95rem;
+  }
+
+  ul {
+    padding-left: 1.5rem;
+    margin: 0.5rem 0 1rem;
+  }
+
+  li {
+    margin-bottom: 0.35rem;
+  }
+</style>
