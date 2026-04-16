@@ -75,7 +75,7 @@ async function sendLicenseEmail(
             <h3 style="color: #334155;">Getting Started</h3>
             <p style="color: #475569;">Ready to dive in? These resources will help you get up and running:</p>
             <ul style="color: #475569; line-height: 1.8; padding-left: 1.25rem;">
-              <li><a href="https://tangotoolkit.com/dj/software-setup/" style="color: ${product.color}; text-decoration: underline;">Software Setup Guide</a> &mdash; step-by-step installation and configuration</li>
+              <li><a href="https://github.com/sericson0/TigerTango/blob/main/docs/sections/Installation.md" style="color: ${product.color}; text-decoration: underline;">Installation Guide</a> &mdash; step-by-step installation and configuration</li>
               <li><a href="https://tangotoolkit.com/dj/starter-kit/" style="color: ${product.color}; text-decoration: underline;">DJ Starter Kit</a> &mdash; everything you need to start DJing tango</li>
             </ul>
           </div>
