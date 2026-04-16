@@ -56,7 +56,7 @@ import { products } from '../data/products';
               )}
               <div class="tool-actions">
                 <a href={`/dj/software/#${product.id}`} class="btn btn-primary">
-                  Get It Here &rarr;
+                  {product.price === 'Free' ? 'FREE! Get It Here' : 'Get It Here'} &rarr;
                 </a>
               </div>
             </div>
