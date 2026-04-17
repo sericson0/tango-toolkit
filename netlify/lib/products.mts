@@ -26,6 +26,10 @@ export interface ProductConfig {
   tagline: string;
   /** HTML <li> items describing how to activate */
   activationSteps: string;
+  /** URL to the product's user guide */
+  guideUrl: string;
+  /** Label for the guide link */
+  guideLabel: string;
 }
 
 export function getProductRegistry(): Record<string, ProductConfig> {
@@ -41,9 +45,11 @@ export function getProductRegistry(): Record<string, ProductConfig> {
       color: "#f97316",
       tagline: "Keep the music, ditch the noise",
       activationSteps: `
-            <li>Open Hisstory (standalone or VST3 plugin)</li>
+            <li>Open Hisstory</li>
             <li>Click <strong>"Enter Key"</strong></li>
             <li>Paste the key above and click <strong>"Activate"</strong></li>`,
+      guideUrl: "https://tangotoolkit.com/dj/software/#hisstory",
+      guideLabel: "Hisstory setup guide",
     },
     tigertag: {
       name: "TigerTag",
@@ -59,6 +65,8 @@ export function getProductRegistry(): Record<string, ProductConfig> {
             <li>Open TigerTag</li>
             <li>Click <strong>"Enter Key"</strong></li>
             <li>Paste the key above and click <strong>"Activate"</strong></li>`,
+      guideUrl: "https://tangotoolkit.com/dj/software/#tigertag",
+      guideLabel: "TigerTag setup guide",
     },
   };
 }

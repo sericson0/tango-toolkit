@@ -33,12 +33,18 @@ const { title, description = "Tools and resources for tango DJs. Software and gu
     <meta name="theme-color" content="#f97316" />
     <title>{title} | The Tango Toolkit</title>
     {import.meta.env.PUBLIC_GA_ID && (
-      <script async src={`https://www.googletagmanager.com/gtag/js?id=${import.meta.env.PUBLIC_GA_ID}`}></script>
       <script define:vars={{ gaId: import.meta.env.PUBLIC_GA_ID }}>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-        gtag('config', gaId);
+        // Only load GA if the user has previously accepted cookies
+        if (localStorage.getItem('cookie_consent') === 'accepted') {
+          var s = document.createElement('script');
+          s.async = true;
+          s.src = 'https://www.googletagmanager.com/gtag/js?id=' + gaId;
+          document.head.appendChild(s);
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+          gtag('config', gaId);
+        }
       </script>
     )}
   </head>
@@ -75,6 +81,7 @@ const { title, description = "Tools and resources for tango DJs. Software and gu
           <div>
             <strong>The Tango Toolkit</strong>
             <p>Resources for tango DJs.</p>
+            <a href="https://www.notasdeoro.com" target="_blank" rel="noopener noreferrer">Notas de Oro</a>
           </div>
           <div>
             <strong>Resources</strong>
@@ -102,10 +109,13 @@ const { title, description = "Tools and resources for tango DJs. Software and gu
     </footer>
 
     {import.meta.env.PUBLIC_GA_ID && (
-      <div class="cookie-banner" id="cookieBanner" style="display:none;">
+      <div class="cookie-banner" id="cookieBanner" style="display:none;" data-ga-id={import.meta.env.PUBLIC_GA_ID}>
         <div class="cookie-banner-inner">
-          <p>This site uses cookies for analytics to help us improve. <a href="/privacy/">Learn more</a></p>
-          <button class="btn btn-primary btn-sm" id="cookieAccept">Got it</button>
+          <p>We use cookies for analytics to help improve this site. <a href="/privacy/">Learn more</a></p>
+          <div class="cookie-buttons">
+            <button class="btn btn-sm btn-cookie-decline" id="cookieDecline">Decline</button>
+            <button class="btn btn-primary btn-sm" id="cookieAccept">Accept</button>
+          </div>
         </div>
       </div>
     )}
@@ -123,15 +133,37 @@ const { title, description = "Tools and resources for tango DJs. Software and gu
         });
       });
 
-      // Cookie consent banner
+      // Cookie consent banner (GDPR opt-in)
       (function() {
         var banner = document.getElementById('cookieBanner');
         var acceptBtn = document.getElementById('cookieAccept');
-        if (!banner || !acceptBtn) return;
-        if (localStorage.getItem('cookie_consent')) return;
+        var declineBtn = document.getElementById('cookieDecline');
+        if (!banner || !acceptBtn || !declineBtn) return;
+
+        var consent = localStorage.getItem('cookie_consent');
+        if (consent) return; // already chose — GA loaded (or not) in <head>
+
         banner.style.display = '';
+
         acceptBtn.addEventListener('click', function() {
-          localStorage.setItem('cookie_consent', 'true');
+          localStorage.setItem('cookie_consent', 'accepted');
+          banner.style.display = 'none';
+          // Load GA now for this page view
+          var gaId = banner.getAttribute('data-ga-id');
+          if (gaId) {
+            var s = document.createElement('script');
+            s.async = true;
+            s.src = 'https://www.googletagmanager.com/gtag/js?id=' + gaId;
+            document.head.appendChild(s);
+            window.dataLayer = window.dataLayer || [];
+            function gtag(){dataLayer.push(arguments);}
+            gtag('js', new Date());
+            gtag('config', gaId);
+          }
+        });
+
+        declineBtn.addEventListener('click', function() {
+          localStorage.setItem('cookie_consent', 'declined');
           banner.style.display = 'none';
         });
       })();
@@ -313,9 +345,26 @@ const { title, description = "Tools and resources for tango DJs. Software and gu
     color: var(--color-orange-200);
   }
 
+  .cookie-buttons {
+    display: flex;
+    gap: 0.5rem;
+    flex-shrink: 0;
+  }
+
   .btn-sm {
     padding: 0.35rem 1rem;
     font-size: 0.85rem;
+  }
+
+  .btn-cookie-decline {
+    background: transparent;
+    color: var(--color-slate-400);
+    border: 1px solid var(--color-slate-600);
+  }
+
+  .btn-cookie-decline:hover {
+    color: var(--color-slate-200);
+    border-color: var(--color-slate-400);
   }
 
 </style>
