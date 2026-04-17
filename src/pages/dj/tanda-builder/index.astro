@@ -661,7 +661,7 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
   </script>
 </BaseLayout>
 
-<style>
+<style is:global>
   /* Container */
   .tb-container {
     max-width: 90rem;
@@ -817,6 +817,10 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
   }
   .tb-table tbody tr {
     cursor: pointer;
+    transition: background 0.1s;
+  }
+  .tb-table tbody tr:nth-child(even) {
+    background: var(--color-slate-50);
   }
   .tb-table tbody tr:hover {
     background: var(--color-orange-50);
