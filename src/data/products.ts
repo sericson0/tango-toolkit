@@ -45,7 +45,7 @@ export const products: Product[] = [
     tagline: 'Keep the music, ditch the noise',
     description: 'Real-time spectral gating plugin that removes hiss while keeping music and transients intact.',
     price: '$40',
-    stripePriceId: 'price_1TKTJtBKuwpZhxG13l8OSjvy',
+    stripePriceId: 'price_1TMJvsBGhFYtRptA3axQycOs',
     downloadLink: 'https://github.com/sericson0/hisstory-releases/releases',
     image: '/images/hisstory-logo.png',
     trial: true,
