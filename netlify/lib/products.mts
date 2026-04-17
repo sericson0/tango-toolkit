@@ -48,8 +48,8 @@ export function getProductRegistry(): Record<string, ProductConfig> {
             <li>Open Hisstory</li>
             <li>Click <strong>"Enter Key"</strong></li>
             <li>Paste the key above and click <strong>"Activate"</strong></li>`,
-      guideUrl: "https://tangotoolkit.com/dj/software/#hisstory",
-      guideLabel: "Hisstory setup guide",
+      guideUrl: "https://tangotoolkit.com/documentation/Hisstory%20User%20Guide.pdf",
+      guideLabel: "Hisstory User Guide (PDF)",
     },
     tigertag: {
       name: "TigerTag",
@@ -65,8 +65,8 @@ export function getProductRegistry(): Record<string, ProductConfig> {
             <li>Open TigerTag</li>
             <li>Click <strong>"Enter Key"</strong></li>
             <li>Paste the key above and click <strong>"Activate"</strong></li>`,
-      guideUrl: "https://tangotoolkit.com/dj/software/#tigertag",
-      guideLabel: "TigerTag setup guide",
+      guideUrl: "https://tangotoolkit.com/documentation/TigerTag%20User%20Guide.pdf",
+      guideLabel: "TigerTag User Guide (PDF)",
     },
   };
 }

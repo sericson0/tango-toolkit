@@ -21,6 +21,16 @@ import PageHero from '../../../components/PageHero.astro';
         </a>
 
       </div>
+
+      <h2 class="section-heading" style="margin-top: 2.5rem;">External Resources</h2>
+      <div class="links-grid">
+        <a href="https://www.notasdeoro.com/" target="_blank" rel="noopener noreferrer" class="link-card">
+          <strong>Notas de Oro</strong>
+          <p class="link-card-tagline">Learn the tales behind the tangos.</p>
+          <p>Notas de Oro explores the history and music of the Golden Age of tango orchestras. Learn to recognize the orchestras, understand the meaning behind the lyrics, and discover the history and the dramatic stories behind the tangos we love to listen and dance to. One song per week, one orchestra per month.</p>
+          <span class="card-cta">Visit Notas de Oro &rarr;</span>
+        </a>
+      </div>
     </div>
   </section>
 
@@ -111,8 +121,9 @@ import PageHero from '../../../components/PageHero.astro';
 
   .articles-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 1.5rem;
+    max-width: 500px;
   }
 
   .article-card {
@@ -153,6 +164,13 @@ import PageHero from '../../../components/PageHero.astro';
     color: var(--color-slate-600);
     font-size: 0.95rem;
     line-height: 1.6;
+  }
+
+  .link-card-tagline {
+    font-style: italic;
+    color: var(--color-orange-600) !important;
+    font-weight: 500;
+    margin-bottom: 0.5rem !important;
   }
 
   .card-cta {
