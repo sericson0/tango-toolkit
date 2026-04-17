@@ -4,6 +4,9 @@ import PageHero from '../../../components/PageHero.astro';
 import { getProductsMap } from '../../../data/products';
 
 const { tigertango, hisstory, tigertag, tigertanda } = getProductsMap();
+
+const WIN_SVG = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M0 3.5l9.75-1.33v9.41H0V3.5zm0 17l9.75 1.33v-9.32H0v7.99zM10.83 21.98L24 24V12.68H10.83v9.3zm0-19.96v9.4H24V0L10.83 2.02z"/></svg>';
+const APPLE_SVG = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>';
 ---
 
 <BaseLayout title="DJ Tools" description="Software and plugins built for tango DJs. Download free tools and pro-level utilities for music management, audio restoration, and tanda building.">
@@ -62,8 +65,8 @@ const { tigertango, hisstory, tigertag, tigertanda } = getProductsMap();
     <div class="container">
       <div class="tool-header">
         {tigertango?.image && (
-          <div class="tool-logo">
-            <img src={tigertango.image} alt="TigerTango" width="90" height="90" />
+          <div class="tool-logo tool-logo--wide">
+            <img src={tigertango.image} alt="TigerTango" width="135" height="90" />
           </div>
         )}
         <div>
@@ -114,14 +117,14 @@ const { tigertango, hisstory, tigertag, tigertanda } = getProductsMap();
 
       <div class="download-buttons">
         <a href="https://drive.google.com/uc?export=download&id=1-dSX1T8CV3mvqYst62TgHBXYHTrItlkQ" target="_blank" rel="noopener" class="download-btn-large">
-          <span class="dl-icon">&#128187;</span>
+          <span class="dl-icon" set:html={WIN_SVG}></span>
           <div>
             <strong>Download for Windows</strong>
             <span>Virtual DJ 2025 (.msi, 464 MB)</span>
           </div>
         </a>
         <a href="https://drive.google.com/uc?export=download&id=1zHCTXZbJLP-IyKM0wCetCgjwc3lOzm97" target="_blank" rel="noopener" class="download-btn-large">
-          <span class="dl-icon">&#128187;</span>
+          <span class="dl-icon" set:html={APPLE_SVG}></span>
           <div>
             <strong>Download for Mac</strong>
             <span>Virtual DJ 2025 (.pkg, 910 MB)</span>
@@ -162,8 +165,8 @@ const { tigertango, hisstory, tigertag, tigertanda } = getProductsMap();
     <div class="container">
       <div class="tool-header">
         {hisstory?.image && (
-          <div class="tool-logo">
-            <img src={hisstory.image} alt="Hisstory" width="90" height="90" />
+          <div class="tool-logo tool-logo--wide">
+            <img src={hisstory.image} alt="Hisstory" width="135" height="90" />
           </div>
         )}
         <div>
@@ -204,21 +207,21 @@ const { tigertango, hisstory, tigertag, tigertanda } = getProductsMap();
       </p>
       <div class="download-buttons">
         <a href="https://github.com/sericson0/hisstory-releases/releases/latest/download/Hisstory-Windows-Installer.exe" class="download-btn-large">
-          <span class="dl-icon">&#128187;</span>
+          <span class="dl-icon" set:html={WIN_SVG}></span>
           <div>
             <strong>Download for Windows</strong>
             <span>Hisstory installer (.exe)</span>
           </div>
         </a>
         <a href="https://github.com/sericson0/hisstory-releases/releases/latest/download/Hisstory.vst3" class="download-btn-large">
-          <span class="dl-icon">&#127926;</span>
+          <span class="dl-icon" set:html={WIN_SVG}></span>
           <div>
             <strong>Windows VST3 Plugin Only</strong>
             <span>Hisstory.vst3 &mdash; manual install</span>
           </div>
         </a>
         <a href="https://github.com/sericson0/hisstory-releases/releases/latest/download/Hisstory-macOS.dmg" class="download-btn-large">
-          <span class="dl-icon">&#128187;</span>
+          <span class="dl-icon" set:html={APPLE_SVG}></span>
           <div>
             <strong>Download for macOS</strong>
             <span>Hisstory installer (.dmg)</span>
@@ -285,21 +288,21 @@ const { tigertango, hisstory, tigertag, tigertanda } = getProductsMap();
       </p>
       <div class="download-buttons">
         <a href="https://github.com/sericson0/tigertag-releases/releases/latest/download/TigerTagSetup.exe" class="download-btn-large">
-          <span class="dl-icon">&#128187;</span>
+          <span class="dl-icon" set:html={WIN_SVG}></span>
           <div>
             <strong>Download for Windows</strong>
             <span>TigerTag installer (.exe)</span>
           </div>
         </a>
         <a href="https://github.com/sericson0/tigertag-releases/releases/latest/download/TigerTag-Windows-x64.zip" class="download-btn-large">
-          <span class="dl-icon">&#127926;</span>
+          <span class="dl-icon" set:html={WIN_SVG}></span>
           <div>
             <strong>Windows Portable</strong>
             <span>TigerTag (.zip)</span>
           </div>
         </a>
         <a href="https://github.com/sericson0/tigertag-releases/releases/latest/download/TigerTag-macOS.dmg" class="download-btn-large">
-          <span class="dl-icon">&#128187;</span>
+          <span class="dl-icon" set:html={APPLE_SVG}></span>
           <div>
             <strong>Download for macOS</strong>
             <span>TigerTag (.dmg)</span>
@@ -316,8 +319,8 @@ const { tigertango, hisstory, tigertag, tigertanda } = getProductsMap();
     <div class="container">
       <div class="tool-header">
         {tigertanda?.image && (
-          <div class="tool-logo">
-            <img src={tigertanda.image} alt="TigerTanda" width="90" height="90" />
+          <div class="tool-logo tool-logo--wide">
+            <img src={tigertanda.image} alt="TigerTanda" width="135" height="90" />
           </div>
         )}
         <div>
@@ -344,25 +347,25 @@ const { tigertango, hisstory, tigertag, tigertanda } = getProductsMap();
         &nbsp;&middot;&nbsp;
         <a href="https://raw.githubusercontent.com/sericson0/tigertanda-vdj/main/README.pdf" target="_blank" rel="noopener noreferrer" download>Download PDF</a>
         &nbsp;&middot;&nbsp;
-        <a href="/documentation/TigerTanda Quickstart Guide.pdf" target="_blank" rel="noopener noreferrer">Quickstart Guide (PDF)</a>
+        <a href="/documentation/TigerTanda Quickstart Guide.pdf" target="_blank" rel="noopener noreferrer">User Guide (PDF)</a>
       </p>
       <div class="download-buttons">
-        <a href="https://github.com/sericson0/tigertanda-vdj/releases/latest/download/TigerTanda-Windows-Installer.exe" class="download-btn-large">
-          <span class="dl-icon">&#128187;</span>
+        <a href="https://github.com/sericson0/tigertanda-vdj/releases/latest/download/TigerTanda-Windows-Installer.exe" class="download-btn-large tigertanda-dl">
+          <span class="dl-icon" set:html={WIN_SVG}></span>
           <div>
             <strong>Download for Windows</strong>
             <span>TigerTanda installer (.exe)</span>
           </div>
         </a>
-        <a href="https://github.com/sericson0/tigertanda-vdj/releases/latest/download/TigerTanda-Windows.zip" class="download-btn-large">
-          <span class="dl-icon">&#127926;</span>
+        <a href="https://github.com/sericson0/tigertanda-vdj/releases/latest/download/TigerTanda-Windows.zip" class="download-btn-large tigertanda-dl">
+          <span class="dl-icon" set:html={WIN_SVG}></span>
           <div>
             <strong>Windows Portable</strong>
             <span>TigerTanda (.zip)</span>
           </div>
         </a>
-        <a href="https://github.com/sericson0/tigertanda-vdj/releases/latest/download/TigerTanda-macOS.zip" class="download-btn-large">
-          <span class="dl-icon">&#128187;</span>
+        <a href="https://github.com/sericson0/tigertanda-vdj/releases/latest/download/TigerTanda-macOS.zip" class="download-btn-large tigertanda-dl">
+          <span class="dl-icon" set:html={APPLE_SVG}></span>
           <div>
             <strong>Download for macOS</strong>
             <span>TigerTanda (.zip)</span>
@@ -370,15 +373,61 @@ const { tigertango, hisstory, tigertag, tigertanda } = getProductsMap();
         </a>
       </div>
 
-      <div class="email-opt-in">
-        Get notified about TigerTanda updates and new features
-        <form class="email-gate-form" data-product-id="tigertanda" data-optional="true">
-          <input type="email" placeholder="your@email.com (optional)" />
-          <button type="submit">Subscribe</button>
-        </form>
-      </div>
+      <h3 class="section-label">Installation Instructions</h3>
+      <details class="guide-expander">
+        <summary>Windows (Installer)</summary>
+        <div class="guide-content">
+          <ol>
+            <li>Download <code>TigerTanda-Windows-Installer.exe</code>.</li>
+            <li>Run the installer &mdash; it defaults to <code>Documents\VirtualDJ\Plugins64\SoundEffect\TigerTanda\</code>.</li>
+            <li>Restart VirtualDJ.</li>
+            <li>Click one of the Master Effects slots &rarr; click <strong>More...</strong> &rarr; select <strong>TigerTanda</strong> &rarr; use the <strong>&gt;</strong> button to add.</li>
+            <li>You can now add TigerTanda to an effects slot and open it.</li>
+          </ol>
+        </div>
+      </details>
+      <details class="guide-expander">
+        <summary>Windows (Manual)</summary>
+        <div class="guide-content">
+          <ol>
+            <li>Download <code>TigerTanda-Windows.zip</code>.</li>
+            <li>Extract the zip &mdash; you&rsquo;ll get <code>TigerTanda.dll</code> and <code>metadata.csv</code>.</li>
+            <li>Copy both files to <code>Documents\VirtualDJ\Plugins64\SoundEffect\TigerTanda\</code>.</li>
+            <li>Restart VirtualDJ.</li>
+            <li>Click one of the Master Effects slots &rarr; click <strong>More...</strong> &rarr; select <strong>TigerTanda</strong> &rarr; use the <strong>&gt;</strong> button to add.</li>
+            <li>You can now add TigerTanda to an effects slot and open it.</li>
+          </ol>
+        </div>
+      </details>
+      <details class="guide-expander">
+        <summary>macOS</summary>
+        <div class="guide-content">
+          <ol>
+            <li>Download <code>TigerTanda-macOS.zip</code>.</li>
+            <li>Extract the zip &mdash; you&rsquo;ll get <code>TigerTanda.bundle</code> and <code>metadata.csv</code>.</li>
+            <li>Copy both to your VirtualDJ plugins folder: <code>~/Library/Application Support/VirtualDJ/Plugins64/SoundEffect/</code>.</li>
+            <li>Restart VirtualDJ.</li>
+            <li>The TigerTanda window appears automatically when VirtualDJ is in the foreground.</li>
+          </ol>
+        </div>
+      </details>
     </div>
   </section>
+
+  <div id="tigertanda-modal" class="tt-modal" hidden>
+    <div class="tt-modal-backdrop" data-close></div>
+    <div class="tt-modal-content" role="dialog" aria-modal="true" aria-labelledby="tt-modal-title">
+      <button class="tt-modal-close" aria-label="Close" data-close>&times;</button>
+      <h3 id="tt-modal-title">Before you download</h3>
+      <p>Want updates on new features? Drop your email &mdash; no spam, unsubscribe anytime.</p>
+      <form id="tt-modal-form">
+        <input type="email" placeholder="your@email.com" required />
+        <button type="submit" class="tt-modal-primary">Subscribe &amp; Download</button>
+      </form>
+      <button type="button" class="tt-modal-skip" data-skip>No thanks, just take me to the plugin</button>
+      <p class="tt-modal-error" hidden></p>
+    </div>
+  </div>
 </BaseLayout>
 
 <script>
@@ -477,9 +526,95 @@ const { tigertango, hisstory, tigertag, tigertanda } = getProductsMap();
       }
     });
   });
+
+  // TigerTanda email-capture popup
+  const ttModal = document.getElementById('tigertanda-modal');
+  if (ttModal) {
+    const form = ttModal.querySelector('#tt-modal-form') as HTMLFormElement;
+    const emailInput = ttModal.querySelector('input[type="email"]') as HTMLInputElement;
+    const errorEl = ttModal.querySelector('.tt-modal-error') as HTMLElement;
+    const submitBtn = ttModal.querySelector('.tt-modal-primary') as HTMLButtonElement;
+    let pendingUrl: string | null = null;
+
+    const openModal = (url: string) => {
+      pendingUrl = url;
+      errorEl.hidden = true;
+      errorEl.textContent = '';
+      emailInput.value = '';
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Subscribe & Download';
+      ttModal.hidden = false;
+      document.body.style.overflow = 'hidden';
+      setTimeout(() => emailInput.focus(), 50);
+    };
+
+    const closeModal = () => {
+      ttModal.hidden = true;
+      pendingUrl = null;
+      document.body.style.overflow = '';
+    };
+
+    const startDownload = (url: string | null) => {
+      if (url) window.location.href = url;
+    };
+
+    document.querySelectorAll<HTMLAnchorElement>('.tigertanda-dl').forEach((a) => {
+      a.addEventListener('click', (e) => {
+        e.preventDefault();
+        openModal(a.href);
+      });
+    });
+
+    ttModal.querySelectorAll('[data-close]').forEach((el) => {
+      el.addEventListener('click', closeModal);
+    });
+
+    ttModal.querySelector('[data-skip]')?.addEventListener('click', () => {
+      const url = pendingUrl;
+      closeModal();
+      startDownload(url);
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !ttModal.hidden) closeModal();
+    });
+
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = emailInput.value.trim();
+      if (!email) return;
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = 'Subscribing\u2026';
+      errorEl.hidden = true;
+
+      try {
+        await fetch('/api/capture-email', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, productId: 'tigertanda' }),
+        });
+        const url = pendingUrl;
+        closeModal();
+        startDownload(url);
+      } catch (err) {
+        errorEl.textContent = 'Something went wrong. Please try again or skip.';
+        errorEl.hidden = false;
+        submitBtn.disabled = false;
+        submitBtn.textContent = 'Subscribe & Download';
+      }
+    });
+  }
 </script>
 
 <style>
+  /* SVG platform icons in download buttons */
+  .dl-icon svg {
+    width: 1.5rem;
+    height: 1.5rem;
+    display: block;
+  }
+
   /* ===== Tool Cards Nav ===== */
   .tool-cards-nav {
     padding: 2rem 0;
@@ -580,6 +715,10 @@ const { tigertango, hisstory, tigertag, tigertanda } = getProductsMap();
     overflow: hidden;
     flex-shrink: 0;
     background: var(--color-slate-100);
+  }
+
+  .tool-logo.tool-logo--wide {
+    width: 135px;
   }
 
   .tool-logo img {
@@ -865,10 +1004,103 @@ const { tigertango, hisstory, tigertag, tigertanda } = getProductsMap();
     }
 
     .tool-logo { width: 70px; height: 70px; }
+    .tool-logo.tool-logo--wide { width: 105px; }
 
     .features-grid {
       grid-template-columns: 1fr;
     }
   }
 
+  /* ===== TigerTanda modal ===== */
+  .tt-modal[hidden] { display: none; }
+  .tt-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 1000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+  .tt-modal-backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(15, 23, 42, 0.55);
+  }
+  .tt-modal-content {
+    position: relative;
+    background: white;
+    border-radius: var(--radius-lg);
+    padding: 2rem 2rem 1.5rem;
+    max-width: 460px;
+    width: 100%;
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.25);
+    z-index: 1;
+  }
+  .tt-modal-content h3 { margin: 0 0 0.5rem; font-size: 1.3rem; }
+  .tt-modal-content > p {
+    color: var(--color-slate-600);
+    margin: 0 0 1rem;
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+  .tt-modal-close {
+    position: absolute;
+    top: 0.4rem;
+    right: 0.75rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+    color: var(--color-slate-400);
+    padding: 0.25rem 0.5rem;
+  }
+  .tt-modal-close:hover { color: var(--color-slate-700); }
+  #tt-modal-form {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    margin-bottom: 0.5rem;
+  }
+  #tt-modal-form input[type="email"] {
+    padding: 0.7rem 1rem;
+    border: 1px solid var(--color-slate-300);
+    border-radius: var(--radius-md);
+    font-size: 1rem;
+  }
+  #tt-modal-form input[type="email"]:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 1px;
+    border-color: var(--color-primary);
+  }
+  .tt-modal-primary {
+    padding: 0.7rem 1rem;
+    background: var(--color-primary);
+    color: white;
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background 0.2s;
+  }
+  .tt-modal-primary:hover:not(:disabled) { background: var(--color-primary-hover); }
+  .tt-modal-primary:disabled { opacity: 0.6; cursor: wait; }
+  .tt-modal-skip {
+    width: 100%;
+    background: none;
+    border: none;
+    color: var(--color-slate-500);
+    cursor: pointer;
+    padding: 0.5rem;
+    font-size: 0.9rem;
+    text-decoration: underline;
+  }
+  .tt-modal-skip:hover { color: var(--color-slate-700); }
+  .tt-modal-error {
+    color: #dc2626;
+    font-size: 0.9rem;
+    margin: 0.5rem 0 0;
+  }
 </style>

@@ -21,7 +21,7 @@ interface ProductInfo {
 
 const PRODUCTS: Record<string, ProductInfo> = {
   tigertanda: {
-    downloadUrl: "https://github.com/sericson0/TigerTanda/releases",
+    downloadUrl: "https://github.com/sericson0/tigertanda-vdj/releases/latest",
     name: "TigerTanda",
     guideUrl: "https://tangotoolkit.com/documentation/TigerTanda%20Quickstart%20Guide.pdf",
     guideLabel: "TigerTanda Quickstart Guide (PDF)",
