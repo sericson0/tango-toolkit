@@ -299,6 +299,9 @@ img {
 }
 .callout-tip strong { color: var(--color-green-700); }
 
+.callout-inline { margin: 0.75rem 0; }
+.callout-inline strong { display: inline; }
+
 /* ===== Download Buttons ===== */
 .download-buttons {
   display: grid;
