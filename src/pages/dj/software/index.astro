@@ -188,6 +188,17 @@ const { tigertango, hisstory, tigertag, tigertanda } = getProductsMap();
       <!-- Download -->
       <h3 class="section-label">Download</h3>
       <p class="section-note">Hisstory is free to try for 2 days with full access &mdash; no credit card required. To keep using it after the trial, click <strong>Purchase License</strong> below and you&rsquo;ll receive an activation key by email to paste into the app.</p>
+      {hisstory?.stripePriceId && (
+        <div class="purchase-row">
+          <button type="button" class="download-btn-large purchase-btn checkout-btn" data-product-id="hisstory">
+            <span class="dl-icon">&#128179;</span>
+            <div>
+              <strong>Purchase License &mdash; $40</strong>
+              <span>One-time purchase, lifetime access</span>
+            </div>
+          </button>
+        </div>
+      )}
       <p class="install-link">
         &#128214; <a href="/documentation/Hisstory User Guide.pdf" target="_blank" rel="noopener noreferrer">User Guide (PDF)</a>
       </p>
@@ -213,22 +224,13 @@ const { tigertango, hisstory, tigertag, tigertanda } = getProductsMap();
             <span>Hisstory installer (.dmg, 27 MB)</span>
           </div>
         </a>
-        {hisstory?.stripePriceId && (
-          <button type="button" class="download-btn-large purchase-btn checkout-btn" data-product-id="hisstory">
-            <span class="dl-icon">&#128179;</span>
-            <div>
-              <strong>Purchase License &mdash; $40</strong>
-              <span>One-time purchase, lifetime access</span>
-            </div>
-          </button>
-        )}
       </div>
 
       <!-- Install -->
       <h3 class="section-label">Install VST3 Plugin Manually</h3>
       <div class="callout callout-config">
         <strong>Windows note:</strong>
-        <p>The Windows installer may trigger a SmartScreen warning (&ldquo;Windows protected your PC&rdquo;). This is normal for new independent software. Click <strong>More info</strong> &rarr; <strong>Run anyway</strong> to proceed. Alternatively, download the VST3 plugin directly and install manually using the steps below.</p>
+        <p>The Windows installer may trigger a SmartScreen warning (&ldquo;Windows protected your PC&rdquo;). Click <strong>More info</strong> &rarr; <strong>Run anyway</strong> to proceed. Alternatively, download the VST3 plugin directly and install manually using the steps below.</p>
       </div>
       <div class="guide-content">
         <h4>Windows</h4>
@@ -271,25 +273,12 @@ const { tigertango, hisstory, tigertag, tigertanda } = getProductsMap();
         <div class="feature-item">Option to make filenames clean as well</div>
         <div class="feature-item">Try for free!</div>
       </div>
-
-      <p class="install-link">
-        &#128214; <a href="/documentation/TigerTag User Guide.pdf" target="_blank" rel="noopener noreferrer">User Guide (PDF)</a>
-      </p>
-      <div class="download-buttons">
-        <a href="https://github.com/sericson0/tigertag-releases/releases/download/v1.0.0/TigerTag-Windows-x64.zip" class="download-btn-large">
-          <span class="dl-icon">&#128187;</span>
-          <div>
-            <strong>Download for Windows</strong>
-            <span>TigerTag (.zip, 4.4 MB)</span>
-          </div>
-        </a>
-        <a href="https://github.com/sericson0/tigertag-releases/releases/download/v1.0.0/TigerTag-macOS.dmg" class="download-btn-large">
-          <span class="dl-icon">&#128187;</span>
-          <div>
-            <strong>Download for macOS</strong>
-            <span>TigerTag (.dmg, 4.8 MB)</span>
-          </div>
-        </a>
+      <div class="callout callout-config">
+        <strong>Windows note:</strong>
+        <p>The Windows installer may trigger a SmartScreen warning (&ldquo;Windows protected your PC&rdquo;). Click <strong>More info</strong> &rarr; <strong>Run anyway</strong> to proceed. Alternatively, download the VST3 plugin directly and install manually using the steps below.</p>
+      </div>
+      <div class="guide-content">
+      <div class="purchase-row">
         <button type="button" class="download-btn-large purchase-btn checkout-btn" data-product-id="tigertag">
           <span class="dl-icon">&#128179;</span>
           <div>
@@ -297,6 +286,32 @@ const { tigertango, hisstory, tigertag, tigertanda } = getProductsMap();
             <span>One-time purchase, lifetime access</span>
           </div>
         </button>
+      </div>
+      <p class="install-link">
+        &#128214; <a href="/documentation/TigerTag User Guide.pdf" target="_blank" rel="noopener noreferrer">User Guide (PDF)</a>
+      </p>
+      <div class="download-buttons">
+        <a href="https://github.com/sericson0/tigertag-releases/releases/download/v1.0.1/TigerTagSetup.exe" class="download-btn-large">
+          <span class="dl-icon">&#128187;</span>
+          <div>
+            <strong>Download for Windows</strong>
+            <span>TigerTag installer (.exe)</span>
+          </div>
+        </a>
+        <a href="https://github.com/sericson0/tigertag-releases/releases/download/v1.0.1/TigerTag-Windows-x64.zip" class="download-btn-large">
+          <span class="dl-icon">&#127926;</span>
+          <div>
+            <strong>Windows Portable</strong>
+            <span>TigerTag (.zip, 4.4 MB)</span>
+          </div>
+        </a>
+        <a href="https://github.com/sericson0/tigertag-releases/releases/download/v1.0.1/TigerTag-macOS.dmg" class="download-btn-large">
+          <span class="dl-icon">&#128187;</span>
+          <div>
+            <strong>Download for macOS</strong>
+            <span>TigerTag (.dmg, 4.8 MB)</span>
+          </div>
+        </a>
       </div>
     </div>
   </section>
@@ -636,6 +651,15 @@ const { tigertango, hisstory, tigertag, tigertanda } = getProductsMap();
   /* Testimonials (page-specific override) */
   .alt-bg .testimonials blockquote {
     background: white;
+  }
+
+  /* Purchase row */
+  .purchase-row {
+    margin-bottom: 1.5rem;
+  }
+
+  .purchase-row .download-btn-large {
+    max-width: 340px;
   }
 
   /* Section labels */
