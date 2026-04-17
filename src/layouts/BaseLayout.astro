@@ -7,7 +7,8 @@ interface Props {
   ogImage?: string;
 }
 
-const { title, description = "Tools and resources for tango DJs. Software and guides to elevate your tango DJing.", ogImage = "/images/Logo.png" } = Astro.props;
+const { title, description = "Tools and resources for tango DJs. Software and guides to elevate your tango DJing.", ogImage = "/favicon-512.png" } = Astro.props;
+const absoluteOgImage = new URL(ogImage, Astro.site).href;
 ---
 
 <!doctype html>
@@ -16,15 +17,17 @@ const { title, description = "Tools and resources for tango DJs. Software and gu
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content={description} />
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <link rel="icon" type="image/png" sizes="32x32" href="/images/Logo.png" />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
     <meta name="generator" content={Astro.generator} />
     <meta property="og:title" content={`${title} | The Tango Toolkit`} />
     <meta property="og:description" content={description} />
-    <meta property="og:image" content={ogImage} />
+    <meta property="og:image" content={absoluteOgImage} />
     <meta property="og:type" content="website" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:image" content={ogImage} />
+    <meta name="twitter:image" content={absoluteOgImage} />
     <meta property="og:url" content={new URL(Astro.url.pathname, Astro.site).href} />
     <meta property="og:site_name" content="The Tango Toolkit" />
     <meta name="twitter:title" content={`${title} | The Tango Toolkit`} />
