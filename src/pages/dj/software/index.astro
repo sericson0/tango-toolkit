@@ -23,7 +23,12 @@ const APPLE_SVG = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="tru
     <div class="container">
       <div class="tool-cards-grid">
         <a href="#tigertango" class="tool-card-nav">
-          {tigertango?.image && <img src={tigertango.image} alt="TigerTango" class="tool-card-icon" width="48" height="48" />}
+          {tigertango?.image && (
+            <picture>
+              <source srcset={tigertango.image.replace(/\.png$/i, '.webp')} type="image/webp" />
+              <img src={tigertango.image} alt="TigerTango" class="tool-card-icon" width="48" height="48" loading="lazy" decoding="async" />
+            </picture>
+          )}
           <div>
             <strong>TigerTango</strong>
             <span class="tool-card-tagline">VirtualDJ interface for tango</span>
@@ -31,7 +36,12 @@ const APPLE_SVG = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="tru
           </div>
         </a>
         <a href="#hisstory" class="tool-card-nav">
-          {hisstory?.image && <img src={hisstory.image} alt="Hisstory" class="tool-card-icon" width="48" height="48" />}
+          {hisstory?.image && (
+            <picture>
+              <source srcset={hisstory.image.replace(/\.png$/i, '.webp')} type="image/webp" />
+              <img src={hisstory.image} alt="Hisstory" class="tool-card-icon" width="48" height="48" loading="lazy" decoding="async" />
+            </picture>
+          )}
           <div>
             <strong>Hisstory</strong>
             <span class="tool-card-tagline">Audio de-hissing plugin</span>
@@ -39,7 +49,12 @@ const APPLE_SVG = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="tru
           </div>
         </a>
         <a href="#tigertag" class="tool-card-nav">
-          {tigertag?.image && <img src={tigertag.image} alt="TigerTag" class="tool-card-icon" width="48" height="48" />}
+          {tigertag?.image && (
+            <picture>
+              <source srcset={tigertag.image.replace(/\.png$/i, '.webp')} type="image/webp" />
+              <img src={tigertag.image} alt="TigerTag" class="tool-card-icon" width="48" height="48" loading="lazy" decoding="async" />
+            </picture>
+          )}
           <div>
             <strong>TigerTag</strong>
             <span class="tool-card-tagline">Batch metadata tagger</span>
@@ -47,7 +62,12 @@ const APPLE_SVG = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="tru
           </div>
         </a>
         <a href="#tigertanda" class="tool-card-nav">
-          {tigertanda?.image && <img src={tigertanda.image} alt="TigerTanda" class="tool-card-icon" width="48" height="48" />}
+          {tigertanda?.image && (
+            <picture>
+              <source srcset={tigertanda.image.replace(/\.png$/i, '.webp')} type="image/webp" />
+              <img src={tigertanda.image} alt="TigerTanda" class="tool-card-icon" width="48" height="48" loading="lazy" decoding="async" />
+            </picture>
+          )}
           <div>
             <strong>TigerTanda</strong>
             <span class="tool-card-tagline">Tanda builder</span>
@@ -66,7 +86,10 @@ const APPLE_SVG = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="tru
       <div class="tool-header">
         {tigertango?.image && (
           <div class="tool-logo tool-logo--wide">
-            <img src={tigertango.image} alt="TigerTango" width="135" height="90" />
+            <picture>
+              <source srcset={tigertango.image.replace(/\.png$/i, '.webp')} type="image/webp" />
+              <img src={tigertango.image} alt="TigerTango" width="135" height="90" loading="lazy" decoding="async" />
+            </picture>
           </div>
         )}
         <div>
@@ -166,7 +189,10 @@ const APPLE_SVG = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="tru
       <div class="tool-header">
         {hisstory?.image && (
           <div class="tool-logo tool-logo--wide">
-            <img src={hisstory.image} alt="Hisstory" width="135" height="90" />
+            <picture>
+              <source srcset={hisstory.image.replace(/\.png$/i, '.webp')} type="image/webp" />
+              <img src={hisstory.image} alt="Hisstory" width="135" height="90" loading="lazy" decoding="async" />
+            </picture>
           </div>
         )}
         <div>
@@ -228,14 +254,19 @@ const APPLE_SVG = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="tru
       </div>
 
       <!-- Install -->
-      <h3 class="section-label">Install VST3 Plugin Manually</h3>
+      <h3 class="section-label">Install Plugin Manually</h3>
       <p class="callout callout-config callout-inline"><strong>Windows note:</strong> The installer may trigger a SmartScreen warning. Click <strong>More info</strong> &rarr; <strong>Run anyway</strong> to proceed, or download the VST3 plugin and install manually below.</p>
       <div class="guide-content">
         <h4>Windows</h4>
         <p>Copy <code>Hisstory.vst3</code> to <code>C:\Program Files\Common Files\VST3\Hisstory.vst3</code>, then rescan plugins in your DAW.</p>
 
         <h4>macOS</h4>
-        <p>Double-click the downloaded <code>.dmg</code> file to mount it &mdash; a window will open showing <code>Hisstory.vst3</code>. Drag it into <code>/Library/Audio/Plug-Ins/VST3/</code> (system-wide) or <code>~/Library/Audio/Plug-Ins/VST3/</code> (current user only), then eject the disk image and restart or rescan plugins in your DAW.</p>
+        <p>Double-click the downloaded <code>.dmg</code> file to mount it &mdash; a window will open showing both <code>Hisstory.vst3</code> and <code>Hisstory.component</code> (Audio Unit). Install whichever format your DAW uses (or both):</p>
+        <ul>
+          <li><strong>VST3:</strong> Drag <code>Hisstory.vst3</code> into <code>/Library/Audio/Plug-Ins/VST3/</code> (system-wide) or <code>~/Library/Audio/Plug-Ins/VST3/</code> (current user only).</li>
+          <li><strong>Audio Unit (.component):</strong> Drag <code>Hisstory.component</code> into <code>/Library/Audio/Plug-Ins/Components/</code> (system-wide) or <code>~/Library/Audio/Plug-Ins/Components/</code> (current user only). Required for apps like Audio Hijack.</li>
+        </ul>
+        <p>Eject the disk image, then restart or rescan plugins in your DAW. On first launch, macOS may prompt you to allow the plugin in <strong>System Settings &rarr; Privacy &amp; Security</strong>.</p>
       </div>
 
       <p class="contact-note">Questions or feedback? Reach out at <a href="mailto:tangotoolkit@gmail.com">tangotoolkit@gmail.com</a></p>
@@ -250,7 +281,10 @@ const APPLE_SVG = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="tru
       <div class="tool-header">
         {tigertag?.image && (
           <div class="tool-logo">
-            <img src={tigertag.image} alt="TigerTag" width="90" height="90" />
+            <picture>
+              <source srcset={tigertag.image.replace(/\.png$/i, '.webp')} type="image/webp" />
+              <img src={tigertag.image} alt="TigerTag" width="90" height="90" loading="lazy" decoding="async" />
+            </picture>
           </div>
         )}
         <div>
@@ -316,7 +350,10 @@ const APPLE_SVG = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="tru
       <div class="tool-header">
         {tigertanda?.image && (
           <div class="tool-logo tool-logo--wide">
-            <img src={tigertanda.image} alt="TigerTanda" width="135" height="90" />
+            <picture>
+              <source srcset={tigertanda.image.replace(/\.png$/i, '.webp')} type="image/webp" />
+              <img src={tigertanda.image} alt="TigerTanda" width="135" height="90" loading="lazy" decoding="async" />
+            </picture>
           </div>
         )}
         <div>

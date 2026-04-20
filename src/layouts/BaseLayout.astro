@@ -7,7 +7,7 @@ interface Props {
   ogImage?: string;
 }
 
-const { title, description = "Tools and resources for tango DJs. Software and guides to elevate your tango DJing.", ogImage = "/favicon-512.png" } = Astro.props;
+const { title, description = "Tools and resources for tango DJs. Software and guides to elevate your tango DJing.", ogImage = "/og-preview.jpg" } = Astro.props;
 const absoluteOgImage = new URL(ogImage, Astro.site).href;
 ---
 
@@ -55,7 +55,10 @@ const absoluteOgImage = new URL(ogImage, Astro.site).href;
     <header class="site-header">
       <div class="container">
         <a href="/" class="logo">
-          <img src="/images/Logo.png" alt="Tango Toolkit" class="logo-img" width="40" height="40" />
+          <picture>
+            <source srcset="/images/Logo.webp" type="image/webp" />
+            <img src="/images/Logo.png" alt="Tango Toolkit" class="logo-img" width="40" height="40" />
+          </picture>
           <span class="logo-text">The Tango Toolkit</span>
         </a>
         <nav class="nav">

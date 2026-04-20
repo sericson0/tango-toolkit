@@ -1,0 +1,44 @@
+# Security headers for every response
+/*
+  X-Frame-Options: DENY
+  X-Content-Type-Options: nosniff
+  Referrer-Policy: strict-origin-when-cross-origin
+  Permissions-Policy: camera=(), microphone=(), geolocation=()
+  Strict-Transport-Security: max-age=31536000; includeSubDomains
+
+# Astro-built, content-hashed assets: safe to cache forever
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# Static media: cache long, revalidate via ETag if changed
+/images/*
+  Cache-Control: public, max-age=31536000
+
+/articles/*
+  Cache-Control: public, max-age=31536000
+
+/downloads/*
+  Cache-Control: public, max-age=31536000
+
+/documentation/*
+  Cache-Control: public, max-age=31536000
+
+# Favicons & OG image: medium cache (may update on rebrand)
+/favicon.ico
+  Cache-Control: public, max-age=604800
+/favicon.svg
+  Cache-Control: public, max-age=604800
+/favicon-48.png
+  Cache-Control: public, max-age=604800
+/favicon-192.png
+  Cache-Control: public, max-age=604800
+/favicon-512.png
+  Cache-Control: public, max-age=604800
+/apple-touch-icon.png
+  Cache-Control: public, max-age=604800
+/og-preview.jpg
+  Cache-Control: public, max-age=604800
+
+# HTML pages: short cache so updates propagate fast
+/*.html
+  Cache-Control: public, max-age=300, must-revalidate

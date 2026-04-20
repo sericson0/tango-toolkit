@@ -11,7 +11,10 @@ const imgBase = '/articles/history-of-tango-music';
     <div class="article-body">
       <div class="container narrow-lg">
         <figure class="hero-image">
-          <img src={`${imgBase}/Orquestras-and-Recordings-per-year-1024x614.png`} alt="Tango orchestras and recordings by year" width="1024" height="614" />
+          <picture>
+            <source srcset={`${imgBase}/Orquestras-and-Recordings-per-year-2048x1229.webp`} type="image/webp" />
+            <img src={`${imgBase}/Orquestras-and-Recordings-per-year-1024x614.png`} alt="Tango orchestras and recordings by year" width="1024" height="614" fetchpriority="high" decoding="async" />
+          </picture>
         </figure>
         <div class="prose">
 
@@ -37,7 +40,7 @@ const imgBase = '/articles/history-of-tango-music';
   </div>
   <div>
     <figure>
-      <img src={`${imgBase}/image-19.webp`} alt="Patent for the original Gramophone" width="362" height="582" />
+      <img src={`${imgBase}/image-19.webp`} alt="Patent for the original Gramophone" width="362" height="582" loading="lazy" decoding="async" />
       <figcaption>Patent for the original Gramophone. Image from patents.google.com</figcaption>
     </figure>
   </div>
@@ -49,7 +52,7 @@ const imgBase = '/articles/history-of-tango-music';
   </div>
   <div>
     <figure>
-      <img src={`${imgBase}/image-1.webp`} alt="1905 Choclo from Orquestra Argentina Victor" width="397" height="397" />
+      <img src={`${imgBase}/image-1.webp`} alt="1905 Choclo from Orquestra Argentina Victor" width="397" height="397" loading="lazy" decoding="async" />
       <figcaption>1905 Choclo from Orquestra Argentina Victor.</figcaption>
     </figure>
   </div>
@@ -73,7 +76,7 @@ const imgBase = '/articles/history-of-tango-music';
 <h2>When Were They Recorded?</h2>
 
 <figure class="full-width-figure">
-  <img src={`${imgBase}/Orquestras-and-Recordings-per-year-1024x614.png`} alt="Tango orchestras and tango recordings by year" width="1024" height="614" />
+  <picture><source srcset={`${imgBase}/Orquestras-and-Recordings-per-year-2048x1229.webp`} type="image/webp" /><img src={`${imgBase}/Orquestras-and-Recordings-per-year-1024x614.png`} alt="Tango orchestras and tango recordings by year" width="1024" height="614" loading="lazy" decoding="async" /></picture>
   <figcaption>Tango orchestras and tango recordings by year. Data from El Recodo Tango</figcaption>
 </figure>
 
@@ -109,13 +112,13 @@ const imgBase = '/articles/history-of-tango-music';
 <div class="two-col">
   <div>
     <figure>
-      <img src={`${imgBase}/image-3.webp`} alt="Acoustic recording session" width="304" height="238" />
+      <img src={`${imgBase}/image-3.webp`} alt="Acoustic recording session" width="304" height="238" loading="lazy" decoding="async" />
       <figcaption>Acoustic recording session</figcaption>
     </figure>
   </div>
   <div>
     <figure>
-      <img src={`${imgBase}/image-4.webp`} alt="Electric recording session" width="304" height="237" />
+      <img src={`${imgBase}/image-4.webp`} alt="Electric recording session" width="304" height="237" loading="lazy" decoding="async" />
       <figcaption>Electric recording session</figcaption>
     </figure>
   </div>
@@ -125,14 +128,14 @@ const imgBase = '/articles/history-of-tango-music';
   <div>
     <figure>
       <a href="https://adp.library.ucsb.edu/index.php/matrix/detail/600004948/BA-727-Alma_de_bohemio" target="_blank" rel="noopener noreferrer">
-        <img src={`${imgBase}/image-5.webp`} alt="1925 Acoustic recording by Julio de Caro" width="300" height="300" />
+        <img src={`${imgBase}/image-5.webp`} alt="1925 Acoustic recording by Julio de Caro" width="300" height="300" loading="lazy" decoding="async" />
       </a>
       <figcaption>1925 Acoustic recording by Julio de Caro</figcaption>
     </figure>
   </div>
   <div>
     <figure>
-      <img src={`${imgBase}/image-6.webp`} alt="1926 Electric recording of Fuiste by Julio de Caro" width="305" height="305" />
+      <img src={`${imgBase}/image-6.webp`} alt="1926 Electric recording of Fuiste by Julio de Caro" width="305" height="305" loading="lazy" decoding="async" />
       <figcaption>1926 Electric recording of Fuiste by Julio de Caro. Note the <em>VE</em> at the top</figcaption>
     </figure>
   </div>
@@ -250,7 +253,7 @@ const imgBase = '/articles/history-of-tango-music';
 <hr />
 
 <figure class="full-width-figure">
-  <img src={`${imgBase}/image-8.webp`} alt="Record manufacturing process" width="624" height="196" />
+  <img src={`${imgBase}/image-8.webp`} alt="Record manufacturing process" width="624" height="196" loading="lazy" decoding="async" />
   <figcaption>Image from pspatialaudio.com. Note: for vinyl records, the mother-master is called a mould.</figcaption>
 </figure>
 
@@ -270,7 +273,7 @@ const imgBase = '/articles/history-of-tango-music';
   </div>
   <div>
     <figure>
-      <img src={`${imgBase}/image-9.webp`} alt="Magnetophon tape recorder" width="387" height="398" />
+      <img src={`${imgBase}/image-9.webp`} alt="Magnetophon tape recorder" width="387" height="398" loading="lazy" decoding="async" />
       <figcaption>Magnetophon tape recorder discovered at a German-controlled radio station in 1945.</figcaption>
     </figure>
   </div>
@@ -296,7 +299,7 @@ const imgBase = '/articles/history-of-tango-music';
 <p>Newer record labels could record onto tape and then have the tape shipped off to a separate facility to be turned into vinyl, increasing the number of record labels recording tango in the 50s. In 1951, the first tangos recorded with tape and vinyl were by Carlos Di Sarli with the new recording company Music-Hall <a id="_ftnref15" href="#_ftn15">[15]</a>. Many of my personal favorite tango recordings are from the 50s&mdash;those crystal-clear songs DJs play later in the milonga where you fall in love with your partner by the end of the tanda.</p>
 
 <figure class="full-width-figure">
-  <img src={`${imgBase}/image-10.webp`} alt="Recording technology timeline" width="624" height="480" />
+  <img src={`${imgBase}/image-10.webp`} alt="Recording technology timeline" width="624" height="480" loading="lazy" decoding="async" />
   <figcaption>Image from jens-ingo.all2all.org/archives/2776</figcaption>
 </figure>
 
@@ -317,7 +320,7 @@ const imgBase = '/articles/history-of-tango-music';
   </div>
   <div>
     <figure>
-      <img src={`${imgBase}/image-11.webp`} alt="Restoration mid process" width="624" height="416" />
+      <img src={`${imgBase}/image-11.webp`} alt="Restoration mid process" width="624" height="416" loading="lazy" decoding="async" />
       <figcaption>Restoration mid-process. Image from tangotimetravel.be</figcaption>
     </figure>
   </div>

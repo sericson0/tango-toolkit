@@ -168,7 +168,10 @@ import { products } from '../data/products';
             <div class="tool-side">
               {product.image && (
                 <div class="tool-image">
-                  <img src={product.image} alt={product.name} width="240" height="240" />
+                  <picture>
+                    <source srcset={product.image.replace(/\.png$/i, '.webp')} type="image/webp" />
+                    <img src={product.image} alt={product.name} width="240" height="240" loading="lazy" decoding="async" />
+                  </picture>
                 </div>
               )}
               <div class="tool-actions">
@@ -189,7 +192,7 @@ import { products } from '../data/products';
     padding: 5rem 0;
     background:
       linear-gradient(135deg, rgba(255,247,237,0.88) 0%, rgba(255,255,255,0.82) 50%, rgba(255,247,237,0.88) 100%),
-      url('/images/Logo.png') center / 80% no-repeat;
+      image-set(url('/images/Logo.webp') type('image/webp'), url('/images/Logo.png') type('image/png')) center / 80% no-repeat;
     border-bottom: 1px solid var(--color-orange-100);
   }
 
