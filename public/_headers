@@ -10,18 +10,18 @@
 /_astro/*
   Cache-Control: public, max-age=31536000, immutable
 
-# Static media: cache long, revalidate via ETag if changed
+# Static media: cache forever. Bust by renaming the file, not by mutating it in place.
 /images/*
-  Cache-Control: public, max-age=31536000
+  Cache-Control: public, max-age=31536000, immutable
 
 /articles/*
-  Cache-Control: public, max-age=31536000
+  Cache-Control: public, max-age=31536000, immutable
 
 /downloads/*
-  Cache-Control: public, max-age=31536000
+  Cache-Control: public, max-age=31536000, immutable
 
 /documentation/*
-  Cache-Control: public, max-age=31536000
+  Cache-Control: public, max-age=31536000, immutable
 
 # Favicons & OG image: medium cache (may update on rebrand)
 /favicon.ico

@@ -3,7 +3,7 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import PageHero from '../../../components/PageHero.astro';
 ---
 
-<BaseLayout title="Resources & Links — Tango DJ" description="Useful resources for tango DJs, dancers, and music lovers.">
+<BaseLayout title="Resources & Links — Tango DJ" description="Useful resources for tango DJs, dancers, and music lovers." ogImage="/images/Stages%20of%20Music.png">
   <PageHero title="Resources & Links" lead="Useful resources for tango DJs, dancers, and music lovers." />
 
   <section class="articles-section">
@@ -13,7 +13,7 @@ import PageHero from '../../../components/PageHero.astro';
 
         <a href="/dj/history-of-tango-music/" class="article-card">
           <picture>
-            <source srcset="/articles/history-of-tango-music/Orquestras-and-Recordings-per-year-2048x1229.webp" type="image/webp" />
+            <source srcset="/articles/history-of-tango-music/Orquestras-and-Recordings-per-year-800x480.webp 800w, /articles/history-of-tango-music/Orquestras-and-Recordings-per-year-1200x720.webp 1200w, /articles/history-of-tango-music/Orquestras-and-Recordings-per-year-2048x1229.webp 2048w" sizes="(max-width: 768px) 100vw, 600px" type="image/webp" />
             <img src="/articles/history-of-tango-music/Orquestras-and-Recordings-per-year-1024x614.png" alt="Tango orchestras and recordings by year" class="article-card-img" width="1024" height="614" loading="lazy" decoding="async" />
           </picture>
           <div class="article-card-body">

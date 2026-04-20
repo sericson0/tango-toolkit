@@ -49,17 +49,32 @@ export default async (req: Request, _context: Context) => {
 
   try {
     // Add to audience
-    await resendFetch(`/audiences/${audienceId}/contacts`, resendApiKey, {
-      email,
-      first_name: "",
-      unsubscribed: false,
-    });
+    const audienceRes = await resendFetch(
+      `/audiences/${audienceId}/contacts`,
+      resendApiKey,
+      {
+        email,
+        first_name: "",
+        last_name: "newsletter",
+        unsubscribed: false,
+      }
+    );
+    if (!audienceRes.ok) {
+      const errBody = await audienceRes.text();
+      throw new Error(
+        `Resend audience add failed: ${audienceRes.status} ${errBody}`
+      );
+    }
 
     // Send welcome email
-    await resendFetch("/emails", resendApiKey, {
+    const emailRes = await resendFetch("/emails", resendApiKey, {
       from: fromEmail,
       to: [email],
       subject: "Welcome to The Tango Toolkit",
+      tags: [
+        { name: "product", value: "newsletter" },
+        { name: "type", value: "welcome" },
+      ],
       html: `
         <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 600px; margin: 0 auto; padding: 2rem;">
           <h1 style="color: #f97316; margin-bottom: 0.5rem;">Welcome to The Tango Toolkit</h1>
@@ -79,16 +94,25 @@ export default async (req: Request, _context: Context) => {
 
           <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 2rem 0;" />
           <p style="color: #94a3b8; font-size: 0.85rem;">&mdash; Sean Ericson, creator of the Tango Toolkit</p>
+          <p style="color: #94a3b8; font-size: 0.75rem; text-align: center; margin-top: 1rem;">
+            Don't want these emails? <a href="https://tangotoolkit.com/unsubscribe/?email=${encodeURIComponent(email)}" style="color: #94a3b8; text-decoration: underline;">Unsubscribe</a>.
+          </p>
         </div>
       `,
     });
+    if (!emailRes.ok) {
+      const errBody = await emailRes.text();
+      throw new Error(
+        `Resend send failed: ${emailRes.status} ${errBody}`
+      );
+    }
 
     return new Response(
       JSON.stringify({ ok: true }),
       { status: 200, headers: { "Content-Type": "application/json" } }
     );
   } catch (err) {
-    console.error("Failed to subscribe:", err);
+    console.error(`[subscribe] Failed for ${email}:`, err);
     return new Response("Subscription failed", { status: 500 });
   }
 };

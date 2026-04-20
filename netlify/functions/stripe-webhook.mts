@@ -16,9 +16,63 @@ import { generateLicenseKey } from "../lib/license-key.mts";
  *   4. Emails the license key via Resend
  */
 
+/**
+ * Sends an alert email to ADMIN_NOTIFICATION_EMAIL when a paid checkout fails
+ * to fully provision (license email never sent, audience add broken, etc.).
+ * Best-effort: a failure here is logged but doesn't change the webhook outcome.
+ */
+async function notifyAdminOfFailure(
+  apiKey: string,
+  context: {
+    sessionId: string;
+    customerEmail: string;
+    productId: string;
+    productName: string;
+    stage: string;
+    error: unknown;
+  }
+): Promise<void> {
+  const adminEmail = process.env.ADMIN_NOTIFICATION_EMAIL;
+  if (!adminEmail) return;
+
+  const fromEmail =
+    process.env.RESEND_FROM_EMAIL ||
+    "The Tango Toolkit <noreply@tangotoolkit.com>";
+
+  const errString =
+    context.error instanceof Error
+      ? `${context.error.message}\n${context.error.stack ?? ""}`
+      : String(context.error);
+
+  try {
+    await resendFetch("/emails", apiKey, {
+      from: fromEmail,
+      to: [adminEmail],
+      subject: `[ALERT] ${context.productName} checkout failed: ${context.stage}`,
+      html: `
+        <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 600px; margin: 0 auto; padding: 1.5rem;">
+          <h2 style="color: #dc2626;">Paid checkout did not fully provision</h2>
+          <p>Stripe charged the customer, but the post-purchase flow failed at <strong>${context.stage}</strong>. Stripe will retry the webhook, but you may need to manually deliver the license.</p>
+          <table style="border-collapse: collapse; margin: 1rem 0;">
+            <tr><td style="padding: 0.25rem 1rem 0.25rem 0; color: #475569;"><strong>Product</strong></td><td style="padding: 0.25rem 0;">${context.productName} (${context.productId})</td></tr>
+            <tr><td style="padding: 0.25rem 1rem 0.25rem 0; color: #475569;"><strong>Customer</strong></td><td style="padding: 0.25rem 0;">${context.customerEmail}</td></tr>
+            <tr><td style="padding: 0.25rem 1rem 0.25rem 0; color: #475569;"><strong>Session</strong></td><td style="padding: 0.25rem 0;"><code>${context.sessionId}</code></td></tr>
+            <tr><td style="padding: 0.25rem 1rem 0.25rem 0; color: #475569;"><strong>Failed at</strong></td><td style="padding: 0.25rem 0;">${context.stage}</td></tr>
+          </table>
+          <h3 style="color: #334155; margin-top: 1.5rem;">Error</h3>
+          <pre style="background: #f1f5f9; padding: 1rem; border-radius: 6px; font-size: 0.8rem; overflow-x: auto; white-space: pre-wrap;">${errString.replace(/</g, "&lt;")}</pre>
+        </div>
+      `,
+    });
+  } catch (notifyErr) {
+    console.error("[stripe-webhook] Failed to send admin alert:", notifyErr);
+  }
+}
+
 async function addToResendAudience(
   email: string,
   firstName: string | undefined,
+  productId: string,
   optedIntoNewsletter: boolean,
   apiKey: string,
   audienceId: string
@@ -29,6 +83,7 @@ async function addToResendAudience(
     {
       email,
       first_name: firstName || "",
+      last_name: productId,
       unsubscribed: !optedIntoNewsletter,
     }
   );
@@ -45,12 +100,17 @@ async function sendLicenseEmail(
   to: string,
   licenseKey: string,
   apiKey: string,
-  product: ProductConfig
+  product: ProductConfig,
+  productId: string
 ): Promise<void> {
   const response = await resendFetch("/emails", apiKey, {
     from: product.fromEmail,
     to: [to],
     subject: product.subject,
+    tags: [
+      { name: "product", value: productId },
+      { name: "type", value: "license" },
+    ],
     html: `
         <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 600px; margin: 0 auto; padding: 2rem;">
           <h1 style="color: ${product.color}; margin-bottom: 0.5rem;">${product.name}</h1>
@@ -88,6 +148,9 @@ async function sendLicenseEmail(
           <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 2rem 0;" />
           <p style="color: #94a3b8; font-size: 0.85rem;">
             &mdash; Sean Ericson, creator of the Tango Toolkit
+          </p>
+          <p style="color: #94a3b8; font-size: 0.75rem; text-align: center; margin-top: 1rem;">
+            Don't want product updates? <a href="https://tangotoolkit.com/unsubscribe/?email=${encodeURIComponent(to)}" style="color: #94a3b8; text-decoration: underline;">Unsubscribe</a>. (You'll still be able to access your license.)
           </p>
         </div>
       `,
@@ -168,6 +231,7 @@ export default async (req: Request, _context: Context) => {
     return new Response("Server configuration error", { status: 500 });
   }
 
+  let stage = "license_generation";
   try {
     // 1. Generate license key (deterministic from session.id)
     const licenseKey = generateLicenseKey(product.keygenSecret, session.id);
@@ -176,9 +240,11 @@ export default async (req: Request, _context: Context) => {
     );
 
     // 2. Add to Resend Audience
+    stage = "audience_add";
     await addToResendAudience(
       customerEmail,
       customerName,
+      productId,
       optedIntoNewsletter,
       resendApiKey,
       audienceId
@@ -188,7 +254,8 @@ export default async (req: Request, _context: Context) => {
     );
 
     // 3. Email license key
-    await sendLicenseEmail(customerEmail, licenseKey, resendApiKey, product);
+    stage = "license_email";
+    await sendLicenseEmail(customerEmail, licenseKey, resendApiKey, product, productId);
     console.log(`${product.name} license key emailed to ${customerEmail}`);
 
     return new Response(
@@ -196,7 +263,18 @@ export default async (req: Request, _context: Context) => {
       { status: 200 }
     );
   } catch (err) {
-    console.error("Failed to process checkout:", err);
+    console.error(
+      `[stripe-webhook] Failed at ${stage} for ${customerEmail} (${productId}, session: ${session.id}):`,
+      err
+    );
+    await notifyAdminOfFailure(resendApiKey, {
+      sessionId: session.id,
+      customerEmail,
+      productId,
+      productName: product.name,
+      stage,
+      error: err,
+    });
     return new Response("Internal error", { status: 500 });
   }
 };

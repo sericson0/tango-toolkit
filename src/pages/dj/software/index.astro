@@ -1,15 +1,48 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import PageHero from '../../../components/PageHero.astro';
-import { getProductsMap } from '../../../data/products';
+import { getProductsMap, products } from '../../../data/products';
 
 const { tigertango, hisstory, tigertag, tigertanda } = getProductsMap();
 
 const WIN_SVG = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M0 3.5l9.75-1.33v9.41H0V3.5zm0 17l9.75 1.33v-9.32H0v7.99zM10.83 21.98L24 24V12.68H10.83v9.3zm0-19.96v9.4H24V0L10.83 2.02z"/></svg>';
 const APPLE_SVG = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>';
+
+const SITE_URL = (Astro.site?.toString() ?? 'https://tangotoolkit.com/').replace(/\/$/, '');
+
+const productSchemas = products.map((p) => {
+  const priceNum = p.price === 'Free' ? '0' : p.price.replace(/[^0-9.]/g, '');
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'SoftwareApplication',
+    name: p.name,
+    description: p.description.trim(),
+    applicationCategory: 'MultimediaApplication',
+    operatingSystem: 'Windows, macOS',
+    url: `${SITE_URL}/dj/software/#${p.id}`,
+    image: p.image ? `${SITE_URL}${p.image}` : undefined,
+    offers: {
+      '@type': 'Offer',
+      price: priceNum,
+      priceCurrency: 'USD',
+      availability: 'https://schema.org/InStock',
+      url: `${SITE_URL}/dj/software/#${p.id}`,
+    },
+    author: {
+      '@type': 'Person',
+      name: 'Sean Ericson',
+      url: SITE_URL,
+    },
+  };
+});
 ---
 
-<BaseLayout title="DJ Tools" description="Software and plugins built for tango DJs. Download free tools and pro-level utilities for music management, audio restoration, and tanda building.">
+<BaseLayout title="DJ Tools" description="Software and plugins built for tango DJs. Download free tools and pro-level utilities for music management, audio restoration, and tanda building." ogImage="/images/TigerTangoLogo.png">
+  <Fragment slot="head">
+    {productSchemas.map((schema) => (
+      <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+    ))}
+  </Fragment>
   <PageHero title="DJ Tools" lead="Software and plugins built for tango DJs." />
     <div class="email-opt-in">
       Sign up here to stay up to date on the latest updates, features, and releases
@@ -568,9 +601,18 @@ const APPLE_SVG = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="tru
     const errorEl = ttModal.querySelector('.tt-modal-error') as HTMLElement;
     const submitBtn = ttModal.querySelector('.tt-modal-primary') as HTMLButtonElement;
     let pendingUrl: string | null = null;
+    let lastFocusedTrigger: HTMLElement | null = null;
 
-    const openModal = (url: string) => {
+    const FOCUSABLE_SELECTOR =
+      'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])';
+
+    const getFocusable = (): HTMLElement[] =>
+      Array.from(ttModal.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR))
+        .filter((el) => !el.hasAttribute('hidden') && el.offsetParent !== null);
+
+    const openModal = (url: string, trigger: HTMLElement | null) => {
       pendingUrl = url;
+      lastFocusedTrigger = trigger;
       errorEl.hidden = true;
       errorEl.textContent = '';
       emailInput.value = '';
@@ -585,6 +627,12 @@ const APPLE_SVG = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="tru
       ttModal.hidden = true;
       pendingUrl = null;
       document.body.style.overflow = '';
+      // Restore focus to whatever opened the modal so keyboard users don't
+      // get dumped at the top of the page.
+      if (lastFocusedTrigger && document.contains(lastFocusedTrigger)) {
+        lastFocusedTrigger.focus();
+      }
+      lastFocusedTrigger = null;
     };
 
     const startDownload = (url: string | null) => {
@@ -594,7 +642,7 @@ const APPLE_SVG = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="tru
     document.querySelectorAll<HTMLAnchorElement>('.tigertanda-dl').forEach((a) => {
       a.addEventListener('click', (e) => {
         e.preventDefault();
-        openModal(a.href);
+        openModal(a.href, a);
       });
     });
 
@@ -608,8 +656,31 @@ const APPLE_SVG = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="tru
       startDownload(url);
     });
 
+    // Esc closes; Tab/Shift+Tab cycle focus inside the modal so it doesn't
+    // escape into the (inert) page behind it.
     document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape' && !ttModal.hidden) closeModal();
+      if (ttModal.hidden) return;
+      if (e.key === 'Escape') {
+        closeModal();
+        return;
+      }
+      if (e.key !== 'Tab') return;
+      const focusable = getFocusable();
+      if (focusable.length === 0) return;
+      const first = focusable[0];
+      const last = focusable[focusable.length - 1];
+      const active = document.activeElement as HTMLElement | null;
+      if (e.shiftKey && active === first) {
+        e.preventDefault();
+        last.focus();
+      } else if (!e.shiftKey && active === last) {
+        e.preventDefault();
+        first.focus();
+      } else if (active && !ttModal.contains(active)) {
+        // Focus drifted outside (e.g. browser chrome) — pull it back in.
+        e.preventDefault();
+        first.focus();
+      }
     });
 
     form.addEventListener('submit', async (e) => {

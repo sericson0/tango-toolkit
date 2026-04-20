@@ -13,6 +13,7 @@ import { checkRateLimit } from "../lib/rate-limit.mts";
  */
 
 interface ProductInfo {
+  id: string;
   downloadUrl: string;
   name: string;
   guideUrl?: string;
@@ -21,12 +22,14 @@ interface ProductInfo {
 
 const PRODUCTS: Record<string, ProductInfo> = {
   tigertanda: {
+    id: "tigertanda",
     downloadUrl: "https://github.com/sericson0/tigertanda-vdj/releases/latest",
     name: "TigerTanda",
     guideUrl: "https://tangotoolkit.com/documentation/TigerTanda%20Quickstart%20Guide.pdf",
     guideLabel: "TigerTanda Quickstart Guide (PDF)",
   },
   tigertango: {
+    id: "tigertango",
     downloadUrl: "https://github.com/sericson0/TigerTango/releases",
     name: "TigerTango",
   },
@@ -49,10 +52,14 @@ async function sendWelcomeEmail(
           </div>`
     : "";
 
-  await resendFetch("/emails", apiKey, {
+  const response = await resendFetch("/emails", apiKey, {
     from: fromEmail,
     to: [email],
     subject: `Welcome to ${product.name}`,
+    tags: [
+      { name: "product", value: product.id },
+      { name: "type", value: "welcome" },
+    ],
     html: `
         <div style="font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; max-width: 600px; margin: 0 auto; padding: 2rem;">
           <h1 style="color: #f97316; margin-bottom: 0.5rem;">Thanks for downloading ${product.name}!</h1>
@@ -72,9 +79,18 @@ async function sendWelcomeEmail(
 
           <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 2rem 0;" />
           <p style="color: #94a3b8; font-size: 0.85rem;">&mdash; Sean Ericson, creator of the Tango Toolkit</p>
+          <hr style="border: none; border-top: 1px solid #e2e8f0; margin: 1.5rem 0;" />
+          <p style="color: #94a3b8; font-size: 0.75rem; text-align: center;">
+            Don't want these emails? <a href="https://tangotoolkit.com/unsubscribe/?email=${encodeURIComponent(email)}" style="color: #94a3b8; text-decoration: underline;">Unsubscribe</a>.
+          </p>
         </div>
       `,
   });
+
+  if (!response.ok) {
+    const error = await response.text();
+    throw new Error(`Resend send failed: ${response.status} ${error}`);
+  }
 }
 
 export default async (req: Request, _context: Context) => {
@@ -119,33 +135,47 @@ export default async (req: Request, _context: Context) => {
     return new Response("Invalid email address", { status: 400 });
   }
 
+  // Add to audience. Resend treats existing contacts as a 200, so re-subscribes are fine.
+  // We swallow audience-add failures so a Resend outage doesn't block the user's download,
+  // but we log loudly so the failure shows up in Netlify function logs.
   try {
-    await resendFetch(`/audiences/${audienceId}/contacts`, resendApiKey, {
-      email,
-      first_name: "",
-      unsubscribed: false,
-    });
-
-    // Send welcome email with guide link
-    try {
-      await sendWelcomeEmail(email, product, resendApiKey);
-    } catch (emailErr) {
-      console.error("Failed to send welcome email:", emailErr);
-      // Don't fail the request if welcome email fails
-    }
-
-    return new Response(
-      JSON.stringify({ downloadUrl: product.downloadUrl }),
-      { status: 200, headers: { "Content-Type": "application/json" } }
+    const audienceRes = await resendFetch(
+      `/audiences/${audienceId}/contacts`,
+      resendApiKey,
+      {
+        email,
+        first_name: "",
+        last_name: product.id,
+        unsubscribed: false,
+      }
     );
+    if (!audienceRes.ok) {
+      const errBody = await audienceRes.text();
+      console.error(
+        `[capture-email] Resend audience add failed for ${email} (${product.id}): ${audienceRes.status} ${errBody}`
+      );
+    }
   } catch (err) {
-    console.error("Failed to capture email:", err);
-    // Still return the download URL even if email capture fails
-    return new Response(
-      JSON.stringify({ downloadUrl: product.downloadUrl }),
-      { status: 200, headers: { "Content-Type": "application/json" } }
+    console.error(
+      `[capture-email] Resend audience add threw for ${email} (${product.id}):`,
+      err
     );
   }
+
+  // Send welcome email. Same policy: log loudly, but don't block the download.
+  try {
+    await sendWelcomeEmail(email, product, resendApiKey);
+  } catch (emailErr) {
+    console.error(
+      `[capture-email] Welcome email failed for ${email} (${product.id}):`,
+      emailErr
+    );
+  }
+
+  return new Response(
+    JSON.stringify({ downloadUrl: product.downloadUrl }),
+    { status: 200, headers: { "Content-Type": "application/json" } }
+  );
 };
 
 export const config = {

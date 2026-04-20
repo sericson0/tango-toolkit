@@ -4,12 +4,14 @@ import PageHero from '../../../components/PageHero.astro';
 ---
 
 <BaseLayout title="Discographies — Tango DJ" description="Argentine tango discographies for 40+ bandleaders with nearly 15,000 songs. Browse, filter, and download discography data.">
-  <PageHero title="Discographies" lead="Nearly 15,000 tangos from more than 40 artists" />
+  <PageHero title="Discographies" lead="More than 15,000 tangos from more than 40 artists" />
 
   <!-- ===== Description, References, Article — above the embed ===== -->
   <section class="intro-section">
     <div class="container">
-
+      <aside class="contribute-callout">
+        <p><strong>Help improve these discographies.</strong> The discographies are open-source. Contribute, suggest corrections, add missing recordings, or open a pull request on <a href="https://github.com/sericson0/tango-discographies" target="_blank" rel="noopener noreferrer">GitHub</a>.</p>
+      </aside>
       <div class="disco-description">
         <p>The following discography consists of close to 15 thousand songs across more than 40 tango artists. We have tried our best to make these discographies correct and complete, but with any project of this scale there are guaranteed to be errors. If you find any, please let us know at <a href="mailto:tangotoolkit@gmail.com">tangotoolkit@gmail.com</a></p>
         <p>Feel free to use these discographies however you see fit. We would love to hear if you find them useful. If you do, make sure to let your friends know about this resource!</p>
@@ -120,6 +122,28 @@ import PageHero from '../../../components/PageHero.astro';
   }
 
   .disco-description a {
+    color: var(--color-primary);
+    font-weight: 500;
+  }
+
+  /* ===== Contribute callout ===== */
+  .contribute-callout {
+    background: var(--color-orange-50);
+    border-left: 3px solid var(--color-orange-300);
+    border-radius: var(--radius-md);
+    padding: 0.9rem 1.25rem;
+    margin: 0 0 1.5rem;
+  }
+
+  .contribute-callout p {
+    margin: 0;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--color-slate-700);
+    max-width: 70ch;
+  }
+
+  .contribute-callout a {
     color: var(--color-primary);
     font-weight: 500;
   }

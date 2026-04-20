@@ -12,7 +12,7 @@ const imgBase = '/articles/history-of-tango-music';
       <div class="container narrow-lg">
         <figure class="hero-image">
           <picture>
-            <source srcset={`${imgBase}/Orquestras-and-Recordings-per-year-2048x1229.webp`} type="image/webp" />
+            <source srcset={`${imgBase}/Orquestras-and-Recordings-per-year-800x480.webp 800w, ${imgBase}/Orquestras-and-Recordings-per-year-1200x720.webp 1200w, ${imgBase}/Orquestras-and-Recordings-per-year-2048x1229.webp 2048w`} sizes="(max-width: 768px) 100vw, 640px" type="image/webp" />
             <img src={`${imgBase}/Orquestras-and-Recordings-per-year-1024x614.png`} alt="Tango orchestras and recordings by year" width="1024" height="614" fetchpriority="high" decoding="async" />
           </picture>
         </figure>
@@ -29,7 +29,7 @@ const imgBase = '/articles/history-of-tango-music';
 <p>The oldest surviving recording of any song is <a href="https://en.wikipedia.org/wiki/File:1860-Scott-Au-Clair-de-la-Lune-05-09.ogg" target="_blank" rel="noopener noreferrer">this</a> banger recorded in 1860 by &Eacute;douard-L&eacute;on Scott de Martinville, using a phonautograph to transcribe audio onto paper.</p>
 
 <figure class="audio-embed">
-  <audio controls preload="none" src={`${imgBase}/1860-Scott-Au-Clair-de-la-Lune-05-09.ogg`}></audio>
+  <audio controls preload="none" src="https://drive.google.com/uc?export=download&id=1mC0DQnhHKFqPXgbLE7BZq8N17nD5w5mB"></audio>
 </figure>
 
 <p>It took a little while for the song to become a hit, with researchers at Berkeley using optical imaging to first play it back in 2008 <a id="_ftnref1" href="#_ftn1">[1]</a>.</p>
@@ -40,7 +40,7 @@ const imgBase = '/articles/history-of-tango-music';
   </div>
   <div>
     <figure>
-      <img src={`${imgBase}/image-19.webp`} alt="Patent for the original Gramophone" width="362" height="582" loading="lazy" decoding="async" />
+      <img src={`${imgBase}/image-19.webp`} srcset={`${imgBase}/image-19-187x300.webp 187w, ${imgBase}/image-19.webp 362w`} sizes="(max-width: 768px) 100vw, 362px" alt="Patent for the original Gramophone" width="362" height="582" loading="lazy" decoding="async" />
       <figcaption>Patent for the original Gramophone. Image from patents.google.com</figcaption>
     </figure>
   </div>
@@ -52,7 +52,7 @@ const imgBase = '/articles/history-of-tango-music';
   </div>
   <div>
     <figure>
-      <img src={`${imgBase}/image-1.webp`} alt="1905 Choclo from Orquestra Argentina Victor" width="397" height="397" loading="lazy" decoding="async" />
+      <img src={`${imgBase}/image-1.webp`} srcset={`${imgBase}/image-1-300x300.webp 300w, ${imgBase}/image-1.webp 397w`} sizes="(max-width: 768px) 100vw, 397px" alt="1905 Choclo from Orquestra Argentina Victor" width="397" height="397" loading="lazy" decoding="async" />
       <figcaption>1905 Choclo from Orquestra Argentina Victor.</figcaption>
     </figure>
   </div>
@@ -61,7 +61,7 @@ const imgBase = '/articles/history-of-tango-music';
 <p>After a fair amount of searching, the oldest recording of a tango song that I could find available online to listen to is <a href="https://adp.library.ucsb.edu/index.php/matrix/detail/200005245/B-3624-El_choclo" target="_blank" rel="noopener noreferrer">this</a> 1905 recording of El Choclo by the Victor Argentine Orchestra.</p>
 
 <figure class="audio-embed">
-  <audio controls preload="none" src={`${imgBase}/cusb_victor_3280_01_b3624_01d.mp3`}></audio>
+  <audio controls preload="none" src="https://drive.google.com/uc?export=download&id=1U513PFnK-bISKPxPwGLXZR2kL0XrgZe-"></audio>
   <figcaption>1905 El Choclo &mdash; Victor Argentine Orchestra</figcaption>
 </figure>
 
@@ -76,7 +76,7 @@ const imgBase = '/articles/history-of-tango-music';
 <h2>When Were They Recorded?</h2>
 
 <figure class="full-width-figure">
-  <picture><source srcset={`${imgBase}/Orquestras-and-Recordings-per-year-2048x1229.webp`} type="image/webp" /><img src={`${imgBase}/Orquestras-and-Recordings-per-year-1024x614.png`} alt="Tango orchestras and tango recordings by year" width="1024" height="614" loading="lazy" decoding="async" /></picture>
+  <picture><source srcset={`${imgBase}/Orquestras-and-Recordings-per-year-800x480.webp 800w, ${imgBase}/Orquestras-and-Recordings-per-year-1200x720.webp 1200w, ${imgBase}/Orquestras-and-Recordings-per-year-2048x1229.webp 2048w`} sizes="(max-width: 768px) 100vw, 900px" type="image/webp" /><img src={`${imgBase}/Orquestras-and-Recordings-per-year-1024x614.png`} alt="Tango orchestras and tango recordings by year" width="1024" height="614" loading="lazy" decoding="async" /></picture>
   <figcaption>Tango orchestras and tango recordings by year. Data from El Recodo Tango</figcaption>
 </figure>
 
@@ -147,7 +147,7 @@ const imgBase = '/articles/history-of-tango-music';
   </div>
   <div>
     <figure class="audio-embed">
-      <audio controls preload="none" src={`${imgBase}/cusb_col_t637_01_56757_01d.mp3`}></audio>
+      <audio controls preload="none" src="https://drive.google.com/uc?export=download&id=1-JJWV35cbf9VVtvv_HDR9zP8VM8nKI_c"></audio>
       <figcaption>Gardel 1912 La Mariposa</figcaption>
     </figure>
     <div class="video-embed">
@@ -253,7 +253,7 @@ const imgBase = '/articles/history-of-tango-music';
 <hr />
 
 <figure class="full-width-figure">
-  <img src={`${imgBase}/image-8.webp`} alt="Record manufacturing process" width="624" height="196" loading="lazy" decoding="async" />
+  <img src={`${imgBase}/image-8.webp`} srcset={`${imgBase}/image-8-300x94.webp 300w, ${imgBase}/image-8.webp 624w`} sizes="(max-width: 768px) 100vw, 624px" alt="Record manufacturing process" width="624" height="196" loading="lazy" decoding="async" />
   <figcaption>Image from pspatialaudio.com. Note: for vinyl records, the mother-master is called a mould.</figcaption>
 </figure>
 
@@ -262,7 +262,7 @@ const imgBase = '/articles/history-of-tango-music';
 <p>Companies were hard at work researching technology for recording and storing sound when World War II broke out. While the war put much of the research on hold, Allied signal operators started hearing something strange coming out of Germany. Things like radio broadcasts of Hitler from two places at the same time, or symphony orchestras playing from concert halls that had already been destroyed in bombing raids. The broadcasts had to be recordings but sounded as if they were live and were much longer than could be stored on Shellac. <a href="https://www.youtube.com/watch?v=EY7lvuVjjX4" target="_blank" rel="noopener noreferrer">Here</a> you can hear the superb sound quality compared to other 1944 recordings. In fact, the sound quality is so high that you can actually hear the sound of the allied bombing in the background during the quieter moments (listen starting around 5:30).</p>
 
 <figure class="audio-embed">
-  <audio controls preload="none" src={`${imgBase}/Beethoven-1944-Stereo_-Allegro-from-Concerto-for-piano-and-o.mp3`}></audio>
+  <audio controls preload="none" src="https://drive.google.com/uc?export=download&id=1JwWeXTSYsjG375lWM95lxFJwFJaaV6Wx"></audio>
   <figcaption>Allegro from Concerto for piano and orchestra No.5 &mdash; Gieseking/RO Berlin.<br/>Audio from youtube.com/watch?v=EY7lvuVjjX4</figcaption>
 </figure>
 
@@ -273,7 +273,7 @@ const imgBase = '/articles/history-of-tango-music';
   </div>
   <div>
     <figure>
-      <img src={`${imgBase}/image-9.webp`} alt="Magnetophon tape recorder" width="387" height="398" loading="lazy" decoding="async" />
+      <img src={`${imgBase}/image-9.webp`} srcset={`${imgBase}/image-9-292x300.webp 292w, ${imgBase}/image-9.webp 387w`} sizes="(max-width: 768px) 100vw, 387px" alt="Magnetophon tape recorder" width="387" height="398" loading="lazy" decoding="async" />
       <figcaption>Magnetophon tape recorder discovered at a German-controlled radio station in 1945.</figcaption>
     </figure>
   </div>
@@ -299,7 +299,7 @@ const imgBase = '/articles/history-of-tango-music';
 <p>Newer record labels could record onto tape and then have the tape shipped off to a separate facility to be turned into vinyl, increasing the number of record labels recording tango in the 50s. In 1951, the first tangos recorded with tape and vinyl were by Carlos Di Sarli with the new recording company Music-Hall <a id="_ftnref15" href="#_ftn15">[15]</a>. Many of my personal favorite tango recordings are from the 50s&mdash;those crystal-clear songs DJs play later in the milonga where you fall in love with your partner by the end of the tanda.</p>
 
 <figure class="full-width-figure">
-  <img src={`${imgBase}/image-10.webp`} alt="Recording technology timeline" width="624" height="480" loading="lazy" decoding="async" />
+  <img src={`${imgBase}/image-10.webp`} srcset={`${imgBase}/image-10-300x231.webp 300w, ${imgBase}/image-10.webp 624w`} sizes="(max-width: 768px) 100vw, 624px" alt="Recording technology timeline" width="624" height="480" loading="lazy" decoding="async" />
   <figcaption>Image from jens-ingo.all2all.org/archives/2776</figcaption>
 </figure>
 
@@ -320,7 +320,7 @@ const imgBase = '/articles/history-of-tango-music';
   </div>
   <div>
     <figure>
-      <img src={`${imgBase}/image-11.webp`} alt="Restoration mid process" width="624" height="416" loading="lazy" decoding="async" />
+      <img src={`${imgBase}/image-11.webp`} srcset={`${imgBase}/image-11-360x240.webp 360w, ${imgBase}/image-11.webp 624w`} sizes="(max-width: 768px) 100vw, 624px" alt="Restoration mid process" width="624" height="416" loading="lazy" decoding="async" />
       <figcaption>Restoration mid-process. Image from tangotimetravel.be</figcaption>
     </figure>
   </div>

@@ -50,6 +50,7 @@ const absoluteOgImage = new URL(ogImage, Astro.site).href;
         }
       </script>
     )}
+    <slot name="head" />
   </head>
   <body>
     <header class="site-header">
@@ -106,6 +107,7 @@ const absoluteOgImage = new URL(ogImage, Astro.site).href;
             <strong>Legal</strong>
             <a href="/privacy/">Privacy Policy</a>
             <a href="/terms/">Terms of Service</a>
+            <a href="/unsubscribe/">Unsubscribe</a>
           </div>
           <div>
             <p>&copy; {new Date().getFullYear()} The Tango Toolkit</p>

@@ -10,10 +10,11 @@ const RESEND_BASE_URL = "https://api.resend.com";
 export async function resendFetch(
   path: string,
   apiKey: string,
-  body: Record<string, unknown>
+  body: Record<string, unknown>,
+  method: "POST" | "PATCH" = "POST"
 ): Promise<Response> {
   return fetch(`${RESEND_BASE_URL}${path}`, {
-    method: "POST",
+    method,
     headers: {
       Authorization: `Bearer ${apiKey}`,
       "Content-Type": "application/json",
