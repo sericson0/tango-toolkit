@@ -9,6 +9,16 @@ import BaseLayout from '../../../../layouts/BaseLayout.astro';
         <div class="checkmark">&#10003;</div>
         <h1>You're registered!</h1>
         <p>Thank you for signing up. We'll keep you posted on new resources and tools for the tango community.</p>
+
+        <div class="starter-pack-card">
+          <h2>Your Music Starter Package</h2>
+          <p>A curated Google Drive folder of music to help you get started on your tango DJ journey.</p>
+          <p class="starter-pack-link">
+            <a href="https://drive.google.com/drive/folders/1HtXmrbAP4PekJs3BjziY8KDDL8BQzTs0?usp=sharing" target="_blank" rel="noopener noreferrer">Open Music Starter Package &rarr;</a>
+          </p>
+          <p class="starter-pack-note">We&rsquo;ve also sent this link to your email.</p>
+        </div>
+
         <div class="success-links">
           <a href="/dj/starter-kit/" class="btn btn-primary">DJ Starter Kit &rarr;</a>
           <a href="/" class="btn btn-secondary">Home</a>
@@ -50,6 +60,51 @@ import BaseLayout from '../../../../layouts/BaseLayout.astro';
     max-width: 40ch;
     margin-left: auto;
     margin-right: auto;
+  }
+
+  .starter-pack-card {
+    background: linear-gradient(135deg, var(--color-orange-50) 0%, white 100%);
+    border: 2px solid var(--color-orange-300);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    margin: 0 auto 2rem;
+    max-width: 480px;
+    text-align: left;
+  }
+
+  .starter-pack-card h2 {
+    margin: 0 0 0.5rem;
+    font-size: 1.25rem;
+    color: var(--color-orange-700);
+  }
+
+  .starter-pack-card p {
+    margin: 0 0 0.75rem;
+    font-size: 0.95rem;
+    color: var(--color-slate-600);
+    max-width: none;
+  }
+
+  .starter-pack-link {
+    margin: 1rem 0 0.5rem;
+    font-size: 1rem;
+  }
+
+  .starter-pack-link a {
+    color: var(--color-primary);
+    font-weight: 600;
+    text-decoration: underline;
+  }
+
+  .starter-pack-link a:hover {
+    color: var(--color-primary-hover);
+  }
+
+  .starter-pack-note {
+    font-size: 0.85rem;
+    color: var(--color-slate-500);
+    font-style: italic;
+    margin: 0.5rem 0 0;
   }
 
   .success-links { display: flex; flex-wrap: wrap; gap: 0.75rem; justify-content: center; }
