@@ -129,6 +129,14 @@ export default async (req: Request, _context: Context) => {
     return new Response("Invalid email address", { status: 400 });
   }
 
+  // Normalize optional fields. `req.json()` returns any — a client could send
+  // non-string values. Coerce to undefined rather than 400-ing, so a slightly
+  // malformed payload still gets the welcome email.
+  const safeName = typeof name === "string" ? name : undefined;
+  const VALID_FOCUS = new Set(["dance", "dj", "organizer", "everything"]);
+  const safeFocus =
+    typeof focus === "string" && VALID_FOCUS.has(focus) ? focus : undefined;
+
   // Add to audience. Resend treats existing contacts as a 200, so re-subscribes
   // are fine. last_name is overridden to "register" as a tracking marker so
   // registrants can be sorted in the audience UI; the user's actual surname
@@ -139,7 +147,7 @@ export default async (req: Request, _context: Context) => {
       resendApiKey,
       {
         email,
-        first_name: firstName(name),
+        first_name: firstName(safeName),
         last_name: "register",
         unsubscribed: false,
       }
@@ -158,7 +166,7 @@ export default async (req: Request, _context: Context) => {
   // only calls this as a best-effort before the native form submit, and we
   // don't want a Resend outage to cause browser-side retry loops.
   try {
-    await sendWelcomeEmail(email, name, focus, resendApiKey);
+    await sendWelcomeEmail(email, safeName, safeFocus, resendApiKey);
   } catch (emailErr) {
     console.error(`[register] Welcome email failed for ${email}:`, emailErr);
   }
