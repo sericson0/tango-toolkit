@@ -1,167 +1,193 @@
----
-import BaseLayout from '../../../layouts/BaseLayout.astro';
-import PageHero from '../../../components/PageHero.astro';
----
-
-<BaseLayout title="Register for Tango Toolkit" description="Sign up to access tango resources for dancers, DJs, and organizers. Stay updated on new materials and tools.">
-  <PageHero title="Register for Tango Toolkit" lead="Sign up so we can keep you in the loop on new resources and tools for the tango community." />
-
-  <section class="form-section">
-    <div class="container narrow-sm">
-      <form name="tango-registration" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/dj/register/success/">
-        <input type="hidden" name="form-name" value="tango-registration" />
-        <p class="hidden-field"><label>Don't fill this out: <input name="bot-field" /></label></p>
-
-        <div class="form-group">
-          <label for="name">Name <span class="required">*</span></label>
-          <input type="text" id="name" name="name" required placeholder="Your name" />
-        </div>
-
-        <div class="form-group">
-          <label for="email">Email <span class="required">*</span></label>
-          <input type="email" id="email" name="email" required placeholder="your@email.com" />
-        </div>
-
-        <div class="form-group">
-          <label for="location">Country / State</label>
-          <input type="text" id="location" name="location" placeholder="e.g. Argentina, California, Germany" />
-        </div>
-
-        <div class="form-group">
-          <label for="focus">Primary Interest <span class="required">*</span></label>
-          <select id="focus" name="focus" required>
-            <option value="">Select one...</option>
-            <option value="dance">Dance</option>
-            <option value="dj">DJ</option>
-            <option value="organizer">Organizer</option>
-            <option value="everything">Everything</option>
-          </select>
-        </div>
-
-        <div id="experience-dance" class="form-group experience-field" style="display:none;">
-          <label for="dance-experience">Dance Experience</label>
-          <select id="dance-experience" name="dance-experience">
-            <option value="">Select one...</option>
-            <option value="brand-new">Brand new &mdash; just starting out</option>
-            <option value="beginner">Beginner &mdash; been dancing a few months</option>
-            <option value="intermediate">Intermediate &mdash; dance regularly</option>
-            <option value="advanced">Advanced &mdash; been dancing for years</option>
-          </select>
-        </div>
-
-        <div id="experience-dj" class="form-group experience-field" style="display:none;">
-          <label for="dj-experience">DJ Experience</label>
-          <select id="dj-experience" name="dj-experience">
-            <option value="">Select one...</option>
-            <option value="brand-new">Brand new &mdash; haven't DJ'd yet</option>
-            <option value="beginner">Beginner &mdash; DJ'd a few times</option>
-            <option value="intermediate">Intermediate &mdash; DJ regularly</option>
-            <option value="experienced">Experienced &mdash; looking for new resources</option>
-          </select>
-        </div>
-
-        <div id="experience-organizer" class="form-group experience-field" style="display:none;">
-          <label for="organizer-experience">Organizer Experience</label>
-          <select id="organizer-experience" name="organizer-experience">
-            <option value="">Select one...</option>
-            <option value="brand-new">Brand new &mdash; haven't organized yet</option>
-            <option value="beginner">Beginner &mdash; organized a few events</option>
-            <option value="intermediate">Intermediate &mdash; organize regularly</option>
-            <option value="experienced">Experienced &mdash; looking for new resources</option>
-          </select>
-        </div>
-
-        <div class="form-group">
-          <label for="message">Anything else you'd like to share?</label>
-          <textarea id="message" name="message" rows="3" placeholder="Questions, what you're looking for, how you heard about us..."></textarea>
-        </div>
-
-        <button type="submit" class="btn btn-primary btn-lg" id="register-btn">Register</button>
-      </form>
-    </div>
-  </section>
-</BaseLayout>
-
-<script>
-  const focusSelect = document.getElementById('focus') as HTMLSelectElement;
-  const danceExp = document.getElementById('experience-dance')!;
-  const djExp = document.getElementById('experience-dj')!;
-  const orgExp = document.getElementById('experience-organizer')!;
-
-  function updateExperienceFields() {
-    const val = focusSelect.value;
-    danceExp.style.display = (val === 'dance' || val === 'everything') ? '' : 'none';
-    djExp.style.display = (val === 'dj' || val === 'everything') ? '' : 'none';
-    orgExp.style.display = (val === 'organizer' || val === 'everything') ? '' : 'none';
-  }
-
-  focusSelect.addEventListener('change', updateExperienceFields);
-  updateExperienceFields();
-
-  const registerForm = document.querySelector('form[name="tango-registration"]') as HTMLFormElement;
-  const registerBtn = document.getElementById('register-btn') as HTMLButtonElement;
-
-  registerForm?.addEventListener('submit', () => {
-    registerBtn.disabled = true;
-    registerBtn.textContent = 'Registering\u2026';
-  });
-</script>
-
-<style>
-  .form-section { padding: 3rem 0; }
-
-  .hidden-field { display: none; }
-
-  form {
-    background: white;
-    border: 1px solid var(--color-slate-200);
-    border-radius: var(--radius-lg);
-    padding: 2rem;
-  }
-
-  .form-group { margin-bottom: 1.25rem; }
-
-  .form-group label {
-    display: block;
-    margin-bottom: 0.35rem;
-    font-weight: 500;
-    font-size: 0.95rem;
-    color: var(--color-slate-700);
-  }
-
-  .required { color: var(--color-orange-500); }
-
-  .form-group input,
-  .form-group select,
-  .form-group textarea {
-    width: 100%;
-    padding: 0.6rem 0.75rem;
-    border: 1px solid var(--color-slate-300);
-    border-radius: var(--radius-md);
-    font-size: 0.95rem;
-    font-family: inherit;
-    background: var(--color-slate-50);
-    transition: border-color 0.2s;
-  }
-
-  .form-group input:focus,
-  .form-group select:focus,
-  .form-group textarea:focus {
-    outline: 2px solid var(--color-primary);
-    outline-offset: 1px;
-    border-color: var(--color-orange-400);
-    box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
-  }
-
-  .form-group input::placeholder,
-  .form-group textarea::placeholder {
-    color: var(--color-slate-500);
-    opacity: 0.8;
-  }
-
-  @media (max-width: 480px) {
-    .narrow-sm { padding: 0 1rem; }
-    form { padding: 1.25rem; }
-  }
-
-</style>
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PageHero from '../../../components/PageHero.astro';
+---
+
+<BaseLayout title="Register for Tango Toolkit" description="Sign up to access tango resources for dancers, DJs, and organizers. Stay updated on new materials and tools.">
+  <PageHero title="Register for Tango Toolkit" lead="Sign up so we can keep you in the loop on new resources and tools for the tango community." />
+
+  <section class="form-section">
+    <div class="container narrow-sm">
+      <form name="tango-registration" method="POST" data-netlify="true" netlify-honeypot="bot-field" action="/dj/register/success/">
+        <input type="hidden" name="form-name" value="tango-registration" />
+        <p class="hidden-field"><label>Don't fill this out: <input name="bot-field" /></label></p>
+
+        <div class="form-group">
+          <label for="name">Name <span class="required">*</span></label>
+          <input type="text" id="name" name="name" required placeholder="Your name" />
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email <span class="required">*</span></label>
+          <input type="email" id="email" name="email" required placeholder="your@email.com" />
+        </div>
+
+        <div class="form-group">
+          <label for="location">Country / State</label>
+          <input type="text" id="location" name="location" placeholder="e.g. Argentina, California, Germany" />
+        </div>
+
+        <div class="form-group">
+          <label for="focus">Primary Interest <span class="required">*</span></label>
+          <select id="focus" name="focus" required>
+            <option value="">Select one...</option>
+            <option value="dance">Dance</option>
+            <option value="dj">DJ</option>
+            <option value="organizer">Organizer</option>
+            <option value="everything">Everything</option>
+          </select>
+        </div>
+
+        <div id="experience-dance" class="form-group experience-field" style="display:none;">
+          <label for="dance-experience">Dance Experience</label>
+          <select id="dance-experience" name="dance-experience">
+            <option value="">Select one...</option>
+            <option value="brand-new">Brand new &mdash; just starting out</option>
+            <option value="beginner">Beginner &mdash; been dancing a few months</option>
+            <option value="intermediate">Intermediate &mdash; dance regularly</option>
+            <option value="advanced">Advanced &mdash; been dancing for years</option>
+          </select>
+        </div>
+
+        <div id="experience-dj" class="form-group experience-field" style="display:none;">
+          <label for="dj-experience">DJ Experience</label>
+          <select id="dj-experience" name="dj-experience">
+            <option value="">Select one...</option>
+            <option value="brand-new">Brand new &mdash; haven't DJ'd yet</option>
+            <option value="beginner">Beginner &mdash; DJ'd a few times</option>
+            <option value="intermediate">Intermediate &mdash; DJ regularly</option>
+            <option value="experienced">Experienced &mdash; looking for new resources</option>
+          </select>
+        </div>
+
+        <div id="experience-organizer" class="form-group experience-field" style="display:none;">
+          <label for="organizer-experience">Organizer Experience</label>
+          <select id="organizer-experience" name="organizer-experience">
+            <option value="">Select one...</option>
+            <option value="brand-new">Brand new &mdash; haven't organized yet</option>
+            <option value="beginner">Beginner &mdash; organized a few events</option>
+            <option value="intermediate">Intermediate &mdash; organize regularly</option>
+            <option value="experienced">Experienced &mdash; looking for new resources</option>
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label for="message">Anything else you'd like to share?</label>
+          <textarea id="message" name="message" rows="3" placeholder="Questions, what you're looking for, how you heard about us..."></textarea>
+        </div>
+
+        <button type="submit" class="btn btn-primary btn-lg" id="register-btn">Register</button>
+      </form>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  const focusSelect = document.getElementById('focus') as HTMLSelectElement;
+  const danceExp = document.getElementById('experience-dance')!;
+  const djExp = document.getElementById('experience-dj')!;
+  const orgExp = document.getElementById('experience-organizer')!;
+
+  function updateExperienceFields() {
+    const val = focusSelect.value;
+    danceExp.style.display = (val === 'dance' || val === 'everything') ? '' : 'none';
+    djExp.style.display = (val === 'dj' || val === 'everything') ? '' : 'none';
+    orgExp.style.display = (val === 'organizer' || val === 'everything') ? '' : 'none';
+  }
+
+  focusSelect.addEventListener('change', updateExperienceFields);
+  updateExperienceFields();
+
+  const registerForm = document.querySelector('form[name="tango-registration"]') as HTMLFormElement;
+  const registerBtn = document.getElementById('register-btn') as HTMLButtonElement;
+
+  registerForm?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    registerBtn.disabled = true;
+    registerBtn.textContent = 'Registering\u2026';
+
+    const email = (document.getElementById('email') as HTMLInputElement).value;
+    const name = (document.getElementById('name') as HTMLInputElement).value;
+    const focus = (document.getElementById('focus') as HTMLSelectElement).value;
+
+    // Fire the welcome-email endpoint best-effort. Failures must not block
+    // the Netlify Forms submission — the registration itself is the source
+    // of truth. Cap the wait at 5s so a slow Resend doesn't leave the user
+    // staring at a disabled button.
+    try {
+      await Promise.race([
+        fetch('/api/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, name, focus }),
+        }),
+        new Promise((resolve) => setTimeout(resolve, 5000)),
+      ]);
+    } catch {
+      // swallow — see comment above
+    }
+
+    // Programmatic submit bypasses this handler (no recursion) and lets
+    // Netlify Forms intercept normally, redirecting to the form's action.
+    registerForm.submit();
+  });
+</script>
+
+<style>
+  .form-section { padding: 3rem 0; }
+
+  .hidden-field { display: none; }
+
+  form {
+    background: white;
+    border: 1px solid var(--color-slate-200);
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+  }
+
+  .form-group { margin-bottom: 1.25rem; }
+
+  .form-group label {
+    display: block;
+    margin-bottom: 0.35rem;
+    font-weight: 500;
+    font-size: 0.95rem;
+    color: var(--color-slate-700);
+  }
+
+  .required { color: var(--color-orange-500); }
+
+  .form-group input,
+  .form-group select,
+  .form-group textarea {
+    width: 100%;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid var(--color-slate-300);
+    border-radius: var(--radius-md);
+    font-size: 0.95rem;
+    font-family: inherit;
+    background: var(--color-slate-50);
+    transition: border-color 0.2s;
+  }
+
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 1px;
+    border-color: var(--color-orange-400);
+    box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
+  }
+
+  .form-group input::placeholder,
+  .form-group textarea::placeholder {
+    color: var(--color-slate-500);
+    opacity: 0.8;
+  }
+
+  @media (max-width: 480px) {
+    .narrow-sm { padding: 0 1rem; }
+    form { padding: 1.25rem; }
+  }
+
+</style>
