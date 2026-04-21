@@ -101,8 +101,11 @@ import PageHero from '../../../components/PageHero.astro';
   const registerForm = document.querySelector('form[name="tango-registration"]') as HTMLFormElement;
   const registerBtn = document.getElementById('register-btn') as HTMLButtonElement;
 
+  let submitting = false;
   registerForm?.addEventListener('submit', async (e) => {
     e.preventDefault();
+    if (submitting) return;
+    submitting = true;
     registerBtn.disabled = true;
     registerBtn.textContent = 'Registering\u2026';
 
@@ -123,12 +126,13 @@ import PageHero from '../../../components/PageHero.astro';
         }),
         new Promise((resolve) => setTimeout(resolve, 5000)),
       ]);
-    } catch {
-      // swallow — see comment above
+    } catch (err) {
+      console.warn('[register] /api/register fetch failed (continuing):', err);
     }
 
-    // Programmatic submit bypasses this handler (no recursion) and lets
-    // Netlify Forms intercept normally, redirecting to the form's action.
+    // Programmatic submit bypasses this handler (no recursion). Netlify Forms
+    // intercepts the resulting POST at the CDN edge (build-time injection mode
+    // for static Astro output), so the native submission path still works.
     registerForm.submit();
   });
 </script>
