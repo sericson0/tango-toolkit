@@ -28,7 +28,9 @@
   
   /* Red palette - errors/critical */
   --color-red-50: #fef2f2;
+  --color-red-200: #fecaca;
   --color-red-500: #ef4444;
+  --color-red-600: #dc2626;
   --color-red-700: #b91c1c;
 
   /* Blue palette - info/config */
@@ -262,6 +264,57 @@ img {
 .btn:focus-visible {
   outline: 2px solid var(--color-primary);
   outline-offset: 2px;
+}
+
+/* ===== License Key Display ===== */
+.license-key-box {
+  text-align: left;
+  background: var(--color-slate-800);
+  border-radius: var(--radius-lg);
+  padding: 1.25rem 1.5rem;
+}
+
+.license-key-box label {
+  display: block;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--color-slate-400);
+  margin-bottom: 0.5rem;
+  font-weight: 400;
+}
+
+.license-key-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.license-key-row code,
+.license-key-value {
+  flex: 1;
+  font-size: 1rem;
+  color: var(--color-orange-400);
+  word-break: break-all;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+}
+
+.copy-btn {
+  flex-shrink: 0;
+  padding: 0.4rem 0.9rem;
+  background: var(--color-orange-500);
+  color: white;
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  font-family: inherit;
+  transition: background 0.2s;
+}
+
+.copy-btn:hover {
+  background: var(--color-orange-600);
 }
 
 /* ===== Callouts ===== */

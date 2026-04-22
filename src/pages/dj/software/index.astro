@@ -132,10 +132,10 @@ const productSchemas = products.map((p) => {
         </div>
       </div>
 
-      <p class="tool-desc-full">Nothing kills the magic of the milonga like technical issues. Whether you are just starting out as a tango DJ, or are traveling to DJ the biggest festivals, you deserve software that enables your creativity instead of hindering the flow you are striving so hard to create. TigerTango is a customized Virtual DJ skin specifically designed for the needs of tango DJs.</p>
+      <p class="tool-desc-full">Nothing kills the magic of the milonga like technical issues. Whether you are just starting out as a tango DJ, or are traveling to DJ the biggest festivals, you deserve software that enables your creativity instead of hindering the flow you are striving so hard to create. TigerTango is a customized VirtualDJ skin specifically designed for the needs of tango DJs.</p>
 
       <div class="features-grid">
-        <div class="feature-item">Power and reliability of Virtual DJ</div>
+        <div class="feature-item">Power and reliability of VirtualDJ</div>
         <div class="feature-item">Clean interface configured for tango DJing</div>
         <div class="feature-item">Added safety features so you can focus on the dancers</div>
         <div class="feature-item">Built-in semiparametric equalizer</div>
@@ -158,15 +158,15 @@ const productSchemas = products.map((p) => {
         </blockquote>
       </div>
 
-      <!-- Download Virtual DJ -->
+      <!-- Download VirtualDJ -->
       <p>
-      Tiger Tango is built on Virtual DJ, so you want to download that first.
-      You can get it from their website  <a href="https://virtualdj.com/">here</a>.
+      TigerTango is built on VirtualDJ, so you want to download that first.
+      You can get it from their website <a href="https://virtualdj.com/">here</a>.
     
       </p>
-      <h3 class="section-label">Download Virtual DJ 2025</h3>
+      <h3 class="section-label">Download VirtualDJ 2025</h3>
       <div class="callout callout-warning">
-        <strong>Use the 2025 version of Virtual DJ.</strong>
+        <strong>Use the 2025 version of VirtualDJ.</strong>
         <p>The 2026 release added an audio watermark to the free version. For those who would like to try out the full free version,
         we have added a link to the 2025 version below. (Follow steps to disable automatic updates). </p>
       </div>
@@ -176,21 +176,21 @@ const productSchemas = products.map((p) => {
           <span class="dl-icon" set:html={WIN_SVG}></span>
           <div>
             <strong>Download for Windows</strong>
-            <span>Virtual DJ 2025 (.msi, 464 MB)</span>
+            <span>VirtualDJ 2025 (.msi, 464 MB)</span>
           </div>
         </a>
         <a href="https://drive.google.com/uc?export=download&id=1zHCTXZbJLP-IyKM0wCetCgjwc3lOzm97" target="_blank" rel="noopener" class="download-btn-large">
           <span class="dl-icon" set:html={APPLE_SVG}></span>
           <div>
             <strong>Download for Mac</strong>
-            <span>Virtual DJ 2025 (.pkg, 910 MB)</span>
+            <span>VirtualDJ 2025 (.pkg, 910 MB)</span>
           </div>
         </a>
       </div>
 
       <!-- Download TigerTango -->
       <h3 class="section-label">Download TigerTango</h3>
-      <p class="install-note">You can install TigerTango directly in Virtual DJ: <strong>Settings &rarr; Extensions &rarr; Search "TigerTango"</strong>.
+      <p class="install-note">You can install TigerTango directly in VirtualDJ: <strong>Settings &rarr; Extensions &rarr; Search "TigerTango"</strong>.
         You can also download the latest version with the link below.</p>
       <p class="install-link">
         &#128214; <a href="https://github.com/sericson0/TigerTango/blob/main/docs/sections/Installation.md" target="_blank" rel="noopener noreferrer">Installation and User guide</a>
@@ -242,9 +242,14 @@ const productSchemas = products.map((p) => {
         <div class="feature-item">VST3 and AU plugins</div>
         <div class="feature-item">Real-time de-hissing with spectral gating</div>
         <div class="feature-item">Adaptive noise tracking that learns the noise floor</div>
-        <div class="feature-item">Protects music save sound quality</div>
+        <div class="feature-item">Protects music and preserves sound quality</div>
         <div class="feature-item">Analyzer + spectrogram visualizations</div>
-        <div class="feature-item">Advanced features for precice adjustment</div>
+        <div class="feature-item">Advanced features for precise adjustment</div>
+      </div>
+
+      <div class="callout callout-warning">
+        <strong>IMPORTANT!</strong>
+        <p>Do not toggle the plugin off mid-song. This will cause a small jump in the music. Use the <b>BYPASS</b> button in the plugin to smoothly toggle it on and off.</p>
       </div>
 
       <!-- Download -->
@@ -396,13 +401,13 @@ const productSchemas = products.map((p) => {
         </div>
       </div>
 
-      <p class="tool-desc-full">Virtual DJ plugin that helps you quickly find the perfect matches to build out a tanda. You can also try our
+      <p class="tool-desc-full">VirtualDJ plugin that helps you quickly find the perfect matches to build out a tanda. You can also try our
         <a href="/dj/tanda-builder/">online tool</a> that utilizes the same logic and data to help find songs that work well in a tanda.
       </p>
 
       <div class="features-grid">
-        <div class="feature-item">Integrates into Virtual DJ</div>
-        <div class="feature-item">Shows which songs work well with selected song.</div>
+        <div class="feature-item">Integrates into VirtualDJ</div>
+        <div class="feature-item">Shows which songs work well with the selected song</div>
         <div class="feature-item">Filter by artist, singer, genre, grouping, year range and more</div>
         <div class="feature-item">Helps you find the right song in your library to quickly build killer tandas</div>
         <div class="feature-item">FREE!!!</div>
@@ -1194,7 +1199,7 @@ const productSchemas = products.map((p) => {
   }
   .tt-modal-skip:hover { color: var(--color-slate-700); }
   .tt-modal-error {
-    color: #dc2626;
+    color: var(--color-red-600);
     font-size: 0.9rem;
     margin: 0.5rem 0 0;
   }
