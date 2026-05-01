@@ -140,6 +140,44 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
     }
     function norm(s) { return stripAccents((s || '').toLowerCase()); }
 
+    // --- Last/First name helpers (matches tango-discographies dropdown) ---
+    var LAST_NAME_PARTICLES = ['de', 'di', 'del', 'la', 'las', 'los'];
+
+    function getLastName(name) {
+      var parts = (name || '').trim().split(/\s+/);
+      if (parts.length <= 1) return name || '';
+      for (var i = 1; i < parts.length; i++) {
+        if (LAST_NAME_PARTICLES.indexOf(parts[i].toLowerCase()) >= 0) {
+          return parts.slice(i).join(' ');
+        }
+      }
+      return parts[parts.length - 1];
+    }
+
+    function toLastFirst(name) {
+      var parts = (name || '').trim().split(/\s+/);
+      if (parts.length <= 1) return name || '';
+      var lastName = getLastName(name);
+      var lastParts = lastName.split(/\s+/).length;
+      var first = parts.slice(0, parts.length - lastParts).join(' ');
+      return lastName + (first ? ', ' + first : '');
+    }
+
+    // Format a singer entry, splitting "X y Y" duos into "Last, First y Last, First"
+    function formatNameEntry(entry) {
+      if (!entry) return '';
+      if (/\s+y\s+/i.test(entry)) {
+        return entry.split(/\s+y\s+/i).map(toLastFirst).join(' y ');
+      }
+      return toLastFirst(entry);
+    }
+
+    // Sort key: last name of first " y "-separated part, accent-stripped
+    function getSortLastName(entry) {
+      var first = (entry || '').split(/\s+y\s+/i)[0];
+      return stripAccents(getLastName(first)).toLowerCase();
+    }
+
     // --- Year extraction ---
     function extractYear(dateStr) {
       if (!dateStr) return 0;
@@ -221,7 +259,7 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 
       // Artist: always from full data
       var artists = uniqueSorted(allData, 'Bandleader');
-      fillSelect(artistSelect, artists, selArtist, 'All Artists');
+      fillNameSelect(artistSelect, artists, selArtist, 'All Artists');
 
       // Filter by artist for singer/genre options
       if (selArtist) {
@@ -229,7 +267,7 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
       }
 
       var singers = uniqueSorted(subset, 'Singer');
-      fillSelect(singerSelect, singers, selSinger, 'All Singers');
+      fillNameSelect(singerSelect, singers, selSinger, 'All Singers');
 
       // Filter by singer for genre options
       var subsetForGenre = subset;
@@ -245,6 +283,32 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
       for (var i = 0; i < values.length; i++) {
         var s = values[i] === current ? ' selected' : '';
         html += '<option value="' + esc(values[i]) + '"' + s + '>' + esc(values[i]) + '</option>';
+      }
+      sel.innerHTML = html;
+    }
+
+    // Last-name-sorted dropdown with letter section separators (artists, singers)
+    function fillNameSelect(sel, values, current, allLabel) {
+      var sorted = values.slice().sort(function(a, b) {
+        var la = getSortLastName(a);
+        var lb = getSortLastName(b);
+        if (la < lb) return -1;
+        if (la > lb) return 1;
+        return a.localeCompare(b);
+      });
+
+      var html = '<option value="">' + allLabel + '</option>';
+      var currentLetter = '';
+      for (var i = 0; i < sorted.length; i++) {
+        var name = sorted[i];
+        var key = getSortLastName(name);
+        var letter = key ? key.charAt(0).toUpperCase() : '';
+        if (letter && letter !== currentLetter) {
+          currentLetter = letter;
+          html += '<option disabled>─── ' + letter + ' ───</option>';
+        }
+        var s = name === current ? ' selected' : '';
+        html += '<option value="' + esc(name) + '"' + s + '>' + esc(formatNameEntry(name)) + '</option>';
       }
       sel.innerHTML = html;
     }
@@ -397,7 +461,7 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
         if (fOrchestra.checked && norm(r.Orchestra) !== norm(ref.Orchestra)) return false;
         if (fLabel.checked && norm(r.Label) !== norm(ref.Label)) return false;
 
-        if (fYear.checked && range > 0 && refYear > 0) {
+        if (fYear.checked && range >= 0 && refYear > 0) {
           var ry = extractYear(r.Date);
           if (ry === 0 || Math.abs(ry - refYear) > range) return false;
         }
