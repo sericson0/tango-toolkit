@@ -268,21 +268,21 @@ const productSchemas = products.map((p) => {
             </div>
           </button>
         )}
-        <a href="https://github.com/sericson0/hisstory-releases/releases/latest/download/Hisstory-Windows-Installer.exe" class="download-btn-large">
+        <a href="https://github.com/sericson0/hisstory-releases/releases/latest/download/Hisstory-Windows-Installer.exe" class="download-btn-large email-capture-dl" data-product-id="hisstory">
           <span class="dl-icon" set:html={WIN_SVG}></span>
           <div>
             <strong>Download for Windows</strong>
             <span>Hisstory installer (.exe)</span>
           </div>
         </a>
-        <a href="https://github.com/sericson0/hisstory-releases/releases/latest/download/Hisstory.vst3" class="download-btn-large">
+        <a href="https://github.com/sericson0/hisstory-releases/releases/latest/download/Hisstory.vst3" class="download-btn-large email-capture-dl" data-product-id="hisstory">
           <span class="dl-icon" set:html={WIN_SVG}></span>
           <div>
             <strong>Windows VST3 Plugin Only</strong>
             <span>Hisstory.vst3 &mdash; manual install</span>
           </div>
         </a>
-        <a href="https://github.com/sericson0/hisstory-releases/releases/latest/download/Hisstory-macOS.dmg" class="download-btn-large">
+        <a href="https://github.com/sericson0/hisstory-releases/releases/latest/download/Hisstory-macOS.dmg" class="download-btn-large email-capture-dl" data-product-id="hisstory">
           <span class="dl-icon" set:html={APPLE_SVG}></span>
           <div>
             <strong>Download for macOS</strong>
@@ -355,21 +355,21 @@ const productSchemas = products.map((p) => {
             <span>One-time purchase, lifetime access</span>
           </div>
         </button>
-        <a href="https://github.com/sericson0/tigertag-releases/releases/latest/download/TigerTagSetup.exe" class="download-btn-large">
+        <a href="https://github.com/sericson0/tigertag-releases/releases/latest/download/TigerTagSetup.exe" class="download-btn-large email-capture-dl" data-product-id="tigertag">
           <span class="dl-icon" set:html={WIN_SVG}></span>
           <div>
             <strong>Download for Windows</strong>
             <span>TigerTag installer (.exe)</span>
           </div>
         </a>
-        <a href="https://github.com/sericson0/tigertag-releases/releases/latest/download/TigerTag-Windows-x64.zip" class="download-btn-large">
+        <a href="https://github.com/sericson0/tigertag-releases/releases/latest/download/TigerTag-Windows-x64.zip" class="download-btn-large email-capture-dl" data-product-id="tigertag">
           <span class="dl-icon" set:html={WIN_SVG}></span>
           <div>
             <strong>Windows Portable</strong>
             <span>TigerTag (.zip)</span>
           </div>
         </a>
-        <a href="https://github.com/sericson0/tigertag-releases/releases/latest/download/TigerTag-macOS.dmg" class="download-btn-large">
+        <a href="https://github.com/sericson0/tigertag-releases/releases/latest/download/TigerTag-macOS.dmg" class="download-btn-large email-capture-dl" data-product-id="tigertag">
           <span class="dl-icon" set:html={APPLE_SVG}></span>
           <div>
             <strong>Download for macOS</strong>
@@ -421,21 +421,21 @@ const productSchemas = products.map((p) => {
         <a href="/documentation/TigerTanda Quickstart Guide.pdf" target="_blank" rel="noopener noreferrer">User Guide (PDF)</a>
       </p>
       <div class="download-buttons">
-        <a href="https://github.com/sericson0/tigertanda-vdj/releases/latest/download/TigerTanda-Windows-Installer.exe" class="download-btn-large tigertanda-dl">
+        <a href="https://github.com/sericson0/tigertanda-vdj/releases/latest/download/TigerTanda-Windows-Installer.exe" class="download-btn-large email-capture-dl" data-product-id="tigertanda">
           <span class="dl-icon" set:html={WIN_SVG}></span>
           <div>
             <strong>Download for Windows</strong>
             <span>TigerTanda installer (.exe)</span>
           </div>
         </a>
-        <a href="https://github.com/sericson0/tigertanda-vdj/releases/latest/download/TigerTanda-Windows.zip" class="download-btn-large tigertanda-dl">
+        <a href="https://github.com/sericson0/tigertanda-vdj/releases/latest/download/TigerTanda-Windows.zip" class="download-btn-large email-capture-dl" data-product-id="tigertanda">
           <span class="dl-icon" set:html={WIN_SVG}></span>
           <div>
             <strong>Windows Portable</strong>
             <span>TigerTanda (.zip)</span>
           </div>
         </a>
-        <a href="https://github.com/sericson0/tigertanda-vdj/releases/latest/download/TigerTanda-macOS.zip" class="download-btn-large tigertanda-dl">
+        <a href="https://github.com/sericson0/tigertanda-vdj/releases/latest/download/TigerTanda-macOS.zip" class="download-btn-large email-capture-dl" data-product-id="tigertanda">
           <span class="dl-icon" set:html={APPLE_SVG}></span>
           <div>
             <strong>Download for macOS</strong>
@@ -598,7 +598,7 @@ const productSchemas = products.map((p) => {
     });
   });
 
-  // TigerTanda email-capture popup
+  // Email-capture popup for trial downloads (TigerTanda, Hisstory, TigerTag)
   const ttModal = document.getElementById('tigertanda-modal');
   if (ttModal) {
     const form = ttModal.querySelector('#tt-modal-form') as HTMLFormElement;
@@ -606,7 +606,15 @@ const productSchemas = products.map((p) => {
     const errorEl = ttModal.querySelector('.tt-modal-error') as HTMLElement;
     const submitBtn = ttModal.querySelector('.tt-modal-primary') as HTMLButtonElement;
     let pendingUrl: string | null = null;
+    let pendingProductId: string | null = null;
     let lastFocusedTrigger: HTMLElement | null = null;
+
+    const safeStorageGet = (key: string): string | null => {
+      try { return localStorage.getItem(key); } catch { return null; }
+    };
+    const safeStorageSet = (key: string, value: string): void => {
+      try { localStorage.setItem(key, value); } catch { /* private mode, ignore */ }
+    };
 
     const FOCUSABLE_SELECTOR =
       'a[href], button:not([disabled]), input:not([disabled]), [tabindex]:not([tabindex="-1"])';
@@ -615,12 +623,13 @@ const productSchemas = products.map((p) => {
       Array.from(ttModal.querySelectorAll<HTMLElement>(FOCUSABLE_SELECTOR))
         .filter((el) => !el.hasAttribute('hidden') && el.offsetParent !== null);
 
-    const openModal = (url: string, trigger: HTMLElement | null) => {
+    const openModal = (url: string, productId: string, trigger: HTMLElement | null) => {
       pendingUrl = url;
+      pendingProductId = productId;
       lastFocusedTrigger = trigger;
       errorEl.hidden = true;
       errorEl.textContent = '';
-      emailInput.value = '';
+      emailInput.value = safeStorageGet('tt-email-last') || '';
       submitBtn.disabled = false;
       submitBtn.textContent = 'Subscribe & Download';
       ttModal.hidden = false;
@@ -631,6 +640,7 @@ const productSchemas = products.map((p) => {
     const closeModal = () => {
       ttModal.hidden = true;
       pendingUrl = null;
+      pendingProductId = null;
       document.body.style.overflow = '';
       // Restore focus to whatever opened the modal so keyboard users don't
       // get dumped at the top of the page.
@@ -644,10 +654,15 @@ const productSchemas = products.map((p) => {
       if (url) window.location.href = url;
     };
 
-    document.querySelectorAll<HTMLAnchorElement>('.tigertanda-dl').forEach((a) => {
+    document.querySelectorAll<HTMLAnchorElement>('.email-capture-dl').forEach((a) => {
       a.addEventListener('click', (e) => {
+        const productId = a.dataset.productId;
+        if (!productId) return;
+        // Once the user has engaged for this product (submit or skip), don't
+        // pester them again in this browser.
+        if (safeStorageGet('tt-email-captured-' + productId) === '1') return;
         e.preventDefault();
-        openModal(a.href, a);
+        openModal(a.href, productId, a);
       });
     });
 
@@ -656,6 +671,7 @@ const productSchemas = products.map((p) => {
     });
 
     ttModal.querySelector('[data-skip]')?.addEventListener('click', () => {
+      if (pendingProductId) safeStorageSet('tt-email-captured-' + pendingProductId, '1');
       const url = pendingUrl;
       closeModal();
       startDownload(url);
@@ -691,7 +707,7 @@ const productSchemas = products.map((p) => {
     form.addEventListener('submit', async (e) => {
       e.preventDefault();
       const email = emailInput.value.trim();
-      if (!email) return;
+      if (!email || !pendingProductId) return;
 
       submitBtn.disabled = true;
       submitBtn.textContent = 'Subscribing\u2026';
@@ -701,8 +717,10 @@ const productSchemas = products.map((p) => {
         await fetch('/api/capture-email', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email, productId: 'tigertanda' }),
+          body: JSON.stringify({ email, productId: pendingProductId }),
         });
+        safeStorageSet('tt-email-captured-' + pendingProductId, '1');
+        safeStorageSet('tt-email-last', email);
         const url = pendingUrl;
         closeModal();
         startDownload(url);

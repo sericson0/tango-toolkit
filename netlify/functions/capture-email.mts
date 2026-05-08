@@ -18,6 +18,10 @@ interface ProductInfo {
   name: string;
   guideUrl?: string;
   guideLabel?: string;
+  trial?: {
+    durationLabel: string;
+    purchaseHash: string;
+  };
 }
 
 const PRODUCTS: Record<string, ProductInfo> = {
@@ -32,6 +36,28 @@ const PRODUCTS: Record<string, ProductInfo> = {
     id: "tigertango",
     downloadUrl: "https://github.com/sericson0/TigerTango/releases",
     name: "TigerTango",
+  },
+  hisstory: {
+    id: "hisstory",
+    downloadUrl: "https://github.com/sericson0/hisstory-releases/releases/latest",
+    name: "Hisstory",
+    guideUrl: "https://tangotoolkit.com/documentation/Hisstory%20User%20Guide.pdf",
+    guideLabel: "Hisstory User Guide (PDF)",
+    trial: {
+      durationLabel: "for 2 days",
+      purchaseHash: "#hisstory",
+    },
+  },
+  tigertag: {
+    id: "tigertag",
+    downloadUrl: "https://github.com/sericson0/tigertag-releases/releases/latest",
+    name: "TigerTag",
+    guideUrl: "https://tangotoolkit.com/documentation/TigerTag%20User%20Guide.pdf",
+    guideLabel: "TigerTag User Guide (PDF)",
+    trial: {
+      durationLabel: "during your free trial",
+      purchaseHash: "#tigertag",
+    },
   },
 };
 
@@ -52,6 +78,15 @@ async function sendWelcomeEmail(
           </div>`
     : "";
 
+  const trialSection = product.trial
+    ? `
+          <div style="background: #fff7ed; border: 1px solid #fed7aa; border-radius: 8px; padding: 1.25rem; margin: 1.5rem 0;">
+            <h3 style="margin-top: 0; color: #9a3412;">Your free trial</h3>
+            <p style="color: #475569; line-height: 1.7; margin: 0 0 1rem;">You have full access to ${product.name} ${product.trial.durationLabel} &mdash; no credit card needed. When you&rsquo;re ready to keep using it, grab a lifetime license:</p>
+            <a href="https://tangotoolkit.com/dj/software/${product.trial.purchaseHash}" style="display: inline-block; background: #f97316; color: white; padding: 0.65rem 1.5rem; border-radius: 6px; text-decoration: none; font-weight: 600;">Purchase License</a>
+          </div>`
+    : "";
+
   const response = await resendFetch("/emails", apiKey, {
     from: fromEmail,
     to: [email],
@@ -65,6 +100,7 @@ async function sendWelcomeEmail(
           <h1 style="color: #f97316; margin-bottom: 0.5rem;">Thanks for downloading ${product.name}!</h1>
           <p style="color: #475569; line-height: 1.7;">You're now signed up for updates on ${product.name} and other Tango Toolkit tools.</p>
           ${guideSection}
+          ${trialSection}
           <div style="background: #f8fafc; border-radius: 8px; padding: 1.25rem; margin: 1.5rem 0;">
             <h3 style="margin-top: 0; color: #334155;">More from the Tango Toolkit</h3>
             <ul style="color: #475569; line-height: 1.8; padding-left: 1.25rem;">
