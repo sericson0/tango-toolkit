@@ -1,0 +1,3 @@
+# Discographies page moved from /dj/resources/ to /discographies/
+/dj/resources         /discographies/         301
+/dj/resources/*       /discographies/:splat   301

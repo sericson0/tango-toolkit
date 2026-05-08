@@ -70,7 +70,7 @@ async function sendWelcomeEmail(
           <ul style="color: #475569; line-height: 1.8; padding-left: 1.25rem;">
             <li><a href="https://tangotoolkit.com/dj/starter-kit/" style="color: #f97316;">DJ Starter Kit</a> &mdash; everything you need to start tango DJing</li>
             <li><a href="https://tangotoolkit.com/dj/software/" style="color: #f97316;">DJ Tools</a> &mdash; software built for tango DJs</li>
-            <li><a href="https://tangotoolkit.com/dj/resources/" style="color: #f97316;">Discographies</a> &mdash; nearly 15,000 tangos from 40+ artists</li>
+            <li><a href="https://tangotoolkit.com/discographies/" style="color: #f97316;">Discographies</a> &mdash; nearly 15,000 tangos from 40+ artists</li>
             <li><a href="https://tangotoolkit.com/dj/tanda-builder/" style="color: #f97316;">Tanda Builder</a> &mdash; find the perfect tracks for your tandas</li>
           </ul>
         </div>

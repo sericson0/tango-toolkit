@@ -66,7 +66,7 @@ const absoluteOgImage = new URL(ogImage, Astro.site).href;
           <a href="/" class={Astro.url.pathname === '/' ? 'active' : ''}>Home</a>
           <a href="/dj/starter-kit/" class={Astro.url.pathname.startsWith('/dj/starter-kit') ? 'active' : ''}>DJ Starter Kit</a>
           <a href="/dj/software/" class={Astro.url.pathname.startsWith('/dj/software') ? 'active' : ''}>DJ Tools</a>
-          <a href="/dj/resources/" class={Astro.url.pathname.startsWith('/dj/resources') ? 'active' : ''}>Discographies</a>
+          <a href="/discographies/" class={Astro.url.pathname.startsWith('/discographies') ? 'active' : ''}>Discographies</a>
           <a href="/dj/tanda-builder/" class={Astro.url.pathname.startsWith('/dj/tanda-builder') ? 'active' : ''}>Tanda Builder</a>
           <a href="/dj/articles/" class={Astro.url.pathname.startsWith('/dj/articles') || Astro.url.pathname.startsWith('/dj/history') ? 'active' : ''}>Resources</a>
         </nav>
@@ -94,7 +94,7 @@ const absoluteOgImage = new URL(ogImage, Astro.site).href;
             <strong>Resources</strong>
             <a href="/dj/starter-kit/">DJ Starter Kit</a>
             <a href="/dj/software/">DJ Tools</a>
-            <a href="/dj/resources/">Discographies</a>
+            <a href="/discographies/">Discographies</a>
             <a href="/dj/articles/">Resources</a>
           </div>
           <div>
