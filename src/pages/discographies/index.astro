@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageHero from '../../components/PageHero.astro';
+import SupportModal from '../../components/SupportModal.astro';
 ---
 
 <BaseLayout title="Discographies — Tango DJ" description="Argentine tango discographies for 40+ bandleaders with more than 15,000 songs. Browse, filter, and download discography data.">
@@ -9,6 +10,7 @@ import PageHero from '../../components/PageHero.astro';
   <!-- ===== Description, References, Article — above the embed ===== -->
   <section class="intro-section">
     <div class="container">
+      <SupportModal />
       <aside class="contribute-callout">
         <p><strong>Help improve these discographies.</strong> The discographies are open-source. Contribute, suggest corrections, add missing recordings, or open a pull request on <a href="https://github.com/sericson0/tango-discographies" target="_blank" rel="noopener noreferrer">GitHub</a>.</p>
       </aside>

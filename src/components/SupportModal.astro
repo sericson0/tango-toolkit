@@ -1,0 +1,251 @@
+---
+// "Help Support the Tango Toolkit" button + donation modal.
+// Used on multiple pages — keep markup, JS, and styles co-located here.
+---
+
+<div class="support-bar">
+  <button class="support-btn" type="button" data-support-open>Help Support the Tango Toolkit</button>
+</div>
+
+<div class="support-modal-overlay" data-support-modal>
+  <div class="support-modal">
+    <button class="support-modal-close" type="button" aria-label="Close" data-support-close>&times;</button>
+    <h2>Help Support the Tango Toolkit</h2>
+    <p class="support-modal-intro">Whether you'd like to contribute suggestions, resources, articles, software, or funds &mdash; every bit helps keep this project going.</p>
+
+    <div class="support-modal-options">
+      <div class="support-modal-option">
+        <div class="support-modal-option-icon">&#9993;</div>
+        <h3>Contribute</h3>
+        <p>Share ideas, resources, articles, or software suggestions.</p>
+        <a href="mailto:tangotoolkit@gmail.com" class="btn btn-primary">Email Us</a>
+      </div>
+
+      <div class="support-modal-option">
+        <div class="support-modal-option-icon">&#9829;</div>
+        <h3>Donate</h3>
+        <p>Help fund development and keep the tools free.</p>
+        <div class="support-donate-buttons">
+          <a href="https://buy.stripe.com/5kQ8wOfGU7bsdZ9gplgnK01" target="_blank" rel="noopener" class="support-donate-link support-donate-stripe">
+            <span>Card / Apple Pay</span>
+          </a>
+          <a href="https://venmo.com/Sean-Ericson-1" target="_blank" rel="noopener" class="support-donate-link support-donate-venmo">
+            <span>Venmo</span>
+          </a>
+          <div class="support-donate-link support-donate-zelle">
+            <span>Zelle</span>
+            <span class="support-zelle-number">925-528-9221</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script is:inline>
+  (function() {
+    var modal = document.querySelector('[data-support-modal]');
+    if (!modal) return;
+
+    var open = function() { modal.classList.add('support-modal-open'); };
+    var close = function() { modal.classList.remove('support-modal-open'); };
+
+    document.querySelectorAll('[data-support-open]').forEach(function(btn) {
+      btn.addEventListener('click', open);
+    });
+    modal.querySelectorAll('[data-support-close]').forEach(function(btn) {
+      btn.addEventListener('click', close);
+    });
+    modal.addEventListener('click', function(e) {
+      if (e.target === modal) close();
+    });
+    document.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') close();
+    });
+  })();
+</script>
+
+<style>
+  .support-bar {
+    text-align: center;
+    margin: 1.5rem 0;
+  }
+
+  .support-btn {
+    background: var(--color-orange-500);
+    border: none;
+    border-radius: var(--radius-lg);
+    padding: 0.85rem 2.5rem;
+    font-size: 1.05rem;
+    font-weight: 600;
+    color: white;
+    cursor: pointer;
+    font-family: 'Outfit', system-ui, sans-serif;
+    transition: all 0.2s;
+    box-shadow: 0 2px 8px rgba(249, 115, 22, 0.3);
+  }
+
+  .support-btn:hover {
+    background: var(--color-orange-600);
+    color: white;
+    box-shadow: 0 4px 12px rgba(249, 115, 22, 0.4);
+    transform: translateY(-1px);
+  }
+
+  .support-modal-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+
+  .support-modal-overlay.support-modal-open {
+    display: flex;
+  }
+
+  .support-modal {
+    background: white;
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    max-width: 560px;
+    width: 100%;
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .support-modal h2 {
+    margin: 0 0 0.5rem;
+    font-size: 1.5rem;
+    padding-right: 2rem;
+  }
+
+  .support-modal-intro {
+    margin: 0 0 1.5rem;
+    color: var(--color-slate-600);
+    font-size: 0.95rem;
+    line-height: 1.5;
+  }
+
+  .support-modal-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--color-slate-400);
+    cursor: pointer;
+    line-height: 1;
+    padding: 0.25rem;
+  }
+
+  .support-modal-close:hover {
+    color: var(--color-slate-700);
+  }
+
+  .support-modal-options {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .support-modal-option {
+    border: 1px solid var(--color-slate-200);
+    border-radius: var(--radius-md);
+    padding: 1.25rem;
+  }
+
+  .support-modal-option-icon {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .support-modal-option h3 {
+    margin: 0 0 0.25rem;
+    font-size: 1.1rem;
+  }
+
+  .support-modal-option p {
+    margin: 0 0 1rem;
+    color: var(--color-slate-600);
+    font-size: 0.9rem;
+  }
+
+  .support-donate-buttons {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .support-donate-link {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.2rem;
+    padding: 0.6rem 1rem;
+    border: 1px solid var(--color-slate-200);
+    border-radius: var(--radius-md);
+    font-size: 0.85rem;
+    font-weight: 600;
+    text-decoration: none;
+    color: var(--color-slate-700);
+    cursor: pointer;
+    transition: all 0.15s;
+    flex: 1;
+    min-width: 100px;
+    text-align: center;
+  }
+
+  .support-donate-link:hover {
+    border-color: var(--color-primary);
+    background: var(--color-orange-50);
+  }
+
+  .support-donate-stripe {
+    border-color: #635bff;
+    color: #635bff;
+  }
+  .support-donate-stripe:hover {
+    background: #f5f4ff;
+    border-color: #635bff;
+  }
+
+  .support-donate-venmo {
+    border-color: #008cff;
+    color: #008cff;
+  }
+  .support-donate-venmo:hover {
+    background: #f0f8ff;
+    border-color: #008cff;
+  }
+
+  .support-donate-zelle {
+    border-color: #6c1cd3;
+    color: #6c1cd3;
+  }
+  .support-donate-zelle:hover {
+    background: #f6f0ff;
+    border-color: #6c1cd3;
+  }
+
+  .support-zelle-number {
+    font-weight: 400;
+    font-size: 0.75rem;
+    opacity: 0.8;
+  }
+
+  @media (max-width: 600px) {
+    .support-modal {
+      padding: 1.5rem;
+    }
+
+    .support-donate-buttons {
+      flex-direction: column;
+    }
+  }
+</style>
