@@ -1,0 +1,1390 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { eras } from '../../data/eras';
+---
+
+<BaseLayout title="Name That Tango" description="Listen to a tango clip and guess the bandleader, title, singer, or year. Ear-training for tango DJs and dancers.">
+  <div class="ntt-container" id="nttRoot" data-audio-base={import.meta.env.PUBLIC_AUDIO_BASE_URL || ''}>
+
+    <!-- Section 1: Setup -->
+    <div class="ntt-section ntt-setup-section" id="setupSection">
+      <div class="ntt-section-header">
+        <h2>Name That Tango</h2>
+        <span class="ntt-stats" id="loadStats"></span>
+      </div>
+
+      <div class="ntt-controls">
+        <div class="ntt-control" id="moduleSelectWrap">
+          <label for="moduleSelect">Game</label>
+          <select id="moduleSelect">
+            <option value="orchestra">Learn an Orchestra</option>
+            <option value="bigfour">The Big Four</option>
+          </select>
+        </div>
+        <div class="ntt-control" id="orchestraPickerWrap">
+          <label for="orchestraSearch">Orchestra</label>
+          <div class="ntt-combo">
+            <input type="text" id="orchestraSearch" class="ntt-combo-input" autocomplete="off" placeholder="Choose an orchestra...">
+            <div class="ntt-combo-list" id="orchestraComboList" hidden></div>
+            <select id="orchestraSelect" class="ntt-combo-native"><option value="">Choose an orchestra...</option></select>
+          </div>
+        </div>
+        <div class="ntt-control" id="eraPickerWrap" style="display:none;">
+          <label for="eraSearch">Era</label>
+          <div class="ntt-combo">
+            <input type="text" id="eraSearch" class="ntt-combo-input" autocomplete="off" placeholder="Choose an era...">
+            <div class="ntt-combo-list" id="eraComboList" hidden></div>
+            <select id="eraSelect" class="ntt-combo-native"><option value="">Choose an era...</option></select>
+          </div>
+        </div>
+        <div class="ntt-control ntt-bigfour-ranges-wrap" id="bigFourRangeWrap" style="display:none;">
+          <label>Date Range</label>
+          <div class="ntt-range-checks">
+            <label class="ntt-range-check"><input type="checkbox" class="ntt-range-checkbox" data-range="pre" checked> Pre Golden Age (&lt; 1935)</label>
+            <label class="ntt-range-check"><input type="checkbox" class="ntt-range-checkbox" data-range="early" checked> Early Golden Age (1935&ndash;1949)</label>
+            <label class="ntt-range-check"><input type="checkbox" class="ntt-range-checkbox" data-range="later" checked> Later Golden Age (1950&ndash;1959)</label>
+            <label class="ntt-range-check"><input type="checkbox" class="ntt-range-checkbox" data-range="post" checked> Post 50s (&ge; 1960)</label>
+          </div>
+        </div>
+        <div class="ntt-control">
+          <label for="levelSelect">Difficulty</label>
+          <select id="levelSelect"></select>
+        </div>
+      </div>
+
+      <p class="ntt-pool-info" id="poolInfo">Pick an orchestra to begin.</p>
+
+      <button type="button" class="ntt-btn-primary" id="startBtn" disabled>Start Quiz</button>
+    </div>
+
+    <!-- Section 2: Quiz -->
+    <div class="ntt-section ntt-quiz-section" id="quizSection" style="display:none;">
+      <div class="ntt-quiz-header">
+        <span class="ntt-round-counter" id="roundCounter"></span>
+        <span class="ntt-score" id="scoreDisplay"></span>
+        <button type="button" class="ntt-btn-text" id="endQuizBtn">End Quiz</button>
+      </div>
+
+      <div class="ntt-player">
+        <audio id="clipAudio" preload="none"></audio>
+        <button type="button" class="ntt-btn-play" id="playBtn">&#9654; Play Clip</button>
+        <span class="ntt-player-status" id="playerStatus"></span>
+        <button type="button" class="ntt-btn-primary ntt-action-btn" id="submitBtn">Submit Answer</button>
+        <button type="button" class="ntt-btn-primary ntt-action-btn" id="nextBtn" style="display:none;">Next Song &rarr;</button>
+      </div>
+
+      <div id="answerArea"></div>
+
+      <!-- Reveal: discographies-style song detail -->
+      <div class="ntt-reveal" id="revealPanel" style="display:none;">
+        <div class="ntt-reveal-banner" id="revealBanner"></div>
+        <div class="ntt-detail-meta" id="detailMeta"></div>
+        <button type="button" class="ntt-btn-more" id="moreDetailsBtn">More details &#9662;</button>
+        <div class="ntt-detail-grid" id="detailGrid" style="display:none;"></div>
+      </div>
+    </div>
+
+    <!-- Section 3: Summary -->
+    <div class="ntt-section ntt-summary-section" id="summarySection" style="display:none;">
+      <div class="ntt-section-header">
+        <h2>Session Summary</h2>
+      </div>
+      <p class="ntt-summary-score" id="summaryScore"></p>
+      <div class="ntt-table-wrap">
+        <table class="ntt-table" id="summaryTable">
+          <thead>
+            <tr id="summaryHead"><th></th><th>Song</th><th>Result</th></tr>
+          </thead>
+          <tbody id="summaryBody"></tbody>
+        </table>
+      </div>
+      <div class="ntt-summary-actions">
+        <button type="button" class="ntt-btn-primary" id="playAgainBtn">Play Again</button>
+        <button type="button" class="ntt-btn-secondary" id="changeSettingsBtn">Change Settings</button>
+      </div>
+    </div>
+
+  </div>
+
+  <script define:vars={{ erasConfig: eras }}>
+    window.__NTT_ERAS__ = erasConfig;
+  </script>
+
+  <!-- Papa Parse CDN (same as Tanda Builder) -->
+  <script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+
+  <script is:inline>
+  (function () {
+    'use strict';
+
+    // --- Config ---
+    var ROUNDS_PER_SESSION = 8;
+    var MC_OPTION_COUNT = 4;
+    var CLIP_DURATION_S = 30;
+    var ORCHESTRA_MIN_SONGS = 4;
+    var ERA_MIN_BANDLEADERS = 2;
+    var ERA_MIN_SONGS = 4;
+
+    var BIG_FOUR_BANDLEADERS = ["Juan D'Arienzo", 'Carlos Di Sarli', 'Osvaldo Pugliese', 'Aníbal Troilo'];
+    var BIG_FOUR_RANGES = [
+      { id: 'pre', test: function (y) { return y < 1935; } },
+      { id: 'early', test: function (y) { return y >= 1935 && y <= 1949; } },
+      { id: 'later', test: function (y) { return y >= 1950 && y <= 1959; } },
+      { id: 'post', test: function (y) { return y >= 1960; } }
+    ];
+
+    var MODULES = {
+      orchestra: {
+        levels: [
+          { label: '1. Title (multiple choice)', fields: [{ key: 'Title', mode: 'mc' }] },
+          { label: '2. Title (type-in)', fields: [{ key: 'Title', mode: 'type' }] },
+          { label: '3. Title (type-in) + Year (multiple choice)', fields: [{ key: 'Title', mode: 'type' }, { key: 'Date', mode: 'mc', as: 'year' }] },
+          { label: '4. Title (type-in) + Year (type-in)', fields: [{ key: 'Title', mode: 'type' }, { key: 'Date', mode: 'type', as: 'year' }] },
+          { label: '5. Title + Year + Singer (type-in)', fields: [{ key: 'Title', mode: 'type' }, { key: 'Date', mode: 'type', as: 'year' }, { key: 'Singer', mode: 'type' }] }
+        ]
+      },
+      era: {
+        levels: [
+          { label: '1. Bandleader (multiple choice)', fields: [{ key: 'Bandleader', mode: 'mc' }] },
+          { label: '2. Bandleader + Title (multiple choice)', fields: [{ key: 'Bandleader', mode: 'mc' }, { key: 'Title', mode: 'mc' }] },
+          { label: '3. Bandleader + Title (type-in)', fields: [{ key: 'Bandleader', mode: 'type' }, { key: 'Title', mode: 'type' }] },
+          { label: '4. Bandleader + Title + Year (type-in)', fields: [{ key: 'Bandleader', mode: 'type' }, { key: 'Title', mode: 'type' }, { key: 'Date', mode: 'type', as: 'year' }] },
+          { label: '5. + Singer (type-in)', fields: [{ key: 'Bandleader', mode: 'type' }, { key: 'Title', mode: 'type' }, { key: 'Date', mode: 'type', as: 'year' }, { key: 'Singer', mode: 'type' }] }
+        ]
+      },
+      bigfour: {
+        levels: [
+          { label: 'Intro', fields: [{ key: 'Bandleader', mode: 'mc', fixedOptions: BIG_FOUR_BANDLEADERS }] },
+          { label: 'Medium', fields: [{ key: 'Bandleader', mode: 'mc', fixedOptions: BIG_FOUR_BANDLEADERS }, { key: 'auto', mode: 'mc', conditional: 'singer-or-year' }] },
+          { label: 'Advanced', fields: [{ key: 'Bandleader', mode: 'mc', fixedOptions: BIG_FOUR_BANDLEADERS }, { key: 'Title', mode: 'mc' }, { key: 'auto', mode: 'mc', conditional: 'singer-or-year' }] },
+          { label: 'Challenge', fields: [{ key: 'Bandleader', mode: 'mc', fixedOptions: BIG_FOUR_BANDLEADERS }, { key: 'Title', mode: 'type' }, { key: 'Date', mode: 'type', as: 'year' }, { key: 'Singer', mode: 'type', conditional: 'has-singer' }] }
+        ]
+      }
+    };
+
+    var FIELD_LABELS = { Title: 'Title', Bandleader: 'Bandleader', Date: 'Year', Singer: 'Singer' };
+    var FIELD_ORDER = ['Bandleader', 'Title', 'Date', 'Singer'];
+
+    // --- Accent stripping / normalization (matches tanda-builder's approach) ---
+    var accentMap = {
+      'à':'a','á':'a','â':'a','ã':'a','ä':'a','å':'a',
+      'è':'e','é':'e','ê':'e','ë':'e',
+      'ì':'i','í':'i','î':'i','ï':'i',
+      'ò':'o','ó':'o','ô':'o','õ':'o','ö':'o',
+      'ù':'u','ú':'u','û':'u','ü':'u',
+      'ñ':'n','ç':'c','ý':'y','ÿ':'y'
+    };
+    function stripAccents(s) {
+      if (!s) return '';
+      return s.replace(/[à-ÿ]/g, function (c) { return accentMap[c] || c; });
+    }
+    function norm(s) { return stripAccents((s || '').toLowerCase()).trim(); }
+    function esc(s) { return (s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
+
+    function extractYear(dateStr) {
+      if (!dateStr) return 0;
+      var m = dateStr.match(/(\d{4})/);
+      return m ? parseInt(m[1], 10) : 0;
+    }
+
+    function parseDate(dateStr) {
+      if (!dateStr) return 0;
+      var parts = dateStr.split('/');
+      if (parts.length === 3) {
+        return new Date(parseInt(parts[2], 10), parseInt(parts[0], 10) - 1, parseInt(parts[1], 10)).getTime();
+      }
+      parts = dateStr.split('-');
+      if (parts.length === 3) {
+        return new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10)).getTime();
+      }
+      return 0;
+    }
+
+    function joinKey(bandleader, title, date) {
+      return norm(bandleader) + '|' + norm(title) + '|' + parseDate(date);
+    }
+
+    var BIG_FOUR_SET = {};
+    BIG_FOUR_BANDLEADERS.forEach(function (b) { BIG_FOUR_SET[norm(b)] = true; });
+
+    // Portrait thumbnails shown next to bandleader multiple-choice options.
+    // Matched on a normalized surname so it works regardless of how the full
+    // name is spelled in the data ("Juan D'Arienzo", "Aníbal Troilo", etc.).
+    var BANDLEADER_THUMBS = [
+      { match: 'arienzo', src: '/images/bandleaders/darienzo.webp' },
+      { match: 'di sarli', src: '/images/bandleaders/disarli.webp' },
+      { match: 'pugliese', src: '/images/bandleaders/pugliese.webp' },
+      { match: 'troilo', src: '/images/bandleaders/troilo.webp' }
+    ];
+    function bandleaderThumb(name) {
+      var n = norm(name);
+      for (var i = 0; i < BANDLEADER_THUMBS.length; i++) {
+        if (n.indexOf(BANDLEADER_THUMBS[i].match) !== -1) {
+          return '<img class="ntt-mc-thumb" src="' + BANDLEADER_THUMBS[i].src + '" alt="" loading="lazy" width="200" height="200">';
+        }
+      }
+      return '';
+    }
+
+    function hasSinger(row) {
+      var s = norm(row.Singer);
+      return !!s && s !== 'instrumental';
+    }
+
+    // Expands a level's field list against a specific row, resolving any
+    // conditional fields (e.g. Big Four's "singer if vocal, else year").
+    function resolveFields(fields, row) {
+      var resolved = [];
+      for (var i = 0; i < fields.length; i++) {
+        var f = fields[i];
+        if (f.conditional === 'singer-or-year') {
+          resolved.push(hasSinger(row) ? { key: 'Singer', mode: 'mc' } : { key: 'Date', mode: 'mc', as: 'year' });
+        } else if (f.conditional === 'has-singer') {
+          if (hasSinger(row)) resolved.push({ key: f.key, mode: f.mode });
+        } else {
+          resolved.push(f);
+        }
+      }
+      return resolved;
+    }
+
+    // --- Last-name helpers for the orchestra dropdown (matches tanda-builder) ---
+    var LAST_NAME_PARTICLES = ['de', 'di', 'del', 'la', 'las', 'los'];
+    function getLastName(name) {
+      var parts = (name || '').trim().split(/\s+/);
+      if (parts.length <= 1) return name || '';
+      for (var i = 1; i < parts.length; i++) {
+        if (LAST_NAME_PARTICLES.indexOf(parts[i].toLowerCase()) >= 0) return parts.slice(i).join(' ');
+      }
+      return parts[parts.length - 1];
+    }
+    function getSortLastName(entry) { return stripAccents(getLastName(entry)).toLowerCase(); }
+
+    function uniqueSorted(rows, field) {
+      var seen = {}, result = [];
+      for (var i = 0; i < rows.length; i++) {
+        var v = (rows[i][field] || '').trim();
+        if (v && !seen[v]) { seen[v] = true; result.push(v); }
+      }
+      result.sort(function (a, b) { return a.localeCompare(b); });
+      return result;
+    }
+
+    function shuffle(arr) {
+      var a = arr.slice();
+      for (var i = a.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var t = a[i]; a[i] = a[j]; a[j] = t;
+      }
+      return a;
+    }
+
+    function sampleN(arr, n) { return shuffle(arr).slice(0, n); }
+
+    // --- DOM refs ---
+    var root = document.getElementById('nttRoot');
+    var AUDIO_BASE = root.getAttribute('data-audio-base') || '';
+    var ERAS = window.__NTT_ERAS__ || [];
+
+    var loadStats = document.getElementById('loadStats');
+    var moduleSelect = document.getElementById('moduleSelect');
+    var orchestraPickerWrap = document.getElementById('orchestraPickerWrap');
+    var eraPickerWrap = document.getElementById('eraPickerWrap');
+    var bigFourRangeWrap = document.getElementById('bigFourRangeWrap');
+    var rangeCheckboxes = Array.prototype.slice.call(document.querySelectorAll('.ntt-range-checkbox'));
+    var orchestraSelect = document.getElementById('orchestraSelect');
+    var eraSelect = document.getElementById('eraSelect');
+    var orchestraSearch = document.getElementById('orchestraSearch');
+    var orchestraComboList = document.getElementById('orchestraComboList');
+    var eraSearch = document.getElementById('eraSearch');
+    var eraComboList = document.getElementById('eraComboList');
+    var levelSelect = document.getElementById('levelSelect');
+    var poolInfo = document.getElementById('poolInfo');
+    var startBtn = document.getElementById('startBtn');
+
+    var setupSection = document.getElementById('setupSection');
+    var quizSection = document.getElementById('quizSection');
+    var summarySection = document.getElementById('summarySection');
+
+    var roundCounter = document.getElementById('roundCounter');
+    var scoreDisplay = document.getElementById('scoreDisplay');
+    var endQuizBtn = document.getElementById('endQuizBtn');
+    var clipAudio = document.getElementById('clipAudio');
+    var playBtn = document.getElementById('playBtn');
+    var playerStatus = document.getElementById('playerStatus');
+    var answerArea = document.getElementById('answerArea');
+    var submitBtn = document.getElementById('submitBtn');
+
+    var revealPanel = document.getElementById('revealPanel');
+    var revealBanner = document.getElementById('revealBanner');
+    var detailMeta = document.getElementById('detailMeta');
+    var moreDetailsBtn = document.getElementById('moreDetailsBtn');
+    var detailGrid = document.getElementById('detailGrid');
+    var nextBtn = document.getElementById('nextBtn');
+
+    var summaryHead = document.getElementById('summaryHead');
+    var summaryScore = document.getElementById('summaryScore');
+    var summaryBody = document.getElementById('summaryBody');
+    var playAgainBtn = document.getElementById('playAgainBtn');
+    var changeSettingsBtn = document.getElementById('changeSettingsBtn');
+
+    // --- State ---
+    var allMetadata = [];
+    var playableRows = [];
+    var currentModuleId = 'orchestra';
+    var currentPool = [];
+    var sessionRounds = [];
+    var sessionResults = [];
+    var roundIndex = 0;
+    var countdownInterval = null;
+    var playerState = 'idle'; // idle | playing | paused | ended
+    var currentFields = null;
+    var currentMcChoices = {};
+    var clipStartOffset = 0;
+    var summaryPlayingIdx = -1;
+
+    // --- Data loading: metadata.csv + audio-map.csv joined client-side ---
+    function loadData() {
+      loadStats.textContent = 'Loading discography...';
+      Papa.parse('/data/metadata.csv', {
+        download: true, header: true, skipEmptyLines: true,
+        complete: function (metaResults) {
+          allMetadata = metaResults.data;
+          for (var i = 0; i < allMetadata.length; i++) allMetadata[i]._idx = i;
+
+          Papa.parse('/data/audio-map.csv', {
+            download: true, header: true, skipEmptyLines: true,
+            complete: function (mapResults) {
+              onDataLoaded(mapResults.data);
+            },
+            error: function () {
+              loadStats.textContent = 'Could not load audio map.';
+            }
+          });
+        },
+        error: function () {
+          loadStats.textContent = 'Could not load discography data.';
+        }
+      });
+    }
+
+    function onDataLoaded(audioMapRows) {
+      var audioByKey = {};
+      for (var i = 0; i < audioMapRows.length; i++) {
+        var r = audioMapRows[i];
+        if (!r.AudioKey) continue;
+        audioByKey[joinKey(r.Bandleader, r.Title, r.Date)] = r.AudioKey;
+      }
+
+      playableRows = [];
+      for (var j = 0; j < allMetadata.length; j++) {
+        var row = allMetadata[j];
+        var key = joinKey(row.Bandleader, row.Title, row.Date);
+        var audioKey = audioByKey[key];
+        if (audioKey) {
+          row._audioKey = audioKey;
+          row._audioUrl = AUDIO_BASE.replace(/\/$/, '') + '/' + audioKey.split('/').map(encodeURIComponent).join('/');
+          playableRows.push(row);
+        }
+      }
+
+      loadStats.textContent = '';
+      populateOrchestraSelect();
+      populateEraSelect();
+      syncModuleUI();
+      setupCombo(orchestraSelect, orchestraSearch, orchestraComboList);
+      setupCombo(eraSelect, eraSearch, eraComboList);
+    }
+
+    // --- Accent-folding search widgets ---
+    // Wraps a native <select> with a text input so typing strips accents
+    // (e.g. "Anibal" matches "Aníbal Troilo"). The <select> stays the source
+    // of truth so existing .value reads and 'change' listeners keep working.
+    function setupCombo(selectEl, inputEl, listEl) {
+      function options() {
+        return Array.prototype.slice.call(selectEl.options).filter(function (o) { return o.value !== ''; });
+      }
+      function syncFromSelect() {
+        var opt = selectEl.options[selectEl.selectedIndex];
+        inputEl.value = (opt && opt.value) ? opt.textContent : '';
+      }
+      function render() {
+        var q = norm(inputEl.value);
+        var matches = q ? options().filter(function (o) { return norm(o.textContent).indexOf(q) !== -1; }) : options();
+        if (!matches.length) { listEl.hidden = true; listEl.innerHTML = ''; return; }
+        listEl.innerHTML = matches.map(function (o) {
+          return '<div class="ntt-combo-option" data-value="' + esc(o.value) + '">' + esc(o.textContent) + '</div>';
+        }).join('');
+        listEl.hidden = false;
+      }
+      function selectValue(value) {
+        selectEl.value = value;
+        syncFromSelect();
+        listEl.hidden = true;
+        selectEl.dispatchEvent(new Event('change', { bubbles: true }));
+      }
+      inputEl.addEventListener('focus', render);
+      inputEl.addEventListener('input', render);
+      inputEl.addEventListener('blur', function () {
+        setTimeout(function () {
+          listEl.hidden = true;
+          var typed = norm(inputEl.value);
+          if (!typed) { selectValue(''); return; }
+          var exact = options().filter(function (o) { return norm(o.textContent) === typed; });
+          if (exact.length === 1 && exact[0].value !== selectEl.value) selectValue(exact[0].value);
+          else syncFromSelect();
+        }, 120);
+      });
+      listEl.addEventListener('mousedown', function (e) {
+        var opt = e.target.closest('.ntt-combo-option');
+        if (!opt) return;
+        e.preventDefault();
+        selectValue(opt.getAttribute('data-value'));
+      });
+      syncFromSelect();
+    }
+
+    // Accent-folding suggestion list for a free-type text input (quiz answer fields).
+    function setupTypeahead(inputEl, listEl, values) {
+      function render() {
+        var q = norm(inputEl.value);
+        var matches = q ? values.filter(function (v) { return norm(v).indexOf(q) !== -1; }).slice(0, 8) : [];
+        if (!matches.length) { listEl.hidden = true; listEl.innerHTML = ''; return; }
+        listEl.innerHTML = matches.map(function (v) {
+          return '<div class="ntt-combo-option" data-value="' + esc(v) + '">' + esc(v) + '</div>';
+        }).join('');
+        listEl.hidden = false;
+      }
+      inputEl.addEventListener('focus', render);
+      inputEl.addEventListener('input', render);
+      inputEl.addEventListener('blur', function () { setTimeout(function () { listEl.hidden = true; }, 120); });
+      listEl.addEventListener('mousedown', function (e) {
+        var opt = e.target.closest('.ntt-combo-option');
+        if (!opt) return;
+        e.preventDefault();
+        inputEl.value = opt.getAttribute('data-value');
+        listEl.hidden = true;
+      });
+    }
+
+    // --- Setup: game (module) selector ---
+    // Drives the visible picker from the dropdown's current value. Called on
+    // 'change' and once on load — browsers restore the <select> value across
+    // reloads/bfcache without firing 'change', so init must read it explicitly
+    // (otherwise picking "The Big Four", reloading, and seeing the orchestra
+    // picker / "Pick an orchestra to begin").
+    function syncModuleUI() {
+      currentModuleId = moduleSelect.value;
+      orchestraPickerWrap.style.display = currentModuleId === 'orchestra' ? '' : 'none';
+      eraPickerWrap.style.display = currentModuleId === 'era' ? '' : 'none';
+      bigFourRangeWrap.style.display = currentModuleId === 'bigfour' ? '' : 'none';
+      populateLevelSelect();
+      updatePoolInfo();
+    }
+    moduleSelect.addEventListener('change', syncModuleUI);
+
+    rangeCheckboxes.forEach(function (cb) { cb.addEventListener('change', updatePoolInfo); });
+
+    // --- Setup: orchestra picker ---
+    function populateOrchestraSelect() {
+      var counts = {};
+      for (var i = 0; i < playableRows.length; i++) {
+        var b = playableRows[i].Bandleader;
+        counts[b] = (counts[b] || 0) + 1;
+      }
+      var names = Object.keys(counts).filter(function (b) { return counts[b] >= ORCHESTRA_MIN_SONGS; });
+      names.sort(function (a, b) {
+        var la = getSortLastName(a), lb = getSortLastName(b);
+        if (la < lb) return -1;
+        if (la > lb) return 1;
+        return a.localeCompare(b);
+      });
+
+      var html = '<option value="">Choose an orchestra...</option>';
+      for (var j = 0; j < names.length; j++) {
+        html += '<option value="' + esc(names[j]) + '">' + esc(names[j]) + ' (' + counts[names[j]] + ')</option>';
+      }
+      orchestraSelect.innerHTML = html;
+    }
+    orchestraSelect.addEventListener('change', updatePoolInfo);
+
+    // --- Setup: era picker ---
+    function populateEraSelect() {
+      var html = '<option value="">Choose an era...</option>';
+      for (var i = 0; i < ERAS.length; i++) {
+        var era = ERAS[i];
+        var pool = poolForEra(era);
+        var distinctBandleaders = uniqueSorted(pool, 'Bandleader').length;
+        if (pool.length >= ERA_MIN_SONGS && distinctBandleaders >= ERA_MIN_BANDLEADERS) {
+          html += '<option value="' + esc(era.id) + '">' + esc(era.label) + ' (' + pool.length + ')</option>';
+        }
+      }
+      eraSelect.innerHTML = html;
+    }
+    eraSelect.addEventListener('change', updatePoolInfo);
+
+    function poolForEra(era) {
+      var set = {};
+      era.bandleaders.forEach(function (b) { set[norm(b)] = true; });
+      return playableRows.filter(function (r) { return set[norm(r.Bandleader)]; });
+    }
+
+    // --- Setup: level picker ---
+    function populateLevelSelect() {
+      var levels = MODULES[currentModuleId].levels;
+      var html = '';
+      for (var i = 0; i < levels.length; i++) {
+        html += '<option value="' + i + '">' + esc(levels[i].label) + '</option>';
+      }
+      levelSelect.innerHTML = html;
+    }
+    levelSelect.addEventListener('change', updatePoolInfo);
+
+    function getSelectedBigFourRanges() {
+      return BIG_FOUR_RANGES.filter(function (rg) {
+        var cb = rangeCheckboxes.filter(function (c) { return c.getAttribute('data-range') === rg.id; })[0];
+        return cb && cb.checked;
+      });
+    }
+
+    function getSelectedPool() {
+      if (currentModuleId === 'orchestra') {
+        var b = orchestraSelect.value;
+        if (!b) return [];
+        return playableRows.filter(function (r) { return r.Bandleader === b; });
+      }
+      if (currentModuleId === 'bigfour') {
+        var activeRanges = getSelectedBigFourRanges();
+        if (!activeRanges.length) return [];
+        return playableRows.filter(function (r) {
+          if (!BIG_FOUR_SET[norm(r.Bandleader)]) return false;
+          var year = extractYear(r.Date);
+          return activeRanges.some(function (rg) { return rg.test(year); });
+        });
+      }
+      var eraId = eraSelect.value;
+      if (!eraId) return [];
+      var era = ERAS.filter(function (e) { return e.id === eraId; })[0];
+      return era ? poolForEra(era) : [];
+    }
+
+    function updatePoolInfo() {
+      var pool = getSelectedPool();
+      currentPool = pool;
+      if (pool.length === 0) {
+        poolInfo.textContent = currentModuleId === 'orchestra' ? 'Pick an orchestra to begin.' :
+          currentModuleId === 'bigfour' ? 'Select at least one date range.' : 'Pick an era to begin.';
+        startBtn.disabled = true;
+        return;
+      }
+      var rounds = Math.min(ROUNDS_PER_SESSION, pool.length);
+      poolInfo.textContent = pool.length + ' songs available — session will play ' + rounds + ' of them.';
+      startBtn.disabled = false;
+    }
+
+    // --- Start session ---
+    startBtn.addEventListener('click', function () {
+      var pool = getSelectedPool();
+      if (pool.length === 0) return;
+      var n = Math.min(ROUNDS_PER_SESSION, pool.length);
+      sessionRounds = sampleN(pool, n);
+      sessionResults = [];
+      roundIndex = 0;
+      setupSection.style.display = 'none';
+      summarySection.style.display = 'none';
+      quizSection.style.display = '';
+      renderRound();
+    });
+
+    // --- Quiz: play / pause clip with a countdown of time remaining ---
+    function clipLimit() {
+      var songDuration = isFinite(clipAudio.duration) && clipAudio.duration > 0 ? clipAudio.duration : null;
+      var available = songDuration ? Math.max(0, songDuration - clipStartOffset) : CLIP_DURATION_S;
+      return Math.min(CLIP_DURATION_S, available);
+    }
+
+    function elapsedInClip() {
+      return Math.max(0, clipAudio.currentTime - clipStartOffset);
+    }
+
+    function updatePlayBtn() {
+      if (playerState === 'playing') playBtn.textContent = '⏸ Pause';
+      else if (playerState === 'paused') playBtn.textContent = '▶ Resume';
+      else playBtn.textContent = '▶ Play Clip';
+    }
+
+    function tickCountdown() {
+      var remaining = Math.max(0, clipLimit() - elapsedInClip());
+      playerStatus.textContent = Math.ceil(remaining) + 's remaining';
+      if (remaining <= 0) stopClip('Clip ended — tap Play to listen again.');
+    }
+
+    function stopClip(statusText) {
+      clipAudio.pause();
+      clearInterval(countdownInterval);
+      playerState = 'ended';
+      updatePlayBtn();
+      playerStatus.textContent = statusText;
+    }
+
+    function startClip() {
+      var asksSinger = currentFields && currentFields.some(function (f) { return f.key === 'Singer'; });
+      clipStartOffset = asksSinger ? (55 + Math.random() * 10) : Math.random() * 60;
+      clipAudio.currentTime = clipStartOffset;
+      playClip();
+    }
+
+    function playClip() {
+      playerState = 'playing';
+      updatePlayBtn();
+      clearInterval(countdownInterval);
+      var playPromise = clipAudio.play();
+      if (playPromise && playPromise.catch) {
+        playPromise.catch(function () { playerStatus.textContent = 'Could not play audio.'; });
+      }
+      countdownInterval = setInterval(tickCountdown, 200);
+      tickCountdown();
+    }
+
+    function pauseClip() {
+      clipAudio.pause();
+      clearInterval(countdownInterval);
+      playerState = 'paused';
+      updatePlayBtn();
+      playerStatus.textContent = 'Paused — ' + Math.ceil(Math.max(0, clipLimit() - elapsedInClip())) + 's remaining';
+    }
+
+    playBtn.addEventListener('click', function () {
+      if (playerState === 'playing') pauseClip();
+      else if (playerState === 'paused') playClip();
+      else startClip();
+    });
+    clipAudio.addEventListener('ended', function () {
+      if (summaryPlayingIdx !== -1) { resetSummaryPlayback(); return; }
+      stopClip('Clip ended — tap Play to listen again.');
+    });
+
+    // --- Quiz: render a round ---
+    function renderRound() {
+      var row = sessionRounds[roundIndex];
+      var level = MODULES[currentModuleId].levels[parseInt(levelSelect.value, 10)];
+      currentFields = resolveFields(level.fields, row);
+      currentMcChoices = {};
+
+      clearInterval(countdownInterval);
+      clipAudio.pause();
+      clipAudio.src = row._audioUrl;
+      clipStartOffset = 0;
+      playerState = 'idle';
+      updatePlayBtn();
+      playerStatus.textContent = '';
+      nextBtn.style.display = 'none';
+
+      roundCounter.textContent = 'Song ' + (roundIndex + 1) + ' of ' + sessionRounds.length;
+      updateScoreDisplay();
+
+      var html = '';
+      for (var i = 0; i < currentFields.length; i++) {
+        var f = currentFields[i];
+        var label = FIELD_LABELS[f.key] || f.key;
+        html += '<div class="ntt-field" data-key="' + f.key + '">';
+        html += '<div class="ntt-field-label">' + esc(label) + '</div>';
+        if (f.mode === 'mc') {
+          var options = buildMcOptions(row, f);
+          currentMcChoices[f.key] = options;
+          var withThumbs = f.key === 'Bandleader' && options.some(function (op) { return bandleaderThumb(op.value); });
+          html += '<div class="ntt-mc-group' + (withThumbs ? ' ntt-mc-group-thumbs' : '') + '">';
+          for (var o = 0; o < options.length; o++) {
+            var thumb = withThumbs ? bandleaderThumb(options[o].value) : '';
+            html += '<label class="ntt-mc-option' + (thumb ? ' ntt-mc-option-thumb' : '') + '">' +
+              '<input type="radio" name="ntt-field-' + f.key + '" value="' + esc(options[o].display) + '">' +
+              thumb +
+              '<span>' + esc(options[o].display) + '</span></label>';
+          }
+          html += '</div>';
+        } else {
+          html += '<div class="ntt-combo">';
+          html += '<input type="text" class="ntt-text-input ntt-combo-input" data-key="' + f.key + '" autocomplete="off" placeholder="Type your answer...">';
+          html += '<div class="ntt-combo-list" data-list-for="' + f.key + '" hidden></div>';
+          html += '</div>';
+        }
+        html += '</div>';
+      }
+      answerArea.innerHTML = html;
+
+      for (var t = 0; t < currentFields.length; t++) {
+        var tf = currentFields[t];
+        if (tf.mode !== 'type') continue;
+        var typeInput = answerArea.querySelector('.ntt-text-input[data-key="' + tf.key + '"]');
+        var typeList = answerArea.querySelector('.ntt-combo-list[data-list-for="' + tf.key + '"]');
+        setupTypeahead(typeInput, typeList, uniqueSorted(currentPool, tf.key));
+      }
+
+      revealPanel.style.display = 'none';
+      answerArea.style.display = '';
+      submitBtn.style.display = '';
+      submitBtn.disabled = false;
+    }
+
+    function buildMcOptions(row, field) {
+      if (field.fixedOptions) {
+        var fixedOpts = field.fixedOptions.map(function (v) {
+          return { display: v, value: v, isCorrect: norm(v) === norm(row[field.key] || '') };
+        });
+        return shuffle(fixedOpts);
+      }
+
+      if (field.as === 'year') {
+        var correctYear = extractYear(row.Date);
+        var yearCandidates = [];
+        for (var dy = -10; dy <= 10; dy++) {
+          if (dy === 0) continue;
+          var cand = correctYear + dy;
+          if (cand > 0) yearCandidates.push(String(cand));
+        }
+        var chosenYears = sampleN(yearCandidates, MC_OPTION_COUNT - 1);
+        var yearOptions = [{ display: String(correctYear), value: String(correctYear), isCorrect: true }];
+        chosenYears.forEach(function (v) { yearOptions.push({ display: v, value: v, isCorrect: false }); });
+        return shuffle(yearOptions);
+      }
+
+      var correctValue = row[field.key] || '';
+      var decoyPool = uniqueSorted(currentPool, field.key);
+      if (field.key === 'Singer') {
+        decoyPool = decoyPool.filter(function (v) { return norm(v) !== 'instrumental'; });
+      }
+      var decoys = decoyPool.filter(function (v) { return norm(v) !== norm(correctValue); });
+      // de-dupe normalized decoys
+      var seen = {}, uniqueDecoys = [];
+      decoys.forEach(function (v) {
+        var n = norm(v);
+        if (!seen[n]) { seen[n] = true; uniqueDecoys.push(v); }
+      });
+      var chosenDecoys = sampleN(uniqueDecoys, MC_OPTION_COUNT - 1);
+      var options = [{ display: correctValue, value: correctValue, isCorrect: true }];
+      chosenDecoys.forEach(function (v) { options.push({ display: v, value: v, isCorrect: false }); });
+      return shuffle(options);
+    }
+
+    // --- Quiz: submit / grade ---
+    submitBtn.addEventListener('click', function () {
+      var row = sessionRounds[roundIndex];
+      var fieldResults = [];
+
+      for (var i = 0; i < currentFields.length; i++) {
+        var f = currentFields[i];
+        var result = gradeField(row, f);
+        fieldResults.push(result);
+      }
+
+      var allCorrect = fieldResults.every(function (r) { return r.correct; });
+      sessionResults.push({ row: row, fieldResults: fieldResults, allCorrect: allCorrect });
+
+      renderReveal(row, fieldResults, allCorrect);
+
+      answerArea.style.display = 'none';
+      submitBtn.style.display = 'none';
+      revealPanel.style.display = '';
+      nextBtn.style.display = '';
+      updateScoreDisplay();
+    });
+
+    function gradeField(row, f) {
+      var label = FIELD_LABELS[f.key] || f.key;
+      var correct, guessDisplay, correctDisplay;
+
+      if (f.as === 'year') {
+        correctDisplay = String(extractYear(row.Date));
+      } else {
+        correctDisplay = row[f.key] || '';
+      }
+
+      if (f.mode === 'mc') {
+        var checked = answerArea.querySelector('input[name="ntt-field-' + f.key + '"]:checked');
+        guessDisplay = checked ? checked.value : '';
+        correct = !!checked && norm(guessDisplay) === norm(correctDisplay);
+      } else {
+        var input = answerArea.querySelector('.ntt-text-input[data-key="' + f.key + '"]');
+        guessDisplay = input ? input.value.trim() : '';
+        if (f.as === 'year') {
+          correct = parseInt(guessDisplay, 10) === extractYear(row.Date);
+        } else {
+          var accepted = [norm(row[f.key])];
+          if (f.key === 'Title' && row.AltTitle) accepted.push(norm(row.AltTitle));
+          correct = accepted.indexOf(norm(guessDisplay)) !== -1 && guessDisplay !== '';
+        }
+      }
+
+      return { key: f.key, label: label, correct: correct, guessDisplay: guessDisplay, correctDisplay: correctDisplay };
+    }
+
+    function updateScoreDisplay() {
+      if (!sessionResults.length) { scoreDisplay.textContent = 'Score: —'; return; }
+      var perKey = {}, keyOrder = [];
+      sessionResults.forEach(function (r) {
+        r.fieldResults.forEach(function (f) {
+          if (!perKey[f.key]) { perKey[f.key] = { correct: 0, asked: 0 }; keyOrder.push(f.key); }
+          perKey[f.key].asked++;
+          if (f.correct) perKey[f.key].correct++;
+        });
+      });
+      keyOrder.sort(function (a, b) { return FIELD_ORDER.indexOf(a) - FIELD_ORDER.indexOf(b); });
+      var parts = keyOrder.map(function (k) {
+        var c = perKey[k];
+        return (FIELD_LABELS[k] || k) + ' ' + c.correct + '/' + c.asked;
+      });
+      scoreDisplay.textContent = 'Score: ' + parts.join(' · ');
+    }
+
+    // --- Reveal panel: discographies-style detail card ---
+    function findFieldResult(fieldResults, key) {
+      for (var i = 0; i < fieldResults.length; i++) if (fieldResults[i].key === key) return fieldResults[i];
+      return null;
+    }
+
+    function metaRow(label, value, asked, raw) {
+      var hasVal = raw ? !!value : !!(value && String(value).trim());
+      var displayVal = hasVal ? (raw ? value : esc(value)) : '<span class="ntt-empty">—</span>';
+      var badge = '';
+      if (asked) {
+        badge = asked.correct
+          ? ' <span class="ntt-badge ntt-badge-correct">✓</span>'
+          : ' <span class="ntt-badge ntt-badge-wrong">✗</span>';
+        if (!asked.correct) {
+          displayVal += '<div class="ntt-guess">Your guess: ' + (esc(asked.guessDisplay) || '<em>(blank)</em>') + '</div>';
+        }
+      }
+      return '<div class="ntt-detail-meta-label">' + esc(label) + '</div>' +
+        '<div class="ntt-detail-meta-value' + (hasVal ? '' : ' empty') + '">' + displayVal + badge + '</div>';
+    }
+
+    function detailField(label, value, span) {
+      var hasVal = value && String(value).trim();
+      var val = hasVal ? esc(value) : '<span class="ntt-empty">—</span>';
+      var cls = span ? ' ' + span : '';
+      return '<div class="ntt-detail-field' + cls + '">' +
+        '<div class="ntt-detail-field-label">' + esc(label) + '</div>' +
+        '<div class="ntt-detail-field-value' + (hasVal ? '' : ' empty') + '">' + val + '</div></div>';
+    }
+
+    function renderReveal(row, fieldResults, allCorrect) {
+      var correctCount = fieldResults.filter(function (f) { return f.correct; }).length;
+      revealBanner.className = 'ntt-reveal-banner ' + (allCorrect ? 'ntt-reveal-banner-correct' : 'ntt-reveal-banner-wrong');
+      revealBanner.textContent = allCorrect
+        ? '✓ All correct!'
+        : correctCount + ' of ' + fieldResults.length + ' correct';
+
+      var titleHtml = '<span class="ntt-meta-title">' + esc(row.Title || '') + '</span>' +
+        (row.AltTitle ? '<span class="ntt-meta-alt">' + esc(row.AltTitle) + '</span>' : '');
+
+      var html = '';
+      html += metaRow('Title', titleHtml, findFieldResult(fieldResults, 'Title'), true);
+      html += metaRow('Bandleader', row.Bandleader, findFieldResult(fieldResults, 'Bandleader'));
+      html += metaRow('Year', String(extractYear(row.Date) || ''), findFieldResult(fieldResults, 'Date'));
+      html += metaRow('Orchestra', row.Orchestra, null);
+      html += metaRow('Genre', row.Genre, null);
+      html += metaRow('Singer', row.Singer, findFieldResult(fieldResults, 'Singer'));
+      detailMeta.innerHTML = html;
+
+      var gridHtml = '';
+      gridHtml += detailField('Label', row.Label);
+      gridHtml += detailField('Master', row.Master);
+      gridHtml += detailField('Grouping', row.Grouping);
+      gridHtml += detailField('Composer', row.Composer);
+      gridHtml += detailField('Author', row.Author, 'ntt-span2');
+      gridHtml += detailField('Arranger', row.Arranger, 'ntt-span2');
+      gridHtml += '<div class="ntt-detail-section-header">Band Members</div>';
+      gridHtml += detailField('Lineup', row.Lineup, 'ntt-span3');
+      gridHtml += detailField('Pianist', row.Pianist);
+      gridHtml += detailField('Bassist', row.Bassist);
+      gridHtml += detailField('Bandoneons', row.Bandoneons, 'ntt-span3');
+      gridHtml += detailField('Strings', row.Strings, 'ntt-span3');
+      detailGrid.innerHTML = gridHtml;
+
+      detailGrid.style.display = 'none';
+      moreDetailsBtn.textContent = 'More details ▾';
+    }
+
+    moreDetailsBtn.addEventListener('click', function () {
+      var showing = detailGrid.style.display !== 'none';
+      detailGrid.style.display = showing ? 'none' : '';
+      moreDetailsBtn.textContent = showing ? 'More details ▾' : 'Less details ▴';
+    });
+
+    // --- Next / summary / end early ---
+    nextBtn.addEventListener('click', function () {
+      roundIndex++;
+      if (roundIndex >= sessionRounds.length) {
+        showSummary();
+      } else {
+        renderRound();
+      }
+    });
+
+    endQuizBtn.addEventListener('click', function () { showSummary(); });
+
+    function resetSummaryPlayback() {
+      clipAudio.pause();
+      if (summaryPlayingIdx !== -1) {
+        var btn = summaryBody.querySelector('.ntt-btn-summary-play[data-idx="' + summaryPlayingIdx + '"]');
+        if (btn) btn.textContent = '▶';
+      }
+      summaryPlayingIdx = -1;
+    }
+
+    summaryBody.addEventListener('click', function (e) {
+      var btn = e.target.closest('.ntt-btn-summary-play');
+      if (!btn) return;
+      var idx = parseInt(btn.getAttribute('data-idx'), 10);
+      var wasPlayingThis = summaryPlayingIdx === idx;
+      resetSummaryPlayback();
+      if (wasPlayingThis) return;
+      clipAudio.src = sessionResults[idx].row._audioUrl;
+      clipAudio.currentTime = 0;
+      clipAudio.play();
+      summaryPlayingIdx = idx;
+      btn.textContent = '⏸';
+    });
+
+    function showSummary() {
+      clearInterval(countdownInterval);
+      resetSummaryPlayback();
+      quizSection.style.display = 'none';
+      summarySection.style.display = '';
+
+      // Fields can vary round-to-round (Big Four's conditional singer/year),
+      // so the column set is the union of keys actually asked, not just round 1's.
+      var usedKeys = [];
+      sessionResults.forEach(function (r) {
+        r.fieldResults.forEach(function (f) {
+          if (usedKeys.indexOf(f.key) === -1) usedKeys.push(f.key);
+        });
+      });
+      usedKeys.sort(function (a, b) { return FIELD_ORDER.indexOf(a) - FIELD_ORDER.indexOf(b); });
+
+      var headHtml = '<th></th><th>Song</th>';
+      usedKeys.forEach(function (k) { headHtml += '<th>' + esc(FIELD_LABELS[k] || k) + '</th>'; });
+      headHtml += '<th>Result</th>';
+      summaryHead.innerHTML = headHtml;
+
+      var fieldsAsked = 0, fieldsCorrect = 0, songsCorrect = 0;
+      var bodyHtml = '';
+      sessionResults.forEach(function (r, idx) {
+        fieldsAsked += r.fieldResults.length;
+        fieldsCorrect += r.fieldResults.filter(function (f) { return f.correct; }).length;
+        if (r.allCorrect) songsCorrect++;
+        var resultText = r.allCorrect
+          ? '<span class="ntt-badge ntt-badge-correct">✓</span>'
+          : '<span class="ntt-badge ntt-badge-wrong">' + r.fieldResults.filter(function (f) { return f.correct; }).length + '/' + r.fieldResults.length + '</span>';
+
+        bodyHtml += '<tr>';
+        bodyHtml += '<td><button type="button" class="ntt-btn-summary-play" data-idx="' + idx + '">▶</button></td>';
+        bodyHtml += '<td>' + esc(r.row.Title) + '</td>';
+        usedKeys.forEach(function (k) {
+          var f = findFieldResult(r.fieldResults, k);
+          if (!f) { bodyHtml += '<td class="ntt-summary-na">—</td>'; return; }
+          bodyHtml += f.correct
+            ? '<td><span class="ntt-badge ntt-badge-correct">✓</span> ' + esc(f.correctDisplay) + '</td>'
+            : '<td><span class="ntt-badge ntt-badge-wrong">✗</span> ' + esc(f.guessDisplay || '(blank)') + ' <span class="ntt-summary-arrow">&rarr;</span> ' + esc(f.correctDisplay) + '</td>';
+        });
+        bodyHtml += '<td>' + resultText + '</td>';
+        bodyHtml += '</tr>';
+      });
+      summaryBody.innerHTML = bodyHtml;
+      summaryScore.textContent = songsCorrect + ' of ' + sessionResults.length + ' songs fully correct (' + fieldsCorrect + '/' + fieldsAsked + ' total fields correct).';
+    }
+
+    playAgainBtn.addEventListener('click', function () {
+      resetSummaryPlayback();
+      startBtn.click();
+    });
+    changeSettingsBtn.addEventListener('click', function () {
+      resetSummaryPlayback();
+      summarySection.style.display = 'none';
+      setupSection.style.display = '';
+    });
+
+    syncModuleUI();
+    loadData();
+  })();
+  </script>
+</BaseLayout>
+
+<style is:global>
+  .ntt-container {
+    max-width: 60rem;
+    margin: 0 auto;
+    padding: 1.5rem 1.5rem 3rem;
+  }
+
+  .ntt-section {
+    background: var(--color-bg-alt);
+    border: 1px solid var(--color-slate-200);
+    border-radius: var(--radius-md);
+    padding: 1.25rem 1.5rem;
+    margin-bottom: 1rem;
+  }
+
+  .ntt-section-header {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+  .ntt-section-header h2 {
+    font-size: 1.4rem;
+    margin: 0;
+  }
+  .ntt-stats {
+    font-size: 0.75rem;
+    color: var(--color-slate-400);
+    margin-left: auto;
+  }
+
+  /* Controls */
+  .ntt-controls {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+    margin-bottom: 0.75rem;
+  }
+  .ntt-control {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    flex: 1;
+    min-width: 180px;
+  }
+  .ntt-control label {
+    font-size: 0.65rem;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--color-slate-500);
+  }
+  .ntt-control select {
+    padding: 0.45rem 0.5rem;
+    border: 1px solid var(--color-slate-300);
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+    font-family: var(--font-sans);
+    background: var(--color-slate-50);
+    color: var(--color-slate-800);
+  }
+
+  /* Big Four date-range checkboxes */
+  .ntt-bigfour-ranges-wrap { flex: 1 1 100%; }
+  .ntt-range-checks {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem 1.2rem;
+  }
+  .ntt-range-check {
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+    font-size: 0.85rem;
+    color: var(--color-slate-700);
+    cursor: pointer;
+  }
+  .ntt-range-check input { accent-color: var(--color-primary); }
+
+  /* Accent-folding search combobox (orchestra/era picker, quiz type-in fields) */
+  .ntt-combo { position: relative; }
+  .ntt-combo-native { display: none; }
+  .ntt-combo-input {
+    width: 100%;
+    padding: 0.45rem 0.5rem;
+    border: 1px solid var(--color-slate-300);
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+    font-family: var(--font-sans);
+    background: var(--color-slate-50);
+    color: var(--color-slate-800);
+  }
+  .ntt-combo-input:focus { outline: 2px solid var(--color-primary); outline-offset: 1px; }
+  .ntt-combo-list {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    z-index: 20;
+    margin-top: 0.2rem;
+    max-height: 14rem;
+    overflow-y: auto;
+    background: white;
+    border: 1px solid var(--color-slate-300);
+    border-radius: var(--radius-sm);
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  .ntt-combo-option {
+    padding: 0.4rem 0.6rem;
+    font-size: 0.88rem;
+    color: var(--color-slate-700);
+    cursor: pointer;
+  }
+  .ntt-combo-option:hover { background: var(--color-orange-50); }
+
+  .ntt-pool-info {
+    font-size: 0.85rem;
+    color: var(--color-slate-500);
+    margin: 0 0 0.75rem;
+  }
+
+  .ntt-btn-primary, .ntt-btn-secondary {
+    padding: 0.6rem 1.4rem;
+    border: none;
+    border-radius: var(--radius-md);
+    font-weight: 500;
+    font-size: 0.95rem;
+    cursor: pointer;
+    font-family: var(--font-sans);
+  }
+  .ntt-btn-primary { background: var(--color-primary); color: white; }
+  .ntt-btn-primary:hover:not(:disabled) { background: var(--color-primary-hover); }
+  .ntt-btn-primary:disabled { background: var(--color-slate-300); cursor: not-allowed; }
+  .ntt-btn-secondary { background: var(--color-slate-100); color: var(--color-slate-700); }
+  .ntt-btn-secondary:hover { background: var(--color-slate-200); }
+
+  /* Quiz header */
+  .ntt-quiz-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: -1.25rem -1.5rem 1.25rem;
+    padding: 0.85rem 1.5rem;
+    border-bottom: 2px solid var(--color-orange-200);
+    background: var(--color-orange-50);
+    border-radius: var(--radius-md) var(--radius-md) 0 0;
+    font-size: 0.9rem;
+    color: var(--color-slate-600);
+    font-weight: 500;
+  }
+  .ntt-round-counter { font-weight: 700; color: var(--color-slate-800); }
+  .ntt-btn-text {
+    margin-left: auto;
+    background: none;
+    border: none;
+    padding: 0.2rem 0.4rem;
+    color: var(--color-slate-400);
+    font-size: 0.8rem;
+    font-family: var(--font-sans);
+    cursor: pointer;
+    text-decoration: underline;
+  }
+  .ntt-btn-text:hover { color: var(--color-red-600); }
+
+  /* Player */
+  .ntt-player {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--color-slate-100);
+  }
+  .ntt-btn-play {
+    padding: 0.6rem 1.2rem;
+    border: none;
+    border-radius: var(--radius-md);
+    background: var(--color-orange-500);
+    color: white;
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+    font-family: var(--font-sans);
+    min-width: 8.5rem;
+  }
+  .ntt-btn-play:hover { background: var(--color-orange-600); }
+  .ntt-player-status {
+    font-size: 0.8rem;
+    color: var(--color-slate-400);
+  }
+  /* Submit / Next share the right edge of the player row (only one shows at a time) */
+  .ntt-action-btn { margin-left: auto; }
+
+  /* Answer fields */
+  .ntt-field { margin-bottom: 1rem; }
+  .ntt-field-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--color-slate-500);
+    margin-bottom: 0.4rem;
+  }
+  .ntt-mc-group {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 0.5rem;
+  }
+  .ntt-mc-option {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.5rem 0.75rem;
+    border: 1px solid var(--color-slate-300);
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+    font-size: 0.9rem;
+    color: var(--color-slate-700);
+  }
+  .ntt-mc-option:hover { background: var(--color-orange-50); border-color: var(--color-orange-300); }
+  .ntt-mc-option input { accent-color: var(--color-primary); }
+  /* Bandleader options carry a portrait thumbnail */
+  .ntt-mc-option-thumb { padding: 0.4rem 0.6rem; }
+  .ntt-mc-thumb {
+    width: 2.6rem;
+    height: 2.6rem;
+    border-radius: var(--radius-sm);
+    object-fit: cover;
+    flex-shrink: 0;
+    background: var(--color-slate-100);
+  }
+  .ntt-text-input {
+    width: 100%;
+    padding: 0.5rem 0.6rem;
+    border: 1px solid var(--color-slate-300);
+    border-radius: var(--radius-sm);
+    font-size: 0.95rem;
+    font-family: var(--font-sans);
+    background: var(--color-slate-50);
+  }
+  .ntt-text-input:focus { outline: 2px solid var(--color-primary); outline-offset: 1px; }
+
+  /* Reveal banner */
+  .ntt-reveal-banner {
+    padding: 0.6rem 1rem;
+    border-radius: var(--radius-md);
+    font-weight: 600;
+    margin-bottom: 1rem;
+  }
+  .ntt-reveal-banner-correct { background: var(--color-green-50); color: var(--color-green-700); }
+  .ntt-reveal-banner-wrong { background: var(--color-orange-50); color: var(--color-orange-700); }
+
+  /* Detail meta (header block, mirrors tango-discographies' detail-meta) */
+  .ntt-detail-meta {
+    display: grid;
+    grid-template-columns: max-content 1fr;
+    gap: 0.5rem 1rem;
+    align-content: start;
+    font-size: 0.9rem;
+    line-height: 1.4;
+    margin-bottom: 0.75rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--color-slate-100);
+  }
+  .ntt-detail-meta-label {
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--color-orange-700);
+    align-self: center;
+    white-space: nowrap;
+  }
+  .ntt-detail-meta-value { color: var(--color-slate-800); word-wrap: break-word; }
+  .ntt-btn-more {
+    display: block;
+    margin: 0 0 0.85rem;
+    padding: 0.35rem 0;
+    background: none;
+    border: none;
+    color: var(--color-orange-700);
+    font-size: 0.8rem;
+    font-weight: 600;
+    font-family: var(--font-sans);
+    cursor: pointer;
+  }
+  .ntt-btn-more:hover { color: var(--color-primary-hover); }
+  .ntt-detail-meta-value.empty { color: var(--color-slate-400); }
+  .ntt-meta-title { font-family: var(--font-display); font-size: 1.15rem; }
+  .ntt-meta-alt { font-style: italic; color: var(--color-slate-500); margin-left: 6px; font-size: 0.85rem; }
+  .ntt-guess { font-size: 0.8rem; color: var(--color-red-600); margin-top: 0.15rem; }
+
+  /* Detail grid (secondary fields, mirrors tango-discographies' detail-grid) */
+  .ntt-detail-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 0.85rem 1.5rem;
+    font-size: 0.85rem;
+    margin-bottom: 1rem;
+  }
+  .ntt-detail-field-label {
+    font-size: 0.6rem;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--color-orange-700);
+    margin-bottom: 0.15rem;
+  }
+  .ntt-detail-field-value { color: var(--color-slate-800); }
+  .ntt-detail-field-value.empty, .ntt-empty { color: var(--color-slate-400); }
+  .ntt-span2 { grid-column: span 2; }
+  .ntt-span3 { grid-column: 1 / -1; }
+  .ntt-detail-section-header {
+    grid-column: 1 / -1;
+    font-size: 0.65rem;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    color: var(--color-orange-700);
+    font-weight: 700;
+    border-top: 2px solid var(--color-orange-200);
+    padding-top: 0.75rem;
+    margin-top: 0.25rem;
+  }
+
+  /* Badges */
+  .ntt-badge {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.1rem 0.5rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+  .ntt-badge-correct { background: var(--color-green-50); color: var(--color-green-700); }
+  .ntt-badge-wrong { background: var(--color-red-50); color: var(--color-red-700); }
+
+  /* Summary */
+  .ntt-summary-score { font-size: 1rem; color: var(--color-slate-700); margin: 0 0 1rem; }
+  .ntt-table-wrap { margin-bottom: 1rem; overflow-x: auto; }
+  .ntt-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+  .ntt-btn-summary-play {
+    border: none;
+    background: var(--color-orange-500);
+    color: white;
+    border-radius: 999px;
+    width: 1.8rem;
+    height: 1.8rem;
+    line-height: 1.8rem;
+    text-align: center;
+    cursor: pointer;
+    font-size: 0.8rem;
+  }
+  .ntt-btn-summary-play:hover { background: var(--color-orange-600); }
+  .ntt-summary-arrow { color: var(--color-slate-400); }
+  .ntt-table thead th {
+    text-align: left;
+    padding: 0.3rem 0.5rem;
+    font-size: 0.6rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: #9a6b1b;
+    background: #fefcf8;
+    border-bottom: 2px solid #f1c232;
+  }
+  .ntt-table tbody td {
+    padding: 0.3rem 0.5rem;
+    border-bottom: 1px solid var(--color-slate-100);
+    color: var(--color-slate-700);
+  }
+  .ntt-summary-na { color: var(--color-slate-400); }
+  .ntt-summary-actions { display: flex; gap: 0.75rem; }
+
+  @media (max-width: 600px) {
+    .ntt-mc-group { grid-template-columns: 1fr; }
+    .ntt-detail-grid { grid-template-columns: 1fr 1fr; }
+    .ntt-span3 { grid-column: 1 / -1; }
+  }
+</style>

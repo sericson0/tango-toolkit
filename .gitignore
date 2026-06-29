@@ -21,6 +21,9 @@ dist/
 # Large binary files (installer packages)
 src/content/dj-courses/previous-vdj/
 
+# Local-only sample audio for Name That Tango dev/testing
+public/audio-sample/
+
 # OS
 .DS_Store
 Thumbs.db
