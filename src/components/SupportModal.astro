@@ -1,11 +1,20 @@
 ---
 // "Help Support the Tango Toolkit" button + donation modal.
 // Used on multiple pages — keep markup, JS, and styles co-located here.
+// Set showButton={false} to render only the modal (trigger it from any
+// element with a [data-support-open] attribute elsewhere on the page).
+interface Props {
+  showButton?: boolean;
+}
+
+const { showButton = true } = Astro.props;
 ---
 
-<div class="support-bar">
-  <button class="support-btn" type="button" data-support-open>Help Support the Tango Toolkit</button>
-</div>
+{showButton && (
+  <div class="support-bar">
+    <button class="support-btn" type="button" data-support-open>Help Support the Tango Toolkit</button>
+  </div>
+)}
 
 <div class="support-modal-overlay" data-support-modal>
   <div class="support-modal">

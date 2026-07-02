@@ -19,22 +19,24 @@ import { eras } from '../../data/eras';
           <select id="moduleSelect">
             <option value="orchestra">Learn an Orchestra</option>
             <option value="bigfour">The Big Four</option>
+            <option value="goldenage">Golden Age</option>
+            <option value="matching">Matching</option>
           </select>
         </div>
         <div class="ntt-control" id="orchestraPickerWrap">
           <label for="orchestraSearch">Orchestra</label>
           <div class="ntt-combo">
-            <input type="text" id="orchestraSearch" class="ntt-combo-input" autocomplete="off" placeholder="Choose an orchestra...">
-            <div class="ntt-combo-list" id="orchestraComboList" hidden></div>
-            <select id="orchestraSelect" class="ntt-combo-native"><option value="">Choose an orchestra...</option></select>
+            <input type="text" id="orchestraSearch" class="ntt-combo-input" autocomplete="off" placeholder="Choose an orchestra..." role="combobox" aria-expanded="false" aria-autocomplete="list" aria-controls="orchestraComboList">
+            <div class="ntt-combo-list" id="orchestraComboList" role="listbox" hidden></div>
+            <select id="orchestraSelect" class="ntt-combo-native" aria-hidden="true" tabindex="-1"><option value="">Choose an orchestra...</option></select>
           </div>
         </div>
         <div class="ntt-control" id="eraPickerWrap" style="display:none;">
           <label for="eraSearch">Era</label>
           <div class="ntt-combo">
-            <input type="text" id="eraSearch" class="ntt-combo-input" autocomplete="off" placeholder="Choose an era...">
-            <div class="ntt-combo-list" id="eraComboList" hidden></div>
-            <select id="eraSelect" class="ntt-combo-native"><option value="">Choose an era...</option></select>
+            <input type="text" id="eraSearch" class="ntt-combo-input" autocomplete="off" placeholder="Choose an era..." role="combobox" aria-expanded="false" aria-autocomplete="list" aria-controls="eraComboList">
+            <div class="ntt-combo-list" id="eraComboList" role="listbox" hidden></div>
+            <select id="eraSelect" class="ntt-combo-native" aria-hidden="true" tabindex="-1"><option value="">Choose an era...</option></select>
           </div>
         </div>
         <div class="ntt-control ntt-bigfour-ranges-wrap" id="bigFourRangeWrap" style="display:none;">
@@ -46,15 +48,36 @@ import { eras } from '../../data/eras';
             <label class="ntt-range-check"><input type="checkbox" class="ntt-range-checkbox" data-range="post" checked> Post 50s (&ge; 1960)</label>
           </div>
         </div>
-        <div class="ntt-control">
+        <div class="ntt-control ntt-bigfour-ranges-wrap" id="goldenAgeRangeWrap" style="display:none;">
+          <label>Golden Age Period</label>
+          <div class="ntt-range-checks">
+            <label class="ntt-range-check"><input type="checkbox" class="ntt-golden-range-checkbox" data-range="early" checked> Early Golden Age (1935&ndash;1949)</label>
+            <label class="ntt-range-check"><input type="checkbox" class="ntt-golden-range-checkbox" data-range="later" checked> Later Golden Age (1950&ndash;1959)</label>
+          </div>
+        </div>
+        <div class="ntt-control" id="levelWrap">
           <label for="levelSelect">Difficulty</label>
           <select id="levelSelect"></select>
+        </div>
+        <div class="ntt-control" id="roundsWrap">
+          <label for="roundsSelect">Rounds</label>
+          <select id="roundsSelect">
+            <option value="5">5 songs</option>
+            <option value="8" selected>8 songs</option>
+            <option value="15">15 songs</option>
+          </select>
         </div>
       </div>
 
       <p class="ntt-pool-info" id="poolInfo">Pick an orchestra to begin.</p>
 
       <button type="button" class="ntt-btn-primary" id="startBtn" disabled>Start Quiz</button>
+
+      <!-- Persistent progress (localStorage) -->
+      <div class="ntt-stats-panel" id="statsPanel" hidden>
+        <button type="button" class="ntt-stats-toggle" id="statsToggle" aria-expanded="false">Your progress &#9662;</button>
+        <div class="ntt-stats-body" id="statsBody" hidden></div>
+      </div>
     </div>
 
     <!-- Section 2: Quiz -->
@@ -66,21 +89,42 @@ import { eras } from '../../data/eras';
       </div>
 
       <div class="ntt-player">
-        <audio id="clipAudio" preload="none"></audio>
+        <audio id="clipAudio" preload="metadata"></audio>
         <button type="button" class="ntt-btn-play" id="playBtn">&#9654; Play Clip</button>
         <span class="ntt-player-status" id="playerStatus"></span>
+        <button type="button" class="ntt-btn-secondary ntt-action-btn" id="skipBtn">Skip</button>
         <button type="button" class="ntt-btn-primary ntt-action-btn" id="submitBtn">Submit Answer</button>
         <button type="button" class="ntt-btn-primary ntt-action-btn" id="nextBtn" style="display:none;">Next Song &rarr;</button>
       </div>
+      <div class="ntt-progress" id="clipProgress" aria-hidden="true"><div class="ntt-progress-bar" id="clipProgressBar"></div></div>
+
+      <p class="ntt-kbd-hint">Shortcuts: <kbd>Space</kbd> play/pause &middot; <kbd>Enter</kbd> submit / next &middot; <kbd>S</kbd> skip &middot; <kbd>1</kbd>&ndash;<kbd>4</kbd> pick choice</p>
 
       <div id="answerArea"></div>
 
       <!-- Reveal: discographies-style song detail -->
       <div class="ntt-reveal" id="revealPanel" style="display:none;">
         <div class="ntt-reveal-banner" id="revealBanner"></div>
+        <button type="button" class="ntt-btn-listen" id="listenFullBtn">&#9654; Listen from the top</button>
         <div class="ntt-detail-meta" id="detailMeta"></div>
         <button type="button" class="ntt-btn-more" id="moreDetailsBtn">More details &#9662;</button>
         <div class="ntt-detail-grid" id="detailGrid" style="display:none;"></div>
+      </div>
+    </div>
+
+    <!-- Section 2b: Matching game -->
+    <div class="ntt-section ntt-matching-section" id="matchingSection" style="display:none;">
+      <div class="ntt-quiz-header">
+        <span class="ntt-round-counter">Match each song to its orchestra</span>
+        <span class="ntt-score" id="matchingScore"></span>
+        <button type="button" class="ntt-btn-text" id="matchingEndBtn">End</button>
+      </div>
+      <p class="ntt-pool-info" id="matchingHint">Play each clip, then choose which orchestra recorded it. Typing the title is optional — extra credit.</p>
+      <div id="matchingBoard"></div>
+      <div class="ntt-summary-actions">
+        <button type="button" class="ntt-btn-primary" id="matchingSubmitBtn">Submit Matches</button>
+        <button type="button" class="ntt-btn-primary" id="matchingPlayAgainBtn" style="display:none;">Play Again</button>
+        <button type="button" class="ntt-btn-secondary" id="matchingChangeBtn" style="display:none;">Change Settings</button>
       </div>
     </div>
 
@@ -118,12 +162,17 @@ import { eras } from '../../data/eras';
     'use strict';
 
     // --- Config ---
-    var ROUNDS_PER_SESSION = 8;
+    var ROUNDS_OPTIONS = [5, 8, 15];
+    var DEFAULT_ROUNDS = 8;
+    var ROUNDS_PER_SESSION = DEFAULT_ROUNDS; // updated from the Rounds picker at start
     var MC_OPTION_COUNT = 4;
     var CLIP_DURATION_S = 30;
     var ORCHESTRA_MIN_SONGS = 4;
     var ERA_MIN_BANDLEADERS = 2;
     var ERA_MIN_SONGS = 4;
+    var TYPEAHEAD_MIN_CHARS = 3;   // only suggest completions once the player has typed this many characters
+    var YEAR_CLOSE_THRESHOLD = 3;  // a type-in year within this many years is flagged "close" (still counts as wrong)
+    var STATS_KEY = 'ntt_stats_v1';
 
     var BIG_FOUR_BANDLEADERS = ["Juan D'Arienzo", 'Carlos Di Sarli', 'Osvaldo Pugliese', 'Aníbal Troilo'];
     var BIG_FOUR_RANGES = [
@@ -133,6 +182,15 @@ import { eras } from '../../data/eras';
       { id: 'post', test: function (y) { return y >= 1960; } }
     ];
 
+    // Golden Age game: same year boundaries as the Big Four's golden-age ranges,
+    // but the bandleader pool is every orchestra recording in the selected periods.
+    var GOLDEN_AGE_RANGES = [
+      { id: 'early', test: function (y) { return y >= 1935 && y <= 1949; } },
+      { id: 'later', test: function (y) { return y >= 1950 && y <= 1959; } }
+    ];
+
+    var MATCHING_SONG_COUNT = 5;
+
     var MODULES = {
       orchestra: {
         levels: [
@@ -140,7 +198,7 @@ import { eras } from '../../data/eras';
           { label: '2. Title (type-in)', fields: [{ key: 'Title', mode: 'type' }] },
           { label: '3. Title (type-in) + Year (multiple choice)', fields: [{ key: 'Title', mode: 'type' }, { key: 'Date', mode: 'mc', as: 'year' }] },
           { label: '4. Title (type-in) + Year (type-in)', fields: [{ key: 'Title', mode: 'type' }, { key: 'Date', mode: 'type', as: 'year' }] },
-          { label: '5. Title + Year + Singer (type-in)', fields: [{ key: 'Title', mode: 'type' }, { key: 'Date', mode: 'type', as: 'year' }, { key: 'Singer', mode: 'type' }] }
+          { label: '5. Title + Year + Singer (type-in)', fields: [{ key: 'Title', mode: 'type' }, { key: 'Date', mode: 'type', as: 'year' }, { key: 'Singer', mode: 'type', conditional: 'has-singer' }] }
         ]
       },
       era: {
@@ -159,7 +217,19 @@ import { eras } from '../../data/eras';
           { label: 'Advanced', fields: [{ key: 'Bandleader', mode: 'mc', fixedOptions: BIG_FOUR_BANDLEADERS }, { key: 'Title', mode: 'mc' }, { key: 'auto', mode: 'mc', conditional: 'singer-or-year' }] },
           { label: 'Challenge', fields: [{ key: 'Bandleader', mode: 'mc', fixedOptions: BIG_FOUR_BANDLEADERS }, { key: 'Title', mode: 'type' }, { key: 'Date', mode: 'type', as: 'year' }, { key: 'Singer', mode: 'type', conditional: 'has-singer' }] }
         ]
-      }
+      },
+      // Same escalating style as the Big Four, but bandleader MC options are drawn
+      // from the full golden-age orchestra pool (no fixedOptions).
+      goldenage: {
+        levels: [
+          { label: 'Intro', fields: [{ key: 'Bandleader', mode: 'mc' }] },
+          { label: 'Medium', fields: [{ key: 'Bandleader', mode: 'mc' }, { key: 'auto', mode: 'mc', conditional: 'singer-or-year' }] },
+          { label: 'Advanced', fields: [{ key: 'Bandleader', mode: 'mc' }, { key: 'Title', mode: 'mc' }, { key: 'auto', mode: 'mc', conditional: 'singer-or-year' }] },
+          { label: 'Challenge', fields: [{ key: 'Bandleader', mode: 'type' }, { key: 'Title', mode: 'type' }, { key: 'Date', mode: 'type', as: 'year' }, { key: 'Singer', mode: 'type', conditional: 'has-singer' }] }
+        ]
+      },
+      // Matching runs its own board flow (see startMatching); no per-round levels.
+      matching: { levels: [] }
     };
 
     var FIELD_LABELS = { Title: 'Title', Bandleader: 'Bandleader', Date: 'Year', Singer: 'Singer' };
@@ -179,6 +249,14 @@ import { eras } from '../../data/eras';
       return s.replace(/[à-ÿ]/g, function (c) { return accentMap[c] || c; });
     }
     function norm(s) { return stripAccents((s || '').toLowerCase()).trim(); }
+    // Looser normalization used only for grading type-in answers: drops
+    // punctuation and collapses whitespace so "C.T.V." matches "CTV" and
+    // "Adios, Nonino" matches "Adios Nonino". Mirrors the audio-map pipeline.
+    function normLoose(s) {
+      var n = norm(s).replace(/[^\w\s]/g, '');
+      n = n.replace(/\s+/g, ' ').trim();
+      return n.replace(/\b\w(?:\s\w)+\b/g, function (m) { return m.replace(/\s/g, ''); });
+    }
     function esc(s) { return (s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;'); }
 
     function extractYear(dateStr) {
@@ -291,7 +369,10 @@ import { eras } from '../../data/eras';
     var orchestraPickerWrap = document.getElementById('orchestraPickerWrap');
     var eraPickerWrap = document.getElementById('eraPickerWrap');
     var bigFourRangeWrap = document.getElementById('bigFourRangeWrap');
+    var goldenAgeRangeWrap = document.getElementById('goldenAgeRangeWrap');
+    var levelWrap = document.getElementById('levelWrap');
     var rangeCheckboxes = Array.prototype.slice.call(document.querySelectorAll('.ntt-range-checkbox'));
+    var goldenRangeCheckboxes = Array.prototype.slice.call(document.querySelectorAll('.ntt-golden-range-checkbox'));
     var orchestraSelect = document.getElementById('orchestraSelect');
     var eraSelect = document.getElementById('eraSelect');
     var orchestraSearch = document.getElementById('orchestraSearch');
@@ -299,12 +380,24 @@ import { eras } from '../../data/eras';
     var eraSearch = document.getElementById('eraSearch');
     var eraComboList = document.getElementById('eraComboList');
     var levelSelect = document.getElementById('levelSelect');
+    var roundsSelect = document.getElementById('roundsSelect');
     var poolInfo = document.getElementById('poolInfo');
     var startBtn = document.getElementById('startBtn');
+    var statsPanel = document.getElementById('statsPanel');
+    var statsToggle = document.getElementById('statsToggle');
+    var statsBody = document.getElementById('statsBody');
 
     var setupSection = document.getElementById('setupSection');
     var quizSection = document.getElementById('quizSection');
     var summarySection = document.getElementById('summarySection');
+
+    var matchingSection = document.getElementById('matchingSection');
+    var matchingBoard = document.getElementById('matchingBoard');
+    var matchingScore = document.getElementById('matchingScore');
+    var matchingSubmitBtn = document.getElementById('matchingSubmitBtn');
+    var matchingPlayAgainBtn = document.getElementById('matchingPlayAgainBtn');
+    var matchingChangeBtn = document.getElementById('matchingChangeBtn');
+    var matchingEndBtn = document.getElementById('matchingEndBtn');
 
     var roundCounter = document.getElementById('roundCounter');
     var scoreDisplay = document.getElementById('scoreDisplay');
@@ -312,11 +405,14 @@ import { eras } from '../../data/eras';
     var clipAudio = document.getElementById('clipAudio');
     var playBtn = document.getElementById('playBtn');
     var playerStatus = document.getElementById('playerStatus');
+    var clipProgressBar = document.getElementById('clipProgressBar');
+    var skipBtn = document.getElementById('skipBtn');
     var answerArea = document.getElementById('answerArea');
     var submitBtn = document.getElementById('submitBtn');
 
     var revealPanel = document.getElementById('revealPanel');
     var revealBanner = document.getElementById('revealBanner');
+    var listenFullBtn = document.getElementById('listenFullBtn');
     var detailMeta = document.getElementById('detailMeta');
     var moreDetailsBtn = document.getElementById('moreDetailsBtn');
     var detailGrid = document.getElementById('detailGrid');
@@ -342,6 +438,114 @@ import { eras } from '../../data/eras';
     var currentMcChoices = {};
     var clipStartOffset = 0;
     var summaryPlayingIdx = -1;
+    var listeningFull = false;      // reveal "listen from the top" mode (no 30s cap)
+    var preloadEl = new Audio();    // warms the next round's clip so Play is instant
+    preloadEl.preload = 'auto';
+
+    // Matching game state
+    var matchingSongs = [];
+    var matchingOptions = [];
+    var matchingResults = [];
+    var matchingGraded = false;
+    var matchingPlayingIdx = -1;
+    var matchingStopTimer = null;
+
+    // --- Persistent progress (localStorage) ---
+    // One rolling record of lifetime accuracy: overall + per answer field +
+    // per orchestra, plus a fully-correct streak. Cleared with the Reset button.
+    var Stats = (function () {
+      var data = null;
+
+      function blank() {
+        return { sessions: 0, songs: 0, fieldsAsked: 0, fieldsCorrect: 0,
+                 currentStreak: 0, bestStreak: 0, perField: {}, perOrchestra: {} };
+      }
+      function load() {
+        if (data) return data;
+        try {
+          var raw = window.localStorage.getItem(STATS_KEY);
+          data = raw ? JSON.parse(raw) : blank();
+        } catch (e) { data = blank(); }
+        if (!data || typeof data !== 'object') data = blank();
+        // tolerate older/partial payloads
+        ['perField', 'perOrchestra'].forEach(function (k) { if (!data[k]) data[k] = {}; });
+        return data;
+      }
+      function save() {
+        try { window.localStorage.setItem(STATS_KEY, JSON.stringify(data)); } catch (e) {}
+      }
+      // Record one graded song. fieldResults: [{key, correct}], orch: bandleader name.
+      function recordSong(orch, fieldResults, allCorrect) {
+        var d = load();
+        d.songs++;
+        fieldResults.forEach(function (f) {
+          d.fieldsAsked++;
+          if (f.correct) d.fieldsCorrect++;
+          var pf = d.perField[f.key] || (d.perField[f.key] = { asked: 0, correct: 0 });
+          pf.asked++;
+          if (f.correct) pf.correct++;
+        });
+        if (orch) {
+          var po = d.perOrchestra[orch] || (d.perOrchestra[orch] = { songs: 0, asked: 0, correct: 0 });
+          po.songs++;
+          po.asked += fieldResults.length;
+          po.correct += fieldResults.filter(function (f) { return f.correct; }).length;
+        }
+        if (allCorrect) {
+          d.currentStreak++;
+          if (d.currentStreak > d.bestStreak) d.bestStreak = d.currentStreak;
+        } else {
+          d.currentStreak = 0;
+        }
+        save();
+      }
+      function recordSessionEnd() { var d = load(); d.sessions++; save(); }
+      function reset() { data = blank(); save(); render(); }
+      function pct(correct, asked) { return asked ? Math.round((correct / asked) * 100) : 0; }
+
+      function render() {
+        var d = load();
+        if (!d.songs) { statsPanel.hidden = true; return; }
+        statsPanel.hidden = false;
+
+        var orchs = Object.keys(d.perOrchestra).map(function (name) {
+          var o = d.perOrchestra[name];
+          return { name: name, songs: o.songs, acc: pct(o.correct, o.asked) };
+        }).sort(function (a, b) { return b.songs - a.songs; }).slice(0, 8);
+
+        var html = '';
+        html += '<div class="ntt-stats-row">';
+        html += '<span class="ntt-stat"><strong>' + pct(d.fieldsCorrect, d.fieldsAsked) + '%</strong> accuracy</span>';
+        html += '<span class="ntt-stat"><strong>' + d.songs + '</strong> songs</span>';
+        html += '<span class="ntt-stat"><strong>' + d.sessions + '</strong> sessions</span>';
+        html += '<span class="ntt-stat"><strong>' + d.bestStreak + '</strong> best streak</span>';
+        html += '</div>';
+
+        if (orchs.length) {
+          html += '<table class="ntt-stats-table"><thead><tr><th>Orchestra</th><th>Songs</th><th>Accuracy</th></tr></thead><tbody>';
+          orchs.forEach(function (o) {
+            html += '<tr><td>' + esc(o.name) + '</td><td>' + o.songs + '</td><td>' + o.acc + '%</td></tr>';
+          });
+          html += '</tbody></table>';
+        }
+        html += '<button type="button" class="ntt-btn-text ntt-stats-reset" id="statsResetBtn">Reset progress</button>';
+        statsBody.innerHTML = html;
+
+        var resetBtn = document.getElementById('statsResetBtn');
+        if (resetBtn) resetBtn.addEventListener('click', function () {
+          if (window.confirm('Reset all saved progress? This cannot be undone.')) reset();
+        });
+      }
+
+      return { recordSong: recordSong, recordSessionEnd: recordSessionEnd, reset: reset, render: render };
+    })();
+
+    statsToggle.addEventListener('click', function () {
+      var open = statsBody.hidden;
+      statsBody.hidden = !open;
+      statsToggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      statsToggle.innerHTML = open ? 'Your progress ▴' : 'Your progress ▾';
+    });
 
     // --- Data loading: metadata.csv + audio-map.csv joined client-side ---
     function loadData() {
@@ -394,6 +598,36 @@ import { eras } from '../../data/eras';
       syncModuleUI();
       setupCombo(orchestraSelect, orchestraSearch, orchestraComboList);
       setupCombo(eraSelect, eraSearch, eraComboList);
+      Stats.render();
+      applyUrlParams();
+    }
+
+    // --- Keyboard navigation for a suggestion list ---
+    // Shared by the orchestra/era combos and the quiz type-in fields. Arrow keys
+    // move a highlighted option; Enter accepts a highlighted option (and stops
+    // the event so it doesn't also submit the round); Escape closes the list.
+    // When nothing is highlighted, Enter falls through so the global handler can
+    // submit — letting a player type a full answer and just press Enter.
+    function attachListNav(inputEl, listEl, onSelect) {
+      function opts() { return Array.prototype.slice.call(listEl.querySelectorAll('.ntt-combo-option')); }
+      function active() { return listEl.querySelector('.ntt-combo-option.active'); }
+      function setActive(el) {
+        var cur = active();
+        if (cur) cur.classList.remove('active');
+        if (el) { el.classList.add('active'); el.scrollIntoView({ block: 'nearest' }); }
+      }
+      inputEl.addEventListener('keydown', function (e) {
+        if (listEl.hidden) return;
+        var list = opts();
+        if (!list.length) return;
+        var idx = list.indexOf(active());
+        if (e.key === 'ArrowDown') { e.preventDefault(); setActive(list[idx < 0 ? 0 : Math.min(idx + 1, list.length - 1)]); }
+        else if (e.key === 'ArrowUp') { e.preventDefault(); setActive(list[idx <= 0 ? 0 : idx - 1]); }
+        else if (e.key === 'Enter') {
+          var a = active();
+          if (a) { e.preventDefault(); e.stopPropagation(); onSelect(a.getAttribute('data-value')); }
+        } else if (e.key === 'Escape') { listEl.hidden = true; inputEl.setAttribute('aria-expanded', 'false'); }
+      });
     }
 
     // --- Accent-folding search widgets ---
@@ -408,30 +642,49 @@ import { eras } from '../../data/eras';
         var opt = selectEl.options[selectEl.selectedIndex];
         inputEl.value = (opt && opt.value) ? opt.textContent : '';
       }
+      function showList(show) {
+        listEl.hidden = !show;
+        inputEl.setAttribute('aria-expanded', show ? 'true' : 'false');
+      }
       function render() {
         var q = norm(inputEl.value);
         var matches = q ? options().filter(function (o) { return norm(o.textContent).indexOf(q) !== -1; }) : options();
-        if (!matches.length) { listEl.hidden = true; listEl.innerHTML = ''; return; }
+        if (!matches.length) { showList(false); listEl.innerHTML = ''; return; }
         listEl.innerHTML = matches.map(function (o) {
-          return '<div class="ntt-combo-option" data-value="' + esc(o.value) + '">' + esc(o.textContent) + '</div>';
+          return '<div class="ntt-combo-option" role="option" data-value="' + esc(o.value) + '">' + esc(o.textContent) + '</div>';
         }).join('');
-        listEl.hidden = false;
+        showList(true);
       }
       function selectValue(value) {
         selectEl.value = value;
         syncFromSelect();
-        listEl.hidden = true;
+        showList(false);
         selectEl.dispatchEvent(new Event('change', { bubbles: true }));
       }
-      inputEl.addEventListener('focus', render);
+      // Clear the field on re-entry so the full list shows and you can type a
+      // fresh search, rather than having to delete the previously-picked name.
+      // The prior selection is remembered and restored if nothing valid is chosen.
+      var savedValue = '';
+      inputEl.addEventListener('focus', function () {
+        savedValue = selectEl.value;
+        inputEl.value = '';
+        render();
+      });
       inputEl.addEventListener('input', render);
       inputEl.addEventListener('blur', function () {
         setTimeout(function () {
-          listEl.hidden = true;
+          showList(false);
           var typed = norm(inputEl.value);
-          if (!typed) { selectValue(''); return; }
-          var exact = options().filter(function (o) { return norm(o.textContent) === typed; });
-          if (exact.length === 1 && exact[0].value !== selectEl.value) selectValue(exact[0].value);
+          if (typed) {
+            var exact = options().filter(function (o) { return norm(o.textContent) === typed; });
+            if (exact.length === 1) {
+              if (exact[0].value !== selectEl.value) selectValue(exact[0].value);
+              else syncFromSelect();
+              return;
+            }
+          }
+          // Nothing valid typed — restore the selection we had on entry.
+          if (selectEl.value !== savedValue) selectValue(savedValue);
           else syncFromSelect();
         }, 120);
       });
@@ -441,30 +694,39 @@ import { eras } from '../../data/eras';
         e.preventDefault();
         selectValue(opt.getAttribute('data-value'));
       });
+      attachListNav(inputEl, listEl, selectValue);
+      // Reflect external value changes (e.g. URL params) back into the input text.
+      selectEl.addEventListener('change', syncFromSelect);
       syncFromSelect();
     }
 
-    // Accent-folding suggestion list for a free-type text input (quiz answer fields).
+    // Accent-folding suggestion list for a free-type text input (quiz answer
+    // fields). Suggestions appear only after TYPEAHEAD_MIN_CHARS characters so
+    // early letters don't hand players the answer.
     function setupTypeahead(inputEl, listEl, values) {
       function render() {
         var q = norm(inputEl.value);
-        var matches = q ? values.filter(function (v) { return norm(v).indexOf(q) !== -1; }).slice(0, 8) : [];
-        if (!matches.length) { listEl.hidden = true; listEl.innerHTML = ''; return; }
+        var matches = q.length >= TYPEAHEAD_MIN_CHARS
+          ? values.filter(function (v) { return norm(v).indexOf(q) !== -1; }).slice(0, 8) : [];
+        if (!matches.length) { listEl.hidden = true; listEl.innerHTML = ''; inputEl.setAttribute('aria-expanded', 'false'); return; }
         listEl.innerHTML = matches.map(function (v) {
-          return '<div class="ntt-combo-option" data-value="' + esc(v) + '">' + esc(v) + '</div>';
+          return '<div class="ntt-combo-option" role="option" data-value="' + esc(v) + '">' + esc(v) + '</div>';
         }).join('');
         listEl.hidden = false;
+        inputEl.setAttribute('aria-expanded', 'true');
       }
       inputEl.addEventListener('focus', render);
       inputEl.addEventListener('input', render);
-      inputEl.addEventListener('blur', function () { setTimeout(function () { listEl.hidden = true; }, 120); });
+      inputEl.addEventListener('blur', function () { setTimeout(function () { listEl.hidden = true; inputEl.setAttribute('aria-expanded', 'false'); }, 120); });
       listEl.addEventListener('mousedown', function (e) {
         var opt = e.target.closest('.ntt-combo-option');
         if (!opt) return;
         e.preventDefault();
         inputEl.value = opt.getAttribute('data-value');
         listEl.hidden = true;
+        inputEl.setAttribute('aria-expanded', 'false');
       });
+      attachListNav(inputEl, listEl, function (v) { inputEl.value = v; listEl.hidden = true; inputEl.setAttribute('aria-expanded', 'false'); });
     }
 
     // --- Setup: game (module) selector ---
@@ -478,12 +740,16 @@ import { eras } from '../../data/eras';
       orchestraPickerWrap.style.display = currentModuleId === 'orchestra' ? '' : 'none';
       eraPickerWrap.style.display = currentModuleId === 'era' ? '' : 'none';
       bigFourRangeWrap.style.display = currentModuleId === 'bigfour' ? '' : 'none';
-      populateLevelSelect();
+      goldenAgeRangeWrap.style.display = currentModuleId === 'goldenage' ? '' : 'none';
+      // Matching has no difficulty levels — it runs its own board flow.
+      levelWrap.style.display = currentModuleId === 'matching' ? 'none' : '';
+      if (currentModuleId !== 'matching') populateLevelSelect();
       updatePoolInfo();
     }
     moduleSelect.addEventListener('change', syncModuleUI);
 
     rangeCheckboxes.forEach(function (cb) { cb.addEventListener('change', updatePoolInfo); });
+    goldenRangeCheckboxes.forEach(function (cb) { cb.addEventListener('change', updatePoolInfo); });
 
     // --- Setup: orchestra picker ---
     function populateOrchestraSelect() {
@@ -547,6 +813,13 @@ import { eras } from '../../data/eras';
       });
     }
 
+    function getSelectedGoldenRanges() {
+      return GOLDEN_AGE_RANGES.filter(function (rg) {
+        var cb = goldenRangeCheckboxes.filter(function (c) { return c.getAttribute('data-range') === rg.id; })[0];
+        return cb && cb.checked;
+      });
+    }
+
     function getSelectedPool() {
       if (currentModuleId === 'orchestra') {
         var b = orchestraSelect.value;
@@ -562,43 +835,115 @@ import { eras } from '../../data/eras';
           return activeRanges.some(function (rg) { return rg.test(year); });
         });
       }
+      if (currentModuleId === 'goldenage') {
+        var goldenRanges = getSelectedGoldenRanges();
+        if (!goldenRanges.length) return [];
+        return playableRows.filter(function (r) {
+          var year = extractYear(r.Date);
+          return goldenRanges.some(function (rg) { return rg.test(year); });
+        });
+      }
+      if (currentModuleId === 'matching') return [];
       var eraId = eraSelect.value;
       if (!eraId) return [];
       var era = ERAS.filter(function (e) { return e.id === eraId; })[0];
       return era ? poolForEra(era) : [];
     }
 
+    // Orchestras with enough playable songs to be a fair Matching answer.
+    function matchingEligibleOrchestras() {
+      var counts = {};
+      for (var i = 0; i < playableRows.length; i++) {
+        var b = playableRows[i].Bandleader;
+        counts[b] = (counts[b] || 0) + 1;
+      }
+      return Object.keys(counts).filter(function (b) { return counts[b] >= ORCHESTRA_MIN_SONGS; });
+    }
+
     function updatePoolInfo() {
+      if (currentModuleId === 'matching') {
+        currentPool = [];
+        var orchs = matchingEligibleOrchestras();
+        if (orchs.length < MATCHING_SONG_COUNT) {
+          poolInfo.textContent = 'Not enough orchestras available for a matching round.';
+          startBtn.disabled = true;
+        } else {
+          poolInfo.textContent = orchs.length + ' orchestras available — you\'ll match ' + MATCHING_SONG_COUNT + ' songs to ' + MATCHING_SONG_COUNT + ' of them.';
+          startBtn.disabled = false;
+        }
+        return;
+      }
       var pool = getSelectedPool();
       currentPool = pool;
       if (pool.length === 0) {
         poolInfo.textContent = currentModuleId === 'orchestra' ? 'Pick an orchestra to begin.' :
-          currentModuleId === 'bigfour' ? 'Select at least one date range.' : 'Pick an era to begin.';
+          currentModuleId === 'bigfour' ? 'Select at least one date range.' :
+          currentModuleId === 'goldenage' ? 'Select at least one period.' : 'Pick an era to begin.';
         startBtn.disabled = true;
         return;
       }
+      ROUNDS_PER_SESSION = parseInt(roundsSelect.value, 10) || DEFAULT_ROUNDS;
       var rounds = Math.min(ROUNDS_PER_SESSION, pool.length);
       poolInfo.textContent = pool.length + ' songs available — session will play ' + rounds + ' of them.';
       startBtn.disabled = false;
     }
+    roundsSelect.addEventListener('change', updatePoolInfo);
 
     // --- Start session ---
     startBtn.addEventListener('click', function () {
+      if (currentModuleId === 'matching') { updateSessionUrl(); startMatching(); return; }
       var pool = getSelectedPool();
       if (pool.length === 0) return;
+      ROUNDS_PER_SESSION = parseInt(roundsSelect.value, 10) || DEFAULT_ROUNDS;
       var n = Math.min(ROUNDS_PER_SESSION, pool.length);
       sessionRounds = sampleN(pool, n);
       sessionResults = [];
       roundIndex = 0;
+      updateSessionUrl();
       setupSection.style.display = 'none';
       summarySection.style.display = 'none';
       quizSection.style.display = '';
       renderRound();
     });
 
+    // --- Shareable / restorable setup via URL query params ---
+    function updateSessionUrl() {
+      var p = new URLSearchParams();
+      p.set('game', currentModuleId);
+      if (currentModuleId === 'orchestra' && orchestraSelect.value) p.set('orch', orchestraSelect.value);
+      if (currentModuleId === 'era' && eraSelect.value) p.set('era', eraSelect.value);
+      if (levelWrap.style.display !== 'none' && levelSelect.value !== '') p.set('level', levelSelect.value);
+      p.set('rounds', roundsSelect.value);
+      try { history.replaceState(null, '', location.pathname + '?' + p.toString()); } catch (e) {}
+    }
+
+    function applyUrlParams() {
+      var p = new URLSearchParams(location.search);
+      var g = p.get('game');
+      if (g && MODULES[g]) moduleSelect.value = g;
+      syncModuleUI();
+      var r = p.get('rounds');
+      if (r && ROUNDS_OPTIONS.indexOf(parseInt(r, 10)) !== -1) roundsSelect.value = r;
+      var lvl = p.get('level');
+      if (lvl !== null && levelSelect.options.length && parseInt(lvl, 10) < levelSelect.options.length) levelSelect.value = lvl;
+      var orch = p.get('orch');
+      if (g === 'orchestra' && orch) setSelectIfPresent(orchestraSelect, orch);
+      var era = p.get('era');
+      if (g === 'era' && era) setSelectIfPresent(eraSelect, era);
+      updatePoolInfo();
+    }
+
+    function setSelectIfPresent(selectEl, value) {
+      var found = Array.prototype.some.call(selectEl.options, function (o) { return o.value === value; });
+      if (found) { selectEl.value = value; selectEl.dispatchEvent(new Event('change', { bubbles: true })); }
+    }
+
     // --- Quiz: play / pause clip with a countdown of time remaining ---
+    // In "listen from the top" mode (reveal panel) the 30s cap is lifted so the
+    // player can hear the whole recording after answering.
     function clipLimit() {
       var songDuration = isFinite(clipAudio.duration) && clipAudio.duration > 0 ? clipAudio.duration : null;
+      if (listeningFull) return songDuration || CLIP_DURATION_S;
       var available = songDuration ? Math.max(0, songDuration - clipStartOffset) : CLIP_DURATION_S;
       return Math.min(CLIP_DURATION_S, available);
     }
@@ -613,9 +958,16 @@ import { eras } from '../../data/eras';
       else playBtn.textContent = '▶ Play Clip';
     }
 
+    function updateProgress() {
+      var lim = clipLimit();
+      var frac = lim > 0 ? Math.min(1, elapsedInClip() / lim) : 0;
+      clipProgressBar.style.width = (frac * 100) + '%';
+    }
+
     function tickCountdown() {
       var remaining = Math.max(0, clipLimit() - elapsedInClip());
       playerStatus.textContent = Math.ceil(remaining) + 's remaining';
+      updateProgress();
       if (remaining <= 0) stopClip('Clip ended — tap Play to listen again.');
     }
 
@@ -624,14 +976,45 @@ import { eras } from '../../data/eras';
       clearInterval(countdownInterval);
       playerState = 'ended';
       updatePlayBtn();
+      updateProgress();
       playerStatus.textContent = statusText;
     }
 
+    // Pick a random start offset, clamped so a short recording can't start past
+    // its own end (which would produce an instant "clip ended"). Needs the track
+    // duration, so it waits for metadata if the browser hasn't loaded it yet.
+    function seekThenPlay(computeOffset) {
+      var begin = function () {
+        clipStartOffset = computeOffset();
+        try { clipAudio.currentTime = clipStartOffset; } catch (e) {}
+        playClip();
+      };
+      if (clipAudio.readyState >= 1) { begin(); return; }
+      playerStatus.textContent = 'Loading…';
+      clipAudio.addEventListener('loadedmetadata', function h() {
+        clipAudio.removeEventListener('loadedmetadata', h);
+        begin();
+      });
+      if (clipAudio.preload === 'none') clipAudio.load();
+    }
+
     function startClip() {
-      var asksSinger = currentFields && currentFields.some(function (f) { return f.key === 'Singer'; });
-      clipStartOffset = asksSinger ? (55 + Math.random() * 10) : Math.random() * 60;
-      clipAudio.currentTime = clipStartOffset;
-      playClip();
+      listeningFull = false;
+      seekThenPlay(function () {
+        var asksSinger = currentFields && currentFields.some(function (f) { return f.key === 'Singer'; });
+        var raw = asksSinger ? (55 + Math.random() * 10) : Math.random() * 60;
+        var dur = clipAudio.duration;
+        if (isFinite(dur) && dur > 0) {
+          raw = Math.min(raw, Math.max(0, dur - Math.min(CLIP_DURATION_S, dur)));
+        }
+        return raw;
+      });
+    }
+
+    // Reveal-panel "Listen from the top": whole recording, no clip cap.
+    function listenFull() {
+      listeningFull = true;
+      seekThenPlay(function () { return 0; });
     }
 
     function playClip() {
@@ -659,9 +1042,52 @@ import { eras } from '../../data/eras';
       else if (playerState === 'paused') playClip();
       else startClip();
     });
+    listenFullBtn.addEventListener('click', function () {
+      if (playerState === 'playing' && listeningFull) { pauseClip(); return; }
+      listenFull();
+    });
     clipAudio.addEventListener('ended', function () {
+      if (matchingPlayingIdx !== -1) { stopMatchingAudio(); return; }
       if (summaryPlayingIdx !== -1) { resetSummaryPlayback(); return; }
       stopClip('Clip ended — tap Play to listen again.');
+    });
+
+    // --- Keyboard shortcuts (active only during the quiz) ---
+    // Enter submits, then advances; Space/P play-pause; S skips; 1-4 pick a
+    // multiple-choice option. Suggestion-list Enter is handled by attachListNav,
+    // which stops propagation so a highlighted completion doesn't also submit.
+    document.addEventListener('keydown', function (e) {
+      if (quizSection.style.display === 'none') return;
+      if (e.metaKey || e.ctrlKey || e.altKey) return;
+      var tag = e.target && e.target.tagName;
+      var answering = submitBtn.style.display !== 'none';
+
+      if (e.key === 'Enter') {
+        if (tag === 'BUTTON') return; // let the focused button activate natively
+        e.preventDefault();
+        if (answering) submitBtn.click();
+        else if (nextBtn.style.display !== 'none') nextBtn.click();
+        return;
+      }
+      // Don't hijack typing in answer fields.
+      if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+      if (tag === 'BUTTON' && (e.key === ' ' || e.key === 'Spacebar')) return; // space activates the focused button
+
+      if (e.key === ' ' || e.key === 'Spacebar' || e.key === 'p' || e.key === 'P') {
+        e.preventDefault(); playBtn.click(); return;
+      }
+      if (e.key === 's' || e.key === 'S') {
+        if (answering) { e.preventDefault(); skipRound(); }
+        return;
+      }
+      if (answering && /^[1-9]$/.test(e.key)) {
+        var groups = answerArea.querySelectorAll('.ntt-mc-group');
+        if (groups.length === 1) {
+          var radios = groups[0].querySelectorAll('input[type="radio"]');
+          var idx = parseInt(e.key, 10) - 1;
+          if (radios[idx]) { radios[idx].checked = true; e.preventDefault(); }
+        }
+      }
     });
 
     // --- Quiz: render a round ---
@@ -675,10 +1101,17 @@ import { eras } from '../../data/eras';
       clipAudio.pause();
       clipAudio.src = row._audioUrl;
       clipStartOffset = 0;
+      listeningFull = false;
       playerState = 'idle';
       updatePlayBtn();
+      updateProgress();
       playerStatus.textContent = '';
       nextBtn.style.display = 'none';
+      skipBtn.style.display = '';
+
+      // Warm the next round's audio so its first Play is instant.
+      var nextRow = sessionRounds[roundIndex + 1];
+      if (nextRow) preloadEl.src = nextRow._audioUrl;
 
       roundCounter.textContent = 'Song ' + (roundIndex + 1) + ' of ' + sessionRounds.length;
       updateScoreDisplay();
@@ -692,7 +1125,7 @@ import { eras } from '../../data/eras';
         if (f.mode === 'mc') {
           var options = buildMcOptions(row, f);
           currentMcChoices[f.key] = options;
-          var withThumbs = f.key === 'Bandleader' && options.some(function (op) { return bandleaderThumb(op.value); });
+          var withThumbs = currentModuleId === 'bigfour' && f.key === 'Bandleader' && options.some(function (op) { return bandleaderThumb(op.value); });
           html += '<div class="ntt-mc-group' + (withThumbs ? ' ntt-mc-group-thumbs' : '') + '">';
           for (var o = 0; o < options.length; o++) {
             var thumb = withThumbs ? bandleaderThumb(options[o].value) : '';
@@ -704,26 +1137,29 @@ import { eras } from '../../data/eras';
           html += '</div>';
         } else {
           html += '<div class="ntt-combo">';
-          html += '<input type="text" class="ntt-text-input ntt-combo-input" data-key="' + f.key + '" autocomplete="off" placeholder="Type your answer...">';
-          html += '<div class="ntt-combo-list" data-list-for="' + f.key + '" hidden></div>';
+          html += '<input type="text" class="ntt-text-input ntt-combo-input" data-key="' + f.key + '" autocomplete="off" placeholder="Type your answer..." role="combobox" aria-expanded="false" aria-autocomplete="list">';
+          html += '<div class="ntt-combo-list" role="listbox" data-list-for="' + f.key + '" hidden></div>';
           html += '</div>';
         }
         html += '</div>';
       }
       answerArea.innerHTML = html;
 
+      var firstInput = null;
       for (var t = 0; t < currentFields.length; t++) {
         var tf = currentFields[t];
         if (tf.mode !== 'type') continue;
         var typeInput = answerArea.querySelector('.ntt-text-input[data-key="' + tf.key + '"]');
         var typeList = answerArea.querySelector('.ntt-combo-list[data-list-for="' + tf.key + '"]');
         setupTypeahead(typeInput, typeList, uniqueSorted(currentPool, tf.key));
+        if (!firstInput) firstInput = typeInput;
       }
 
       revealPanel.style.display = 'none';
       answerArea.style.display = '';
       submitBtn.style.display = '';
       submitBtn.disabled = false;
+      if (firstInput) { try { firstInput.focus(); } catch (e) {} }
     }
 
     function buildMcOptions(row, field) {
@@ -779,19 +1215,46 @@ import { eras } from '../../data/eras';
 
       var allCorrect = fieldResults.every(function (r) { return r.correct; });
       sessionResults.push({ row: row, fieldResults: fieldResults, allCorrect: allCorrect });
+      Stats.recordSong(row.Bandleader, fieldResults, allCorrect);
 
       renderReveal(row, fieldResults, allCorrect);
 
       answerArea.style.display = 'none';
       submitBtn.style.display = 'none';
+      skipBtn.style.display = 'none';
       revealPanel.style.display = '';
       nextBtn.style.display = '';
       updateScoreDisplay();
+      try { nextBtn.focus(); } catch (e) {}
     });
+
+    // Skip: reveal the answer without grading. Skipped songs are shown as their
+    // own row in the summary and are not counted in accuracy or stats.
+    function skipRound() {
+      if (submitBtn.style.display === 'none') return; // round already answered
+      var row = sessionRounds[roundIndex];
+      var fieldResults = currentFields.map(function (f) {
+        var correctDisplay = f.as === 'year' ? String(extractYear(row.Date)) : (row[f.key] || '');
+        return { key: f.key, label: FIELD_LABELS[f.key] || f.key, correct: false,
+                 guessDisplay: '', correctDisplay: correctDisplay, skipped: true };
+      });
+      sessionResults.push({ row: row, fieldResults: fieldResults, allCorrect: false, skipped: true });
+
+      renderReveal(row, fieldResults, false);
+      answerArea.style.display = 'none';
+      submitBtn.style.display = 'none';
+      skipBtn.style.display = 'none';
+      revealPanel.style.display = '';
+      nextBtn.style.display = '';
+      updateScoreDisplay();
+      try { nextBtn.focus(); } catch (e) {}
+    }
+    skipBtn.addEventListener('click', skipRound);
 
     function gradeField(row, f) {
       var label = FIELD_LABELS[f.key] || f.key;
       var correct, guessDisplay, correctDisplay;
+      var yearsOff = null, close = false;
 
       if (f.as === 'year') {
         correctDisplay = String(extractYear(row.Date));
@@ -807,21 +1270,31 @@ import { eras } from '../../data/eras';
         var input = answerArea.querySelector('.ntt-text-input[data-key="' + f.key + '"]');
         guessDisplay = input ? input.value.trim() : '';
         if (f.as === 'year') {
-          correct = parseInt(guessDisplay, 10) === extractYear(row.Date);
+          var guessedYear = parseInt(guessDisplay, 10);
+          var correctYear = extractYear(row.Date);
+          correct = guessedYear === correctYear;
+          if (!correct && guessDisplay !== '' && !isNaN(guessedYear)) {
+            yearsOff = Math.abs(guessedYear - correctYear);
+            close = yearsOff <= YEAR_CLOSE_THRESHOLD;
+          }
         } else {
-          var accepted = [norm(row[f.key])];
-          if (f.key === 'Title' && row.AltTitle) accepted.push(norm(row.AltTitle));
-          correct = accepted.indexOf(norm(guessDisplay)) !== -1 && guessDisplay !== '';
+          // Forgiving match: punctuation/accent-insensitive, and the alternate
+          // title counts too (e.g. typing "Cielito Lindo" for "Cielito Mío").
+          var accepted = [normLoose(row[f.key])];
+          if (f.key === 'Title' && row.AltTitle) accepted.push(normLoose(row.AltTitle));
+          correct = guessDisplay !== '' && accepted.indexOf(normLoose(guessDisplay)) !== -1;
         }
       }
 
-      return { key: f.key, label: label, correct: correct, guessDisplay: guessDisplay, correctDisplay: correctDisplay };
+      return { key: f.key, label: label, correct: correct, guessDisplay: guessDisplay,
+               correctDisplay: correctDisplay, yearsOff: yearsOff, close: close };
     }
 
     function updateScoreDisplay() {
-      if (!sessionResults.length) { scoreDisplay.textContent = 'Score: —'; return; }
+      var graded = sessionResults.filter(function (r) { return !r.skipped; });
+      if (!graded.length) { scoreDisplay.textContent = 'Score: —'; return; }
       var perKey = {}, keyOrder = [];
-      sessionResults.forEach(function (r) {
+      graded.forEach(function (r) {
         r.fieldResults.forEach(function (f) {
           if (!perKey[f.key]) { perKey[f.key] = { correct: 0, asked: 0 }; keyOrder.push(f.key); }
           perKey[f.key].asked++;
@@ -849,9 +1322,17 @@ import { eras } from '../../data/eras';
       if (asked) {
         badge = asked.correct
           ? ' <span class="ntt-badge ntt-badge-correct">✓</span>'
-          : ' <span class="ntt-badge ntt-badge-wrong">✗</span>';
+          : asked.close
+            ? ' <span class="ntt-badge ntt-badge-close">close</span>'
+            : ' <span class="ntt-badge ntt-badge-wrong">✗</span>';
         if (!asked.correct) {
-          displayVal += '<div class="ntt-guess">Your guess: ' + (esc(asked.guessDisplay) || '<em>(blank)</em>') + '</div>';
+          if (asked.skipped) {
+            displayVal += '<div class="ntt-guess">Skipped</div>';
+          } else {
+            var guessLine = 'Your guess: ' + (esc(asked.guessDisplay) || '<em>(blank)</em>');
+            if (asked.yearsOff != null) guessLine += ' <span class="ntt-years-off">(' + asked.yearsOff + ' year' + (asked.yearsOff === 1 ? '' : 's') + ' off)</span>';
+            displayVal += '<div class="ntt-guess">' + guessLine + '</div>';
+          }
         }
       }
       return '<div class="ntt-detail-meta-label">' + esc(label) + '</div>' +
@@ -868,11 +1349,15 @@ import { eras } from '../../data/eras';
     }
 
     function renderReveal(row, fieldResults, allCorrect) {
+      var skipped = fieldResults.length && fieldResults.every(function (f) { return f.skipped; });
       var correctCount = fieldResults.filter(function (f) { return f.correct; }).length;
       revealBanner.className = 'ntt-reveal-banner ' + (allCorrect ? 'ntt-reveal-banner-correct' : 'ntt-reveal-banner-wrong');
-      revealBanner.textContent = allCorrect
-        ? '✓ All correct!'
-        : correctCount + ' of ' + fieldResults.length + ' correct';
+      revealBanner.textContent = skipped
+        ? 'Skipped — here’s the answer'
+        : allCorrect
+          ? '✓ All correct!'
+          : correctCount + ' of ' + fieldResults.length + ' correct';
+      listenFullBtn.textContent = '▶ Listen from the top';
 
       var titleHtml = '<span class="ntt-meta-title">' + esc(row.Title || '') + '</span>' +
         (row.AltTitle ? '<span class="ntt-meta-alt">' + esc(row.AltTitle) + '</span>' : '');
@@ -951,6 +1436,7 @@ import { eras } from '../../data/eras';
       resetSummaryPlayback();
       quizSection.style.display = 'none';
       summarySection.style.display = '';
+      if (sessionResults.length) { Stats.recordSessionEnd(); Stats.render(); }
 
       // Fields can vary round-to-round (Big Four's conditional singer/year),
       // so the column set is the union of keys actually asked, not just round 1's.
@@ -967,31 +1453,47 @@ import { eras } from '../../data/eras';
       headHtml += '<th>Result</th>';
       summaryHead.innerHTML = headHtml;
 
-      var fieldsAsked = 0, fieldsCorrect = 0, songsCorrect = 0;
+      var fieldsAsked = 0, fieldsCorrect = 0, songsCorrect = 0, songsSkipped = 0, gradedSongs = 0;
       var bodyHtml = '';
       sessionResults.forEach(function (r, idx) {
-        fieldsAsked += r.fieldResults.length;
-        fieldsCorrect += r.fieldResults.filter(function (f) { return f.correct; }).length;
-        if (r.allCorrect) songsCorrect++;
-        var resultText = r.allCorrect
-          ? '<span class="ntt-badge ntt-badge-correct">✓</span>'
-          : '<span class="ntt-badge ntt-badge-wrong">' + r.fieldResults.filter(function (f) { return f.correct; }).length + '/' + r.fieldResults.length + '</span>';
+        var correctInRow = r.fieldResults.filter(function (f) { return f.correct; }).length;
+        var resultText;
+        if (r.skipped) {
+          songsSkipped++;
+          resultText = '<span class="ntt-badge ntt-badge-skip">skipped</span>';
+        } else {
+          gradedSongs++;
+          fieldsAsked += r.fieldResults.length;
+          fieldsCorrect += correctInRow;
+          if (r.allCorrect) songsCorrect++;
+          resultText = r.allCorrect
+            ? '<span class="ntt-badge ntt-badge-correct">✓</span>'
+            : '<span class="ntt-badge ntt-badge-wrong">' + correctInRow + '/' + r.fieldResults.length + '</span>';
+        }
 
-        bodyHtml += '<tr>';
-        bodyHtml += '<td><button type="button" class="ntt-btn-summary-play" data-idx="' + idx + '">▶</button></td>';
+        bodyHtml += '<tr' + (r.skipped ? ' class="ntt-row-skipped"' : '') + '>';
+        bodyHtml += '<td><button type="button" class="ntt-btn-summary-play" data-idx="' + idx + '" aria-label="Play clip">▶</button></td>';
         bodyHtml += '<td>' + esc(r.row.Title) + '</td>';
         usedKeys.forEach(function (k) {
           var f = findFieldResult(r.fieldResults, k);
           if (!f) { bodyHtml += '<td class="ntt-summary-na">—</td>'; return; }
-          bodyHtml += f.correct
-            ? '<td><span class="ntt-badge ntt-badge-correct">✓</span> ' + esc(f.correctDisplay) + '</td>'
-            : '<td><span class="ntt-badge ntt-badge-wrong">✗</span> ' + esc(f.guessDisplay || '(blank)') + ' <span class="ntt-summary-arrow">&rarr;</span> ' + esc(f.correctDisplay) + '</td>';
+          if (f.correct) {
+            bodyHtml += '<td><span class="ntt-badge ntt-badge-correct">✓</span> ' + esc(f.correctDisplay) + '</td>';
+          } else if (f.skipped) {
+            bodyHtml += '<td><span class="ntt-summary-na">' + esc(f.correctDisplay) + '</span></td>';
+          } else {
+            var offNote = f.yearsOff != null ? ' <span class="ntt-years-off">(' + f.yearsOff + 'y)</span>' : '';
+            var mark = f.close ? '<span class="ntt-badge ntt-badge-close">close</span>' : '<span class="ntt-badge ntt-badge-wrong">✗</span>';
+            bodyHtml += '<td>' + mark + ' ' + esc(f.guessDisplay || '(blank)') + offNote + ' <span class="ntt-summary-arrow">&rarr;</span> ' + esc(f.correctDisplay) + '</td>';
+          }
         });
         bodyHtml += '<td>' + resultText + '</td>';
         bodyHtml += '</tr>';
       });
       summaryBody.innerHTML = bodyHtml;
-      summaryScore.textContent = songsCorrect + ' of ' + sessionResults.length + ' songs fully correct (' + fieldsCorrect + '/' + fieldsAsked + ' total fields correct).';
+      var scoreText = songsCorrect + ' of ' + gradedSongs + ' songs fully correct (' + fieldsCorrect + '/' + fieldsAsked + ' total fields correct).';
+      if (songsSkipped) scoreText += ' ' + songsSkipped + ' skipped.';
+      summaryScore.textContent = scoreText;
     }
 
     playAgainBtn.addEventListener('click', function () {
@@ -1003,6 +1505,163 @@ import { eras } from '../../data/eras';
       summarySection.style.display = 'none';
       setupSection.style.display = '';
     });
+
+    // --- Matching game ---
+    // Pick MATCHING_SONG_COUNT distinct orchestras, one random song each, and ask
+    // the player to match each clip to its orchestra (typing the title is optional
+    // extra credit). Reuses the shared <audio> element for per-row playback.
+    function startMatching() {
+      var eligible = matchingEligibleOrchestras();
+      if (eligible.length < MATCHING_SONG_COUNT) return;
+      var chosen = sampleN(eligible, MATCHING_SONG_COUNT);
+      matchingSongs = chosen.map(function (orch) {
+        var songs = playableRows.filter(function (r) { return r.Bandleader === orch; });
+        return sampleN(songs, 1)[0];
+      });
+      matchingOptions = shuffle(chosen.slice());
+      matchingResults = [];
+      matchingGraded = false;
+      stopMatchingAudio();
+
+      setupSection.style.display = 'none';
+      summarySection.style.display = 'none';
+      quizSection.style.display = 'none';
+      matchingSection.style.display = '';
+
+      matchingScore.textContent = '';
+      matchingSubmitBtn.style.display = '';
+      matchingPlayAgainBtn.style.display = 'none';
+      matchingChangeBtn.style.display = 'none';
+      renderMatchingBoard();
+    }
+
+    function renderMatchingBoard() {
+      var optsHtml = '<option value="">Choose orchestra…</option>' + matchingOptions.map(function (o) {
+        return '<option value="' + esc(o) + '">' + esc(o) + '</option>';
+      }).join('');
+
+      var html = '';
+      for (var i = 0; i < matchingSongs.length; i++) {
+        var song = matchingSongs[i];
+        html += '<div class="ntt-match-row" data-idx="' + i + '">';
+        html += '<button type="button" class="ntt-btn-play ntt-match-play" data-idx="' + i + '">▶ Play</button>';
+        html += '<div class="ntt-match-fields">';
+        if (!matchingGraded) {
+          html += '<select class="ntt-match-select" data-idx="' + i + '">' + optsHtml + '</select>';
+          html += '<input type="text" class="ntt-text-input ntt-match-title" data-idx="' + i + '" autocomplete="off" placeholder="Title (extra credit)…">';
+        } else {
+          var res = matchingResults[i];
+          var ob = res.orchCorrect
+            ? '<span class="ntt-badge ntt-badge-correct">✓</span>'
+            : '<span class="ntt-badge ntt-badge-wrong">✗</span>';
+          html += '<div class="ntt-match-result">';
+          html += '<div>' + ob + ' <strong>' + esc(song.Bandleader) + '</strong>' +
+            (res.orchCorrect ? '' : ' <span class="ntt-summary-arrow">(you: ' + esc(res.guessOrch || '—') + ')</span>') + '</div>';
+          var tb = res.titleCorrect
+            ? '<span class="ntt-badge ntt-badge-correct">✓</span>'
+            : '<span class="ntt-badge ntt-badge-wrong">✗</span>';
+          html += '<div class="ntt-match-title-line">' + tb + ' <span class="ntt-meta-title">' + esc(song.Title) + '</span>' +
+            (res.titleCorrect ? '' : ' <span class="ntt-summary-arrow">(you: ' + esc(res.guessTitle || '—') + ')</span>') + '</div>';
+          var singer = song.Singer && norm(song.Singer) !== 'instrumental' ? ' · ' + esc(song.Singer) : ' · Instrumental';
+          html += '<div class="ntt-match-year">' + esc(String(extractYear(song.Date) || '')) + singer + '</div>';
+          html += '</div>';
+        }
+        html += '</div></div>';
+      }
+      matchingBoard.innerHTML = html;
+      refreshMatchingOptions();
+    }
+
+    // Gray out orchestras already chosen in another row — each orchestra appears
+    // exactly once, so a name can only be the answer for one clip.
+    function refreshMatchingOptions() {
+      var selects = Array.prototype.slice.call(matchingBoard.querySelectorAll('.ntt-match-select'));
+      var taken = {};
+      selects.forEach(function (s) { if (s.value) taken[s.value] = true; });
+      selects.forEach(function (s) {
+        Array.prototype.forEach.call(s.options, function (o) {
+          if (!o.value) return;
+          o.disabled = taken[o.value] && o.value !== s.value;
+        });
+      });
+    }
+
+    matchingBoard.addEventListener('change', function (e) {
+      if (e.target && e.target.classList.contains('ntt-match-select')) refreshMatchingOptions();
+    });
+
+    function stopMatchingAudio() {
+      clipAudio.pause();
+      clearTimeout(matchingStopTimer);
+      if (matchingPlayingIdx !== -1) {
+        var b = matchingBoard.querySelector('.ntt-match-play[data-idx="' + matchingPlayingIdx + '"]');
+        if (b) b.innerHTML = '▶ Play';
+      }
+      matchingPlayingIdx = -1;
+    }
+
+    function matchingPlay(idx) {
+      var wasThis = matchingPlayingIdx === idx;
+      stopMatchingAudio();
+      if (wasThis) return; // second tap on the playing row = stop
+      var song = matchingSongs[idx];
+      if (!song) return;
+      clipAudio.src = song._audioUrl;
+      clipAudio.currentTime = Math.random() * 45;
+      var p = clipAudio.play();
+      if (p && p.catch) p.catch(function () {});
+      matchingPlayingIdx = idx;
+      var btn = matchingBoard.querySelector('.ntt-match-play[data-idx="' + idx + '"]');
+      if (btn) btn.innerHTML = '⏸ Pause';
+      matchingStopTimer = setTimeout(function () { stopMatchingAudio(); }, CLIP_DURATION_S * 1000);
+    }
+
+    matchingBoard.addEventListener('click', function (e) {
+      var btn = e.target.closest('.ntt-match-play');
+      if (!btn) return;
+      matchingPlay(parseInt(btn.getAttribute('data-idx'), 10));
+    });
+
+    function submitMatching() {
+      var orchCorrect = 0, titleCorrect = 0;
+      matchingResults = [];
+      for (var i = 0; i < matchingSongs.length; i++) {
+        var song = matchingSongs[i];
+        var sel = matchingBoard.querySelector('.ntt-match-select[data-idx="' + i + '"]');
+        var titleInput = matchingBoard.querySelector('.ntt-match-title[data-idx="' + i + '"]');
+        var guessOrch = sel ? sel.value : '';
+        var guessTitle = titleInput ? titleInput.value.trim() : '';
+        var oc = guessOrch !== '' && norm(guessOrch) === norm(song.Bandleader);
+        var accepted = [normLoose(song.Title)];
+        if (song.AltTitle) accepted.push(normLoose(song.AltTitle));
+        var tc = guessTitle !== '' && accepted.indexOf(normLoose(guessTitle)) !== -1;
+        if (oc) orchCorrect++;
+        if (tc) titleCorrect++;
+        matchingResults.push({ guessOrch: guessOrch, orchCorrect: oc, guessTitle: guessTitle, titleCorrect: tc });
+        Stats.recordSong(song.Bandleader, [{ key: 'Bandleader', correct: oc }], oc);
+      }
+      Stats.recordSessionEnd();
+      Stats.render();
+      matchingGraded = true;
+      stopMatchingAudio();
+      renderMatchingBoard();
+      matchingScore.textContent = 'Orchestras ' + orchCorrect + '/' + matchingSongs.length +
+        ' · Titles ' + titleCorrect + '/' + matchingSongs.length + ' (extra credit)';
+      matchingSubmitBtn.style.display = 'none';
+      matchingPlayAgainBtn.style.display = '';
+      matchingChangeBtn.style.display = '';
+    }
+
+    function exitMatching() {
+      stopMatchingAudio();
+      matchingSection.style.display = 'none';
+      setupSection.style.display = '';
+    }
+
+    matchingSubmitBtn.addEventListener('click', submitMatching);
+    matchingPlayAgainBtn.addEventListener('click', startMatching);
+    matchingChangeBtn.addEventListener('click', exitMatching);
+    matchingEndBtn.addEventListener('click', exitMatching);
 
     syncModuleUI();
     loadData();
@@ -1131,6 +1790,27 @@ import { eras } from '../../data/eras';
     margin: 0 0 0.75rem;
   }
 
+  /* Highlighted option during keyboard navigation of a suggestion list */
+  .ntt-combo-option.active { background: var(--color-orange-100, var(--color-orange-50)); }
+
+  /* Persistent progress panel */
+  .ntt-stats-panel { margin-top: 1rem; border-top: 1px solid var(--color-slate-100); padding-top: 0.75rem; }
+  .ntt-stats-toggle {
+    background: none; border: none; padding: 0.2rem 0; cursor: pointer;
+    font-family: var(--font-sans); font-size: 0.8rem; font-weight: 600; color: var(--color-orange-700);
+  }
+  .ntt-stats-body { margin-top: 0.6rem; }
+  .ntt-stats-row { display: flex; flex-wrap: wrap; gap: 0.5rem 1.25rem; margin-bottom: 0.75rem; }
+  .ntt-stat { font-size: 0.85rem; color: var(--color-slate-600); }
+  .ntt-stat strong { color: var(--color-slate-900); font-size: 1rem; }
+  .ntt-stats-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; max-width: 28rem; }
+  .ntt-stats-table th {
+    text-align: left; padding: 0.25rem 0.5rem; font-size: 0.6rem; text-transform: uppercase;
+    letter-spacing: 0.8px; color: var(--color-slate-500); border-bottom: 1px solid var(--color-slate-200);
+  }
+  .ntt-stats-table td { padding: 0.25rem 0.5rem; border-bottom: 1px solid var(--color-slate-100); color: var(--color-slate-700); }
+  .ntt-stats-reset { margin-top: 0.6rem; margin-left: 0; text-decoration: underline; }
+
   .ntt-btn-primary, .ntt-btn-secondary {
     padding: 0.6rem 1.4rem;
     border: none;
@@ -1201,8 +1881,59 @@ import { eras } from '../../data/eras';
     font-size: 0.8rem;
     color: var(--color-slate-400);
   }
-  /* Submit / Next share the right edge of the player row (only one shows at a time) */
+  /* Submit / Next / Skip sit at the right edge of the player row. Skip and Next
+     each claim the leading auto-margin; Submit tucks in beside Skip. */
   .ntt-action-btn { margin-left: auto; }
+  #submitBtn.ntt-action-btn { margin-left: 0.5rem; }
+
+  /* Clip progress bar */
+  .ntt-progress {
+    height: 4px;
+    background: var(--color-slate-100);
+    border-radius: 999px;
+    overflow: hidden;
+    margin: 0 0 0.75rem;
+  }
+  .ntt-progress-bar {
+    height: 100%;
+    width: 0;
+    background: var(--color-orange-500);
+    transition: width 0.15s linear;
+  }
+
+  /* Keyboard shortcut hint */
+  .ntt-kbd-hint {
+    font-size: 0.75rem;
+    color: var(--color-slate-400);
+    margin: 0 0 1rem;
+  }
+  .ntt-kbd-hint kbd {
+    font-family: var(--font-mono, monospace);
+    font-size: 0.7rem;
+    background: var(--color-slate-100);
+    border: 1px solid var(--color-slate-300);
+    border-radius: 3px;
+    padding: 0.05rem 0.3rem;
+    color: var(--color-slate-600);
+  }
+
+  /* Reveal "listen from the top" button */
+  .ntt-btn-listen {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    margin-bottom: 1rem;
+    padding: 0.4rem 0.9rem;
+    border: 1px solid var(--color-orange-300);
+    border-radius: var(--radius-md);
+    background: white;
+    color: var(--color-orange-700);
+    font-family: var(--font-sans);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .ntt-btn-listen:hover { background: var(--color-orange-50); }
 
   /* Answer fields */
   .ntt-field { margin-bottom: 1rem; }
@@ -1344,6 +2075,10 @@ import { eras } from '../../data/eras';
   }
   .ntt-badge-correct { background: var(--color-green-50); color: var(--color-green-700); }
   .ntt-badge-wrong { background: var(--color-red-50); color: var(--color-red-700); }
+  .ntt-badge-close { background: var(--color-orange-100, var(--color-orange-50)); color: var(--color-orange-700); }
+  .ntt-badge-skip { background: var(--color-slate-100); color: var(--color-slate-500); }
+  .ntt-years-off { color: var(--color-orange-700); font-size: 0.8rem; }
+  .ntt-row-skipped td { color: var(--color-slate-400); }
 
   /* Summary */
   .ntt-summary-score { font-size: 1rem; color: var(--color-slate-700); margin: 0 0 1rem; }
@@ -1381,6 +2116,37 @@ import { eras } from '../../data/eras';
   }
   .ntt-summary-na { color: var(--color-slate-400); }
   .ntt-summary-actions { display: flex; gap: 0.75rem; }
+
+  /* Matching game board */
+  .ntt-match-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.75rem;
+    padding: 0.75rem 0;
+    border-bottom: 1px solid var(--color-slate-100);
+  }
+  .ntt-match-play { min-width: 6.5rem; flex-shrink: 0; }
+  .ntt-match-fields {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    min-width: 0;
+  }
+  .ntt-match-select {
+    padding: 0.45rem 0.5rem;
+    border: 1px solid var(--color-slate-300);
+    border-radius: var(--radius-sm);
+    font-size: 0.9rem;
+    font-family: var(--font-sans);
+    background: var(--color-slate-50);
+    color: var(--color-slate-800);
+  }
+  .ntt-match-select option:disabled { color: var(--color-slate-300); }
+  .ntt-match-result { display: flex; flex-direction: column; gap: 0.25rem; font-size: 0.95rem; color: var(--color-slate-700); }
+  .ntt-match-title-line { font-size: 0.9rem; }
+  .ntt-match-title-line .ntt-meta-title { font-size: 1rem; }
+  .ntt-match-year { font-size: 0.8rem; color: var(--color-slate-500); }
 
   @media (max-width: 600px) {
     .ntt-mc-group { grid-template-columns: 1fr; }

@@ -4,15 +4,34 @@ interface Props {
   lead?: string;
   backHref?: string;
   backText?: string;
+  compact?: boolean;
 }
 
-const { title, lead, backHref = '/', backText = 'Back to Home' } = Astro.props;
+const { title, lead, backHref = '/', backText = 'Back to Home', compact = false } = Astro.props;
 ---
 
-<section class="page-hero">
+<section class:list={['page-hero', { 'page-hero--compact': compact }]}>
   <div class="container">
     <a href={backHref} class="back-link">&larr; {backText}</a>
     <h1>{title}</h1>
     {lead && <p class="lead">{lead}</p>}
   </div>
 </section>
+
+<style>
+  .page-hero.page-hero--compact {
+    padding: 1.5rem 0;
+  }
+
+  .page-hero--compact :global(.back-link) {
+    margin-bottom: 0.5rem;
+  }
+
+  .page-hero--compact :global(h1) {
+    font-size: 1.75rem;
+  }
+
+  .page-hero--compact :global(.lead) {
+    font-size: 1.05rem;
+  }
+</style>

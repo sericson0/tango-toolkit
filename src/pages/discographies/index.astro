@@ -5,21 +5,28 @@ import SupportModal from '../../components/SupportModal.astro';
 ---
 
 <BaseLayout title="Discographies — Tango DJ" description="Argentine tango discographies for 40+ bandleaders with more than 15,000 songs. Browse, filter, and download discography data.">
-  <PageHero title="Discographies" lead="More than 15,000 tangos from more than 40 artists" />
+  <PageHero title="Discographies" lead="More than 15,000 tangos from more than 40 artists" compact />
 
   <!-- ===== Description, References, Article — above the embed ===== -->
   <section class="intro-section">
     <div class="container">
-      <SupportModal />
       <aside class="contribute-callout">
-        <p><strong>Help improve these discographies.</strong> The discographies are open-source. Contribute, suggest corrections, add missing recordings, or open a pull request on <a href="https://github.com/sericson0/tango-discographies" target="_blank" rel="noopener noreferrer">GitHub</a>.</p>
+        <p><strong>Help improve these discographies.</strong> The discographies are open-source. Contribute, suggest corrections, add missing recordings, or open a pull request on <a href="https://github.com/sericson0/tango-discographies" target="_blank" rel="noopener noreferrer">GitHub</a>. You can also <a href="#" data-support-open>support the Tango Toolkit</a>.</p>
       </aside>
-      <div class="disco-description">
-        <p>The following discography consists of more than 15,000 songs across more than 40 tango artists. We have tried our best to make these discographies correct and complete, but with any project of this scale there are guaranteed to be errors. If you find any, please let us know at <a href="mailto:tangotoolkit@gmail.com">tangotoolkit@gmail.com</a>.</p>
-        <p>Feel free to use these discographies however you see fit. We would love to hear if you find them useful. If you do, make sure to let your friends know about this resource!</p>
-        <p>The data presented here is a compilation of sources. While it certainly took effort, it was nothing compared to the monumental efforts of the researchers who meticulously compiled the information. We highly recommend you look up the references below. In addition to providing invaluable information on artist discographies, they also provide valuable notes and resources for tango DJs, historians, and aficionados.</p>
-        <p><strong>Note:</strong> The data has been subset to only include songs categorized as Tango, Vals, or Milonga. Candombe recordings are grouped under Milonga.</p>
-      </div>
+
+      <!-- Description (expandable) -->
+      <details class="expander">
+        <summary><strong>About These Discographies</strong></summary>
+        <div class="expander-body">
+          <div class="disco-description">
+            <p>The following discography consists of more than 15,000 songs across more than 40 tango artists. We have tried our best to make these discographies correct and complete, but with any project of this scale there are guaranteed to be errors. If you find any, please let us know at <a href="mailto:tangotoolkit@gmail.com">tangotoolkit@gmail.com</a>.</p>
+            <p>Feel free to use these discographies however you see fit. We would love to hear if you find them useful. If you do, make sure to let your friends know about this resource!</p>
+            <p>The data presented here is a compilation of sources. While it certainly took effort, it was nothing compared to the monumental efforts of the researchers who meticulously compiled the information. We highly recommend you look up the references below. In addition to providing invaluable information on artist discographies, they also provide valuable notes and resources for tango DJs, historians, and aficionados.</p>
+            <p><strong>Note:</strong> The data has been subset to only include songs categorized as Tango, Vals, or Milonga. Candombe recordings are grouped under Milonga.</p>
+            <p class="history-link">For a deep dive into the full history of tango recordings, read our article: <a href="/dj/history-of-tango-music/"><strong>How Many Tango Recordings Are There? Stories on the History of Tango Music</strong></a>.</p>
+          </div>
+        </div>
+      </details>
 
       <!-- References (expandable) -->
       <details class="expander">
@@ -86,7 +93,8 @@ import SupportModal from '../../components/SupportModal.astro';
         </div>
       </details>
 
-      <p class="history-link">For a deep dive into the full history of tango recordings, read our article: <a href="/dj/history-of-tango-music/"><strong>How Many Tango Recordings Are There? Stories on the History of Tango Music</strong></a>.</p>
+      <!-- Modal markup + JS only; triggered by the [data-support-open] link above -->
+      <SupportModal showButton={false} />
 
     </div>
   </section>
@@ -107,12 +115,12 @@ import SupportModal from '../../components/SupportModal.astro';
 <style>
   /* ===== Intro Section ===== */
   .intro-section {
-    padding: 2.5rem 0;
+    padding: 1.5rem 0;
     border-bottom: 1px solid var(--color-slate-200);
   }
 
   .disco-description {
-    margin-bottom: 1.5rem;
+    margin-bottom: 0;
   }
 
   .disco-description p {
