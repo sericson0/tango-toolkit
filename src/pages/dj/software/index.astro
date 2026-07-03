@@ -3,7 +3,9 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import PageHero from '../../../components/PageHero.astro';
 import { getProductsMap, products } from '../../../data/products';
 
-const { tigertango, hisstory, tigertag, tigertanda } = getProductsMap();
+const productsMap = getProductsMap();
+const { tigertango, hisstory, tigertag, tigertanda } = productsMap;
+const hisstoryLite = productsMap['hisstory-lite'];
 
 const WIN_SVG = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M0 3.5l9.75-1.33v9.41H0V3.5zm0 17l9.75 1.33v-9.32H0v7.99zM10.83 21.98L24 24V12.68H10.83v9.3zm0-19.96v9.4H24V0L10.83 2.02z"/></svg>';
 const APPLE_SVG = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>';
@@ -232,6 +234,7 @@ const productSchemas = products.map((p) => {
           <h2>Hisstory</h2>
           <p class="tool-tagline">Keep the music, ditch the noise</p>
           <span class="price-badge">$40 (Try for Free)</span>
+          <span class="price-badge price-badge--alt">Lite $9.99</span>
           <span class="license-note">One-time purchase, lifetime access</span>
         </div>
       </div>
@@ -254,7 +257,13 @@ const productSchemas = products.map((p) => {
 
       <!-- Download -->
       <h3 class="section-label">Download</h3>
-      <p class="section-note">Hisstory is free to try for 2 days with full access &mdash; no credit card required. To keep using it after the trial, click <strong>Purchase License</strong> below and you&rsquo;ll receive an activation key by email to paste into the app.</p>
+      <p class="section-note">Hisstory is free to try for 2 days with full access &mdash; no credit card required. To keep using it after the trial, choose a license below and you&rsquo;ll receive an activation key by email to paste into the app.</p>
+
+      <div class="callout callout-config callout-inline">
+        <strong>Full vs. Lite.</strong>
+        <p><strong>Hisstory ($40)</strong> is the complete plugin with the expanded spectrum display and advanced controls. <strong>Hisstory Lite ($9.99)</strong> runs the same de-hissing engine in a fixed, compact view. Both are included in the one installer &mdash; your key decides which one activates. Started with Lite? You can <a href="/dj/account/">upgrade to the full version for $30</a> anytime.</p>
+      </div>
+
       <p class="install-link">
         &#128214; <a href="/documentation/Hisstory User Guide.pdf" target="_blank" rel="noopener noreferrer">User Guide (PDF)</a>
       </p>
@@ -263,8 +272,17 @@ const productSchemas = products.map((p) => {
           <button type="button" class="download-btn-large purchase-btn checkout-btn" data-product-id="hisstory">
             <span class="dl-icon">&#128179;</span>
             <div>
-              <strong>Purchase License &mdash; $40</strong>
-              <span>One-time purchase, lifetime access</span>
+              <strong>Purchase Full License &mdash; $40</strong>
+              <span>Complete plugin &mdash; one-time purchase, lifetime access</span>
+            </div>
+          </button>
+        )}
+        {hisstoryLite?.stripePriceId && (
+          <button type="button" class="download-btn-large purchase-btn checkout-btn" data-product-id="hisstory-lite">
+            <span class="dl-icon">&#128179;</span>
+            <div>
+              <strong>Purchase Hisstory Lite &mdash; $9.99</strong>
+              <span>Compact edition &mdash; upgrade to full anytime</span>
             </div>
           </button>
         )}
@@ -872,6 +890,12 @@ const productSchemas = products.map((p) => {
     border-radius: 999px;
     background: var(--color-orange-100);
     color: var(--color-orange-700);
+  }
+
+  .price-badge--alt {
+    background: var(--color-slate-100);
+    color: var(--color-slate-600);
+    margin-left: 0.35rem;
   }
 
   .tool-desc-full {

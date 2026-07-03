@@ -51,6 +51,45 @@ export function getProductRegistry(): Record<string, ProductConfig> {
       guideUrl: "https://tangotoolkit.com/documentation/Hisstory%20User%20Guide.pdf",
       guideLabel: "Hisstory User Guide (PDF)",
     },
+    "hisstory-lite": {
+      name: "Hisstory Lite",
+      stripePriceId: process.env.HISSTORY_LITE_STRIPE_PRICE_ID || "",
+      // Signed with the Lite secret so the key only unlocks the "Hisstory Lite"
+      // plugin, not the full "Hisstory" plugin. Must match `liteSecret` in the
+      // Hisstory app's LicenseManager.cpp / keygen.py.
+      keygenSecret: process.env.HISSTORY_LITE_KEYGEN_SECRET || "",
+      fromEmail:
+        process.env.RESEND_FROM_EMAIL ||
+        "Hisstory <noreply@tangotoolkit.com>",
+      subject: "Your Hisstory Lite License Key",
+      color: "#f97316",
+      tagline: "Keep the music, ditch the noise",
+      activationSteps: `
+            <li>Open the <strong>Hisstory Lite</strong> plugin (bundled with the Hisstory installer)</li>
+            <li>Click <strong>"Enter Key"</strong></li>
+            <li>Paste the key above and click <strong>"Activate"</strong></li>`,
+      guideUrl: "https://tangotoolkit.com/documentation/Hisstory%20User%20Guide.pdf",
+      guideLabel: "Hisstory User Guide (PDF)",
+    },
+    "hisstory-upgrade": {
+      name: "Hisstory (Full Upgrade)",
+      stripePriceId: process.env.HISSTORY_UPGRADE_STRIPE_PRICE_ID || "",
+      // Reuses the FULL Hisstory secret so the upgrade delivers a real full
+      // license key — the same one a $40 buyer receives.
+      keygenSecret: process.env.HISSTORY_KEYGEN_SECRET || "",
+      fromEmail:
+        process.env.RESEND_FROM_EMAIL ||
+        "Hisstory <noreply@tangotoolkit.com>",
+      subject: "Your Hisstory Full License Key",
+      color: "#f97316",
+      tagline: "Keep the music, ditch the noise",
+      activationSteps: `
+            <li>Open the full <strong>Hisstory</strong> plugin (standalone or VST3)</li>
+            <li>Click <strong>"Enter Key"</strong></li>
+            <li>Paste the key above and click <strong>"Activate"</strong> to unlock the full version</li>`,
+      guideUrl: "https://tangotoolkit.com/documentation/Hisstory%20User%20Guide.pdf",
+      guideLabel: "Hisstory User Guide (PDF)",
+    },
     tigertag: {
       name: "TigerTag",
       stripePriceId: process.env.TIGERTAG_STRIPE_PRICE_ID || "",

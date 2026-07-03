@@ -51,6 +51,19 @@ export const products: Product[] = [
     trial: true,
   },
   {
+    id: 'hisstory-lite',
+    name: 'Hisstory Lite',
+    tagline: 'Real-time de-hissing, streamlined',
+    description: 'The compact edition of Hisstory: the same real-time de-hissing engine in a fixed, simplified view. Upgrade to the full version anytime to unlock the expanded spectrum display and advanced controls.',
+    price: '$9.99',
+    // Presence of this Price ID reveals the purchase button; the actual charge
+    // uses HISSTORY_LITE_STRIPE_PRICE_ID on the server.
+    stripePriceId: 'price_1Tons6BGhFYtRptA2QSa5NO7',
+    downloadLink: 'https://github.com/sericson0/hisstory-releases/releases',
+    image: '/images/hisstory-logo.png',
+    trial: true,
+  },
+  {
     id: 'tigertag',
     name: 'TigerTag',
     tagline: 'Tag your tango tunes',

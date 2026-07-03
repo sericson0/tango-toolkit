@@ -104,7 +104,54 @@ import PageHero from '../../../components/PageHero.astro';
         resultsEl.appendChild(card);
       }
 
+      // Offer the Lite -> Full upgrade only to customers who bought Lite and
+      // don't already own the full version.
+      const hasLite = data.some((d) => d.productName === 'Hisstory Lite');
+      const hasFull = data.some(
+        (d) => d.productName === 'Hisstory' || d.productName === 'Hisstory (Full Upgrade)'
+      );
+      if (hasLite && !hasFull) {
+        const upgrade = document.createElement('div');
+        upgrade.className = 'result-card upgrade-card';
+        upgrade.innerHTML = `
+          <strong class="result-product">Upgrade to Hisstory Full</strong>
+          <p class="upgrade-copy">Unlock the expanded spectrum display and advanced controls. You'll receive a full license key by email.</p>
+          <button type="button" class="btn btn-primary upgrade-btn" data-product-id="hisstory-upgrade">Upgrade to Full &mdash; $30</button>
+          <div class="upgrade-error" hidden></div>
+        `;
+        resultsEl.appendChild(upgrade);
+      }
+
       resultsEl.hidden = false;
+
+      // Wire up the upgrade button (mirrors the checkout flow on /dj/software/)
+      const upgradeBtn = resultsEl.querySelector('.upgrade-btn') as HTMLButtonElement | null;
+      upgradeBtn?.addEventListener('click', async () => {
+        const productId = upgradeBtn.dataset.productId;
+        const errorEl = resultsEl.querySelector('.upgrade-error') as HTMLElement | null;
+        upgradeBtn.disabled = true;
+        const originalText = upgradeBtn.textContent;
+        upgradeBtn.textContent = 'Loading…';
+        if (errorEl) errorEl.hidden = true;
+        try {
+          const res = await fetch('/api/create-checkout-session', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ productId }),
+          });
+          if (!res.ok) throw new Error(`Status ${res.status}`);
+          const { url } = await res.json();
+          window.location.href = url;
+        } catch (err) {
+          console.error('Upgrade checkout failed:', err);
+          upgradeBtn.disabled = false;
+          upgradeBtn.textContent = originalText;
+          if (errorEl) {
+            errorEl.textContent = 'Something went wrong. Please try again or contact support.';
+            errorEl.hidden = false;
+          }
+        }
+      });
 
       // Wire up copy buttons
       resultsEl.querySelectorAll('.copy-btn').forEach((btn) => {
@@ -206,6 +253,25 @@ import PageHero from '../../../components/PageHero.astro';
   .result-date {
     font-size: 0.85rem;
     color: var(--color-slate-500);
+  }
+
+  .upgrade-card {
+    padding: 1.5rem;
+    border: 1px solid var(--color-orange-200);
+    background: var(--color-orange-50);
+    border-radius: var(--radius-lg);
+  }
+
+  .upgrade-copy {
+    margin: 0.5rem 0 1rem;
+    font-size: 0.95rem;
+    color: var(--color-slate-600);
+  }
+
+  .upgrade-error {
+    margin-top: 0.75rem;
+    font-size: 0.9rem;
+    color: var(--color-red-700);
   }
 
   .help-link {
