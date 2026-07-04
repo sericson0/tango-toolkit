@@ -64,12 +64,25 @@ const absoluteOgImage = new URL(ogImage, Astro.site).href;
         </a>
         <nav class="nav">
           <a href="/" class={Astro.url.pathname === '/' ? 'active' : ''}>Home</a>
-          <a href="/dj/starter-kit/" class={Astro.url.pathname.startsWith('/dj/starter-kit') ? 'active' : ''}>DJ Starter Kit</a>
-          <a href="/dj/software/" class={Astro.url.pathname.startsWith('/dj/software') ? 'active' : ''}>DJ Tools</a>
+          <div class="nav-group">
+            <button type="button" class={`nav-group-toggle ${Astro.url.pathname.startsWith('/dj') ? 'active' : ''}`} aria-expanded="false" aria-haspopup="true">
+              DJ <span class="nav-caret" aria-hidden="true">&#9662;</span>
+            </button>
+            <div class="nav-dropdown">
+              <a href="/dj/starter-kit/" class={Astro.url.pathname.startsWith('/dj/starter-kit') ? 'active' : ''}>DJ Starter Kit</a>
+              <a href="/dj/tools/" class={Astro.url.pathname.startsWith('/dj/tools') || Astro.url.pathname.startsWith('/dj/software') ? 'active' : ''}>All DJ Tools</a>
+              <div class="nav-dropdown-divider" role="separator"></div>
+              <a href="/dj/tools/#dj-players" class="nav-sub">DJ Players</a>
+              <a href="/dj/tools/#displays-projections" class="nav-sub">Displays &amp; Projections</a>
+              <a href="/dj/tools/#tanda-builders" class="nav-sub">Tanda Builders</a>
+              <a href="/dj/tools/#plugins-sound-quality" class="nav-sub">Plugins &amp; Sound Quality</a>
+              <div class="nav-dropdown-divider" role="separator"></div>
+              <a href="/dj/tanda-builder/" class={Astro.url.pathname.startsWith('/dj/tanda-builder') ? 'active' : ''}>Tanda Builder (Web)</a>
+              <a href="/dj/articles/" class={Astro.url.pathname.startsWith('/dj/articles') || Astro.url.pathname.startsWith('/dj/history') ? 'active' : ''}>Resources &amp; Articles</a>
+            </div>
+          </div>
           <a href="/discographies/" class={Astro.url.pathname.startsWith('/discographies') ? 'active' : ''}>Discographies</a>
-          <a href="/dj/tanda-builder/" class={Astro.url.pathname.startsWith('/dj/tanda-builder') ? 'active' : ''}>Tanda Builder</a>
           <a href="/name-that-tango/" class={Astro.url.pathname.startsWith('/name-that-tango') ? 'active' : ''}>Name That Tango</a>
-          <a href="/dj/articles/" class={Astro.url.pathname.startsWith('/dj/articles') || Astro.url.pathname.startsWith('/dj/history') ? 'active' : ''}>Resources</a>
         </nav>
         <button class="nav-toggle" aria-label="Toggle menu" type="button">
           <span></span>
@@ -92,12 +105,18 @@ const absoluteOgImage = new URL(ogImage, Astro.site).href;
             <a href="https://www.notasdeoro.com" target="_blank" rel="noopener noreferrer">Notas de Oro</a>
           </div>
           <div>
+            <strong>DJ Tools</strong>
+            <a href="/dj/tools/#dj-players">DJ Players</a>
+            <a href="/dj/tools/#displays-projections">Displays &amp; Projections</a>
+            <a href="/dj/tools/#tanda-builders">Tanda Builders</a>
+            <a href="/dj/tools/#plugins-sound-quality">Plugins &amp; Sound Quality</a>
+          </div>
+          <div>
             <strong>Resources</strong>
             <a href="/dj/starter-kit/">DJ Starter Kit</a>
-            <a href="/dj/software/">DJ Tools</a>
             <a href="/discographies/">Discographies</a>
             <a href="/name-that-tango/">Name That Tango</a>
-            <a href="/dj/articles/">Resources</a>
+            <a href="/dj/articles/">Articles &amp; Links</a>
           </div>
           <div>
             <strong>Help</strong>
@@ -140,7 +159,33 @@ const absoluteOgImage = new URL(ogImage, Astro.site).href;
       document.querySelectorAll('.nav a').forEach((link) => {
         link.addEventListener('click', () => {
           document.querySelector('.nav')?.classList.remove('open');
+          document.querySelectorAll('.nav-group.open').forEach((g) => {
+            g.classList.remove('open');
+            g.querySelector('.nav-group-toggle')?.setAttribute('aria-expanded', 'false');
+          });
         });
+      });
+
+      // Dropdown groups (click for touch/mobile; hover handled in CSS)
+      document.querySelectorAll('.nav-group').forEach((group) => {
+        const toggle = group.querySelector('.nav-group-toggle');
+        toggle?.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const isOpen = group.classList.toggle('open');
+          toggle.setAttribute('aria-expanded', String(isOpen));
+        });
+      });
+
+      const closeGroups = () => {
+        document.querySelectorAll('.nav-group.open').forEach((g) => {
+          g.classList.remove('open');
+          g.querySelector('.nav-group-toggle')?.setAttribute('aria-expanded', 'false');
+        });
+      };
+
+      document.addEventListener('click', closeGroups);
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') closeGroups();
       });
 
       // Cookie consent banner (GDPR opt-in)
@@ -236,6 +281,97 @@ const absoluteOgImage = new URL(ogImage, Astro.site).href;
     color: var(--color-primary);
   }
 
+  /* Dropdown group */
+  .nav-group {
+    position: relative;
+  }
+
+  .nav-group-toggle {
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+    background: none;
+    border: none;
+    padding: 0;
+    font-family: inherit;
+    font-size: 1rem;
+    font-weight: 500;
+    color: var(--color-slate-600);
+    cursor: pointer;
+    transition: color 0.2s ease;
+  }
+
+  .nav-group-toggle:hover,
+  .nav-group-toggle.active {
+    color: var(--color-primary);
+  }
+
+  .nav-caret {
+    font-size: 0.7rem;
+    transition: transform 0.15s;
+  }
+
+  .nav-group.open .nav-caret {
+    transform: rotate(180deg);
+  }
+
+  .nav-dropdown {
+    display: none;
+    position: absolute;
+    top: calc(100% + 0.75rem);
+    left: 50%;
+    transform: translateX(-50%);
+    min-width: 230px;
+    background: white;
+    border: 1px solid var(--color-slate-200);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg);
+    padding: 0.5rem 0;
+    z-index: 150;
+  }
+
+  /* Invisible hover bridge so the pointer can travel to the dropdown */
+  .nav-dropdown::before {
+    content: '';
+    position: absolute;
+    top: -0.75rem;
+    left: 0;
+    right: 0;
+    height: 0.75rem;
+  }
+
+  .nav-group.open .nav-dropdown {
+    display: block;
+  }
+
+  @media (min-width: 769px) {
+    .nav-group:hover .nav-dropdown,
+    .nav-group:focus-within .nav-dropdown {
+      display: block;
+    }
+  }
+
+  .nav-dropdown a {
+    display: block;
+    padding: 0.45rem 1.25rem;
+    font-size: 0.95rem;
+    white-space: nowrap;
+  }
+
+  .nav-dropdown a:hover {
+    background: var(--color-orange-50);
+  }
+
+  .nav-dropdown a.nav-sub {
+    padding-left: 2rem;
+    font-size: 0.9rem;
+  }
+
+  .nav-dropdown-divider {
+    border-top: 1px solid var(--color-slate-200);
+    margin: 0.4rem 0;
+  }
+
   .nav-toggle {
     display: none;
     flex-direction: column;
@@ -288,6 +424,40 @@ const absoluteOgImage = new URL(ogImage, Astro.site).href;
 
     .nav-toggle {
       display: flex;
+    }
+
+    /* Dropdown renders inline inside the mobile panel */
+    .nav-group {
+      width: 100%;
+      text-align: center;
+    }
+
+    .nav-group-toggle {
+      width: 100%;
+      justify-content: center;
+    }
+
+    .nav-dropdown {
+      position: static;
+      transform: none;
+      min-width: 0;
+      border: none;
+      box-shadow: none;
+      background: var(--color-slate-50);
+      border-radius: var(--radius-md);
+      margin-top: 0.75rem;
+      padding: 0.5rem 0;
+    }
+
+    .nav-dropdown::before {
+      display: none;
+    }
+
+    .nav-dropdown a,
+    .nav-dropdown a.nav-sub {
+      padding: 0.5rem 1rem;
+      text-align: center;
+      white-space: normal;
     }
   }
 

@@ -1,0 +1,266 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PageHero from '../../../components/PageHero.astro';
+import { toolCategories, getToolsByCategory, isNew } from '../../../data/tools';
+---
+
+<BaseLayout title="DJ Tools" description="A directory of tools for tango DJs — players, displays and projections, tanda builders, and audio plugins. From The Tango Toolkit and the wider tango community.">
+  <PageHero
+    title="DJ Tools"
+    lead="Tools for tango DJs — from The Tango Toolkit and the wider tango community. Know a tool that belongs here? Tell us at tangotoolkit@gmail.com."
+  />
+
+  <nav class="category-nav" aria-label="Tool categories">
+    <div class="container category-chips">
+      {toolCategories.map((cat) => (
+        <a href={`#${cat.id}`} class="category-chip">{cat.title}</a>
+      ))}
+    </div>
+  </nav>
+
+  {toolCategories.map((cat, i) => {
+    const catTools = getToolsByCategory(cat.id);
+    return (
+      <section id={cat.id} class:list={['category-section', { 'alt-bg': i % 2 === 1 }]}>
+        <div class="container">
+          <h2>{cat.title}</h2>
+          <p class="category-blurb">{cat.blurb}</p>
+          {catTools.length === 0 ? (
+            <p class="category-empty">Nothing here yet — suggestions welcome at <a href="mailto:tangotoolkit@gmail.com">tangotoolkit@gmail.com</a>.</p>
+          ) : (
+            <div class="tool-grid">
+              {catTools.map((tool) => (
+                <a
+                  href={tool.url}
+                  class="tool-card"
+                  target={tool.external ? '_blank' : undefined}
+                  rel={tool.external ? 'noopener noreferrer' : undefined}
+                >
+                  <div class="tool-card-top">
+                    {tool.image ? (
+                      <picture>
+                        <source srcset={tool.image.replace(/\.png$/i, '.webp')} type="image/webp" />
+                        <img src={tool.image} alt="" class="tool-card-img" width="56" height="56" loading="lazy" decoding="async" />
+                      </picture>
+                    ) : (
+                      <div class="tool-card-img tool-card-img--placeholder" aria-hidden="true">&#127926;</div>
+                    )}
+                    <div class="tool-card-title">
+                      <h3>
+                        {tool.name}
+                        {isNew(tool) && <span class="new-badge">New</span>}
+                      </h3>
+                      <span class="tool-card-author">by {tool.author}</span>
+                    </div>
+                  </div>
+                  <p class="tool-card-tagline">{tool.tagline}</p>
+                  <p class="tool-card-desc">{tool.description}</p>
+                  <div class="tool-card-meta">
+                    <span class="price-chip">{tool.price}</span>
+                    {tool.platforms && <span class="platform-note">{tool.platforms.join(' · ')}</span>}
+                    <span class="tool-card-cta">{tool.external ? 'Visit Site ↗' : 'Details →'}</span>
+                  </div>
+                </a>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+    );
+  })}
+
+  <section class="suggest-section">
+    <div class="container">
+      <div class="callout callout-tip">
+        <strong>Made something for tango DJs?</strong>
+        <p>This directory is growing. If you built (or love) a tool that should be listed here, email <a href="mailto:tangotoolkit@gmail.com">tangotoolkit@gmail.com</a> and we&rsquo;ll check it out.</p>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  /* Category quick-nav */
+  .category-nav {
+    position: sticky;
+    top: var(--header-height);
+    z-index: 50;
+    background: white;
+    border-bottom: 1px solid var(--color-slate-200);
+    padding: 0.6rem 0;
+  }
+
+  .category-chips {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+
+  .category-chip {
+    padding: 0.3rem 0.9rem;
+    border: 1px solid var(--color-slate-300);
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--color-slate-600);
+    background: white;
+    transition: all 0.15s;
+  }
+
+  .category-chip:hover {
+    border-color: var(--color-orange-400);
+    color: var(--color-orange-700);
+    background: var(--color-orange-50);
+  }
+
+  /* Category sections */
+  .category-section {
+    padding: 2.5rem 0;
+    border-bottom: 1px solid var(--color-slate-200);
+    scroll-margin-top: calc(var(--header-height) + 3.5rem);
+  }
+
+  .category-section.alt-bg {
+    background: var(--color-slate-50);
+  }
+
+  .category-section h2 {
+    margin: 0 0 0.35rem;
+    font-size: 1.75rem;
+  }
+
+  .category-blurb {
+    margin: 0 0 1.5rem;
+    color: var(--color-slate-600);
+    max-width: 65ch;
+  }
+
+  .category-empty {
+    color: var(--color-slate-500);
+    font-size: 0.95rem;
+  }
+
+  /* Tool cards */
+  .tool-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 1.25rem;
+  }
+
+  .tool-card {
+    display: flex;
+    flex-direction: column;
+    background: white;
+    border: 1px solid var(--color-slate-200);
+    border-radius: var(--radius-lg);
+    padding: 1.25rem;
+    color: inherit;
+    text-decoration: none;
+    transition: all 0.2s;
+  }
+
+  .alt-bg .tool-card {
+    border-color: var(--color-slate-300);
+  }
+
+  .tool-card:hover {
+    border-color: var(--color-orange-400);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+
+  .tool-card-top {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .tool-card-img {
+    width: 56px;
+    height: 56px;
+    border-radius: var(--radius-md);
+    object-fit: contain;
+    background: var(--color-slate-100);
+    flex-shrink: 0;
+  }
+
+  .tool-card-img--placeholder {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+  }
+
+  .tool-card-title h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .tool-card-author {
+    font-size: 0.8rem;
+    color: var(--color-slate-500);
+  }
+
+  .new-badge {
+    font-family: var(--font-sans);
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    background: var(--color-orange-500);
+    color: white;
+    padding: 0.1rem 0.45rem;
+    border-radius: 999px;
+  }
+
+  .tool-card-tagline {
+    margin: 0 0 0.5rem;
+    font-style: italic;
+    color: var(--color-orange-600);
+    font-size: 0.9rem;
+  }
+
+  .tool-card-desc {
+    margin: 0 0 1rem;
+    color: var(--color-slate-600);
+    font-size: 0.92rem;
+    line-height: 1.55;
+    flex: 1;
+  }
+
+  .tool-card-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+
+  .price-chip {
+    font-size: 0.8rem;
+    font-weight: 600;
+    padding: 0.15rem 0.6rem;
+    border-radius: 999px;
+    background: var(--color-orange-100);
+    color: var(--color-orange-700);
+  }
+
+  .platform-note {
+    font-size: 0.78rem;
+    color: var(--color-slate-500);
+  }
+
+  .tool-card-cta {
+    margin-left: auto;
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--color-primary);
+  }
+
+  .suggest-section {
+    padding: 2rem 0 0;
+  }
+</style>

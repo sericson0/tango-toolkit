@@ -39,13 +39,13 @@ const productSchemas = products.map((p) => {
 });
 ---
 
-<BaseLayout title="DJ Tools" description="Software and plugins built for tango DJs. Download free tools and pro-level utilities for music management, audio restoration, and tanda building." ogImage="/images/TigerTangoLogo.png">
+<BaseLayout title="Tango Toolkit Software" description="Software and plugins built by The Tango Toolkit for tango DJs. Download free tools and pro-level utilities for music management, audio restoration, and tanda building." ogImage="/images/TigerTangoLogo.png">
   <Fragment slot="head">
     {productSchemas.map((schema) => (
       <script type="application/ld+json" set:html={JSON.stringify(schema)} />
     ))}
   </Fragment>
-  <PageHero title="DJ Tools" lead="Software and plugins built for tango DJs." />
+  <PageHero title="Tango Toolkit Software" lead="Software and plugins built by The Tango Toolkit — downloads, purchase, and installation." backHref="/dj/tools/" backText="Back to DJ Tools" />
     <div class="email-opt-in">
       Sign up here to stay up to date on the latest news, features, and releases.
       <form class="email-gate-form" data-product-id="tigertango" data-optional="true">
