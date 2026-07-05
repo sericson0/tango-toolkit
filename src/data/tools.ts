@@ -111,12 +111,14 @@ export const tools: Tool[] = [
     id: 'tangodisplay',
     name: 'TangoDisplay',
     tagline: 'Track info on a second screen, with cortina detection',
-    description: 'Native macOS menu-bar app that shows the current track (artist, title, genre, year) on an external monitor and automatically detects cortinas. Works with Music.app, Swinsian, Embrace, and JRiver — or use its own built-in tango player. Free and open source.',
+    description: 'A native macOS menu-bar app that shows a clean, fullscreen dancer display on an external monitor at milongas. \
+                  Automatically detects cortinas, and shows track info — artist, title, genre, year, and tanda position. \
+                  Also has built in music player. <strong>Free and open source.</strong>',
     category: 'displays-projections',
     author: 'Richard Slade',
     url: 'https://github.com/richardsladetdj-creator/TangoDisplay',
     external: true,
-    downloadUrl: 'https://github.com/richardsladetdj-creator/TangoDisplay/releases/latest',
+    downloadUrl: '/api/github-latest-asset?repo=richardsladetdj-creator/TangoDisplay',
     price: 'Free',
     platforms: ['macOS 13+'],
     image: '/images/TangoDisplay.png',

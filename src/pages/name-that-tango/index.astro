@@ -728,6 +728,13 @@ import { eras } from '../../data/eras';
   }
   .ntt-match-slot.is-filled { border-style: solid; border-color: var(--color-slate-200); background: transparent; padding: 0; }
   .ntt-match-slot.is-filled .ntt-match-chip { cursor: pointer; width: 100%; }
+  /* A tile is picked up (tap-to-place): show where it can land. */
+  .ntt-match-slot.is-drop-target {
+    border-color: var(--color-primary);
+    background: var(--color-orange-50);
+    box-shadow: 0 0 0 3px var(--color-orange-100, var(--color-orange-50));
+  }
+  .ntt-match-slot.is-filled.is-drop-target { border-style: solid; background: var(--color-orange-50); }
   .ntt-match-slot-placeholder { font-size: 0.85rem; color: var(--color-slate-400); }
   .ntt-match-title-line { font-size: 0.9rem; }
   .ntt-match-title-line .ntt-meta-title { font-size: 1rem; }
@@ -738,5 +745,11 @@ import { eras } from '../../data/eras';
     .ntt-detail-grid { grid-template-columns: 1fr 1fr; }
     .ntt-span3 { grid-column: 1 / -1; }
     .ntt-match-rows { grid-template-columns: 1fr; }
+
+    /* Roomier tap targets for the matching game on touch screens. */
+    .ntt-match-chip { padding: 0.6rem 0.85rem; font-size: 0.95rem; }
+    .ntt-match-chips { gap: 0.6rem; min-height: 3rem; }
+    .ntt-match-slot { min-height: 3.1rem; }
+    .ntt-match-slot-placeholder { font-size: 0.9rem; }
   }
 </style>

@@ -11,11 +11,12 @@
   "workspace": {
     "packageJson": {
       "dependencies": [
-        "npm:@astrojs/mdx@^3.1.0",
+        "npm:@astrojs/check@~0.9.8",
+        "npm:@astrojs/sitemap@^3.2.1",
         "npm:astro@^4.16.0",
         "npm:netlify-cli@^23.15.1",
         "npm:stripe@21",
-        "npm:typescript@^5.6.0"
+        "npm:typescript@^5.9.3"
       ]
     }
   }

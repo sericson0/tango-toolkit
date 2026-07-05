@@ -33,6 +33,13 @@ var matchingStopTimer = null;
 
 var exitCallback = null;
 
+// Touch-primary devices (phones/tablets) can't use native HTML5 drag-and-drop
+// — there's no drop event on touch — and worse, marking a tile draggable makes
+// a tap that slips a pixel register as a drag-start instead of a click, so the
+// tiles feel dead. On those devices we turn drag off and lean entirely on
+// tap-to-place. Hybrid touch laptops report (hover: hover) and are unaffected.
+var IS_TOUCH = !!(window.matchMedia && window.matchMedia('(hover: none) and (pointer: coarse)').matches);
+
 export function initMatching(callbacks) {
   exitCallback = callbacks.onExit;
 }
@@ -81,6 +88,20 @@ function renderMatchingBoard() {
   if (matchingGraded) { renderMatchingResults(); return; }
   matchingBoard.innerHTML = matchingCfg.writein ? matchingWriteinHtml() : matchingDragHtml();
   if (matchingCfg.writein) attachMatchingTypeaheads();
+  else updateMatchingHint();
+}
+
+// Reflects the current tap-to-place state in the hint line: while a tile is
+// picked up it tells you what to do next; otherwise it explains how to start,
+// phrased for touch vs. pointer.
+function updateMatchingHint() {
+  if (matchingSelectedChip) {
+    matchingHint.textContent = 'Now tap a highlighted slot to place “' + matchingSelectedChip.value + '” — or tap the tile again to cancel.';
+  } else {
+    matchingHint.textContent = IS_TOUCH
+      ? 'Tap a tile below, then tap the clip’s slot to place it.'
+      : 'Drag a tile onto its clip — or tap a tile, then tap a clip to place it.';
+  }
 }
 
 function matchingWriteinHtml() {
@@ -162,13 +183,16 @@ function matchingChipHtml(type, value, fromIdx) {
   var thumb = type === 'orch' ? personThumb('bandleaders', value) : '';
   var cls = 'ntt-match-chip' + (thumb ? ' ntt-match-chip-thumb' : '') + (selected ? ' is-selected' : '');
   var fromAttr = fromIdx !== null ? ' data-from-idx="' + fromIdx + '"' : '';
-  return '<div class="' + cls + '" draggable="true" tabindex="0" role="button" ' +
+  return '<div class="' + cls + '" draggable="' + (IS_TOUCH ? 'false' : 'true') + '" tabindex="0" role="button" ' +
     'data-chip-type="' + type + '" data-value="' + esc(value) + '"' + fromAttr + '>' + thumb + '<span>' + esc(value) + '</span></div>';
 }
 
 function matchingSlotHtml(idx, type, placeholder) {
   var value = matchingPlacements[idx][type];
-  var html = '<div class="ntt-match-slot' + (value ? ' is-filled' : '') + '" data-idx="' + idx + '" ' +
+  // When a tile is picked up (tap-to-place), light up every slot it could go
+  // into so it's obvious where to tap next — the whole point on touch.
+  var isTarget = matchingSelectedChip && matchingSelectedChip.type === type;
+  var html = '<div class="ntt-match-slot' + (value ? ' is-filled' : '') + (isTarget ? ' is-drop-target' : '') + '" data-idx="' + idx + '" ' +
     'data-slot-type="' + type + '" tabindex="0" role="button">';
   html += value ? matchingChipHtml(type, value, idx) : '<span class="ntt-match-slot-placeholder">' + esc(placeholder) + '</span>';
   html += '</div>';
@@ -230,11 +254,20 @@ matchingBoard.addEventListener('click', function (e) {
   if (chip) {
     var type = chip.getAttribute('data-chip-type');
     var value = chip.getAttribute('data-value');
-    matchingSelectedChip = (matchingSelectedChip && matchingSelectedChip.type === type && matchingSelectedChip.value === value)
-      ? null : { type: type, value: value };
+    var picking = !(matchingSelectedChip && matchingSelectedChip.type === type && matchingSelectedChip.value === value);
+    matchingSelectedChip = picking ? { type: type, value: value } : null;
     renderMatchingBoard();
+    // On a phone the slots are usually scrolled off-screen above the tile
+    // bank; bring the next open one into view so the picked-up tile has a
+    // visible home to tap.
+    if (picking && IS_TOUCH) scrollToFirstOpenSlot(type);
   }
 });
+
+function scrollToFirstOpenSlot(type) {
+  var el = matchingBoard.querySelector('.ntt-match-slot[data-slot-type="' + type + '"]:not(.is-filled)');
+  if (el && el.scrollIntoView) el.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+}
 
 matchingBoard.addEventListener('keydown', function (e) {
   if (e.key !== 'Enter' && e.key !== ' ' && e.key !== 'Spacebar') return;

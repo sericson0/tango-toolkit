@@ -49,7 +49,7 @@ import { toolCategories, getToolsByCategory, isNew } from '../../../data/tools';
                     </div>
                   </div>
                   <p class="tool-card-tagline">{tool.tagline}</p>
-                  <p class="tool-card-desc">{tool.description}</p>
+                  <p class="tool-card-desc" set:html={tool.description} />
                   <div class="tool-card-meta">
                     <span class="price-chip">{tool.price}</span>
                     {tool.platforms && <span class="platform-note">{tool.platforms.join(' · ')}</span>}

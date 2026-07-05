@@ -82,9 +82,9 @@ export var MODULES = {
   // `match` config sets the board size and whether titles are matched too.
   matching: {
     levels: [
-      { label: 'Intro', desc: 'Match 4 clips to 4 orchestras (drag & drop)', match: { count: 4, titles: false, writein: false } },
-      { label: 'Medium', desc: 'Match 4 clips to their orchestras and titles (drag & drop)', match: { count: 4, titles: true, writein: false } },
-      { label: 'Advanced', desc: 'Match 5 clips to their orchestras and titles (drag & drop)', match: { count: 5, titles: true, writein: false } },
+      { label: 'Intro', desc: 'Match 4 clips to 4 orchestras (drag or tap)', match: { count: 4, titles: false, writein: false } },
+      { label: 'Medium', desc: 'Match 4 clips to their orchestras and titles (drag or tap)', match: { count: 4, titles: true, writein: false } },
+      { label: 'Advanced', desc: 'Match 5 clips to their orchestras and titles (drag or tap)', match: { count: 5, titles: true, writein: false } },
       { label: 'Challenge', desc: 'Type the orchestra and title for 5 clips', match: { count: 5, titles: true, writein: true } }
     ]
   }
