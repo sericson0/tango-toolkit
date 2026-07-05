@@ -30,12 +30,7 @@ import { toolCategories, getToolsByCategory, isNew } from '../../../data/tools';
           ) : (
             <div class="tool-grid">
               {catTools.map((tool) => (
-                <a
-                  href={tool.url}
-                  class="tool-card"
-                  target={tool.external ? '_blank' : undefined}
-                  rel={tool.external ? 'noopener noreferrer' : undefined}
-                >
+                <article class="tool-card">
                   <div class="tool-card-top">
                     {tool.image ? (
                       <picture>
@@ -58,9 +53,24 @@ import { toolCategories, getToolsByCategory, isNew } from '../../../data/tools';
                   <div class="tool-card-meta">
                     <span class="price-chip">{tool.price}</span>
                     {tool.platforms && <span class="platform-note">{tool.platforms.join(' · ')}</span>}
-                    <span class="tool-card-cta">{tool.external ? 'Visit Site ↗' : 'Details →'}</span>
+                    <span class="tool-card-actions">
+                      {tool.downloadUrl && (
+                        <a
+                          href={tool.downloadUrl}
+                          class="tool-card-dl"
+                          target={tool.external ? '_blank' : undefined}
+                          rel={tool.external ? 'noopener noreferrer' : undefined}
+                        >Download</a>
+                      )}
+                      <a
+                        href={tool.url}
+                        class="tool-card-cta"
+                        target={tool.external ? '_blank' : undefined}
+                        rel={tool.external ? 'noopener noreferrer' : undefined}
+                      >{tool.external ? 'Visit Site ↗' : 'Details →'}</a>
+                    </span>
                   </div>
-                </a>
+                </article>
               ))}
             </div>
           )}
@@ -148,6 +158,7 @@ import { toolCategories, getToolsByCategory, isNew } from '../../../data/tools';
   }
 
   .tool-card {
+    position: relative;
     display: flex;
     flex-direction: column;
     background: white;
@@ -253,11 +264,45 @@ import { toolCategories, getToolsByCategory, isNew } from '../../../data/tools';
     color: var(--color-slate-500);
   }
 
-  .tool-card-cta {
+  .tool-card-actions {
     margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  /* Primary link stretches over the whole card */
+  .tool-card-cta {
     font-size: 0.88rem;
     font-weight: 600;
     color: var(--color-primary);
+    white-space: nowrap;
+  }
+
+  .tool-card-cta::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-lg);
+  }
+
+  /* Download button sits above the stretched link */
+  .tool-card-dl {
+    position: relative;
+    z-index: 1;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: white;
+    background: var(--color-primary);
+    padding: 0.3rem 0.8rem;
+    border-radius: var(--radius-md);
+    white-space: nowrap;
+    transition: background 0.2s;
+  }
+
+  .tool-card-dl:hover {
+    background: var(--color-primary-hover);
+    color: white;
   }
 
   .suggest-section {

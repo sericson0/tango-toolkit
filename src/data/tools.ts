@@ -68,6 +68,8 @@ export interface Tool {
   url: string;
   /** true → link opens in a new tab (third-party sites). */
   external?: boolean;
+  /** Optional direct download link — renders a Download button on the card. */
+  downloadUrl?: string;
   price: string;
   platforms?: string[];
   image?: string;
@@ -104,6 +106,21 @@ export const tools: Tool[] = [
     platforms: ['Windows', 'macOS'],
     image: '/images/TigerTangoLogo.png',
     dateAdded: '2026-04-17',
+  },
+  {
+    id: 'tangodisplay',
+    name: 'TangoDisplay',
+    tagline: 'Track info on a second screen, with cortina detection',
+    description: 'Native macOS menu-bar app that shows the current track (artist, title, genre, year) on an external monitor and automatically detects cortinas. Works with Music.app, Swinsian, Embrace, and JRiver — or use its own built-in tango player. Free and open source.',
+    category: 'displays-projections',
+    author: 'Richard Slade',
+    url: 'https://github.com/richardsladetdj-creator/TangoDisplay',
+    external: true,
+    downloadUrl: 'https://github.com/richardsladetdj-creator/TangoDisplay/releases/latest',
+    price: 'Free',
+    platforms: ['macOS 13+'],
+    image: '/images/TangoDisplay.png',
+    dateAdded: '2026-07-04',
   },
 
   // ===== Tanda Builders =====
