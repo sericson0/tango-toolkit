@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import RegisterGate from '../../components/RegisterGate.astro';
 import { eras } from '../../data/eras';
 ---
 
@@ -168,6 +169,8 @@ import { eras } from '../../data/eras';
   <script>
     import '../../scripts/name-that-tango/main.js';
   </script>
+
+  <RegisterGate toolName="Name That Tango" />
 </BaseLayout>
 
 <style is:global>

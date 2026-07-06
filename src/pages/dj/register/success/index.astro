@@ -26,6 +26,12 @@ import BaseLayout from '../../../../layouts/BaseLayout.astro';
       </div>
     </div>
   </section>
+
+  <script>
+    // Reaching the success page means they registered — make sure the tool
+    // "want to register?" popup (RegisterGate) never appears for them.
+    try { localStorage.setItem('tt-registered', '1'); } catch { /* ignore */ }
+  </script>
 </BaseLayout>
 
 <style>

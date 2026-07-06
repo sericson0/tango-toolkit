@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
+import RegisterGate from '../../../components/RegisterGate.astro';
 ---
 
 <BaseLayout title="Tanda Builder" description="Search the tango discography and find songs for your tandas.">
@@ -106,6 +107,8 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
     </div>
 
   </div>
+
+  <RegisterGate toolName="the Tanda Builder" />
 
   <!-- Papa Parse CDN -->
   <script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>

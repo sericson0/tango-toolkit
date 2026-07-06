@@ -2,10 +2,12 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageHero from '../../components/PageHero.astro';
 import SupportModal from '../../components/SupportModal.astro';
+import RegisterGate from '../../components/RegisterGate.astro';
+import { songCount, artistCount, songCountFormatted } from '../../data/discographyStats';
 ---
 
-<BaseLayout title="Discographies — Tango DJ" description="Argentine tango discographies for 40+ bandleaders with more than 15,000 songs. Browse, filter, and download discography data.">
-  <PageHero title="Discographies" lead="More than 15,000 tangos from more than 40 artists" compact />
+<BaseLayout title="Discographies — Tango DJ" description={`Argentine tango discographies for ${artistCount} bandleaders with ${songCountFormatted} songs. Browse, filter, and download discography data.`}>
+  <PageHero title="Discographies" lead={`${songCountFormatted} tangos from ${artistCount} artists`} compact />
 
   <!-- ===== Description, References, Article — above the embed ===== -->
   <section class="intro-section">
@@ -19,7 +21,7 @@ import SupportModal from '../../components/SupportModal.astro';
         <summary><strong>About These Discographies</strong></summary>
         <div class="expander-body">
           <div class="disco-description">
-            <p>The following discography consists of more than 15,000 songs across more than 40 tango artists. We have tried our best to make these discographies correct and complete, but with any project of this scale there are guaranteed to be errors. If you find any, please let us know at <a href="mailto:tangotoolkit@gmail.com">tangotoolkit@gmail.com</a>.</p>
+            <p>The following discography consists of {songCountFormatted} songs across {artistCount} tango artists. We have tried our best to make these discographies correct and complete, but with any project of this scale there are guaranteed to be errors. If you find any, please let us know at <a href="mailto:tangotoolkit@gmail.com">tangotoolkit@gmail.com</a>.</p>
             <p>Feel free to use these discographies however you see fit. We would love to hear if you find them useful. If you do, make sure to let your friends know about this resource!</p>
             <p>The data presented here is a compilation of sources. While it certainly took effort, it was nothing compared to the monumental efforts of the researchers who meticulously compiled the information. We highly recommend you look up the references below. In addition to providing invaluable information on artist discographies, they also provide valuable notes and resources for tango DJs, historians, and aficionados.</p>
             <p><strong>Note:</strong> The data has been subset to only include songs categorized as Tango, Vals, or Milonga. Candombe recordings are grouped under Milonga.</p>
@@ -55,6 +57,12 @@ import SupportModal from '../../components/SupportModal.astro';
               <h4><a href="https://www.tango-dj.at/" target="_blank" rel="noopener noreferrer">Tango-DJ.at</a></h4>
               <p class="ref-subtitle">Association for the preservation and provision of Argentine Tango</p>
               <p>Tango-DJ.at provides a vast database of tango discography information. This has been especially useful for searching and cross-referencing composer and author information. Tango-DJ.at is especially useful for DJs who want to compare different versions of a given recording to select the highest quality release.</p>
+            </div>
+
+            <div class="ref-item">
+              <h4><a href="https://cavalieritdj.es/#recursos" target="_blank" rel="noopener noreferrer">Ignacio Cavalieri</a></h4>
+              <p class="ref-subtitle">A tango DJ and vinyl collector's research library, built with great care</p>
+              <p>Ignacio Cavalieri has assembled a wonderful set of resources for the tango community, including carefully compiled artist discographies, poet archives, and an extensive lyrics library. It is a great discography and a valuable reference for DJs and researchers alike.</p>
             </div>
 
             <div class="ref-item">
@@ -110,6 +118,8 @@ import SupportModal from '../../components/SupportModal.astro';
       ></iframe>
     </div>
   </section>
+
+  <RegisterGate toolName="the discographies" />
 </BaseLayout>
 
 <style>

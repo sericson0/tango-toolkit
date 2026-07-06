@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import PageHero from '../../../components/PageHero.astro';
+import { artistCount, songCountFormatted } from '../../../data/discographyStats';
 ---
 
 <BaseLayout title="Resources & Links — Tango DJ" description="Useful resources for tango DJs, dancers, and music lovers." ogImage="/images/Stages%20of%20Music.png">
@@ -33,6 +34,20 @@ import PageHero from '../../../components/PageHero.astro';
           <p>Notas de Oro explores the history and music of the Golden Age of tango orchestras. Learn to recognize the orchestras, understand the meaning behind the lyrics, and discover the history and the dramatic stories behind the tangos we love to listen and dance to. One song per week, one orchestra per month.</p>
           <span class="card-cta">Visit Notas de Oro &rarr;</span>
         </a>
+
+        <a href="https://cavalieritdj.es/#recursos" target="_blank" rel="noopener noreferrer" class="link-card">
+          <strong>Ignacio Cavalieri Discography</strong>
+          <p class="link-card-tagline">A tango DJ and vinyl collector&rsquo;s research library.</p>
+          <p>Ignacio Cavalieri has assembled a wonderful set of resources for the tango community, including carefully compiled artist discographies, poet archives, and an extensive lyrics library &mdash; a great discography and a valuable reference for DJs and researchers alike.</p>
+          <span class="card-cta">Visit Ignacio Cavalieri &rarr;</span>
+        </a>
+
+        <a href="https://www.fresedo.de/" target="_blank" rel="noopener noreferrer" class="link-card">
+          <strong>Fresedo.de</strong>
+          <p class="link-card-tagline">A deep dive into Osvaldo Fresedo and his music.</p>
+          <p>A dedicated resource exploring the life, orchestras, and recordings of Osvaldo Fresedo &mdash; one of tango&rsquo;s most enduring and elegant bandleaders.</p>
+          <span class="card-cta">Visit Fresedo.de &rarr;</span>
+        </a>
       </div>
     </div>
   </section>
@@ -51,7 +66,7 @@ import PageHero from '../../../components/PageHero.astro';
         </a>
         <a href="/discographies/" class="link-card">
           <strong>Discographies</strong>
-          <p>More than 15,000 tangos from more than 40 artists.</p>
+          <p>{songCountFormatted} tangos from {artistCount} artists.</p>
         </a>
         <a href="/dj/faq/" class="link-card">
           <strong>FAQ & Changelog</strong>
