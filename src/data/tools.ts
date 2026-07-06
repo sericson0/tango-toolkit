@@ -62,6 +62,8 @@ export interface Tool {
   tagline: string;
   description: string;
   category: ToolCategoryId;
+  /** Extra categories this tool also appears under (in addition to `category`). */
+  categories?: ToolCategoryId[];
   /** Who makes it — 'The Tango Toolkit' for our own software. */
   author: string;
   /** Details page (internal path) or the tool's website (external URL). */
@@ -92,6 +94,23 @@ export const tools: Tool[] = [
     image: '/images/TigerTangoLogo.png',
     dateAdded: '2026-04-17',
   },
+  {
+    id: 'eleje-player',
+    name: 'El Eje Player',
+    tagline: 'A native macOS player built for tango',
+    description: 'A native macOS app that organizes, understands, and plays Golden-Age tango the \
+              way a DJ works a milonga: key &amp; BPM detection, pitch-preserving tempo, per-track EQ, \
+              tanda building, synced lyrics with translation, a lunfardo thesaurus, and built-in learning \
+              decks. Comes with an iOS companion app. <strong>Currently in free private beta.</strong>',
+    category: 'dj-players',
+    author: 'Abbas Kazemipour',
+    url: 'https://el-eje.com/eleje-player',
+    external: true,
+    price: 'Free (beta)',
+    platforms: ['macOS 13+'],
+    image: '/images/eleje-player.png',
+    dateAdded: '2026-07-05',
+  },
 
   // ===== Displays & Projections =====
   {
@@ -111,10 +130,12 @@ export const tools: Tool[] = [
     id: 'tangodisplay',
     name: 'TangoDisplay',
     tagline: 'Track info on a second screen, with cortina detection',
-    description: 'A native macOS menu-bar app that shows a clean, fullscreen dancer display on an external monitor at milongas. \
-                  Automatically detects cortinas, and shows track info — artist, title, genre, year, and tanda position. \
-                  Also has built in music player. <strong>Free and open source.</strong>',
+    description: 'A fully featured tango-centred audio player and clean, live dancer display in one.\
+                 Use Setlist, the built-in player or your favourite music player. \
+                 Auto-detects cortinas and shows track info, album art and custom \
+                 backgrounds <strong>Free and open source.</strong>',
     category: 'displays-projections',
+    categories: ['dj-players'],
     author: 'Richard Slade',
     url: 'https://github.com/richardsladetdj-creator/TangoDisplay',
     external: true,
@@ -195,7 +216,9 @@ export const tools: Tool[] = [
 ];
 
 export function getToolsByCategory(categoryId: ToolCategoryId): Tool[] {
-  return tools.filter((t) => t.category === categoryId);
+  return tools.filter(
+    (t) => t.category === categoryId || t.categories?.includes(categoryId)
+  );
 }
 
 /** Tools added within the last `days` days (build-time), newest first. */

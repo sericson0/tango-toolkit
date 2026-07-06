@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../../../layouts/BaseLayout.astro';
 import PageHero from '../../../../components/PageHero.astro';
+import DonationGate from '../../../../components/DonationGate.astro';
 
 const setI = [
   { group: 1, artist: "D'Arienzo", singer: "Instrumental", era: "1936", songs: [
@@ -116,6 +117,63 @@ const setII = [
   ]},
 ];
 
+const setIII = [
+  { group: 1, artist: "Rodolfo Biagi", genre: "Milonga", singer: "Various", era: "1939–1948", songs: [
+    { title: "Campo Afuera", singer: "Teófilo Ibáñez", date: "4/27/39" }, { title: "Cantando se van las penas", singer: "Jorge Ortiz", date: "6/28/40" }, { title: "Flor de Monserrat", singer: "Alberto Amor", date: "11/30/45" }, { title: "Por la Güeya", singer: "Carlos Saavedra", date: "7/22/48" }, { title: "Soy del 90", singer: "Carlos Acuña", date: "7/8/43" }, { title: "Con Mi Perro", singer: "Amor Alberto", date: "7/10/46" }, { title: "Picante", singer: "Instrumental", date: "10/21/41" }
+  ]},
+  { group: 2, artist: "Aníbal Troilo", genre: "Vals", singer: "Various", era: "1942–1948", songs: [
+    { title: "Valsecito Amigo", singer: "Francisco Fiorentino", date: "3/25/43" }, { title: "Palomita Blanca", singer: "Marion y Ruiz", date: "11/23/44" }, { title: "Temblando", singer: "Francisco Fiorentino", date: "3/30/44" }, { title: "Flor De Lino", singer: "Roberto Ruiz", date: "4/29/47" }, { title: "Romance De Barrio", singer: "Roberto Ruiz", date: "8/19/47" }, { title: "Lagrimitas De Mi Corazón", singer: "Ruiz y Rivero", date: "7/8/48" }, { title: "Pedacito De Cielo", singer: "Francisco Fiorentino", date: "9/10/42" }, { title: "Soñar Y Nada Más", singer: "Fiorentino y Mandarino", date: "8/4/43" }
+  ]},
+  { group: 3, artist: "Lucio Demare", genre: "Vals", singer: "Various", era: "1942–1944", songs: [
+    { title: "Se Fue", singer: "Berón", date: "7/13/43" }, { title: "Dos Corazones", singer: "Quintana", date: "9/25/44" }, { title: "Nunca Supe Porque", singer: "Miranda", date: "7/20/42" }, { title: "No Nos Veremos Más", singer: "Berón", date: "2/11/43" }, { title: "Al Pasar", singer: "Berón", date: "9/3/43" }
+  ]},
+  { group: 4, artist: "Enrique Rodríguez", genre: "Vals", singer: "Various", era: "1939–1947", songs: [
+    { title: "Tengo mil novias", singer: "Roberto Flores", date: "10/10/39" }, { title: "Por aquí... por alla", singer: "Armando Moreno", date: "6/4/40" }, { title: "Isabelita", singer: "Armando Moreno", date: "8/14/40" }, { title: "Con tu mirar", singer: "Armando Moreno", date: "9/24/41" }, { title: "La Piconeros", singer: "Roberto Flores", date: "2/1/39" }, { title: "Mañana Por la Mañana", singer: "Ricardo Herrera", date: "1/17/47" }, { title: "Fru Fru", singer: "Roberto Flores", date: "6/5/39" }
+  ]},
+  { group: 5, artist: "Juan D'Arienzo", genre: "Vals", singer: "Instrumental", era: "1935–1937", songs: [
+    { title: "Desde el Alma", singer: "Instrumental", date: "7/2/35" }, { title: "Pabellón De Las Rosas", singer: "Instrumental", date: "12/12/35" }, { title: "Francia", singer: "Instrumental", date: "10/3/35" }, { title: "Inolvidable", singer: "Instrumental", date: "8/5/36" }, { title: "Corazón de Artista", singer: "Instrumental", date: "11/27/36" }, { title: "Amor y Celo", singer: "Instrumental", date: "9/3/36" }, { title: "Valsecito Criollo", singer: "Instrumental", date: "7/26/37" }, { title: "Pasión", singer: "Instrumental", date: "7/2/37" }, { title: "Alma Dolorida", singer: "Instrumental", date: "3/5/37" }
+  ]},
+  { group: 6, artist: "Ricardo Tanturi", genre: "Tango", singer: "Enrique Campos", era: "1943–1945", songs: [
+    { title: "Muchachos Comienza la Ronda", singer: "Enrique Campos", date: "8/6/43" }, { title: "Una Emoción", singer: "Enrique Campos", date: "11/17/43" }, { title: "Que Nunca Me Falte", singer: "Enrique Campos", date: "11/17/43" }, { title: "Malvón", singer: "Enrique Campos", date: "11/17/43" }, { title: "Recién", singer: "Enrique Campos", date: "3/24/44" }, { title: "Cantor de Barrio", singer: "Enrique Campos", date: "7/13/45" }, { title: "Ivón", singer: "Enrique Campos", date: "9/5/45" }, { title: "Oigo tu voz", singer: "Enrique Campos", date: "11/17/43" }, { title: "Igual que un bandoneón", singer: "Enrique Campos", date: "12/13/44" }, { title: "Sollozo de bandoneón", singer: "Enrique Campos", date: "12/16/43" }
+  ]},
+  { group: 7, artist: "Angel D'Agostino", genre: "Tango", singer: "Angel Vargas", era: "1941–1942", songs: [
+    { title: "Adiós Arrabal", singer: "Angel Vargas", date: "9/9/41" }, { title: "Agua Florida", singer: "Angel Vargas", date: "11/13/41" }, { title: "Ahora No Me Conocés", singer: "Angel Vargas", date: "9/9/41" }, { title: "El Yacaré", singer: "Angel Vargas", date: "12/12/41" }, { title: "Tres Esquinas", singer: "Angel Vargas", date: "7/24/41" }, { title: "Una Pena", singer: "Angel Vargas", date: "11/5/41" }, { title: "Adiós Para Siempre", singer: "Angel Vargas", date: "3/16/42" }, { title: "Barrio De Tango", singer: "Angel Vargas", date: "3/16/42" }, { title: "Pero Yo Sé", singer: "Angel Vargas", date: "9/2/42" }
+  ]},
+  { group: 8, artist: "Angel D'Agostino", genre: "Tango", singer: "Angel Vargas", era: "1943–1945", songs: [
+    { title: "Me Llaman Tango", singer: "Angel Vargas", date: "4/30/43" }, { title: "Un Tango Argentino", singer: "Angel Vargas", date: "9/3/43" }, { title: "Madreselva", singer: "Angel Vargas", date: "12/5/44" }, { title: "Mano Blanca", singer: "Angel Vargas", date: "3/9/44" }, { title: "Mi Viejo Barrio", singer: "Angel Vargas", date: "8/8/44" }, { title: "Rondando Tu Esquina", singer: "Angel Vargas", date: "11/2/45" }, { title: "A Quién Le Puede Importar", singer: "Angel Vargas", date: "8/7/45" }, { title: "No Vendrá", singer: "Angel Vargas", date: "11/2/45" }
+  ]},
+  { group: 9, artist: "Alfredo De Angelis", genre: "Tango", singer: "Various", era: "1943–1956", songs: [
+    { title: "Marioneta", singer: "Ruiz", date: "7/23/43" }, { title: "Bajo el Cono Azul", singer: "Ruiz y Rodi", date: "2/29/44" }, { title: "Dejame Así", singer: "Ruiz", date: "8/10/43" }, { title: "Remolino", singer: "Dante y Martel", date: "5/24/46" }, { title: "Pregonera", singer: "Dante y Martel", date: "3/26/45" }, { title: "Adiós Marinero", singer: "Dante y Martel", date: "12/27/46" }, { title: "Fumando Espero", singer: "Dante", date: "4/3/56" }, { title: "Bajo Belgrano", singer: "Martel", date: "4/20/49" }
+  ]},
+  { group: 10, artist: "Carlos Di Sarli", genre: "Tango", singer: "Instrumental", era: "1942–1945", songs: [
+    { title: "Milonguero Viejo", singer: "Instrumental", date: "7/11/44" }, { title: "A la Gran Muñeca", singer: "Instrumental", date: "8/29/45" }, { title: "El Ingeniero", singer: "Instrumental", date: "2/20/45" }, { title: "Champagne Tango", singer: "Instrumental", date: "7/20/44" }, { title: "Rodríguez Peña", singer: "Instrumental", date: "1/3/45" }, { title: "Organito De La Tarde", singer: "Instrumental", date: "11/30/42" }, { title: "El Amanecer", singer: "Instrumental", date: "6/23/42" }, { title: "El Jagüel", singer: "Instrumental", date: "11/4/43" }, { title: "Ensueños", singer: "Instrumental", date: "9/7/43" }, { title: "Nueve Puntos", singer: "Instrumental", date: "5/5/43" }
+  ]},
+  { group: 11, artist: "Juan D'Arienzo", genre: "Tango", singer: "Echague", era: "1938–1939", songs: [
+    { title: "Ansiedad", singer: "Echague", date: "11/9/38" }, { title: "Qué Importa", singer: "Echague", date: "9/27/39" }, { title: "El Vino Triste", singer: "Echague", date: "9/1/39" }, { title: "Santa Milonguita", singer: "Echague", date: "9/27/39" }, { title: "Olvídame", singer: "Echague", date: "5/30/39" }
+  ]},
+  { group: 12, artist: "Juan D'Arienzo", genre: "Tango", singer: "Laborde", era: "1944–1948", songs: [
+    { title: "Magdala", singer: "Laborde", date: "12/26/44" }, { title: "Aparcero", singer: "Laborde", date: "4/17/45" }, { title: "Yo No Sé Llorar", singer: "Laborde", date: "12/6/46" }, { title: "Desde Aquella Noche", singer: "Laborde", date: "8/26/46" }, { title: "Dios Te Salve M' Hijo", singer: "Laborde", date: "9/17/47" }, { title: "Pampa y Huella", singer: "Laborde", date: "9/23/48" }, { title: "Pregonera", singer: "Laborde", date: "8/28/45" }
+  ]},
+  { group: 13, artist: "Francisco Canaro", genre: "Tango", singer: "Maida", era: "1935", songs: [
+    { title: "Ciego", singer: "Maida", date: "3/25/35" }, { title: "Alma del Bandoneón", singer: "Maida", date: "3/20/35" }, { title: "De Puro Guapo", singer: "Maida", date: "7/24/35" }, { title: "Poema", singer: "Maida", date: "6/11/35" }, { title: "Hotel Victoria", singer: "Maida", date: "6/18/35" }, { title: "Casas Viejas", singer: "Maida", date: "8/18/35" }, { title: "Dónde", singer: "Maida", date: "12/3/35" }, { title: "Soledad", singer: "Maida", date: "3/25/35" }
+  ]},
+  { group: 14, artist: "Francisco Canaro", genre: "Tango", singer: "Maida", era: "1936–1939", songs: [
+    { title: "Quiero Verte Una Vez Más", singer: "Maida", date: "4/13/39" }, { title: "Mano A Mano", singer: "Maida", date: "12/13/38" }, { title: "Madreselva", singer: "Maida", date: "11/18/38" }, { title: "El Adiós", singer: "Maida", date: "3/3/38" }, { title: "Nada Más", singer: "Maida", date: "8/22/38" }, { title: "Paciencia", singer: "Maida", date: "3/3/38" }, { title: "El Caburé", singer: "Maida", date: "4/13/36" }, { title: "La Maleva", singer: "Maida", date: "7/14/38" }
+  ]},
+  { group: 15, artist: "Lucio Demare", genre: "Tango", singer: "Berón", era: "1943", songs: [
+    { title: "Moneda De Cobre", singer: "Berón", date: "4/1/43" }, { title: "Canta Pajarito", singer: "Berón", date: "6/10/43" }, { title: "Oigo Tu Voz", singer: "Berón", date: "11/25/43" }, { title: "Y Siempre Igual", singer: "Berón", date: "9/13/43" }, { title: "Qué Solo Estoy", singer: "Berón", date: "12/21/43" }, { title: "Soy Del Noventa", singer: "Berón", date: "5/6/43" }, { title: "Tal Vez Será Mí Alcohol", singer: "Berón", date: "5/6/43" }, { title: "Una Emoción", singer: "Berón", date: "9/3/43" }
+  ]},
+  { group: 16, artist: "Ricardo Malerba", genre: "Tango", singer: "Medina", era: "1942–1944", songs: [
+    { title: "Gitana Rusa", singer: "Medina", date: "10/5/42" }, { title: "La Piba de los Jazmines", singer: "Medina", date: "1/18/43" }, { title: "Embrujamiento", singer: "Medina", date: "2/12/43" }, { title: "Remembranza", singer: "Medina", date: "2/12/43" }, { title: "Sollozos", singer: "Medina", date: "3/16/44" }, { title: "Ninguna", singer: "Medina", date: "11/19/42" }, { title: "Mi Taza de Café", singer: "Medina", date: "11/8/43" }, { title: "Oiga Mozo", singer: "Medina", date: "11/19/42" }
+  ]},
+  { group: 17, artist: "Adolfo Carabelli", genre: "Tango", singer: "Various", era: "1931–1933", songs: [
+    { title: "Felicia", singer: "Instrumental", date: "6/24/32" }, { title: "Mentíra", singer: "Carlos Lafuente", date: "10/2/31" }, { title: "El Pensamiento", singer: "Carlos Lafuente", date: "12/21/32" }, { title: "El Caburé", singer: "Instrumental", date: "10/28/32" }, { title: "La Guiñada", singer: "Instrumental", date: "10/28/32" }, { title: "Mía", singer: "Carlos Lafuente", date: "4/11/33" }, { title: "Pa' Qué Lagrimear", singer: "Carlos Lafuente", date: "9/12/33" }
+  ]},
+  { group: 18, artist: "Adolfo Carabelli", genre: "Tango", singer: "Various", era: "1931–1932", songs: [
+    { title: "Alma", singer: "Alberto Gómez", date: "9/9/32" }, { title: "Porque", singer: "Alberto Gómez", date: "11/2/31" }, { title: "El Trece", singer: "Alberto Gómez", date: "9/27/32" }, { title: "Tango del Querer", singer: "Alberto Gómez", date: "2/5/32" }, { title: "Inspiración", singer: "Alberto Gómez", date: "6/17/32" }, { title: "Cantando", singer: "Gomez y Simone", date: "9/4/31" }, { title: "Mi Refugio", singer: "Alberto Gómez", date: "9/4/31" }
+  ]},
+];
+
 function groupLabel(g: any): string {
   const genre = g.genre ? ` (${g.genre})` : ' (Tango)';
   return `${g.artist} — ${g.singer} ${g.era}${genre}`;
@@ -195,6 +253,59 @@ function groupLabel(g: any): string {
       ))}
     </div>
   </section>
+
+  <section class="set-tables bonus-gate">
+    <div class="container narrow-md">
+      <div class="bonus-cta">
+        <h2>Set Lists III &amp; IV &mdash; and more</h2>
+        <p>Set List III widens the net with more valses, a milonga set, and a broader range of orchestras. Set List IV and extra library-building resources are on the way. It&rsquo;s all free &mdash; if these lists help you on your DJ journey, please consider a small donation to keep them growing.</p>
+        <button type="button" class="btn btn-primary" data-donate-gate>View Set Lists III &amp; IV &rarr;</button>
+      </div>
+
+      <div data-donate-content hidden>
+        <div class="download-cards">
+          <a href="/downloads/DJ Training Set List III.xlsx" download class="download-card">
+            <span class="download-icon">&#128196;</span>
+            <div>
+              <strong>Set List III &mdash; Valses, Milongas &amp; More</strong>
+              <span>Biagi, Troilo, Demare, Rodr&iacute;guez, D'Agostino, Tanturi, De Angelis, Malerba, Carabelli &amp; more (.xlsx)</span>
+            </div>
+            <span class="download-btn">Download</span>
+          </a>
+        </div>
+
+        <h2>Set List III &mdash; Valses, Milongas &amp; More Orchestras</h2>
+        <p>A wider mix: a Biagi milonga set, valses from Troilo, Demare, Rodr&iacute;guez, and D'Arienzo, and tango sets from more orchestras &mdash; D'Agostino, Tanturi, De Angelis, Di Sarli, Canaro, Malerba, and Carabelli. Singers vary within some groups, so the singer is listed per track.</p>
+
+        {setIII.map((g) => (
+          <details class="group-details">
+            <summary>
+              <span class="group-num">Group {g.group}</span>
+              <span class="group-label">{groupLabel(g)}</span>
+            </summary>
+            <div class="table-scroll">
+              <table>
+                <thead><tr><th>Orchestra</th><th>Title</th><th>Singer</th><th>Date</th></tr></thead>
+                <tbody>
+                  {g.songs.map((s) => (
+                    <tr><td>{g.artist}</td><td>{s.title}</td><td>{s.singer}</td><td>{s.date}</td></tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </details>
+        ))}
+
+        <h2 style="margin-top: 3rem;">Set List IV &mdash; Coming Soon</h2>
+        <p class="coming-soon">Set List IV is in the works &mdash; check back soon.</p>
+
+        <h2 style="margin-top: 3rem;">Additional Resources</h2>
+        <p class="coming-soon">More library-building resources and DJ notes are on the way. Have a suggestion? Email <a href="mailto:tangotoolkit@gmail.com">tangotoolkit@gmail.com</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <DonationGate />
 </BaseLayout>
 
 <style>
@@ -292,4 +403,23 @@ function groupLabel(g: any): string {
   thead { background: var(--color-orange-50); }
   th, td { padding: 0.4rem 0.75rem; border: 1px solid var(--color-slate-200); text-align: left; }
   th { font-weight: 600; }
+
+  [data-donate-content][hidden] { display: none; }
+
+  .bonus-cta {
+    background: linear-gradient(135deg, var(--color-orange-50) 0%, white 100%);
+    border: 2px solid var(--color-orange-300);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem 2rem;
+    margin-bottom: 2rem;
+    text-align: center;
+  }
+
+  .bonus-cta h2 { margin: 0 0 0.5rem; border: none; padding: 0; }
+  .bonus-cta p { color: var(--color-slate-600); margin: 0 0 1.25rem; }
+
+  .coming-soon {
+    color: var(--color-slate-500);
+    font-style: italic;
+  }
 </style>
