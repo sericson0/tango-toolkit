@@ -367,6 +367,9 @@ function sessionContextLabel() {
 // --- Start session ---
 startBtn.addEventListener('click', function () {
   saveSettings();
+  // Count the play (see UsageTracker.astro). Every Start counts as a play;
+  // unique players are tracked via the helper's first-use flag.
+  if (window.__ttTrack) window.__ttTrack('name-that-tango');
 
   if (currentModuleId === 'matching') {
     resetRand();

@@ -1,7 +1,7 @@
 /**
- * Download counters, backed by Netlify Blobs.
+ * Event counters (tool downloads, game plays, …), backed by Netlify Blobs.
  *
- * Recording a download is append-only: each download writes a brand-new,
+ * Recording an event is append-only: each event writes a brand-new,
  * uniquely-keyed event blob. There is no read-modify-write, so simultaneous
  * downloads never contend for or clobber a shared counter — no increment can
  * be lost, and it doesn't rely on conditional-write semantics.
@@ -69,9 +69,16 @@ export async function recordDownload(toolId: string): Promise<void> {
     const key = `${EVENT_PREFIX}${encodeURIComponent(toolId)}/${todayUTC()}/${unique}`;
     await store.setJSON(key, { toolId, day: todayUTC() });
   } catch (err) {
-    console.error(`[download-stats] failed to record download for "${toolId}":`, err);
+    console.error(`[download-stats] failed to record event for "${toolId}":`, err);
   }
 }
+
+/**
+ * Record any counted event (game play, tool use, …). Same append-only counter
+ * as {@link recordDownload}; separate name so call sites read clearly. The
+ * `id` becomes its own row in the stats output.
+ */
+export const recordEvent = recordDownload;
 
 /** Parse a tool id + day out of an event key, or null if it doesn't fit. */
 function parseEventKey(key: string): { toolId: string; day: string } | null {

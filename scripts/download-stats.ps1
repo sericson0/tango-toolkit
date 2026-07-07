@@ -1,10 +1,11 @@
 <#
 .SYNOPSIS
-  Print Tango Toolkit download stats (all-time total + last-30-day count per tool).
+  Print Tango Toolkit usage stats (all-time total + last-30-day count per item).
 
 .DESCRIPTION
   Reads STATS_TOKEN from the linked Netlify site, calls /api/download-stats,
-  and prints a sorted table. No need to remember the curl command.
+  and prints a sorted table of tool downloads and web-tool usage (e.g. Name
+  That Tango plays / unique players). No need to remember the curl command.
 
 .EXAMPLE
   npm run stats
@@ -38,19 +39,19 @@ try {
 }
 
 Write-Host ""
-Write-Host "Tango Toolkit downloads" -ForegroundColor Cyan
+Write-Host "Tango Toolkit usage" -ForegroundColor Cyan
 Write-Host ("  Source: {0}" -f $BaseUrl) -ForegroundColor DarkGray
 Write-Host ("  Generated: {0}" -f $resp.generatedAt) -ForegroundColor DarkGray
-Write-Host ("  Total downloads (all tools): {0}" -f $resp.totalDownloads)
+Write-Host ("  Total events (all items): {0}" -f $resp.totalDownloads)
 Write-Host ""
 
 if (-not $resp.tools -or $resp.tools.Count -eq 0) {
-  Write-Host "No downloads recorded yet." -ForegroundColor Yellow
+  Write-Host "Nothing recorded yet." -ForegroundColor Yellow
   return
 }
 
 $resp.tools |
-  Select-Object @{ N = 'Tool';         E = { $_.toolId } },
+  Select-Object @{ N = 'Item';         E = { $_.toolId } },
                 @{ N = 'Total';        E = { $_.total } },
                 @{ N = 'Last 30 days'; E = { $_.last30 } } |
   Format-Table -AutoSize

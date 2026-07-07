@@ -1,0 +1,36 @@
+---
+/**
+ * UsageTracker — defines a tiny global `window.__ttTrack(event)` helper that
+ * pings /api/track-event to count anonymous usage of a free web tool.
+ *
+ * Include once on a tool's page, then call `window.__ttTrack('<event>')` at the
+ * point the tool is actually used (a game starts, a search runs, the embed is
+ * clicked into). `<event>` must be whitelisted in netlify/functions/track-event.mts.
+ *
+ * A per-event localStorage flag distinguishes the browser's first ever use, so
+ * unique users can be told apart from total uses. No cookies, no identifiers —
+ * just an aggregate count.
+ */
+---
+
+<script is:inline>
+  (function () {
+    if (window.__ttTrack) return;
+    window.__ttTrack = function (event) {
+      var firstTime = false;
+      try {
+        var k = 'tt-used-' + event;
+        firstTime = !window.localStorage.getItem(k);
+        if (firstTime) window.localStorage.setItem(k, '1');
+      } catch (e) { /* private mode — still count the use */ }
+      try {
+        fetch('/api/track-event', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ event: event, firstTime: firstTime }),
+          keepalive: true
+        }).catch(function () {});
+      } catch (e) {}
+    };
+  })();
+</script>

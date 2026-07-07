@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import RegisterGate from '../../../components/RegisterGate.astro';
+import UsageTracker from '../../../components/UsageTracker.astro';
 ---
 
 <BaseLayout title="Tanda Builder" description="Search the tango discography and find songs for your tandas.">
@@ -109,6 +110,7 @@ import RegisterGate from '../../../components/RegisterGate.astro';
   </div>
 
   <RegisterGate toolName="the Tanda Builder" />
+  <UsageTracker />
 
   <!-- Papa Parse CDN -->
   <script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
@@ -645,8 +647,19 @@ import RegisterGate from '../../../components/RegisterGate.astro';
       }
     );
 
+    // Count one "use" of the Tanda Builder per visit, the first time the user
+    // actually runs a search (see UsageTracker.astro). applyFilters() also runs
+    // on load, so we hook the user-initiated filter events, not applyFilters.
+    var usageTracked = false;
+    function markUse() {
+      if (usageTracked) return;
+      usageTracked = true;
+      if (window.__ttTrack) window.__ttTrack('tanda-builder');
+    }
+
     // --- Filter events ---
     artistSelect.addEventListener('change', function() {
+      markUse();
       singerSelect.value = '';
       genreSelect.value = '';
       populateDropdowns();
@@ -654,17 +667,20 @@ import RegisterGate from '../../../components/RegisterGate.astro';
       applyFilters();
     });
     singerSelect.addEventListener('change', function() {
+      markUse();
       populateDropdowns();
       clearSelection();
       applyFilters();
     });
     genreSelect.addEventListener('change', function() {
+      markUse();
       clearSelection();
       applyFilters();
     });
 
     var searchDebounce = null;
     searchInput.addEventListener('input', function() {
+      markUse();
       clearTimeout(searchDebounce);
       searchDebounce = setTimeout(function() {
         clearSelection();
