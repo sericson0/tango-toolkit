@@ -1,6 +1,7 @@
 import type { Context } from "@netlify/functions";
 import { resendFetch } from "../lib/resend.mts";
 import { checkRateLimit } from "../lib/rate-limit.mts";
+import { recordDownload } from "../lib/download-stats.mts";
 
 /**
  * Captures an email address for free product downloads.
@@ -207,6 +208,10 @@ export default async (req: Request, _context: Context) => {
       emailErr
     );
   }
+
+  // Count this as a download of the product. recordDownload swallows its own
+  // errors, so a Blobs hiccup can't block the user's download.
+  await recordDownload(product.id);
 
   return new Response(
     JSON.stringify({ downloadUrl: product.downloadUrl }),

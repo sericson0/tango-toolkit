@@ -1,4 +1,5 @@
 import type { Context } from "@netlify/functions";
+import { recordDownload } from "../lib/download-stats.mts";
 
 /**
  * Redirects to the download URL of an asset from a GitHub repo's latest
@@ -10,6 +11,7 @@ import type { Context } from "@netlify/functions";
  * Query params:
  *   repo - required, "owner/name"
  *   ext  - optional file extension to match, defaults to "zip"
+ *   id   - optional tool id used for download stats (defaults to repo)
  */
 
 export default async (req: Request, _context: Context) => {
@@ -20,6 +22,7 @@ export default async (req: Request, _context: Context) => {
   const url = new URL(req.url);
   const repo = url.searchParams.get("repo");
   const ext = url.searchParams.get("ext") ?? "zip";
+  const statsId = url.searchParams.get("id") ?? repo ?? undefined;
 
   if (!repo || !/^[\w.-]+\/[\w.-]+$/.test(repo)) {
     return new Response("Missing or invalid repo", { status: 400 });
@@ -46,6 +49,9 @@ export default async (req: Request, _context: Context) => {
   if (!asset) {
     return new Response(`No .${ext} asset found in latest release`, { status: 404 });
   }
+
+  // Count the download (best-effort; never blocks the redirect).
+  await recordDownload(statsId!);
 
   return new Response(null, {
     status: 302,

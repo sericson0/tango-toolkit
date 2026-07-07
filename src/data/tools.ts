@@ -139,7 +139,7 @@ export const tools: Tool[] = [
     author: 'Richard Slade',
     url: 'https://github.com/richardsladetdj-creator/TangoDisplay',
     external: true,
-    downloadUrl: '/api/github-latest-asset?repo=richardsladetdj-creator/TangoDisplay',
+    downloadUrl: '/api/github-latest-asset?repo=richardsladetdj-creator/TangoDisplay&id=tangodisplay',
     price: 'Free',
     platforms: ['macOS 13+'],
     image: '/images/TangoDisplay.png',
