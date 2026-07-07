@@ -8,7 +8,8 @@
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check",
-    "validate-env": "node scripts/validate-env.mjs"
+    "validate-env": "node scripts/validate-env.mjs",
+    "stats": "powershell -NoProfile -ExecutionPolicy Bypass -File scripts/download-stats.ps1"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.8",
