@@ -536,9 +536,30 @@ function showSummary() {
 
   var fieldsAsked = 0, fieldsCorrect = 0, songsCorrect = 0, songsSkipped = 0, gradedSongs = 0;
   var bodyHtml = '';
+  var shareRows = [];   // one Wordle-style row of squares per song, for the share card
+  // A column earns a 💎 only if every song got that field right (all 🟩).
+  var colAllCorrect = usedKeys.map(function () { return true; });
   sessionResults.forEach(function (r, idx) {
     var correctInRow = r.fieldResults.filter(function (f) { return f.correct; }).length;
     var resultText;
+
+    // Wordle-style share grid: 🟩 correct · 🟨 close · ⬛ wrong · ⬜ skipped,
+    // one square per field column (a skipped song renders an all-⬜ row).
+    var squares = '';
+    if (r.skipped) {
+      squares = '⬜'.repeat(usedKeys.length);
+      colAllCorrect = colAllCorrect.map(function () { return false; });
+    } else {
+      usedKeys.forEach(function (k, ci) {
+        var f = findFieldResult(r.fieldResults, k);
+        if (f && f.correct) { squares += '🟩'; return; }
+        colAllCorrect[ci] = false;   // any miss breaks the column's 💎
+        if (!f) squares += '⬜';
+        else if (f.close) squares += '🟨';
+        else squares += '⬛';
+      });
+    }
+    shareRows.push(squares);
     if (r.skipped) {
       songsSkipped++;
       resultText = '<span class="ntt-badge ntt-badge-skip">skipped</span>';
@@ -576,8 +597,17 @@ function showSummary() {
   if (songsSkipped) scoreText += ' ' + songsSkipped + ' skipped.';
   summaryScore.textContent = scoreText;
 
+  // 💎 over each fully-correct column, blank (⬜) elsewhere; dropped if none aced.
+  var anyGem = false;
+  var gemHeader = '';
+  usedKeys.forEach(function (k, ci) {
+    if (colAllCorrect[ci]) { gemHeader += '💎'; anyGem = true; }
+    else gemHeader += '⬜';
+  });
+
   lastSummary = { songsCorrect: songsCorrect, gradedSongs: gradedSongs,
-                  fieldsCorrect: fieldsCorrect, fieldsAsked: fieldsAsked, songsSkipped: songsSkipped };
+                  fieldsCorrect: fieldsCorrect, fieldsAsked: fieldsAsked, songsSkipped: songsSkipped,
+                  grid: shareRows, gems: anyGem ? gemHeader : '' };
 
   // Replay-the-misses: the natural study loop — a fresh mini-session from
   // just the songs that weren't fully correct (skips included).
@@ -613,12 +643,18 @@ replayMissesBtn.addEventListener('click', function () {
 
 // --- Share result (clipboard) ---
 function buildShareText() {
-  var s = lastSummary || { songsCorrect: 0, gradedSongs: 0, fieldsCorrect: 0, fieldsAsked: 0 };
+  var s = lastSummary || { songsCorrect: 0, gradedSongs: 0, fieldsCorrect: 0, fieldsAsked: 0, grid: [], gems: '' };
   var head = sessionOpts.daily
     ? 'Name That Tango Daily (' + sessionOpts.daily.date + ')'
     : 'Name That Tango — ' + (sessionOpts.contextLabel || '');
-  return head + ': ' + s.songsCorrect + '/' + s.gradedSongs + ' songs (' +
-    s.fieldsCorrect + '/' + s.fieldsAsked + ' fields). Can you beat it? ' + window.location.href;
+  var lines = [head];
+  if (s.grid && s.grid.length) {
+    if (s.gems) lines.push(s.gems);   // 💎 marks any field you got right on every song
+    s.grid.forEach(function (row) { lines.push(row); });
+  }
+  lines.push(s.songsCorrect + '/' + s.gradedSongs + ' songs · ' + s.fieldsCorrect + '/' + s.fieldsAsked + ' fields');
+  lines.push('Can you beat it? ' + window.location.href);
+  return lines.join('\n');
 }
 
 function legacyCopy(text) {
