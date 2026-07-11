@@ -83,4 +83,13 @@ export const products: Product[] = [
     downloadLink: 'https://github.com/sericson0/TigerTanda/releases',
     image: '/images/TigerTanda.png',
   },
+  {
+    id: 'plugin-play',
+    name: 'Plugin Play',
+    tagline: 'Run your DJ software through a live VST3 effect chain',
+    description: 'Route any app — your DJ software, a browser, Spotify — through a chain of VST3 effects in real time, then out to your speakers. Free and open source.',
+    price: 'Free',
+    downloadLink: 'https://github.com/sericson0/plugin-play/releases',
+    image: '/images/plugin-play.png',
+  },
 ];

@@ -6,6 +6,7 @@ import { getProductsMap, products } from '../../../data/products';
 const productsMap = getProductsMap();
 const { tigertango, hisstory, tigertag, tigertanda } = productsMap;
 const hisstoryLite = productsMap['hisstory-lite'];
+const pluginPlay = productsMap['plugin-play'];
 
 const WIN_SVG = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M0 3.5l9.75-1.33v9.41H0V3.5zm0 17l9.75 1.33v-9.32H0v7.99zM10.83 21.98L24 24V12.68H10.83v9.3zm0-19.96v9.4H24V0L10.83 2.02z"/></svg>';
 const APPLE_SVG = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>';
@@ -106,6 +107,19 @@ const productSchemas = products.map((p) => {
           <div>
             <strong>TigerTanda</strong>
             <span class="tool-card-tagline">Tanda builder</span>
+            <span class="tool-card-price">Free</span>
+          </div>
+        </a>
+        <a href="#plugin-play" class="tool-card-nav">
+          {pluginPlay?.image && (
+            <picture>
+              <source srcset={pluginPlay.image.replace(/\.png$/i, '.webp')} type="image/webp" />
+              <img src={pluginPlay.image} alt="Plugin Play" class="tool-card-icon" width="48" height="48" loading="lazy" decoding="async" />
+            </picture>
+          )}
+          <div>
+            <strong>Plugin Play</strong>
+            <span class="tool-card-tagline">Live VST3 effect host</span>
             <span class="tool-card-price">Free</span>
           </div>
         </a>
@@ -525,6 +539,71 @@ const productSchemas = products.map((p) => {
     </div>
   </section>
 
+  <!-- ============================================================ -->
+  <!-- Plugin Play                                                   -->
+  <!-- ============================================================ -->
+  <section id="plugin-play" class="tool-section">
+    <div class="container">
+      <div class="tool-header">
+        {pluginPlay?.image && (
+          <div class="tool-logo">
+            <picture>
+              <source srcset={pluginPlay.image.replace(/\.png$/i, '.webp')} type="image/webp" />
+              <img src={pluginPlay.image} alt="Plugin Play" width="90" height="90" loading="lazy" decoding="async" />
+            </picture>
+          </div>
+        )}
+        <div>
+          <h2>Plugin Play</h2>
+          <p class="tool-tagline">Run your DJ software through a live VST3 effect chain</p>
+          <span class="price-badge">Free &amp; open source</span>
+          <span class="license-note">Windows 10/11 &middot; 64-bit &middot; GPLv3</span>
+        </div>
+      </div>
+
+      <p class="tool-desc-full">Plugin Play routes any app &mdash; your DJ software (VirtualDJ, Traktor, Mixxx), a browser, Spotify &mdash; through a chain of VST3 effects in real time, then out to your speakers or audio interface. Pick the app in the INPUT dropdown and Plugin Play wires the audio for you, with no Windows sound-settings fiddling. It&rsquo;s the easiest way to run plugins like Hisstory across your whole set, live.</p>
+
+      <div class="features-grid">
+        <div class="feature-item">One-click app routing &mdash; send any open app through your effects</div>
+        <div class="feature-item">Serial VST3 chain: drag to reorder, bypass per effect, floating plugin windows</div>
+        <div class="feature-item">Brickwall safety limiter guards your speakers</div>
+        <div class="feature-item">Master FX kill switch with click-free crossfade</div>
+        <div class="feature-item">Chain presets, session persistence &amp; automatic sample-rate matching</div>
+        <div class="feature-item">In/out peak meters, ASIO output, and in-app update checks</div>
+      </div>
+
+      <div class="callout callout-config callout-inline">
+        <strong>What you need.</strong>
+        <p>64-bit <strong>Windows 10 (2004) or later</strong> and your effects in <strong>VST3</strong> format. The installer can also set up VB-Audio&rsquo;s <strong>VB-CABLE</strong> &mdash; the virtual audio cable Plugin Play uses to route apps (recommended; it needs a reboot afterward).</p>
+      </div>
+
+      <h3 class="section-label">Download Plugin Play</h3>
+      <p class="section-note">Free and open source. The installer bundles everything it needs &mdash; no extra runtimes.</p>
+      <p class="callout callout-warning callout-inline"><strong>Windows note:</strong> this release isn&rsquo;t code-signed yet, so SmartScreen may warn on first run. Click <strong>More info</strong> &rarr; <strong>Run anyway</strong>.</p>
+
+      <div class="download-buttons">
+        <a href="/api/github-latest-asset?repo=sericson0/plugin-play&ext=exe&id=plugin-play" class="download-btn-large">
+          <span class="dl-icon" set:html={WIN_SVG}></span>
+          <div>
+            <strong>Download for Windows</strong>
+            <span>Plugin Play installer (.exe)</span>
+          </div>
+        </a>
+        <a href="https://github.com/sericson0/plugin-play" target="_blank" rel="noopener noreferrer" class="download-btn-large">
+          <span class="dl-icon">&#128187;</span>
+          <div>
+            <strong>View source on GitHub</strong>
+            <span>Free &amp; open source (GPLv3)</span>
+          </div>
+        </a>
+      </div>
+
+      <p class="install-link">
+        &#128214; <a href="https://github.com/sericson0/plugin-play/blob/main/README.md" target="_blank" rel="noopener noreferrer">Setup &amp; quick-start guide</a>
+      </p>
+    </div>
+  </section>
+
   <div id="tigertanda-modal" class="tt-modal" hidden>
     <div class="tt-modal-backdrop" data-close></div>
     <div class="tt-modal-content" role="dialog" aria-modal="true" aria-labelledby="tt-modal-title">
@@ -791,7 +870,7 @@ const productSchemas = products.map((p) => {
 
   .tool-cards-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
     gap: 1rem;
   }
 

@@ -175,6 +175,24 @@ export const tools: Tool[] = [
 
   // ===== Plugins & Sound Quality =====
   {
+    id: 'plugin-play',
+    name: 'Plugin Play',
+    tagline: 'Run your DJ software through a live VST3 effect chain',
+    description: 'Routes any app — your DJ software, a browser, Spotify — through a chain of VST3 \
+              effects (EQ, de-hissers, limiters) in real time, then out to your speakers. One-click \
+              app routing, drag-to-reorder effects, floating plugin windows, and a built-in safety \
+              limiter. <strong>Free and open source.</strong>',
+    category: 'plugins-sound-quality',
+    author: 'The Tango Toolkit',
+    url: 'https://github.com/sericson0/plugin-play',
+    external: true,
+    downloadUrl: '/api/github-latest-asset?repo=sericson0/plugin-play&ext=exe&id=plugin-play',
+    price: 'Free',
+    platforms: ['Windows'],
+    image: '/images/plugin-play.png',
+    dateAdded: '2026-07-10',
+  },
+  {
     id: 'hisstory',
     name: 'Hisstory',
     tagline: 'Keep the music, ditch the noise',
