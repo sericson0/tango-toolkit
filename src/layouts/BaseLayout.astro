@@ -34,6 +34,9 @@ const absoluteOgImage = new URL(ogImage, Astro.site).href;
     <meta name="twitter:description" content={description} />
     <link rel="canonical" href={new URL(Astro.url.pathname, Astro.site).href} />
     <meta name="theme-color" content="#f97316" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=DM+Serif+Display&display=swap" />
     <title>{title} | The Tango Toolkit</title>
     {import.meta.env.PUBLIC_GA_ID && (
       <script define:vars={{ gaId: import.meta.env.PUBLIC_GA_ID }}>
@@ -53,6 +56,7 @@ const absoluteOgImage = new URL(ogImage, Astro.site).href;
     <slot name="head" />
   </head>
   <body>
+    <a href="#main-content" class="skip-link">Skip to content</a>
     <header class="site-header">
       <div class="container">
         <a href="/" class="logo">
@@ -92,7 +96,7 @@ const absoluteOgImage = new URL(ogImage, Astro.site).href;
       </div>
     </header>
 
-    <main>
+    <main id="main-content">
       <slot />
     </main>
 
@@ -130,9 +134,9 @@ const absoluteOgImage = new URL(ogImage, Astro.site).href;
             <a href="/terms/">Terms of Service</a>
             <a href="/unsubscribe/">Unsubscribe</a>
           </div>
-          <div>
-            <p>&copy; {new Date().getFullYear()} The Tango Toolkit</p>
-          </div>
+        </div>
+        <div class="footer-bottom">
+          <p>&copy; {new Date().getFullYear()} The Tango Toolkit</p>
         </div>
       </div>
     </footer>
@@ -485,6 +489,19 @@ const absoluteOgImage = new URL(ogImage, Astro.site).href;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 2rem;
+  }
+
+  .footer-bottom {
+    max-width: var(--container-max);
+    margin: 2.5rem auto 0;
+    padding: 1.25rem 1.5rem 0;
+    border-top: 1px solid var(--color-slate-700);
+  }
+
+  .footer-bottom p {
+    margin: 0;
+    font-size: 0.85rem;
+    color: var(--color-slate-400);
   }
 
   /* Cookie Consent Banner */

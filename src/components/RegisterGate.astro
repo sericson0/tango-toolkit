@@ -25,8 +25,8 @@ const { toolName = 'the tools', delay = 1400 } = Astro.props;
     <h3 id="rg-title">Join the Tango Toolkit</h3>
     <p>Register (it&rsquo;s free) to get a curated music starter pack and stay up to date on new tools and resources for the tango community.</p>
     <form id="rg-form">
-      <input type="text" name="name" placeholder="Your name (optional)" autocomplete="name" />
-      <input type="email" name="email" placeholder="your@email.com" autocomplete="email" required />
+      <input type="text" name="name" aria-label="Your name (optional)" placeholder="Your name (optional)" autocomplete="name" />
+      <input type="email" name="email" aria-label="Email address" placeholder="your@email.com" autocomplete="email" required />
       <button type="submit" class="rg-primary">Register</button>
     </form>
     <button type="button" class="rg-skip" data-skip>No thanks, continue to {toolName}</button>

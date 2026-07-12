@@ -12,6 +12,14 @@ const pluginPlay = productsMap['plugin-play'];
 const WIN_SVG = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M0 3.5l9.75-1.33v9.41H0V3.5zm0 17l9.75 1.33v-9.32H0v7.99zM10.83 21.98L24 24V12.68H10.83v9.3zm0-19.96v9.4H24V0L10.83 2.02z"/></svg>';
 const APPLE_SVG = '<svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.81-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>';
 
+// Inline icons (Feather, MIT) — consistent rendering across platforms, unlike emoji
+const ICON_ATTRS = 'viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"';
+const CARD_SVG = `<svg ${ICON_ATTRS}><rect x="1" y="4" width="22" height="16" rx="2" ry="2"/><line x1="1" y1="10" x2="23" y2="10"/></svg>`;
+const MUSIC_SVG = `<svg ${ICON_ATTRS}><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>`;
+const FILM_SVG = `<svg ${ICON_ATTRS}><rect x="2" y="2" width="20" height="20" rx="2.18" ry="2.18"/><line x1="7" y1="2" x2="7" y2="22"/><line x1="17" y1="2" x2="17" y2="22"/><line x1="2" y1="12" x2="22" y2="12"/><line x1="2" y1="7" x2="7" y2="7"/><line x1="2" y1="17" x2="7" y2="17"/><line x1="17" y1="17" x2="22" y2="17"/><line x1="17" y1="7" x2="22" y2="7"/></svg>`;
+const CODE_SVG = `<svg ${ICON_ATTRS}><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>`;
+const BOOK_SVG = `<svg ${ICON_ATTRS}><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/></svg>`;
+
 const SITE_URL = (Astro.site?.toString() ?? 'https://tangotoolkit.com/').replace(/\/$/, '');
 
 const productSchemas = products.map((p) => {
@@ -48,13 +56,15 @@ const productSchemas = products.map((p) => {
     ))}
   </Fragment>
   <PageHero title="Tango Toolkit Software" lead="Software and plugins built by The Tango Toolkit — downloads, purchase, and installation." backHref="/dj/tools/" backText="Back to DJ Tools" />
+  <div class="container">
     <div class="email-opt-in">
       Sign up here to stay up to date on the latest news, features, and releases.
       <form class="email-gate-form" data-product-id="tigertango" data-optional="true">
-        <input type="email" placeholder="your@email.com (optional)" />
+        <input type="email" aria-label="Email address" placeholder="your@email.com (optional)" />
         <button type="submit">Subscribe</button>
       </form>
     </div>
+  </div>
   <!-- ===== Tool Cards Nav ===== -->
   <section class="tool-cards-nav">
     <div class="container">
@@ -208,18 +218,18 @@ const productSchemas = products.map((p) => {
       <p class="install-note">You can install TigerTango directly in VirtualDJ: <strong>Settings &rarr; Extensions &rarr; Search "TigerTango"</strong>.
         You can also download the latest version with the link below.</p>
       <p class="install-link">
-        &#128214; <a href="https://github.com/sericson0/TigerTango/blob/main/docs/sections/Installation.md" target="_blank" rel="noopener noreferrer">Installation and User guide</a>
+        <span class="doc-icon" set:html={BOOK_SVG}></span> <a href="https://github.com/sericson0/TigerTango/blob/main/docs/sections/Installation.md" target="_blank" rel="noopener noreferrer">Installation and User guide</a>
       </p>
       <div class="download-buttons">
         <a href="https://github.com/sericson0/TigerTango/releases/latest/download/TigerTango.zip" class="download-btn-large">
-          <span class="dl-icon">&#127926;</span>
+          <span class="dl-icon" set:html={MUSIC_SVG}></span>
           <div>
             <strong>TigerTango</strong>
             <span>DJ interface skin (.zip)</span>
           </div>
         </a>
         <a href="https://github.com/sericson0/TigerTango/releases/latest/download/TigerTangoVideo.zip" class="download-btn-large">
-          <span class="dl-icon">&#127916;</span>
+          <span class="dl-icon" set:html={FILM_SVG}></span>
           <div>
             <strong>TigerTango Video</strong>
             <span>Video display skin (.zip)</span>
@@ -267,7 +277,7 @@ const productSchemas = products.map((p) => {
 
       <div class="callout callout-config callout-inline">
         <strong>Full vs. Lite.</strong>
-        <p><strong>Hisstory ($40)</strong> contains advanced controls and and expanded spectrum display to get the sound exactly how you want it. <strong>Hisstory Lite ($9.99)</strong> runs the same de-hissing engine in a compact view. Use the installer to download both. Started with Lite? You can <a href="/dj/account/">upgrade to the full version for $30</a> anytime.</p>
+        <p><strong>Hisstory ($40)</strong> contains advanced controls and an expanded spectrum display to get the sound exactly how you want it. <strong>Hisstory Lite ($9.99)</strong> runs the same de-hissing engine in a compact view. Use the installer to download both. Started with Lite? You can <a href="/dj/account/">upgrade to the full version for $30</a> anytime.</p>
       </div>
 
       {(hisstory?.stripePriceId || hisstoryLite?.stripePriceId) && (
@@ -277,7 +287,7 @@ const productSchemas = products.map((p) => {
           <div class="download-buttons">
             {hisstory?.stripePriceId && (
               <button type="button" class="download-btn-large purchase-btn checkout-btn" data-product-id="hisstory">
-                <span class="dl-icon">&#128179;</span>
+                <span class="dl-icon" set:html={CARD_SVG}></span>
                 <div>
                   <strong>Hisstory Full &mdash; $40</strong>
                   <span>Complete plugin &mdash; expanded display &amp; advanced controls</span>
@@ -286,7 +296,7 @@ const productSchemas = products.map((p) => {
             )}
             {hisstoryLite?.stripePriceId && (
               <button type="button" class="download-btn-large purchase-btn checkout-btn" data-product-id="hisstory-lite">
-                <span class="dl-icon">&#128179;</span>
+                <span class="dl-icon" set:html={CARD_SVG}></span>
                 <div>
                   <strong>Hisstory Lite &mdash; $9.99</strong>
                   <span>Compact edition &mdash; upgrade to full anytime</span>
@@ -340,7 +350,7 @@ const productSchemas = products.map((p) => {
       </div>
 
       <p class="install-link">
-        &#128214; <a href="/documentation/Hisstory User Guide.pdf" target="_blank" rel="noopener noreferrer">User Guide (PDF)</a>
+        <span class="doc-icon" set:html={BOOK_SVG}></span> <a href="/documentation/Hisstory User Guide.pdf" target="_blank" rel="noopener noreferrer">User Guide (PDF)</a>
       </p>
       <div class="callout callout-warning">
         <strong>IMPORTANT!</strong>
@@ -400,11 +410,11 @@ const productSchemas = products.map((p) => {
       </div>
       <p class="callout callout-config callout-inline"><strong>Windows note:</strong> The installer may trigger a SmartScreen warning. Click <strong>More info</strong> &rarr; <strong>Run anyway</strong> to proceed.</p>
       <p class="install-link">
-        &#128214; <a href="/documentation/TigerTag User Guide.pdf" target="_blank" rel="noopener noreferrer">User Guide (PDF)</a>
+        <span class="doc-icon" set:html={BOOK_SVG}></span> <a href="/documentation/TigerTag User Guide.pdf" target="_blank" rel="noopener noreferrer">User Guide (PDF)</a>
       </p>
       <div class="download-buttons">
         <button type="button" class="download-btn-large purchase-btn checkout-btn" data-product-id="tigertag">
-          <span class="dl-icon">&#128179;</span>
+          <span class="dl-icon" set:html={CARD_SVG}></span>
           <div>
             <strong>Purchase Key &mdash; {tigertag?.price}</strong>
             <span>One-time purchase, lifetime access</span>
@@ -469,7 +479,7 @@ const productSchemas = products.map((p) => {
       </div>
 
       <p class="install-link">
-        &#128214; <a href="https://github.com/sericson0/tigertanda-vdj/blob/main/README.md" target="_blank" rel="noopener noreferrer">User guide (web)</a>
+        <span class="doc-icon" set:html={BOOK_SVG}></span> <a href="https://github.com/sericson0/tigertanda-vdj/blob/main/README.md" target="_blank" rel="noopener noreferrer">User guide (web)</a>
         &nbsp;&middot;&nbsp;
         <a href="/documentation/TigerTanda Quickstart Guide.pdf" target="_blank" rel="noopener noreferrer">Quickstart Guide (PDF)</a>
       </p>
@@ -589,7 +599,7 @@ const productSchemas = products.map((p) => {
           </div>
         </a>
         <a href="https://github.com/sericson0/plugin-play" target="_blank" rel="noopener noreferrer" class="download-btn-large">
-          <span class="dl-icon">&#128187;</span>
+          <span class="dl-icon" set:html={CODE_SVG}></span>
           <div>
             <strong>View source on GitHub</strong>
             <span>Free &amp; open source (GPLv3)</span>
@@ -628,7 +638,7 @@ const productSchemas = products.map((p) => {
       </div>
 
       <p class="install-link">
-        &#128214; <a href="https://github.com/sericson0/plugin-play/blob/main/README.md" target="_blank" rel="noopener noreferrer">Full setup &amp; quick-start guide</a>
+        <span class="doc-icon" set:html={BOOK_SVG}></span> <a href="https://github.com/sericson0/plugin-play/blob/main/README.md" target="_blank" rel="noopener noreferrer">Full setup &amp; quick-start guide</a>
       </p>
       <p class="contact-note">Questions, bugs, or ideas? Reach out at <a href="mailto:tangotoolkit@gmail.com">tangotoolkit@gmail.com</a></p>
     </div>
@@ -641,7 +651,7 @@ const productSchemas = products.map((p) => {
       <h3 id="tt-modal-title">Before you download</h3>
       <p>Want updates on new features? Drop your email &mdash; no spam, unsubscribe anytime.</p>
       <form id="tt-modal-form">
-        <input type="email" placeholder="your@email.com" required />
+        <input type="email" aria-label="Email address" placeholder="your@email.com" required />
         <button type="submit" class="tt-modal-primary">Subscribe &amp; Download</button>
       </form>
       <button type="button" class="tt-modal-skip" data-skip>No thanks, just take me to the plugin</button>
@@ -900,9 +910,10 @@ const productSchemas = products.map((p) => {
     border-bottom: 1px solid var(--color-slate-200);
   }
 
+  /* minmax low enough that all five cards fit one row on desktop (no orphan) */
   .tool-cards-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
     gap: 1rem;
   }
 
@@ -1126,6 +1137,17 @@ const productSchemas = products.map((p) => {
 
   .install-link a { color: var(--color-primary); font-weight: 500; }
   .install-link a:hover { color: var(--color-primary-hover); }
+
+  .doc-icon {
+    display: inline-flex;
+    vertical-align: -0.15em;
+    color: var(--color-orange-600);
+  }
+
+  .doc-icon :global(svg) {
+    width: 1em;
+    height: 1em;
+  }
 
   /* Guide content (Hisstory user guide) */
   .guide-content {

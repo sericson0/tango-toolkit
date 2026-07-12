@@ -208,7 +208,7 @@ function groupLabel(g: any): string {
 
   <section class="set-tables">
     <div class="container narrow-md">
-      <h2>Set List I &mdash; The Big Four</h2>
+      <h2 id="set-1">Set List I &mdash; The Big Four</h2>
       <p>Tangos from D'Arienzo, Di Sarli, Troilo, and Pugliese. Each group contains songs from the same orchestra, singer, and era &mdash; build 1&ndash;2 tandas from each.</p>
 
       {setI.map((g) => (
@@ -230,7 +230,7 @@ function groupLabel(g: any): string {
         </details>
       ))}
 
-      <h2 style="margin-top: 3rem;">Set List II &mdash; Expanded Orchestras</h2>
+      <h2 id="set-2" style="margin-top: 3rem;">Set List II &mdash; Expanded Orchestras</h2>
       <p>Additional orchestras plus Valses and Milongas.</p>
 
       {setII.map((g) => (
@@ -254,7 +254,7 @@ function groupLabel(g: any): string {
     </div>
   </section>
 
-  <section class="set-tables bonus-gate">
+  <section id="set-3-4" class="set-tables bonus-gate">
     <div class="container narrow-md">
       <div class="bonus-cta">
         <h2>Set Lists III &amp; IV</h2>
@@ -310,6 +310,12 @@ function groupLabel(g: any): string {
 
 <style>
   .downloads { padding: 2rem 0; }
+
+  /* Anchored headings clear the sticky header when deep-linked */
+  .set-tables h2[id],
+  #set-3-4 {
+    scroll-margin-top: calc(var(--header-height) + 1rem);
+  }
 
   .download-cards {
     display: grid;

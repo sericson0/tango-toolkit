@@ -1,5 +1,5 @@
 /* Tango Toolkit - Design System */
-@import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=DM+Serif+Display&display=swap');
+/* Fonts are loaded via <link> tags in BaseLayout.astro (faster than @import). */
 
 :root {
   /* Orange palette - warm, energetic, professional */
@@ -87,6 +87,32 @@ body {
   color: var(--color-text);
   background: var(--color-bg);
   -webkit-font-smoothing: antialiased;
+  /* Sticky footer: short pages (404, tool pages) keep the footer at the bottom */
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+main {
+  flex: 1 0 auto;
+}
+
+/* Skip link for keyboard users — hidden until focused */
+.skip-link {
+  position: fixed;
+  top: -100%;
+  left: 0.75rem;
+  z-index: 300;
+  background: white;
+  color: var(--color-primary);
+  font-weight: 600;
+  padding: 0.6rem 1rem;
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg);
+}
+
+.skip-link:focus {
+  top: 0.75rem;
 }
 
 h1, h2, h3, h4, h5, h6 {

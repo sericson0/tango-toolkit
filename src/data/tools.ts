@@ -133,7 +133,7 @@ export const tools: Tool[] = [
     description: 'A fully featured tango-centred audio player and clean, live dancer display in one.\
                  Use Setlist, the built-in player or your favourite music player. \
                  Auto-detects cortinas and shows track info, album art and custom \
-                 backgrounds <strong>Free and open source.</strong>',
+                 backgrounds. <strong>Free and open source.</strong>',
     category: 'displays-projections',
     categories: ['dj-players'],
     author: 'Richard Slade',

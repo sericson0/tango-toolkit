@@ -5,6 +5,15 @@ import { products } from '../data/products';
 import { recentlyAdded, formatDate } from '../data/recent';
 
 const recentItems = recentlyAdded(4);
+
+// Hisstory Lite shares a row with Hisstory Full on the home page
+const homeProducts = products.filter((p) => p.id !== 'hisstory-lite');
+
+// Inline icons (Feather, MIT) — consistent rendering across platforms, unlike emoji
+const ICON_ATTRS = 'viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"';
+const PLAY_SVG = `<svg ${ICON_ATTRS}><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>`;
+const SLIDERS_SVG = `<svg ${ICON_ATTRS}><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>`;
+const DISC_SVG = `<svg ${ICON_ATTRS}><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>`;
 ---
 
 <BaseLayout title="Home" description="The Tango Toolkit - Tools and resources for tango DJs. Software, starter kits, and guides to elevate your tango DJing.">
@@ -12,26 +21,30 @@ const recentItems = recentlyAdded(4);
     <div class="container">
       <h1>Welcome to The Tango Toolkit</h1>
       <p class="hero-subtitle">The tools you need to elevate your tango</p>
-      <p class="hero-intro">The Tango Toolkit is an expanding collection of quality resources for tango. It currently has tools and resources for tango DJs of all levels. Resources for tango dancers and organizers will be coming!</p>
+      <p class="hero-intro">An expanding collection of quality tools and resources for tango DJs of all levels &mdash; with resources for dancers and organizers on the way.</p>
+      <div class="hero-actions">
+        <a href="/dj/starter-kit/" class="btn btn-primary btn-lg">Get the Starter Kit</a>
+        <a href="/dj/tools/" class="btn btn-secondary btn-lg">Browse DJ Tools</a>
+      </div>
     </div>
   </section>
   <section class="cta-section">
     <div class="container">
       <div class="cta-grid">
         <a href="/dj/starter-kit/" class="cta-card">
-          <div class="cta-icon">🚀</div>
+          <div class="cta-icon" set:html={PLAY_SVG}></div>
           <h2>DJ Starter Kit</h2>
           <p>Everything you need to start tango DJing — software, music, and step-by-step guides.</p>
           <span class="cta-link">Get Started &rarr;</span>
         </a>
         <a href="/dj/tools/" class="cta-card">
-          <div class="cta-icon">💻</div>
+          <div class="cta-icon" set:html={SLIDERS_SVG}></div>
           <h2>DJ Tools</h2>
           <p>Players, displays, tanda builders, and plugins — tools for tango DJs from us and the community.</p>
           <span class="cta-link">Browse Tools &rarr;</span>
         </a>
         <a href="/discographies/" class="cta-card">
-          <div class="cta-icon">📚</div>
+          <div class="cta-icon" set:html={DISC_SVG}></div>
           <h2>Discographies</h2>
           <p>Discographies, articles, and guides to deepen your knowledge of tango music.</p>
           <span class="cta-link">Explore Discographies &rarr;</span>
@@ -74,12 +87,13 @@ const recentItems = recentlyAdded(4);
           <p>Get updates on new tools, features, and tango resources.</p>
         </div>
         <form class="subscribe-form" id="subscribeForm">
-          <input type="email" id="subscribeEmail" placeholder="Your email address" required />
+          <input type="email" id="subscribeEmail" aria-label="Email address" placeholder="Your email address" required />
           <button type="submit" class="btn btn-primary" id="subscribeBtn">Subscribe</button>
         </form>
-        <p class="subscribe-msg" id="subscribeMsg"></p>
+        <p class="subscribe-msg" id="subscribeMsg" role="status"></p>
+        <p class="support-note">Enjoying the tools? <button type="button" class="support-link" data-support-open>Help support the Tango Toolkit</button></p>
       </div>
-      <SupportModal />
+      <SupportModal showButton={false} />
     </div>
   </section>
 
@@ -132,7 +146,7 @@ const recentItems = recentlyAdded(4);
       <hr class="section-divider" />
       <h2 class="section-heading">Tango Toolkit Software</h2>
       <div class="tools-list">
-        {products.map((product) => (
+        {homeProducts.map((product) => (
           <article class="tool-row">
             <div class="tool-info">
               <h3>{product.name}</h3>
@@ -165,9 +179,35 @@ const recentItems = recentlyAdded(4);
   .hero {
     padding: 5rem 0;
     background:
-      linear-gradient(135deg, rgba(255,247,237,0.88) 0%, rgba(255,255,255,0.82) 50%, rgba(255,247,237,0.88) 100%),
-      image-set(url('/images/Logo.webp') type('image/webp'), url('/images/Logo.png') type('image/png')) center / 80% no-repeat;
+      linear-gradient(90deg, rgba(255,247,237,0.97) 0%, rgba(255,255,255,0.9) 55%, rgba(255,247,237,0.45) 100%),
+      image-set(url('/images/Logo.webp') type('image/webp'), url('/images/Logo.png') type('image/png')) right 4rem center / clamp(18rem, 32vw, 26rem) no-repeat;
     border-bottom: 1px solid var(--color-orange-100);
+  }
+
+  @media (max-width: 768px) {
+    .hero {
+      padding: 3.5rem 0;
+      background:
+        linear-gradient(135deg, rgba(255,247,237,0.95) 0%, rgba(255,255,255,0.92) 100%),
+        image-set(url('/images/Logo.webp') type('image/webp'), url('/images/Logo.png') type('image/png')) center / 80% no-repeat;
+    }
+  }
+
+  .hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.75rem;
+  }
+
+  .hero-actions .btn-secondary {
+    background: white;
+    border: 1px solid var(--color-slate-300);
+  }
+
+  .hero-actions .btn-secondary:hover {
+    background: white;
+    border-color: var(--color-orange-400);
   }
 
   .hero h1 {
@@ -226,8 +266,16 @@ const recentItems = recentlyAdded(4);
   }
 
   .cta-icon {
-    font-size: 2.5rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--color-orange-500);
     margin-bottom: 0.75rem;
+  }
+
+  .cta-icon :global(svg) {
+    width: 2.75rem;
+    height: 2.75rem;
   }
 
   .cta-card h2 {
@@ -511,6 +559,31 @@ const recentItems = recentlyAdded(4);
 
   .subscribe-error {
     color: var(--color-red-600);
+  }
+
+  .support-note {
+    width: 100%;
+    margin: 0.75rem 0 0;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--color-orange-100);
+    font-size: 0.9rem;
+    color: var(--color-slate-600);
+  }
+
+  .support-link {
+    background: none;
+    border: none;
+    padding: 0;
+    font: inherit;
+    font-weight: 600;
+    color: var(--color-primary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    cursor: pointer;
+  }
+
+  .support-link:hover {
+    color: var(--color-primary-hover);
   }
 
   @media (max-width: 600px) {

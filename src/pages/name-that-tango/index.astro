@@ -1,17 +1,19 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
 import RegisterGate from '../../components/RegisterGate.astro';
 import UsageTracker from '../../components/UsageTracker.astro';
 import { eras } from '../../data/eras';
 ---
 
 <BaseLayout title="Name That Tango" description="Listen to a tango clip and guess the bandleader, title, singer, or year. Ear-training for tango DJs and dancers.">
+  <PageHero title="Name That Tango" lead="Hear a clip — name the orchestra, title, singer, or year. Ear training for tango DJs and dancers." compact />
   <div class="ntt-container" id="nttRoot" data-audio-base={import.meta.env.PUBLIC_AUDIO_BASE_URL || ''}>
 
     <!-- Section 1: Setup -->
     <div class="ntt-section ntt-setup-section" id="setupSection">
       <div class="ntt-section-header">
-        <h2>Name That Tango</h2>
+        <h2>Set Up Your Game</h2>
         <span class="ntt-stats" id="loadStats"></span>
       </div>
 
@@ -174,8 +176,8 @@ import { eras } from '../../data/eras';
     window.__NTT_ERAS__ = erasConfig;
   </script>
 
-  <!-- Papa Parse CDN (same as Tanda Builder) -->
-  <script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <!-- Papa Parse (self-hosted — no third-party dependency at load time) -->
+  <script is:inline src="/vendor/papaparse.min.js"></script>
 
   <script>
     import '../../scripts/name-that-tango/main.js';

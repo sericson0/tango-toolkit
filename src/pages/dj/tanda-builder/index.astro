@@ -1,10 +1,12 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PageHero from '../../../components/PageHero.astro';
 import RegisterGate from '../../../components/RegisterGate.astro';
 import UsageTracker from '../../../components/UsageTracker.astro';
 ---
 
 <BaseLayout title="Tanda Builder" description="Search the tango discography and find songs for your tandas.">
+  <PageHero title="Tanda Builder" lead="Search the discography and find songs that work well together in a tanda — free, right in your browser." backHref="/dj/tools/" backText="Back to DJ Tools" compact />
   <div class="tb-container">
 
     <!-- Section 1: Find a Song -->
@@ -112,8 +114,8 @@ import UsageTracker from '../../../components/UsageTracker.astro';
   <RegisterGate toolName="the Tanda Builder" />
   <UsageTracker />
 
-  <!-- Papa Parse CDN -->
-  <script is:inline src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <!-- Papa Parse (self-hosted — no third-party dependency at load time) -->
+  <script is:inline src="/vendor/papaparse.min.js"></script>
 
   <script is:inline>
   (function() {
