@@ -153,8 +153,18 @@ import { eras } from '../../data/eras';
       <div class="ntt-summary-actions">
         <button type="button" class="ntt-btn-primary" id="playAgainBtn" title="Same settings, new random songs">Play Again</button>
         <button type="button" class="ntt-btn-secondary" id="replayMissesBtn" style="display:none;" title="A fresh mini-session with just the songs you missed">Replay missed songs</button>
-        <button type="button" class="ntt-btn-secondary" id="shareResultBtn" title="Copy your score and a link to this quiz setup">Share result</button>
+        <button type="button" class="ntt-btn-secondary" id="shareResultBtn" title="Show a shareable result card">Share with friends</button>
         <button type="button" class="ntt-btn-secondary" id="changeSettingsBtn" title="Back to setup to pick a different game or difficulty">New Game</button>
+      </div>
+
+      <!-- Shareable result card (revealed by "Share with friends") -->
+      <div class="ntt-share-card" id="shareCard" hidden>
+        <p class="ntt-share-title" id="shareCardTitle"></p>
+        <div class="ntt-share-grid" id="shareCardGrid"></div>
+        <p class="ntt-share-score" id="shareCardScore"></p>
+        <button type="button" class="ntt-btn-primary" id="shareCopyBtn" title="Copy your result and the link to the clipboard">Copy to clipboard</button>
+        <p class="ntt-share-hint">Copies your grid plus the link below so friends can try the same quiz.</p>
+        <a class="ntt-share-link" id="shareCardLink" href="#" target="_blank" rel="noopener">Share this game with friends &rarr;</a>
       </div>
     </div>
 
@@ -661,6 +671,37 @@ import { eras } from '../../data/eras';
   }
   .ntt-summary-na { color: var(--color-slate-400); }
   .ntt-summary-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; }
+
+  /* Shareable result card */
+  .ntt-share-card {
+    margin-top: 1rem;
+    padding: 1.1rem 1.25rem 1.25rem;
+    border: 1px solid var(--color-orange-200);
+    background: var(--color-orange-50);
+    border-radius: var(--radius-md);
+    text-align: center;
+  }
+  .ntt-share-card[hidden] { display: none; }
+  .ntt-share-title { font-weight: 700; color: var(--color-slate-800); margin: 0 0 0.5rem; }
+  .ntt-share-grid {
+    display: inline-block;
+    text-align: left;
+    white-space: pre;
+    font-size: 1.6rem;
+    line-height: 1.25;
+    margin: 0.25rem 0 0.5rem;
+  }
+  .ntt-share-score { font-size: 0.9rem; color: var(--color-slate-600); margin: 0 0 0.9rem; }
+  .ntt-share-hint { font-size: 0.75rem; color: var(--color-slate-500); margin: 0.6rem 0 0; }
+  .ntt-share-link {
+    display: inline-block;
+    margin-top: 0.7rem;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--color-orange-700);
+    text-decoration: underline;
+  }
+  .ntt-share-link:hover { color: var(--color-primary-hover); }
 
   /* Matching game board */
   .ntt-match-rows {

@@ -39,6 +39,12 @@ var playAgainBtn = document.getElementById('playAgainBtn');
 var changeSettingsBtn = document.getElementById('changeSettingsBtn');
 var replayMissesBtn = document.getElementById('replayMissesBtn');
 var shareResultBtn = document.getElementById('shareResultBtn');
+var shareCard = document.getElementById('shareCard');
+var shareCardTitle = document.getElementById('shareCardTitle');
+var shareCardGrid = document.getElementById('shareCardGrid');
+var shareCardScore = document.getElementById('shareCardScore');
+var shareCardLink = document.getElementById('shareCardLink');
+var shareCopyBtn = document.getElementById('shareCopyBtn');
 
 // --- State ---
 var sessionOpts = null;   // { moduleId, level, pool, contextLabel, daily: {date}|null }
@@ -543,7 +549,7 @@ function showSummary() {
     var correctInRow = r.fieldResults.filter(function (f) { return f.correct; }).length;
     var resultText;
 
-    // Wordle-style share grid: 🟩 correct · 🟨 close · ⬛ wrong · ⬜ skipped,
+    // Wordle-style share grid: 🟩 correct · 🟨 close · 🟥 wrong · ⬜ skipped,
     // one square per field column (a skipped song renders an all-⬜ row).
     var squares = '';
     if (r.skipped) {
@@ -556,7 +562,7 @@ function showSummary() {
         colAllCorrect[ci] = false;   // any miss breaks the column's 💎
         if (!f) squares += '⬜';
         else if (f.close) squares += '🟨';
-        else squares += '⬛';
+        else squares += '🟥';
       });
     }
     shareRows.push(squares);
@@ -597,16 +603,17 @@ function showSummary() {
   if (songsSkipped) scoreText += ' ' + songsSkipped + ' skipped.';
   summaryScore.textContent = scoreText;
 
-  // 💎 over each fully-correct column, blank (⬜) elsewhere; dropped if none aced.
+  // 💎 over each fully-correct column, blank elsewhere; the row is dropped if none aced.
   var anyGem = false;
   var gemHeader = '';
   usedKeys.forEach(function (k, ci) {
     if (colAllCorrect[ci]) { gemHeader += '💎'; anyGem = true; }
-    else gemHeader += '⬜';
+    else gemHeader += '　';   // ideographic space ≈ emoji width, so columns still line up
   });
 
   lastSummary = { songsCorrect: songsCorrect, gradedSongs: gradedSongs,
                   fieldsCorrect: fieldsCorrect, fieldsAsked: fieldsAsked, songsSkipped: songsSkipped,
+                  songsTotal: sessionResults.length,
                   grid: shareRows, gems: anyGem ? gemHeader : '' };
 
   // Replay-the-misses: the natural study loop — a fresh mini-session from
@@ -615,7 +622,8 @@ function showSummary() {
   replayMissesBtn.style.display = missed.length ? '' : 'none';
   replayMissesBtn.textContent = 'Replay missed songs (' + missed.length + ')';
 
-  shareResultBtn.textContent = 'Share result';
+  shareResultBtn.textContent = 'Share with friends';
+  if (shareCard) shareCard.hidden = true;
 
   // Record the first Daily Challenge result of the day (later replays are
   // practice and don't overwrite the honest first attempt).
@@ -641,20 +649,33 @@ replayMissesBtn.addEventListener('click', function () {
   beginRounds(shuffle(missed));
 });
 
-// --- Share result (clipboard) ---
-function buildShareText() {
-  var s = lastSummary || { songsCorrect: 0, gradedSongs: 0, fieldsCorrect: 0, fieldsAsked: 0, grid: [], gems: '' };
-  var head = sessionOpts.daily
-    ? 'Name That Tango Daily (' + sessionOpts.daily.date + ')'
-    : 'Name That Tango — ' + (sessionOpts.contextLabel || '');
-  var lines = [head];
+// --- Share result: reveal a result card, copy on demand ---
+// Pieces of the shareable result, so the card and the copied text stay in sync.
+function shareParts() {
+  var s = lastSummary || { songsCorrect: 0, songsTotal: 0, grid: [], gems: '' };
+  var head = 'Name That Tango ' + s.songsTotal;
+  var gridLines = [];
   if (s.grid && s.grid.length) {
-    if (s.gems) lines.push(s.gems);   // 💎 marks any field you got right on every song
-    s.grid.forEach(function (row) { lines.push(row); });
+    if (s.gems) gridLines.push(s.gems);   // 💎 marks any field you got right on every song
+    s.grid.forEach(function (row) { gridLines.push(row); });
   }
-  lines.push(s.songsCorrect + '/' + s.gradedSongs + ' songs · ' + s.fieldsCorrect + '/' + s.fieldsAsked + ' fields');
-  lines.push('Can you beat it? ' + window.location.href);
-  return lines.join('\n');
+  var score = s.songsCorrect + '/' + s.songsTotal + ' Correct';
+  return { head: head, gridLines: gridLines, score: score, url: window.location.href };
+}
+
+function buildShareText() {
+  var p = shareParts();
+  return [p.head].concat(p.gridLines, [p.score, p.url]).join('\n');
+}
+
+function showShareCard() {
+  var p = shareParts();
+  shareCardTitle.textContent = p.head;
+  shareCardGrid.textContent = p.gridLines.join('\n');
+  shareCardScore.textContent = p.score;
+  shareCardLink.href = p.url;
+  shareCard.hidden = false;
+  shareCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
 function legacyCopy(text) {
@@ -671,11 +692,13 @@ function legacyCopy(text) {
   return ok;
 }
 
-shareResultBtn.addEventListener('click', function () {
+shareResultBtn.addEventListener('click', showShareCard);
+
+shareCopyBtn.addEventListener('click', function () {
   var text = buildShareText();
   function done(ok) {
-    shareResultBtn.textContent = ok ? 'Copied!' : 'Copy failed';
-    setTimeout(function () { shareResultBtn.textContent = 'Share result'; }, 2000);
+    shareCopyBtn.textContent = ok ? 'Copied!' : 'Copy failed';
+    setTimeout(function () { shareCopyBtn.textContent = 'Copy to clipboard'; }, 2000);
   }
   if (navigator.clipboard && navigator.clipboard.writeText) {
     navigator.clipboard.writeText(text).then(function () { done(true); }, function () { done(legacyCopy(text)); });
