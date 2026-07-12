@@ -60,6 +60,13 @@ const PRODUCTS: Record<string, ProductInfo> = {
       purchaseHash: "#tigertag",
     },
   },
+  "plugin-play": {
+    id: "plugin-play",
+    downloadUrl: "https://github.com/sericson0/plugin-play/releases/latest",
+    name: "Plugin Play",
+    guideUrl: "https://github.com/sericson0/plugin-play/blob/main/README.md",
+    guideLabel: "Plugin Play setup & quick-start guide",
+  },
 };
 
 async function sendWelcomeEmail(
