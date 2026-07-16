@@ -555,10 +555,10 @@ const productSchemas = products.map((p) => {
     <div class="container">
       <div class="tool-header">
         {pluginPlay?.image && (
-          <div class="tool-logo tool-logo--wide">
+          <div class="tool-logo">
             <picture>
               <source srcset={pluginPlay.image.replace(/\.png$/i, '.webp')} type="image/webp" />
-              <img src={pluginPlay.image} alt="Plugin Play" width="135" height="90" loading="lazy" decoding="async" />
+              <img src={pluginPlay.image} alt="Plugin Play" width="90" height="90" loading="lazy" decoding="async" />
             </picture>
           </div>
         )}

@@ -90,6 +90,6 @@ export const products: Product[] = [
     description: 'Route any app — your DJ software, a browser, Spotify — through a chain of VST3 effects in real time, then out to your speakers. Free and open source.',
     price: 'Free',
     downloadLink: 'https://github.com/sericson0/plugin-play/releases',
-    image: '/images/plugin-play.png',
+    image: '/images/plugin-play-icon.png',
   },
 ];

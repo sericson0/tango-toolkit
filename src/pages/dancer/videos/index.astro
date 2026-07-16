@@ -1,0 +1,132 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import PageHero from '../../../components/PageHero.astro';
+import VideoEmbed from '../../../components/VideoEmbed.astro';
+import { dancerVideoCategories, videosByCategory } from '../../../data/dancerVideos';
+---
+
+<BaseLayout title="Dancer Videos" description="Tango videos for dancers — performances, lessons, and interviews with dancers, teachers, and maestros.">
+  <PageHero
+    title="Videos"
+    lead="Performances, lessons, and interviews for tango dancers."
+    backHref="/dancer/"
+    backText="Back to Dancer Resources"
+  />
+
+  <section class="videos-section">
+    <div class="container">
+      {dancerVideoCategories.map((category) => {
+        const videos = videosByCategory(category.id);
+        return (
+          <div class="video-category" id={category.id}>
+            <h2 class="section-heading">{category.title}</h2>
+            <p class="section-blurb">{category.blurb}</p>
+
+            {videos.length > 0 ? (
+              <div class="videos-grid">
+                {videos.map((video) => (
+                  <article class="video-card">
+                    <VideoEmbed url={video.url} title={video.title} />
+                    <div class="video-card-body">
+                      <h3>{video.title}</h3>
+                      {video.author && <p class="video-card-author">{video.author}</p>}
+                      {video.description && <p class="video-card-desc">{video.description}</p>}
+                    </div>
+                  </article>
+                ))}
+              </div>
+            ) : (
+              <p class="empty-state">
+                {category.title} are on the way &mdash; this library is just getting started.
+                <a href="/#subscribe">Subscribe</a> to hear when new videos land.
+              </p>
+            )}
+          </div>
+        );
+      })}
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .videos-section {
+    padding: 3rem 0;
+  }
+
+  .video-category {
+    scroll-margin-top: calc(var(--header-height) + 1rem);
+  }
+
+  .video-category + .video-category {
+    margin-top: 3rem;
+    padding-top: 3rem;
+    border-top: 1px solid var(--color-slate-200);
+  }
+
+  .section-heading {
+    margin: 0 0 0.35rem;
+    font-size: 1.6rem;
+  }
+
+  .section-blurb {
+    margin: 0 0 1.5rem;
+    color: var(--color-slate-600);
+    max-width: 60ch;
+  }
+
+  .videos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+    gap: 2rem;
+  }
+
+  .video-card {
+    background: white;
+    border: 1px solid var(--color-slate-200);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+  }
+
+  .video-card :global(.video-embed) {
+    margin: 0;
+    border-radius: 0;
+  }
+
+  .video-card-body {
+    padding: 1rem 1.25rem 1.25rem;
+  }
+
+  .video-card h3 {
+    margin: 0 0 0.25rem;
+    font-size: 1.15rem;
+  }
+
+  .video-card-author {
+    margin: 0 0 0.5rem;
+    font-size: 0.85rem;
+    font-style: italic;
+    color: var(--color-orange-600);
+  }
+
+  .video-card-desc {
+    margin: 0;
+    font-size: 0.9rem;
+    color: var(--color-slate-600);
+    line-height: 1.6;
+  }
+
+  .empty-state {
+    margin: 0;
+    padding: 1.5rem 1.75rem;
+    background: var(--color-slate-50);
+    border: 1px dashed var(--color-slate-300);
+    border-radius: var(--radius-lg);
+    color: var(--color-slate-600);
+    max-width: 60ch;
+  }
+
+  .empty-state a {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+</style>

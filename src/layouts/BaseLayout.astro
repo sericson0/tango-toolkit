@@ -85,6 +85,16 @@ const absoluteOgImage = new URL(ogImage, Astro.site).href;
               <a href="/dj/articles/" class={Astro.url.pathname.startsWith('/dj/articles') || Astro.url.pathname.startsWith('/dj/history') ? 'active' : ''}>Resources &amp; Articles</a>
             </div>
           </div>
+          <div class="nav-group">
+            <button type="button" class={`nav-group-toggle ${Astro.url.pathname.startsWith('/dancer') ? 'active' : ''}`} aria-expanded="false" aria-haspopup="true">
+              Dancer <span class="nav-caret" aria-hidden="true">&#9662;</span>
+            </button>
+            <div class="nav-dropdown">
+              <a href="/dancer/" class={Astro.url.pathname === '/dancer/' ? 'active' : ''}>Dancer Resources</a>
+              <a href="/dancer/videos/" class={Astro.url.pathname.startsWith('/dancer/videos') ? 'active' : ''}>Videos</a>
+              <a href="/dancer/videos/#interviews" class="nav-sub">Interviews</a>
+            </div>
+          </div>
           <a href="/discographies/" class={Astro.url.pathname.startsWith('/discographies') ? 'active' : ''}>Discographies</a>
           <a href="/name-that-tango/" class={Astro.url.pathname.startsWith('/name-that-tango') ? 'active' : ''}>Name That Tango</a>
         </nav>
@@ -121,6 +131,12 @@ const absoluteOgImage = new URL(ogImage, Astro.site).href;
             <a href="/discographies/">Discographies</a>
             <a href="/name-that-tango/">Name That Tango</a>
             <a href="/dj/articles/">Articles &amp; Links</a>
+          </div>
+          <div>
+            <strong>For Dancers</strong>
+            <a href="/dancer/">Dancer Resources</a>
+            <a href="/dancer/videos/">Videos</a>
+            <a href="/dancer/videos/#interviews">Interviews</a>
           </div>
           <div>
             <strong>Help</strong>

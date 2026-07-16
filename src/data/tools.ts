@@ -18,6 +18,7 @@
  *   price: 'Free',
  *   platforms: ['Windows', 'macOS'],
  *   feedbackEmail: 'author@example.com', // where the "Feedback" button routes
+ *   githubRepo: 'owner/name',            // shows live version + last-updated date
  *   dateAdded: '2026-07-15',
  * },
  */
@@ -80,6 +81,13 @@ export interface Tool {
    * falls back to tangotoolkit@gmail.com so nothing is lost.
    */
   feedbackEmail?: string;
+  /**
+   * GitHub repo ("owner/name") whose latest release drives the version number
+   * and last-updated date shown on the card. Fetched live (server-cached) via
+   * /api/tool-releases, so it stays current without manual edits. Omit for
+   * tools that aren't released on GitHub — they simply show no version.
+   */
+  githubRepo?: string;
   price: string;
   platforms?: string[];
   image?: string;
@@ -97,6 +105,7 @@ export const tools: Tool[] = [
     category: 'dj-players',
     author: 'The Tango Toolkit',
     url: '/dj/software/#tigertango',
+    githubRepo: 'sericson0/TigerTango',
     price: 'Free',
     platforms: ['Windows', 'macOS'],
     image: '/images/TigerTangoLogo.png',
@@ -149,6 +158,7 @@ export const tools: Tool[] = [
     url: 'https://github.com/richardsladetdj-creator/TangoDisplay',
     external: true,
     downloadUrl: '/api/github-latest-asset?repo=richardsladetdj-creator/TangoDisplay&id=tangodisplay',
+    githubRepo: 'richardsladetdj-creator/TangoDisplay',
     // feedbackEmail: '', // TODO: add Richard's email to route feedback directly (falls back to tangotoolkit@gmail.com)
     price: 'Free',
     platforms: ['macOS 13+'],
@@ -183,6 +193,7 @@ export const tools: Tool[] = [
     category: 'tanda-builders',
     author: 'The Tango Toolkit',
     url: '/dj/software/#tigertanda',
+    githubRepo: 'sericson0/tigertanda-vdj',
     price: 'Free',
     platforms: ['Windows', 'macOS'],
     image: '/images/TigerTanda.png',
@@ -215,6 +226,7 @@ export const tools: Tool[] = [
     author: 'The Tango Toolkit',
     url: '/dj/software/#plugin-play',
     downloadUrl: '/api/github-latest-asset?repo=sericson0/plugin-play&ext=exe&id=plugin-play',
+    githubRepo: 'sericson0/plugin-play',
     price: 'Free',
     platforms: ['Windows', 'macOS'],
     image: '/images/plugin-play-icon.png',
@@ -228,6 +240,7 @@ export const tools: Tool[] = [
     category: 'plugins-sound-quality',
     author: 'The Tango Toolkit',
     url: '/dj/software/#hisstory',
+    githubRepo: 'sericson0/hisstory-releases',
     price: '$9.99–$40',
     platforms: ['Windows', 'macOS'],
     image: '/images/hisstory-logo.png',
@@ -254,6 +267,7 @@ export const tools: Tool[] = [
     category: 'plugins-sound-quality',
     author: 'The Tango Toolkit',
     url: '/dj/software/#tigertag',
+    githubRepo: 'sericson0/tigertag-releases',
     price: '$40',
     platforms: ['Windows', 'macOS'],
     image: '/images/TigerTag.png',

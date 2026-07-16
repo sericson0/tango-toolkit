@@ -99,6 +99,7 @@ const MUSIC_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
                       Feedback
                     </button>
                     */}
+                    <span class="tool-version" data-tool-version data-tool-id={tool.id} hidden></span>
                   </div>
                 </article>
               ))}
@@ -194,6 +195,27 @@ const MUSIC_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
           if (!data || !data.counts) return;
           serverCounts = data.counts;
           likeButtons.forEach(render);
+        })
+        .catch(function () {});
+
+      // ===== Tool versions (live from GitHub releases) ===========
+      fetch('/api/tool-releases')
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (data) {
+          if (!data || !data.releases) return;
+          document.querySelectorAll('[data-tool-version]').forEach(function (el) {
+            var rel = data.releases[el.getAttribute('data-tool-id')];
+            if (!rel || !rel.version) return;
+            var text = /^v/i.test(rel.version) ? rel.version : 'v' + rel.version;
+            if (rel.updated) {
+              var d = new Date(rel.updated);
+              if (!isNaN(d.getTime())) {
+                text += ' · updated ' + d.toLocaleDateString(undefined, { month: 'short', year: 'numeric' });
+              }
+            }
+            el.textContent = text;
+            el.hidden = false;
+          });
         })
         .catch(function () {});
 
@@ -576,6 +598,17 @@ const MUSIC_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
   .tool-like-count:empty { display: none; }
 
   .tool-feedback svg { width: 1rem; height: 1rem; }
+
+  /* Live version + last-updated, filled in by JS from /api/tool-releases */
+  .tool-version {
+    margin-left: auto;
+    text-align: right;
+    font-size: 0.72rem;
+    line-height: 1.3;
+    color: var(--color-slate-400);
+    font-variant-numeric: tabular-nums;
+  }
+  .tool-version[hidden] { display: none; }
 
   @keyframes ttk-pop {
     0% { transform: scale(1); }

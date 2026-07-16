@@ -1,0 +1,141 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import PageHero from '../../components/PageHero.astro';
+
+// Inline icons (Feather, MIT) — consistent rendering across platforms, unlike emoji
+const ICON_ATTRS = 'viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"';
+const VIDEO_SVG = `<svg ${ICON_ATTRS}><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>`;
+const MIC_SVG = `<svg ${ICON_ATTRS}><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>`;
+---
+
+<BaseLayout title="Dancer Resources" description="Videos, interviews, and resources for tango dancers. More on the way — this section is under construction.">
+  <PageHero title="Dancer Resources" lead="Videos, interviews, and resources for tango dancers." />
+
+  <section class="dancer-section">
+    <div class="container">
+      <p class="callout callout-warning construction-note">
+        <strong>Under construction</strong>
+        We&rsquo;re building out a home for tango dancers &mdash; videos, interviews, and guides to
+        deepen your dancing and your ear for the music. Check back soon, and
+        <a href="/#subscribe">subscribe</a> to hear when new resources land.
+      </p>
+
+      <h2 class="section-heading">Explore</h2>
+      <div class="dancer-grid">
+        <a href="/dancer/videos/" class="dancer-card">
+          <div class="dancer-card-icon" set:html={VIDEO_SVG}></div>
+          <div>
+            <h3>Videos</h3>
+            <p>Performances, lessons, and talks &mdash; including a growing library of interviews.</p>
+            <span class="card-cta">Watch &rarr;</span>
+          </div>
+        </a>
+
+        <a href="/dancer/videos/#interviews" class="dancer-card">
+          <div class="dancer-card-icon" set:html={MIC_SVG}></div>
+          <div>
+            <h3>Interviews</h3>
+            <p>Conversations with dancers, teachers, and maestros of the tango world.</p>
+            <span class="card-cta">Listen in &rarr;</span>
+          </div>
+        </a>
+      </div>
+
+      <h2 class="section-heading" style="margin-top: 2.5rem;">Coming soon</h2>
+      <ul class="coming-list">
+        <li>A curated library of dancer videos and interviews</li>
+        <li>Guides to understanding tango music from the dance floor</li>
+        <li>Etiquette, cabeceo, and codigos for milongas</li>
+        <li>Recommended teachers, festivals, and communities</li>
+      </ul>
+
+      <p class="prose" style="margin-top: 2rem;">
+        In the meantime, explore our <a href="/discographies/">discographies</a> and the
+        <a href="/dj/history-of-tango-music/">history of tango music</a> to learn more about
+        the music you dance to.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .dancer-section {
+    padding: 3rem 0;
+  }
+
+  .construction-note {
+    margin-bottom: 2.5rem;
+  }
+
+  .construction-note a {
+    color: var(--color-orange-700);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  .section-heading {
+    margin: 0 0 1.25rem;
+    font-size: 1.5rem;
+  }
+
+  .dancer-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 1.5rem;
+    max-width: 720px;
+  }
+
+  .dancer-card {
+    display: flex;
+    gap: 1rem;
+    text-decoration: none;
+    color: inherit;
+    background: white;
+    border: 1px solid var(--color-slate-200);
+    border-radius: var(--radius-lg);
+    padding: 1.5rem;
+    transition: all 0.2s;
+  }
+
+  .dancer-card:hover {
+    border-color: var(--color-orange-400);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+
+  .dancer-card-icon {
+    flex-shrink: 0;
+    color: var(--color-orange-500);
+  }
+
+  .dancer-card-icon :global(svg) {
+    width: 2rem;
+    height: 2rem;
+  }
+
+  .dancer-card h3 {
+    margin: 0 0 0.35rem;
+    font-size: 1.25rem;
+  }
+
+  .dancer-card p {
+    margin: 0 0 0.75rem;
+    color: var(--color-slate-600);
+    font-size: 0.95rem;
+    line-height: 1.6;
+  }
+
+  .card-cta {
+    font-weight: 600;
+    color: var(--color-primary);
+    font-size: 0.95rem;
+  }
+
+  .coming-list {
+    margin: 0;
+    padding-left: 1.25rem;
+    color: var(--color-slate-600);
+    line-height: 1.8;
+    max-width: 60ch;
+  }
+</style>
