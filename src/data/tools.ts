@@ -129,6 +129,23 @@ export const tools: Tool[] = [
     image: '/images/eleje-player.png',
     dateAdded: '2026-07-05',
   },
+  {
+    id: 'virtual-tango-dj',
+    name: 'Virtual Tango DJ',
+    tagline: 'AI-generated tandas for your milonga',
+    description: 'A music app that automatically creates authentic tango tandas based on your \
+                 preferences, giving you real dance flow whether you are practicing at home or hosting a \
+                 pop-up milonga. <strong>Currently in beta.</strong>',
+    category: 'dj-players',
+    author: 'Rainier Pereira',
+    url: 'https://virtualtangodj.com',
+    external: true,
+    // feedbackEmail: 'tangoapp.official@gmail.com', // route feedback directly (falls back to tangotoolkit@gmail.com)
+    price: 'Free–$7.99/mo',
+    platforms: ['Web'],
+    image: '/images/virtualtangodj.png',
+    dateAdded: '2026-07-16',
+  },
 
   // ===== Displays & Projections =====
   {
