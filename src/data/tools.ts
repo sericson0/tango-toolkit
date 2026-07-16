@@ -187,7 +187,7 @@ export const tools: Tool[] = [
     url: '/dj/software/#plugin-play',
     downloadUrl: '/api/github-latest-asset?repo=sericson0/plugin-play&ext=exe&id=plugin-play',
     price: 'Free',
-    platforms: ['Windows'],
+    platforms: ['Windows', 'macOS'],
     image: '/images/plugin-play-icon.png',
     dateAdded: '2026-07-10',
   },

@@ -129,7 +129,7 @@ const productSchemas = products.map((p) => {
           <div>
             <strong>Plugin Play</strong>
             <span class="tool-card-tagline">Live VST3 effect host</span>
-            <span class="tool-card-price">Free</span>
+            <span class="tool-card-price">Free <span class="tool-card-beta">Beta</span></span>
           </div>
         </a>
       </div>
@@ -566,7 +566,8 @@ const productSchemas = products.map((p) => {
           <h2>Plugin Play</h2>
           <p class="tool-tagline">Run your DJ software through a live VST3 effect chain</p>
           <span class="price-badge">Free &amp; open source</span>
-          <span class="license-note">Windows 10/11 &middot; 64-bit &middot; GPLv3</span>
+          <span class="price-badge price-badge--beta">Beta</span>
+          <span class="license-note">Windows 10/11 &amp; macOS &middot; 64-bit &middot; GPLv3</span>
         </div>
       </div>
 
@@ -583,12 +584,12 @@ const productSchemas = products.map((p) => {
 
       <div class="callout callout-config callout-inline">
         <strong>What you need.</strong>
-        <p>64-bit <strong>Windows 10 (2004) or later</strong> and your effects in <strong>VST3</strong> format. The installer can also set up VB-Audio&rsquo;s <strong>VB-CABLE</strong> &mdash; the virtual audio cable Plugin Play uses to route apps (recommended; it needs a reboot afterward).</p>
+        <p>64-bit <strong>Windows 10 (2004) or later</strong> or a recent <strong>macOS</strong>, and your effects in <strong>VST3</strong> format. On Windows, the installer can also set up VB-Audio&rsquo;s <strong>VB-CABLE</strong> &mdash; the virtual audio cable Plugin Play uses to route apps (recommended; it needs a reboot afterward).</p>
       </div>
 
       <h3 class="section-label">Download Plugin Play</h3>
-      <p class="section-note">Free and open source. The installer bundles everything it needs &mdash; no extra runtimes.</p>
-      <p class="callout callout-warning callout-inline"><strong>Windows note:</strong> this release isn&rsquo;t code-signed yet, so SmartScreen may warn on first run. Click <strong>More info</strong> &rarr; <strong>Run anyway</strong>.</p>
+      <p class="section-note">Free and open source, for Windows and macOS. The installer bundles everything it needs &mdash; no extra runtimes.</p>
+      <p class="callout callout-warning callout-inline"><strong>Beta:</strong> the Windows and macOS builds are currently in beta &mdash; expect the occasional rough edge, and please report anything you hit. Neither build is code-signed yet, so Windows SmartScreen (<strong>More info</strong> &rarr; <strong>Run anyway</strong>) or macOS Gatekeeper may warn on first run.</p>
 
       <div class="download-buttons">
         <a href="/api/github-latest-asset?repo=sericson0/plugin-play&ext=exe&id=plugin-play" class="download-btn-large email-capture-dl" data-product-id="plugin-play">
@@ -596,6 +597,13 @@ const productSchemas = products.map((p) => {
           <div>
             <strong>Download for Windows</strong>
             <span>Plugin Play installer (.exe)</span>
+          </div>
+        </a>
+        <a href="/api/github-latest-asset?repo=sericson0/plugin-play&ext=zip&id=plugin-play" class="download-btn-large email-capture-dl" data-product-id="plugin-play">
+          <span class="dl-icon" set:html={APPLE_SVG}></span>
+          <div>
+            <strong>Download for macOS</strong>
+            <span>Plugin Play app (.zip)</span>
           </div>
         </a>
         <a href="https://github.com/sericson0/plugin-play" target="_blank" rel="noopener noreferrer" class="download-btn-large">
@@ -615,6 +623,17 @@ const productSchemas = products.map((p) => {
             <li>Download <code>PluginPlay-&lt;version&gt;-Setup.exe</code> above and run it &mdash; everything is built in, so there are no extra runtimes to install.</li>
             <li>When prompted, let it install <strong>VB-CABLE</strong> &mdash; the virtual audio cable Plugin Play uses to route apps (recommended; reboot afterward).</li>
             <li>Launch Plugin Play; a short first-run walkthrough opens automatically.</li>
+          </ol>
+        </div>
+      </details>
+      <details class="guide-expander">
+        <summary>Install (macOS &mdash; beta)</summary>
+        <div class="guide-content">
+          <ol>
+            <li>Download <code>PluginPlay-&lt;version&gt;-macOS.zip</code> above and unzip it.</li>
+            <li>Move <strong>Plugin Play</strong> to your <strong>Applications</strong> folder.</li>
+            <li>First launch: the build isn&rsquo;t notarized yet, so right-click the app and choose <strong>Open</strong> (or allow it under <strong>System Settings &rarr; Privacy &amp; Security</strong>).</li>
+            <li>A short first-run walkthrough opens automatically; the in-app <strong>HELP</strong> and <strong>GUIDE</strong> buttons cover routing and setup.</li>
           </ol>
         </div>
       </details>
@@ -967,6 +986,19 @@ const productSchemas = products.map((p) => {
     margin-top: 0.15rem;
   }
 
+  .tool-card-beta {
+    display: inline-block;
+    margin-left: 0.25rem;
+    padding: 0 0.35rem;
+    border-radius: 999px;
+    background: var(--color-slate-800);
+    color: white;
+    font-size: 0.65rem;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    vertical-align: middle;
+  }
+
   @media (max-width: 768px) {
     .tool-cards-grid {
       grid-template-columns: repeat(2, 1fr);
@@ -1042,6 +1074,14 @@ const productSchemas = products.map((p) => {
     background: var(--color-slate-100);
     color: var(--color-slate-600);
     margin-left: 0.35rem;
+  }
+
+  .price-badge--beta {
+    background: var(--color-slate-800);
+    color: white;
+    margin-left: 0.35rem;
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
   }
 
   .tool-desc-full {
