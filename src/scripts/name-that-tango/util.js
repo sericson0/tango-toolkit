@@ -52,6 +52,15 @@ export function joinKey(bandleader, title, date) {
   return norm(bandleader) + '|' + norm(title) + '|' + parseDate(date);
 }
 
+// Local calendar date (YYYY-MM-DD), so the Daily Challenge rolls over at the
+// player's midnight and share cards are stamped with the player's own date.
+export function todayKey() {
+  var d = new Date();
+  var m = String(d.getMonth() + 1);
+  var day = String(d.getDate());
+  return d.getFullYear() + '-' + (m.length < 2 ? '0' + m : m) + '-' + (day.length < 2 ? '0' + day : day);
+}
+
 // --- Last-name helpers for the orchestra dropdown (matches tanda-builder) ---
 var LAST_NAME_PARTICLES = ['de', 'di', 'del', 'la', 'las', 'los'];
 

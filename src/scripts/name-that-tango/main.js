@@ -9,7 +9,7 @@ import {
   BIG_FOUR_RANGES, GOLDEN_AGE_RANGES, BIG_FOUR_SET, MODULES
 } from './config.js';
 import {
-  norm, esc, extractYear, joinKey, getSortLastName, uniqueSorted,
+  norm, esc, extractYear, joinKey, getSortLastName, uniqueSorted, todayKey,
   setRand, resetRand, mulberry32, sampleN, weightedSampleByBandleader
 } from './util.js';
 import { setupCombo } from './combo.js';
@@ -292,14 +292,6 @@ function matchingEligibleOrchestras() {
 }
 
 // --- Daily Challenge helpers ---
-// Local calendar date, so the puzzle rolls over at the player's midnight.
-function todayKey() {
-  var d = new Date();
-  var m = String(d.getMonth() + 1);
-  var day = String(d.getDate());
-  return d.getFullYear() + '-' + (m.length < 2 ? '0' + m : m) + '-' + (day.length < 2 ? '0' + day : day);
-}
-
 function dailySeed(dateKey) {
   return parseInt(dateKey.replace(/-/g, ''), 10);
 }

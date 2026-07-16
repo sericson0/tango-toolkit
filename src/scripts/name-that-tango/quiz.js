@@ -6,7 +6,7 @@ import {
 } from './config.js';
 import {
   norm, normLoose, esc, extractYear, uniqueSorted, shuffle, sampleN,
-  pickSpacedYears, personThumb, resolveFields
+  pickSpacedYears, personThumb, resolveFields, todayKey
 } from './util.js';
 import { setupTypeahead } from './combo.js';
 import { Stats } from './stats.js';
@@ -44,6 +44,7 @@ var shareCardTitle = document.getElementById('shareCardTitle');
 var shareCardGrid = document.getElementById('shareCardGrid');
 var shareCardScore = document.getElementById('shareCardScore');
 var shareCardLink = document.getElementById('shareCardLink');
+var shareNativeBtn = document.getElementById('shareNativeBtn');
 var shareCopyBtn = document.getElementById('shareCopyBtn');
 
 // --- State ---
@@ -541,30 +542,38 @@ function showSummary() {
   summaryHead.innerHTML = headHtml;
 
   var fieldsAsked = 0, fieldsCorrect = 0, songsCorrect = 0, songsSkipped = 0, gradedSongs = 0;
+  var guessesTotal = 0;   // every field guess, skipped songs included — the share card's denominator
   var bodyHtml = '';
   var shareRows = [];   // one Wordle-style row of squares per song, for the share card
+  // Share-grid columns: Singer and Year share one column, since most levels
+  // ask for one or the other per song. (If a level asks both, that square is
+  // green only when both are right.)
+  var shareKeys = [];
+  usedKeys.forEach(function (k) {
+    var sk = (k === 'Singer' || k === 'Date') ? 'SingerYear' : k;
+    if (shareKeys.indexOf(sk) === -1) shareKeys.push(sk);
+  });
   // A column earns a 💎 only if every song got that field right (all 🟩).
-  var colAllCorrect = usedKeys.map(function () { return true; });
+  var colAllCorrect = shareKeys.map(function () { return true; });
   sessionResults.forEach(function (r, idx) {
     var correctInRow = r.fieldResults.filter(function (f) { return f.correct; }).length;
     var resultText;
+    guessesTotal += r.fieldResults.length;
 
-    // Wordle-style share grid: 🟩 correct · 🟨 close · 🟥 wrong · ⬜ skipped,
-    // one square per field column (a skipped song renders an all-⬜ row).
+    // Wordle-style share grid: 🟩 correct · ⬜ wrong or skipped,
+    // one square per column (a skipped song renders an all-⬜ row).
     var squares = '';
-    if (r.skipped) {
-      squares = '⬜'.repeat(usedKeys.length);
-      colAllCorrect = colAllCorrect.map(function () { return false; });
-    } else {
-      usedKeys.forEach(function (k, ci) {
-        var f = findFieldResult(r.fieldResults, k);
-        if (f && f.correct) { squares += '🟩'; return; }
-        colAllCorrect[ci] = false;   // any miss breaks the column's 💎
-        if (!f) squares += '⬜';
-        else if (f.close) squares += '🟨';
-        else squares += '🟥';
+    shareKeys.forEach(function (sk, ci) {
+      var fs = r.fieldResults.filter(function (f) {
+        return sk === 'SingerYear' ? (f.key === 'Singer' || f.key === 'Date') : f.key === sk;
       });
-    }
+      if (fs.length && fs.every(function (f) { return f.correct; })) {
+        squares += '🟩';
+      } else {
+        colAllCorrect[ci] = false;   // any miss breaks the column's 💎
+        squares += '⬜';
+      }
+    });
     shareRows.push(squares);
     if (r.skipped) {
       songsSkipped++;
@@ -606,14 +615,15 @@ function showSummary() {
   // 💎 over each fully-correct column, blank elsewhere; the row is dropped if none aced.
   var anyGem = false;
   var gemHeader = '';
-  usedKeys.forEach(function (k, ci) {
+  shareKeys.forEach(function (k, ci) {
     if (colAllCorrect[ci]) { gemHeader += '💎'; anyGem = true; }
     else gemHeader += '　';   // ideographic space ≈ emoji width, so columns still line up
   });
 
   lastSummary = { songsCorrect: songsCorrect, gradedSongs: gradedSongs,
                   fieldsCorrect: fieldsCorrect, fieldsAsked: fieldsAsked, songsSkipped: songsSkipped,
-                  songsTotal: sessionResults.length,
+                  songsTotal: sessionResults.length, guessesTotal: guessesTotal,
+                  date: sessionOpts.daily ? sessionOpts.daily.date : todayKey(),
                   grid: shareRows, gems: anyGem ? gemHeader : '' };
 
   // Replay-the-misses: the natural study loop — a fresh mini-session from
@@ -652,20 +662,26 @@ replayMissesBtn.addEventListener('click', function () {
 // --- Share result: reveal a result card, copy on demand ---
 // Pieces of the shareable result, so the card and the copied text stay in sync.
 function shareParts() {
-  var s = lastSummary || { songsCorrect: 0, songsTotal: 0, grid: [], gems: '' };
-  var head = 'Name That Tango ' + s.songsTotal;
+  var s = lastSummary || { fieldsCorrect: 0, guessesTotal: 0, date: todayKey(), grid: [], gems: '' };
+  var head = 'Name That Tango ' + s.date;
   var gridLines = [];
   if (s.grid && s.grid.length) {
     if (s.gems) gridLines.push(s.gems);   // 💎 marks any field you got right on every song
     s.grid.forEach(function (row) { gridLines.push(row); });
   }
-  var score = s.songsCorrect + '/' + s.songsTotal + ' Correct';
+  var score = s.fieldsCorrect + '/' + s.guessesTotal + ' Correct';
   return { head: head, gridLines: gridLines, score: score, url: window.location.href };
+}
+
+// The shareable text minus the URL — native share passes the URL separately
+// (so targets can render a link preview), the clipboard copy appends it.
+function shareTextBody(p) {
+  return [p.head].concat(p.gridLines, [p.score]).join('\n');
 }
 
 function buildShareText() {
   var p = shareParts();
-  return [p.head].concat(p.gridLines, [p.score, p.url]).join('\n');
+  return shareTextBody(p) + '\n' + p.url;
 }
 
 function showShareCard() {
@@ -674,6 +690,7 @@ function showShareCard() {
   shareCardGrid.textContent = p.gridLines.join('\n');
   shareCardScore.textContent = p.score;
   shareCardLink.href = p.url;
+  shareNativeBtn.hidden = !navigator.share;
   shareCard.hidden = false;
   shareCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
@@ -693,6 +710,14 @@ function legacyCopy(text) {
 }
 
 shareResultBtn.addEventListener('click', showShareCard);
+
+// Native share sheet (mobile and some desktops) — one tap into
+// WhatsApp/Messages/etc. The button only shows where navigator.share exists.
+shareNativeBtn.addEventListener('click', function () {
+  var p = shareParts();
+  navigator.share({ text: shareTextBody(p), url: p.url })
+    .catch(function () {});   // user closed the share sheet — not an error
+});
 
 shareCopyBtn.addEventListener('click', function () {
   var text = buildShareText();

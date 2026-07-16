@@ -164,8 +164,9 @@ import { eras } from '../../data/eras';
         <p class="ntt-share-title" id="shareCardTitle"></p>
         <div class="ntt-share-grid" id="shareCardGrid"></div>
         <p class="ntt-share-score" id="shareCardScore"></p>
+        <button type="button" class="ntt-btn-primary" id="shareNativeBtn" hidden title="Open your device's share menu">Share&hellip;</button>
         <button type="button" class="ntt-btn-primary" id="shareCopyBtn" title="Copy your result and the link to the clipboard">Copy to clipboard</button>
-        <p class="ntt-share-hint">Copies your grid plus the link below so friends can try the same quiz.</p>
+        <p class="ntt-share-hint">Shares your grid plus the link below so friends can try the same quiz.</p>
         <a class="ntt-share-link" id="shareCardLink" href="#" target="_blank" rel="noopener">Share this game with friends &rarr;</a>
       </div>
     </div>
@@ -694,6 +695,7 @@ import { eras } from '../../data/eras';
     margin: 0.25rem 0 0.5rem;
   }
   .ntt-share-score { font-size: 0.9rem; color: var(--color-slate-600); margin: 0 0 0.9rem; }
+  #shareNativeBtn[hidden] { display: none; }
   .ntt-share-hint { font-size: 0.75rem; color: var(--color-slate-500); margin: 0.6rem 0 0; }
   .ntt-share-link {
     display: inline-block;
