@@ -17,6 +17,7 @@
  *   external: true,
  *   price: 'Free',
  *   platforms: ['Windows', 'macOS'],
+ *   feedbackEmail: 'author@example.com', // where the "Feedback" button routes
  *   dateAdded: '2026-07-15',
  * },
  */
@@ -72,6 +73,13 @@ export interface Tool {
   external?: boolean;
   /** Optional direct download link — renders a Download button on the card. */
   downloadUrl?: string;
+  /**
+   * Where the card's "Feedback" button sends messages. Omit for Tango Toolkit
+   * tools — they default to tangotoolkit@gmail.com. For third-party tools, set
+   * the author's address so feedback reaches them directly; if omitted, it
+   * falls back to tangotoolkit@gmail.com so nothing is lost.
+   */
+  feedbackEmail?: string;
   price: string;
   platforms?: string[];
   image?: string;
@@ -106,6 +114,7 @@ export const tools: Tool[] = [
     author: 'Abbas Kazemipour',
     url: 'https://el-eje.com/eleje-player',
     external: true,
+    // feedbackEmail: '', // TODO: add Abbas's email to route feedback directly (falls back to tangotoolkit@gmail.com)
     price: 'Free (beta)',
     platforms: ['macOS 13+'],
     image: '/images/eleje-player.png',
@@ -140,10 +149,29 @@ export const tools: Tool[] = [
     url: 'https://github.com/richardsladetdj-creator/TangoDisplay',
     external: true,
     downloadUrl: '/api/github-latest-asset?repo=richardsladetdj-creator/TangoDisplay&id=tangodisplay',
+    // feedbackEmail: '', // TODO: add Richard's email to route feedback directly (falls back to tangotoolkit@gmail.com)
     price: 'Free',
     platforms: ['macOS 13+'],
     image: '/images/TangoDisplay.png',
     dateAdded: '2026-07-04',
+  },
+  {
+    id: 'milonga',
+    name: 'Milonga',
+    tagline: 'Put the song on screen so every dancer knows the tanda',
+    description: 'Reads the current track from Traktor or VirtualDJ and projects the orchestra, \
+                 singer, genre, and year onto a second screen — Uses tango database to fix incomplete tags. \
+                 Tracks tandas automatically and records session stats for later review. \
+                 English, French, and Spanish interfaces. <strong>Free.</strong>',
+    category: 'displays-projections',
+    author: 'Biryer',
+    url: 'https://milonga.biryer.fr/',
+    external: true,
+    // feedbackEmail: '', // TODO: add Biryer's email to route feedback directly (falls back to tangotoolkit@gmail.com)
+    price: 'Free',
+    platforms: ['Windows', 'macOS'],
+    image: '/images/Milonga.png',
+    dateAdded: '2026-07-15',
   },
 
   // ===== Tanda Builders =====
@@ -170,6 +198,7 @@ export const tools: Tool[] = [
     url: '/dj/tanda-builder/',
     price: 'Free',
     platforms: ['Web'],
+    image: '/images/TigerTanda.png',
     dateAdded: '2026-05-01',
   },
 

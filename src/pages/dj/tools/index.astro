@@ -73,6 +73,33 @@ const MUSIC_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
                       >{tool.external ? 'Visit Site ↗' : 'Details →'}</a>
                     </span>
                   </div>
+                  <div class="tool-card-social">
+                    <button
+                      type="button"
+                      class="tool-like"
+                      data-tool-id={tool.id}
+                      aria-pressed="false"
+                      aria-label={`Like ${tool.name}`}
+                      title={`Like ${tool.name}`}
+                    >
+                      <svg class="tool-like-star" viewBox="0 0 24 24" aria-hidden="true"><path d="M12 17.27L18.18 21l-1.64-7.03L22 9.24l-7.19-.61L12 2 9.19 8.63 2 9.24l5.46 4.73L5.82 21z"/></svg>
+                      <span class="tool-like-count" data-like-count aria-hidden="true"></span>
+                    </button>
+                    {/* Feedback button temporarily disabled. Re-enable to route
+                        per-tool feedback to authors (see /api/feedback + tools.ts feedbackEmail).
+                    <button
+                      type="button"
+                      class="tool-feedback"
+                      data-feedback-open
+                      data-tool-id={tool.id}
+                      data-tool-name={tool.name}
+                      data-tool-external={tool.external ? '1' : ''}
+                    >
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                      Feedback
+                    </button>
+                    */}
+                  </div>
                 </article>
               ))}
             </div>
@@ -90,6 +117,169 @@ const MUSIC_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
       </div>
     </div>
   </section>
+
+  <div class="tf-overlay" data-feedback-modal>
+    <div class="tf-modal" role="dialog" aria-modal="true" aria-labelledby="tf-title">
+      <button class="tf-close" type="button" aria-label="Close" data-feedback-close>&times;</button>
+      <h2 id="tf-title">Send feedback</h2>
+      <p class="tf-sub">Your message about <strong data-feedback-tool-name>this tool</strong> goes to <span data-feedback-dest>the developer</span>.</p>
+      <form data-feedback-form novalidate>
+        <label class="tf-label" for="tf-message">Your feedback</label>
+        <textarea id="tf-message" class="tf-textarea" data-feedback-message rows="5" maxlength="4000" required placeholder="What do you love, what could be better, or what's broken?"></textarea>
+        <label class="tf-label" for="tf-email">Your email <span class="tf-optional">(optional — so they can reply)</span></label>
+        <input id="tf-email" class="tf-input" data-feedback-email type="email" autocomplete="email" placeholder="you@example.com" />
+        <div class="tf-actions">
+          <button type="button" class="tf-btn tf-btn-secondary" data-feedback-close>Cancel</button>
+          <button type="submit" class="tf-btn tf-btn-primary">Send feedback</button>
+        </div>
+        <p class="tf-status" data-feedback-status role="status" aria-live="polite"></p>
+      </form>
+    </div>
+  </div>
+
+  <script is:inline>
+    (function () {
+      // ===== Likes ===============================================
+      var LIKE_KEY = 'ttk_liked_tools';
+      function loadLiked() {
+        try { var v = JSON.parse(localStorage.getItem(LIKE_KEY) || '[]'); return Array.isArray(v) ? v : []; }
+        catch (e) { return []; }
+      }
+      function saveLiked(a) { try { localStorage.setItem(LIKE_KEY, JSON.stringify(a)); } catch (e) {} }
+
+      var liked = loadLiked();
+      var likeButtons = Array.prototype.slice.call(document.querySelectorAll('.tool-like'));
+      var serverCounts = {};   // toolId -> count loaded from the server
+      var localDelta = {};     // toolId -> this session's net change vs. that baseline
+
+      function countEl(btn) { return btn.querySelector('[data-like-count]'); }
+      function setLiked(btn, on) {
+        btn.classList.toggle('is-liked', on);
+        btn.setAttribute('aria-pressed', on ? 'true' : 'false');
+      }
+      function render(btn) {
+        var id = btn.getAttribute('data-tool-id');
+        var base = typeof serverCounts[id] === 'number' ? serverCounts[id] : 0;
+        var n = base + (localDelta[id] || 0);
+        if (n < 0) n = 0;
+        countEl(btn).textContent = n > 0 ? String(n) : '';
+      }
+
+      likeButtons.forEach(function (btn) {
+        var id = btn.getAttribute('data-tool-id');
+        if (liked.indexOf(id) !== -1) setLiked(btn, true);
+        render(btn);
+        btn.addEventListener('click', function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          var isLiked = liked.indexOf(id) !== -1;
+          var delta = isLiked ? -1 : 1;
+          liked = isLiked ? liked.filter(function (x) { return x !== id; }) : liked.concat([id]);
+          saveLiked(liked);
+          localDelta[id] = (localDelta[id] || 0) + delta;
+          setLiked(btn, !isLiked);
+          render(btn);
+          if (!isLiked) { btn.classList.remove('pop'); void btn.offsetWidth; btn.classList.add('pop'); }
+          fetch('/api/likes', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ toolId: id, delta: delta })
+          }).catch(function () {});
+        });
+      });
+
+      fetch('/api/likes')
+        .then(function (r) { return r.ok ? r.json() : null; })
+        .then(function (data) {
+          if (!data || !data.counts) return;
+          serverCounts = data.counts;
+          likeButtons.forEach(render);
+        })
+        .catch(function () {});
+
+      // ===== Feedback modal ======================================
+      var modal = document.querySelector('[data-feedback-modal]');
+      if (!modal) return;
+      var form = modal.querySelector('[data-feedback-form]');
+      var nameEl = modal.querySelector('[data-feedback-tool-name]');
+      var destEl = modal.querySelector('[data-feedback-dest]');
+      var statusEl = modal.querySelector('[data-feedback-status]');
+      var msgEl = modal.querySelector('[data-feedback-message]');
+      var emailEl = modal.querySelector('[data-feedback-email]');
+      var submitBtn = form.querySelector('[type="submit"]');
+      var currentTool = null;
+      var lastFocused = null;
+
+      function setStatus(text, kind) {
+        statusEl.textContent = text || '';
+        statusEl.className = 'tf-status' + (kind ? ' tf-status--' + kind : '');
+      }
+      function openModal(id, name, external) {
+        currentTool = id;
+        lastFocused = document.activeElement;
+        nameEl.textContent = name;
+        destEl.textContent = external ? ('the developer of ' + name) : 'the Tango Toolkit team';
+        setStatus('');
+        form.reset();
+        submitBtn.disabled = false;
+        modal.classList.add('tf-open');
+        document.body.style.overflow = 'hidden';
+        setTimeout(function () { msgEl.focus(); }, 30);
+      }
+      function closeModal() {
+        modal.classList.remove('tf-open');
+        document.body.style.overflow = '';
+        currentTool = null;
+        if (lastFocused && lastFocused.focus) lastFocused.focus();
+      }
+
+      document.querySelectorAll('[data-feedback-open]').forEach(function (btn) {
+        btn.addEventListener('click', function (e) {
+          e.preventDefault();
+          e.stopPropagation();
+          openModal(
+            btn.getAttribute('data-tool-id'),
+            btn.getAttribute('data-tool-name'),
+            btn.getAttribute('data-tool-external') === '1'
+          );
+        });
+      });
+      modal.querySelectorAll('[data-feedback-close]').forEach(function (b) {
+        b.addEventListener('click', closeModal);
+      });
+      modal.addEventListener('click', function (e) { if (e.target === modal) closeModal(); });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && modal.classList.contains('tf-open')) closeModal();
+      });
+
+      form.addEventListener('submit', function (e) {
+        e.preventDefault();
+        if (!currentTool) return;
+        var message = msgEl.value.trim();
+        if (!message) { setStatus('Please enter a message.', 'err'); msgEl.focus(); return; }
+        submitBtn.disabled = true;
+        setStatus('Sending…');
+        fetch('/api/feedback', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ toolId: currentTool, message: message, email: emailEl.value.trim() })
+        })
+          .then(function (r) {
+            if (r.ok) {
+              setStatus('Thanks! Your feedback was sent.', 'ok');
+              form.reset();
+              setTimeout(closeModal, 1600);
+            } else {
+              throw new Error('bad status');
+            }
+          })
+          .catch(function () {
+            setStatus('Sorry, something went wrong. Please try again or email tangotoolkit@gmail.com.', 'err');
+          })
+          .finally(function () { submitBtn.disabled = false; });
+      });
+    })();
+  </script>
 </BaseLayout>
 
 <style>
@@ -311,6 +501,209 @@ const MUSIC_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
   .tool-card-dl:hover {
     background: var(--color-primary-hover);
     color: white;
+  }
+
+  /* Star (like) + feedback row — sits above the stretched card link */
+  .tool-card-social {
+    position: relative;
+    z-index: 1;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    margin-top: 0.9rem;
+    padding-top: 0.85rem;
+    border-top: 1px solid var(--color-slate-100);
+  }
+
+  .tool-like,
+  .tool-feedback {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    background: none;
+    border: 1px solid var(--color-slate-200);
+    border-radius: 999px;
+    padding: 0.32rem 0.7rem;
+    font-family: var(--font-sans);
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: var(--color-slate-500);
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s, background 0.15s;
+  }
+
+  .tool-like { padding: 0.32rem 0.62rem; }
+  .tool-feedback { margin-left: auto; }
+
+  .tool-like:hover,
+  .tool-feedback:hover {
+    border-color: var(--color-orange-400);
+    color: var(--color-orange-600);
+    background: var(--color-orange-50);
+  }
+
+  .tool-like:focus-visible,
+  .tool-feedback:focus-visible {
+    outline: 2px solid var(--color-orange-400);
+    outline-offset: 2px;
+  }
+
+  .tool-like-star {
+    width: 1.05rem;
+    height: 1.05rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-width: 1.6;
+    stroke-linejoin: round;
+  }
+
+  .tool-like.is-liked {
+    color: var(--color-orange-600);
+    border-color: var(--color-orange-200);
+    background: var(--color-orange-50);
+  }
+
+  .tool-like.is-liked .tool-like-star {
+    fill: var(--color-orange-500);
+    stroke: var(--color-orange-500);
+  }
+
+  .tool-like-count {
+    font-variant-numeric: tabular-nums;
+    min-width: 0.4rem;
+  }
+  .tool-like-count:empty { display: none; }
+
+  .tool-feedback svg { width: 1rem; height: 1rem; }
+
+  @keyframes ttk-pop {
+    0% { transform: scale(1); }
+    40% { transform: scale(1.35); }
+    100% { transform: scale(1); }
+  }
+  .tool-like.pop .tool-like-star { animation: ttk-pop 0.3s ease; }
+
+  @media (prefers-reduced-motion: reduce) {
+    .tool-like.pop .tool-like-star { animation: none; }
+  }
+
+  /* Feedback modal */
+  .tf-overlay {
+    display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.5);
+    z-index: 1000;
+    align-items: center;
+    justify-content: center;
+    padding: 1rem;
+  }
+  .tf-overlay.tf-open { display: flex; }
+
+  .tf-modal {
+    background: white;
+    border-radius: var(--radius-lg);
+    padding: 2rem;
+    max-width: 480px;
+    width: 100%;
+    position: relative;
+    max-height: 90vh;
+    overflow-y: auto;
+  }
+
+  .tf-modal h2 {
+    margin: 0 0 0.4rem;
+    font-size: 1.4rem;
+    padding-right: 2rem;
+  }
+
+  .tf-sub {
+    margin: 0 0 1.25rem;
+    color: var(--color-slate-600);
+    font-size: 0.92rem;
+    line-height: 1.5;
+  }
+
+  .tf-close {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: var(--color-slate-400);
+    cursor: pointer;
+    line-height: 1;
+    padding: 0.25rem;
+  }
+  .tf-close:hover { color: var(--color-slate-700); }
+
+  .tf-label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--color-slate-700);
+    margin-bottom: 0.35rem;
+  }
+  .tf-optional { font-weight: 400; color: var(--color-slate-400); }
+
+  .tf-textarea,
+  .tf-input {
+    width: 100%;
+    border: 1px solid var(--color-slate-300);
+    border-radius: var(--radius-md);
+    padding: 0.6rem 0.75rem;
+    font-family: var(--font-sans);
+    font-size: 0.95rem;
+    color: var(--color-slate-700);
+    margin-bottom: 1rem;
+  }
+  .tf-textarea { resize: vertical; min-height: 5.5rem; }
+
+  .tf-textarea:focus,
+  .tf-input:focus {
+    outline: none;
+    border-color: var(--color-orange-400);
+    box-shadow: 0 0 0 3px var(--color-orange-100);
+  }
+
+  .tf-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.6rem;
+  }
+
+  .tf-btn {
+    border-radius: var(--radius-md);
+    padding: 0.55rem 1.1rem;
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    font-weight: 600;
+    cursor: pointer;
+    border: 1px solid transparent;
+    transition: all 0.15s;
+  }
+  .tf-btn-secondary {
+    background: white;
+    border-color: var(--color-slate-300);
+    color: var(--color-slate-600);
+  }
+  .tf-btn-secondary:hover { border-color: var(--color-slate-400); }
+  .tf-btn-primary { background: var(--color-primary); color: white; }
+  .tf-btn-primary:hover { background: var(--color-primary-hover); }
+  .tf-btn-primary:disabled { opacity: 0.6; cursor: default; }
+
+  .tf-status {
+    margin: 0.9rem 0 0;
+    font-size: 0.85rem;
+    min-height: 1.1rem;
+  }
+  .tf-status--ok { color: #15803d; }
+  .tf-status--err { color: #dc2626; }
+
+  @media (max-width: 600px) {
+    .tf-modal { padding: 1.5rem; }
   }
 
   .suggest-section {

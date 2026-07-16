@@ -13,6 +13,7 @@
       "dependencies": [
         "npm:@astrojs/check@~0.9.8",
         "npm:@astrojs/sitemap@^3.2.1",
+        "npm:@netlify/blobs@^10.7.9",
         "npm:astro@^4.16.0",
         "npm:netlify-cli@^23.15.1",
         "npm:stripe@21",
