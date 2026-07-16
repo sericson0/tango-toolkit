@@ -170,9 +170,9 @@ export const tools: Tool[] = [
     name: 'Milonga',
     tagline: 'Put the song on screen. Let every dancer know the tanda.',
     description: 'Reads the current track from Traktor or VirtualDJ and projects the orchestra, \
-                 singer, genre, and year onto a second screen — Uses tango database to fix incomplete tags. \
-                 Tracks tandas automatically and records session stats for later review. \
-                 English, French, and Spanish interfaces. <strong>Free.</strong>',
+                 singer, genre, and year onto a second screen, using a tango database to fix \
+                 incomplete tags. Tracks tandas automatically and records session stats for later \
+                 review. English, French, and Spanish interfaces. <strong>Free.</strong>',
     category: 'displays-projections',
     author: 'Biryer',
     url: 'https://milonga.biryer.fr/',
