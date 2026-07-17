@@ -155,11 +155,10 @@ import { eras } from '../../data/eras';
       <div class="ntt-summary-actions">
         <button type="button" class="ntt-btn-primary" id="playAgainBtn" title="Same settings, new random songs">Play Again</button>
         <button type="button" class="ntt-btn-secondary" id="replayMissesBtn" style="display:none;" title="A fresh mini-session with just the songs you missed">Replay missed songs</button>
-        <button type="button" class="ntt-btn-secondary" id="shareResultBtn" title="Show a shareable result card">Share with friends</button>
         <button type="button" class="ntt-btn-secondary" id="changeSettingsBtn" title="Back to setup to pick a different game or difficulty">New Game</button>
       </div>
 
-      <!-- Shareable result card (revealed by "Share with friends") -->
+      <!-- Shareable result card (shown automatically with the summary) -->
       <div class="ntt-share-card" id="shareCard" hidden>
         <p class="ntt-share-title" id="shareCardTitle"></p>
         <div class="ntt-share-grid" id="shareCardGrid"></div>

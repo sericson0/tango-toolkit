@@ -38,7 +38,6 @@ var summaryBody = document.getElementById('summaryBody');
 var playAgainBtn = document.getElementById('playAgainBtn');
 var changeSettingsBtn = document.getElementById('changeSettingsBtn');
 var replayMissesBtn = document.getElementById('replayMissesBtn');
-var shareResultBtn = document.getElementById('shareResultBtn');
 var shareCard = document.getElementById('shareCard');
 var shareCardTitle = document.getElementById('shareCardTitle');
 var shareCardGrid = document.getElementById('shareCardGrid');
@@ -632,8 +631,7 @@ function showSummary() {
   replayMissesBtn.style.display = missed.length ? '' : 'none';
   replayMissesBtn.textContent = 'Replay missed songs (' + missed.length + ')';
 
-  shareResultBtn.textContent = 'Share with friends';
-  if (shareCard) shareCard.hidden = true;
+  if (shareCard) showShareCard();
 
   // Record the first Daily Challenge result of the day (later replays are
   // practice and don't overwrite the honest first attempt).
@@ -659,7 +657,7 @@ replayMissesBtn.addEventListener('click', function () {
   beginRounds(shuffle(missed));
 });
 
-// --- Share result: reveal a result card, copy on demand ---
+// --- Share result: a result card shown with the summary, copy on demand ---
 // Pieces of the shareable result, so the card and the copied text stay in sync.
 function shareParts() {
   var s = lastSummary || { fieldsCorrect: 0, guessesTotal: 0, date: todayKey(), grid: [], gems: '' };
@@ -692,7 +690,6 @@ function showShareCard() {
   shareCardLink.href = p.url;
   shareNativeBtn.hidden = !navigator.share;
   shareCard.hidden = false;
-  shareCard.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
 }
 
 function legacyCopy(text) {
@@ -708,8 +705,6 @@ function legacyCopy(text) {
   document.body.removeChild(ta);
   return ok;
 }
-
-shareResultBtn.addEventListener('click', showShareCard);
 
 // Native share sheet (mobile and some desktops) — one tap into
 // WhatsApp/Messages/etc. The button only shows where navigator.share exists.

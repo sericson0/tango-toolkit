@@ -1,7 +1,10 @@
 /**
  * Dancer video library.
  * Every video listed on /dancer/videos/ lives here. Add an entry and it
- * automatically appears in its section (Videos or the Interviews subsection).
+ * automatically appears in its section.
+ *
+ * Interviews live in their own searchable directory — see
+ * src/data/interviews.ts and /dancer/interviews/ — not here.
  *
  * To add a video, copy this template into the `dancerVideos` array below:
  * {
@@ -9,13 +12,13 @@
  *   title: 'Video Title',
  *   description: 'A sentence about what the video covers.',
  *   url: 'https://www.youtube.com/watch?v=...', // YouTube or Vimeo
- *   category: 'interviews', // 'videos' | 'interviews'
+ *   category: 'videos',
  *   author: 'Speaker or channel name',          // optional
  *   dateAdded: '2026-07-16',                     // optional, YYYY-MM-DD
  * },
  */
 
-export type DancerVideoCategoryId = 'videos' | 'interviews';
+export type DancerVideoCategoryId = 'videos';
 
 export interface DancerVideoCategory {
   id: DancerVideoCategoryId;
@@ -23,17 +26,12 @@ export interface DancerVideoCategory {
   blurb: string;
 }
 
-/** Sections rendered on /dancer/videos/, in order. "interviews" is a subsection of videos. */
+/** Sections rendered on /dancer/videos/, in order. */
 export const dancerVideoCategories: DancerVideoCategory[] = [
   {
     id: 'videos',
     title: 'Videos',
     blurb: 'Performances, lessons, and talks for tango dancers.',
-  },
-  {
-    id: 'interviews',
-    title: 'Interviews',
-    blurb: 'Conversations with dancers, teachers, and maestros of the tango world.',
   },
 ];
 
