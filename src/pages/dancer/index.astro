@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import PageHero from '../../components/PageHero.astro';
+import { dancerResources } from '../../data/dancerResources';
 
 // Inline icons (Feather, MIT) — consistent rendering across platforms, unlike emoji
 const ICON_ATTRS = 'viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"';
@@ -39,6 +40,40 @@ const MIC_SVG = `<svg ${ICON_ATTRS}><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0
             <span class="card-cta">Listen in &rarr;</span>
           </div>
         </a>
+      </div>
+
+      <h2 class="section-heading" style="margin-top: 2.5rem;">Resources</h2>
+      <div class="resource-list">
+        {dancerResources.map((resource) => (
+          <article class="resource-card">
+            {resource.image && (
+              <div class="resource-card-media">
+                <img src={resource.image} alt="" loading="lazy" decoding="async" />
+              </div>
+            )}
+            <div class="resource-card-body">
+              <h3>{resource.title}</h3>
+              <span class="resource-card-author">by {resource.author}</span>
+              <p class="resource-card-desc">{resource.description}</p>
+              <div class="resource-card-actions">
+                {resource.downloadUrl && (
+                  <a
+                    href={resource.downloadUrl}
+                    class="resource-card-dl"
+                    target={resource.external ? '_blank' : undefined}
+                    rel={resource.external ? 'noopener noreferrer' : undefined}
+                  >{resource.downloadLabel ?? 'Download'}</a>
+                )}
+                <a
+                  href={resource.url}
+                  class="resource-card-cta"
+                  target={resource.external ? '_blank' : undefined}
+                  rel={resource.external ? 'noopener noreferrer' : undefined}
+                >{resource.external ? 'Visit site ↗' : 'Learn more →'}</a>
+              </div>
+            </div>
+          </article>
+        ))}
       </div>
 
       <h2 class="section-heading" style="margin-top: 2.5rem;">Coming soon</h2>
@@ -137,5 +172,122 @@ const MIC_SVG = `<svg ${ICON_ATTRS}><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0
     color: var(--color-slate-600);
     line-height: 1.8;
     max-width: 60ch;
+  }
+
+  /* Resource cards */
+  .resource-list {
+    display: grid;
+    gap: 1.5rem;
+    max-width: 640px;
+  }
+
+  .resource-card {
+    position: relative;
+    display: flex;
+    gap: 1.25rem;
+    background: white;
+    border: 1px solid var(--color-slate-200);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: all 0.2s;
+  }
+
+  .resource-card:hover {
+    border-color: var(--color-orange-400);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+
+  .resource-card-media {
+    flex-shrink: 0;
+    width: 150px;
+    background: var(--color-slate-100);
+  }
+
+  .resource-card-media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .resource-card-body {
+    display: flex;
+    flex-direction: column;
+    padding: 1.25rem 1.25rem 1.25rem 0;
+  }
+
+  .resource-card-body h3 {
+    margin: 0 0 0.15rem;
+    font-size: 1.2rem;
+  }
+
+  .resource-card-author {
+    margin-bottom: 0.6rem;
+    font-size: 0.8rem;
+    color: var(--color-slate-500);
+  }
+
+  .resource-card-desc {
+    margin: 0 0 1rem;
+    color: var(--color-slate-600);
+    font-size: 0.92rem;
+    line-height: 1.55;
+    flex: 1;
+  }
+
+  .resource-card-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+  }
+
+  /* Primary link stretches over the whole card */
+  .resource-card-cta {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--color-primary);
+    white-space: nowrap;
+  }
+
+  .resource-card-cta::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-lg);
+  }
+
+  /* Download button sits above the stretched link */
+  .resource-card-dl {
+    position: relative;
+    z-index: 1;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: white;
+    background: var(--color-primary);
+    padding: 0.35rem 0.85rem;
+    border-radius: var(--radius-md);
+    white-space: nowrap;
+    transition: background 0.2s;
+  }
+
+  .resource-card-dl:hover {
+    background: var(--color-primary-hover);
+    color: white;
+  }
+
+  @media (max-width: 520px) {
+    .resource-card {
+      flex-direction: column;
+    }
+
+    .resource-card-media {
+      width: 100%;
+      height: 170px;
+    }
+
+    .resource-card-body {
+      padding: 0 1.25rem 1.25rem;
+    }
   }
 </style>
