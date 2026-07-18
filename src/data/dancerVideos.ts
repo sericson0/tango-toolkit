@@ -1,10 +1,10 @@
 /**
- * Dancer video library.
- * Every video listed on /dancer/videos/ lives here. Add an entry and it
+ * Video library.
+ * Every video listed on /videos/ lives here. Add an entry and it
  * automatically appears in its section.
  *
  * Interviews live in their own searchable directory — see
- * src/data/interviews.ts and /dancer/interviews/ — not here.
+ * src/data/interviews.ts and /videos/interviews/ — not here.
  *
  * To add a video, copy this template into the `dancerVideos` array below:
  * {
@@ -26,7 +26,7 @@ export interface DancerVideoCategory {
   blurb: string;
 }
 
-/** Sections rendered on /dancer/videos/, in order. */
+/** Sections rendered on /videos/, in order. */
 export const dancerVideoCategories: DancerVideoCategory[] = [
   {
     id: 'videos',

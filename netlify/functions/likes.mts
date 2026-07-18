@@ -2,6 +2,7 @@ import type { Context } from "@netlify/functions";
 import { getLikeCounts, recordLike } from "../lib/likes.mts";
 import { checkRateLimit } from "../lib/rate-limit.mts";
 import { tools } from "../../src/data/tools.ts";
+import { interviews } from "../../src/data/interviews.ts";
 
 /**
  * Public per-tool "like" counts for the DJ Tools directory.
@@ -12,10 +13,17 @@ import { tools } from "../../src/data/tools.ts";
  * A like is anonymous and aggregate — no cookies or identifiers. The browser
  * remembers its own likes in localStorage and sends delta +1 (like) or -1
  * (unlike); the server only keeps net counts. `toolId` is validated against the
- * known tools so the blob store can't be polluted with arbitrary keys.
+ * known ids so the blob store can't be polluted with arbitrary keys.
+ *
+ * The same store also backs the interview library's per-card stars — interview
+ * ids share this namespace (they never collide with tool ids), so the reader on
+ * either page simply ignores counts for ids it doesn't render.
  */
 
-const VALID_IDS = new Set(tools.map((t) => t.id));
+const VALID_IDS = new Set<string>([
+  ...tools.map((t) => t.id),
+  ...interviews.map((i) => i.id),
+]);
 
 export default async (req: Request, _context: Context) => {
   if (req.method === "GET") {

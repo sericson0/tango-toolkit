@@ -5,16 +5,18 @@ interface Props {
   backHref?: string;
   backText?: string;
   compact?: boolean;
+  /** Let the lead run the full width of the container instead of the default ~60ch cap. */
+  leadWide?: boolean;
 }
 
-const { title, lead, backHref = '/', backText = 'Back to Home', compact = false } = Astro.props;
+const { title, lead, backHref = '/', backText = 'Back to Home', compact = false, leadWide = false } = Astro.props;
 ---
 
 <section class:list={['page-hero', { 'page-hero--compact': compact }]}>
   <div class="container">
     <a href={backHref} class="back-link">&larr; {backText}</a>
     <h1>{title}</h1>
-    {lead && <p class="lead">{lead}</p>}
+    {lead && <p class:list={['lead', { 'lead--wide': leadWide }]}>{lead}</p>}
   </div>
 </section>
 
@@ -33,5 +35,11 @@ const { title, lead, backHref = '/', backText = 'Back to Home', compact = false 
 
   .page-hero--compact :global(.lead) {
     font-size: 1.05rem;
+  }
+
+  /* Wide lead: let a single-sentence intro flow across the container
+     rather than wrapping into several narrow rows. */
+  .page-hero :global(.lead--wide) {
+    max-width: 66rem;
   }
 </style>

@@ -1,6 +1,6 @@
 /**
  * Dancer interview library.
- * Powers /dancer/interviews/ — a searchable directory of tango interviews that
+ * Powers /videos/interviews/ — a searchable directory of tango interviews that
  * can be browsed three ways: by resource (series), by category, or by artist.
  *
  * Three layers:
@@ -30,6 +30,8 @@
 export const yt = (id: string): string => `https://www.youtube.com/watch?v=${id}`;
 
 export type InterviewFormat = 'video' | 'podcast';
+
+export type InterviewLanguage = 'english' | 'spanish';
 
 export type InterviewCategoryId = 'music' | 'dancers' | 'milonguero-viejo' | 'history' | 'community';
 
@@ -61,6 +63,8 @@ export interface InterviewGroup {
   host?: string;
   /** Short description shown in the section header. */
   description: string;
+  /** Default language for this series' interviews (overridable per interview). */
+  language?: InterviewLanguage;
   /** Home for this content (playlist, podcast page, site). Adds a "Visit site" link. */
   website?: string;
   /** Small logo (URL or /public path). Shown on the section header and cards. */
@@ -82,6 +86,8 @@ export interface Interview {
   /** Link to watch or listen. */
   url: string;
   format: InterviewFormat;
+  /** Spoken language. Falls back to the group's `language` (then Spanish) when omitted. */
+  language?: InterviewLanguage;
   /** One or more topic tags. */
   categories: InterviewCategoryId[];
   /** Where it was accessed from (e.g. 'YouTube', '030tango.com'). Auto-derived from the URL host if omitted. */
@@ -102,6 +108,7 @@ export const interviewGroups: InterviewGroup[] = [
     host: 'Pepa Palazón',
     description:
       'A long-running interview series in which Pepa Palazón puts her questions to the great dancers, milongueros, and musicians of tango — most episodes carry subtitles in several languages.',
+    language: 'spanish',
     website: 'https://www.youtube.com/playlist?list=PL4uWiPclZR3PHIIXJszQ_VBuKD8zLp78R',
     logo: '/images/interviews/tengo-una-pregunta.png',
     donateLinks: [
@@ -115,6 +122,7 @@ export const interviewGroups: InterviewGroup[] = [
     host: 'Ignacio Varchausky',
     description:
       'A video series by bandleader and researcher Ignacio Varchausky, asking musicians, dancers, and thinkers how they relate to tango and its music.',
+    language: 'spanish',
     website: 'https://www.ignaciovarchausky.com/home-english',
     // logo: '/images/interviews/cual-es-tu-tango.png', // TODO: add logo asset
   },
@@ -124,6 +132,7 @@ export const interviewGroups: InterviewGroup[] = [
     host: 'Jonas · 030tango (Berlin)',
     description:
       'A Berlin-based, English-language podcast journeying through the world of Argentine tango — intimate conversations with dancers, organizers, musicians, and the people who make the scene tick.',
+    language: 'english',
     website: 'https://030tango.com/podcast/',
     logo: '/images/interviews/030tango.png',
     donateLinks: [
@@ -136,6 +145,7 @@ export const interviewGroups: InterviewGroup[] = [
     host: 'Liz Sabatiuk',
     description:
       'A podcast exploring what tango has to teach through the experiences of the people who dance it — an authentic glimpse into who dances tango, and why.',
+    language: 'english',
     website: 'https://www.humansoftango.com/',
     logo: '/images/interviews/humans-of-tango.jpg',
   },
@@ -145,6 +155,7 @@ export const interviewGroups: InterviewGroup[] = [
     host: 'Heyni Solera',
     description:
       'A documentary miniseries by bandoneonist Heyni Solera, taking apart the music of Aníbal Troilo one landmark recording at a time.',
+    language: 'spanish',
     website: 'https://heynisolera.com/',
     logo: '/images/interviews/discovering-troilo.png',
   },
@@ -153,6 +164,7 @@ export const interviewGroups: InterviewGroup[] = [
     name: 'Tango Time Machine',
     description:
       'Conversations and documentaries digging into tango history and the living artists who carry it forward.',
+    language: 'english',
     // website: '', // no site provided
     // logo: '/images/interviews/tango-time-machine.png', // TODO: add logo asset
   },
@@ -161,8 +173,19 @@ export const interviewGroups: InterviewGroup[] = [
     name: 'Vienna Tango School',
     description:
       'Interviews with visiting maestros — including the "Staying Grounded" series — produced by the Vienna Tango School.',
+    language: 'english',
     website: 'https://viennatango.com/',
     logo: '/images/interviews/vienna-tango-school.webp',
+  },
+  {
+    id: 'lead-and-follow',
+    name: 'Lead & Follow',
+    host: 'Sharna Fabiano',
+    description:
+      'A podcast from teacher and author Sharna Fabiano exploring leading and following — in tango and in life — through conversations with dancers, teachers, and thinkers.',
+    language: 'english',
+    website: 'https://leadfollow.buzzsprout.com',
+    logo: '/images/interviews/lead_and_follow_podcast.jpeg',
   },
 ];
 
@@ -244,18 +267,25 @@ export const interviews: Interview[] = [
   { id: 'cual-F6V3Bahmvew', guest: 'Horacio Cabarcos', title: '¿Cuál es tu tango? Ep. 1 — Horacio Cabarcos', groupId: 'cual-es-tu-tango', url: yt('F6V3Bahmvew'), format: 'video', categories: ['music'], dateAdded: '2026-07-17' },
 
   // ============================================================
-  // 030tango Podcast  — podcast (partial listing + full-series card)
+  // 030tango Podcast  — video podcast (YouTube)
   // ============================================================
   {
-    id: '030tango-series', guest: '', title: '030tango Podcast — the full series', seriesCard: true,
-    description: 'The complete run: dozens of conversations with tango dancers, DJs, teachers, and organizers from Berlin and beyond.',
-    groupId: '030tango', url: 'https://030tango.com/podcast/', format: 'podcast', categories: [], dateAdded: '2026-07-17',
+    id: '030tango-tarantino-galdi', guest: 'Lorena Tarantino & Gianpiero Galdi',
+    title: 'Lorena Tarantino & Gianpiero Galdi · 030tango #01',
+    description: 'A conversation with dancers and teachers Lorena Tarantino and Gianpiero Galdi.',
+    groupId: '030tango', url: yt('FVTq8ZS2efg'), format: 'podcast', categories: ['dancers'], dateAdded: '2026-07-17',
   },
   {
     id: '030tango-piaggio-espinoza', guest: 'Agustina Piaggio & Carlitos Espinoza',
     title: 'Agustina Piaggio & Carlitos Espinoza · 030tango #02',
     description: 'A conversation with celebrated social dancers and performers Agustina Piaggio and Carlitos Espinoza.',
     groupId: '030tango', url: yt('p1x5oyqximg'), format: 'podcast', categories: ['dancers'], dateAdded: '2026-07-17',
+  },
+  {
+    id: '030tango-aktar-yigit', guest: 'Zeynep Aktar & Sercan Yigit',
+    title: 'Zeynep Aktar & Sercan Yigit · 030tango #03',
+    description: 'A conversation with Turkish tango dancers and organizers Zeynep Aktar and Sercan Yigit.',
+    groupId: '030tango', url: yt('pDHWhXc64rQ'), format: 'podcast', categories: ['dancers', 'community'], dateAdded: '2026-07-17',
   },
 
   // ============================================================
@@ -269,21 +299,25 @@ export const interviews: Interview[] = [
   {
     id: 'humans-pepa-palazon', guest: 'Pepa Palazón', title: 'Maneras de vivir, con Pepa Palazón',
     description: 'Teacher and performer Pepa Palazón on the many ways of living — and living through — tango.',
-    groupId: 'humans-of-tango', url: 'https://www.humansoftango.com/e/maneras-de-vivir-con-pepa-palazon/', format: 'podcast', categories: ['dancers'], dateAdded: '2026-07-17',
+    thumbnail: '/images/interviews/humans/pepa-palazon.jpg',
+    groupId: 'humans-of-tango', url: 'https://www.humansoftango.com/e/maneras-de-vivir-con-pepa-palazon/', format: 'podcast', language: 'spanish', categories: ['dancers'], dateAdded: '2026-07-17',
   },
   {
     id: 'humans-astrid-weiske', guest: 'Astrid Weiske', title: 'Creating spaces to grow, with Astrid Weiske',
     description: 'Organizer Astrid Weiske on building the spaces and communities where tango dancers grow.',
+    thumbnail: '/images/interviews/humans/astrid-weiske.png',
     groupId: 'humans-of-tango', url: 'https://www.humansoftango.com/e/creating-spaces-to-grow-with-astrid-weiske/', format: 'podcast', categories: ['community'], dateAdded: '2026-07-17',
   },
   {
     id: 'humans-emmanuel-trifilio', guest: 'Emmanuel Trifilio', title: 'Viviendo sueños, con Emmanuel Trifilio',
     description: 'Bandoneonist Emmanuel Trifilio on living tango as a musician and a dreamer.',
-    groupId: 'humans-of-tango', url: 'https://www.humansoftango.com/e/viviendo-suenos-con-emmanuel-trifilio/', format: 'podcast', categories: ['music'], dateAdded: '2026-07-17',
+    thumbnail: '/images/interviews/humans/emmanuel-trifilio.jpeg',
+    groupId: 'humans-of-tango', url: 'https://www.humansoftango.com/e/viviendo-suenos-con-emmanuel-trifilio/', format: 'podcast', language: 'spanish', categories: ['music'], dateAdded: '2026-07-17',
   },
   {
     id: 'humans-brigitta-winkler', guest: 'Brigitta Winkler', title: 'Roles and evolution — body and mind, with Brigitta Winkler',
     description: 'Pioneering teacher Brigitta Winkler on tango roles, and how body and mind evolve over a dancing life.',
+    thumbnail: '/images/interviews/humans/brigitta-winkler.png',
     groupId: 'humans-of-tango', url: 'https://www.humansoftango.com/e/roles-and-evolution-body-and-mind-with-brigitta-winkler/', format: 'podcast', categories: ['dancers'], dateAdded: '2026-07-17',
   },
 
@@ -314,12 +348,46 @@ export const interviews: Interview[] = [
   },
 
   // ============================================================
-  // Vienna Tango School — YouTube
+  // Vienna Tango School — "Staying Grounded" series
   // ============================================================
+  {
+    id: 'vts-staying-grounded-17', guest: 'Germán & Nicholás Filipeli', title: 'Staying Grounded #17 — Germán & Nicholás Filipeli',
+    description: 'Episode 17 of the "Staying Grounded" series, in conversation with the Filipeli brothers, Germán and Nicholás.',
+    thumbnail: '/images/interviews/vienna/staying-grounded-17.png',
+    groupId: 'vienna-tango-school', url: 'https://viennatango.com/post/staying-grounded-17', format: 'video', categories: ['dancers'], dateAdded: '2026-07-17',
+  },
   {
     id: 'vts-staying-grounded-12', guest: 'Lorena & Gianpiero', title: 'Staying Grounded #12 — Lorena & Gianpiero',
     description: 'Episode 12 of the "Staying Grounded" series, in conversation with Lorena and Gianpiero.',
     groupId: 'vienna-tango-school', url: yt('yydeAeWALoE'), format: 'video', categories: ['dancers'], dateAdded: '2026-07-17',
+  },
+
+  // ============================================================
+  // Lead & Follow  (Sharna Fabiano) — podcast (Buzzsprout)
+  // ============================================================
+  {
+    id: 'leadfollow-valeria-solomonoff', guest: 'Valeria Solomonoff',
+    title: 'Teaching Leadership & Followership in Tango — Valeria Solomonoff',
+    description: 'Teacher and choreographer Valeria Solomonoff on how she teaches leading and following in tango.',
+    groupId: 'lead-and-follow', url: 'https://leadfollow.buzzsprout.com/1735834/episodes/8321484-teaching-leadership-and-followership-in-tango-dance-valeria-solomonoff', format: 'podcast', source: 'Buzzsprout', categories: ['dancers'], dateAdded: '2026-07-17',
+  },
+  {
+    id: 'leadfollow-veronica-toumanova', guest: 'Verónica Toumanova',
+    title: 'Leading & Following in the Tango — Verónica Toumanova',
+    description: 'Teacher and writer Verónica Toumanova on the dynamics of leading and following on the dance floor.',
+    groupId: 'lead-and-follow', url: 'https://leadfollow.buzzsprout.com/1735834/episodes/16416925-leading-following-in-the-tango-veronica-toumanova', format: 'podcast', source: 'Buzzsprout', categories: ['dancers'], dateAdded: '2026-07-17',
+  },
+  {
+    id: 'leadfollow-thomas-rieser', guest: 'Thomas Rieser',
+    title: 'Sharing Tango Beyond Social Dance — Thomas Rieser',
+    description: 'Thomas Rieser on carrying tango — and its lessons in leading and following — beyond the milonga.',
+    groupId: 'lead-and-follow', url: 'https://leadfollow.buzzsprout.com/1735834/episodes/16659916-sharing-tango-beyond-social-dance-thomas-rieser', format: 'podcast', source: 'Buzzsprout', categories: ['community'], dateAdded: '2026-07-17',
+  },
+  {
+    id: 'leadfollow-sharna-fabiano-dan-istrate', guest: 'Sharna Fabiano & Dan Istrate',
+    title: 'What Makes Tango So Compelling? — Sharna Fabiano & Dan Istrate',
+    description: 'Sharna Fabiano and Dan Istrate on what makes tango so compelling — as a dance and a practice.',
+    groupId: 'lead-and-follow', url: 'https://leadfollow.buzzsprout.com/1735834/episodes/17539917-what-makes-tango-so-compelling-sharna-fabiano-dan-istrate', format: 'podcast', source: 'Buzzsprout', categories: ['community'], dateAdded: '2026-07-17',
   },
 ];
 
@@ -372,6 +440,16 @@ export function interviewSource(interview: Interview): string {
 /** Display title for a card. */
 export function interviewTitle(interview: Interview): string {
   return interview.title ?? interview.guest;
+}
+
+/** Effective language — the interview's own override, else its group's, else Spanish. */
+export function interviewLanguage(interview: Interview, group?: InterviewGroup): InterviewLanguage {
+  return interview.language ?? group?.language ?? 'spanish';
+}
+
+/** Human-readable label for a language. */
+export function languageLabel(lang: InterviewLanguage): string {
+  return lang === 'english' ? 'English' : 'Spanish';
 }
 
 /** Card blurb — explicit description, else a generated line from host + guest. */

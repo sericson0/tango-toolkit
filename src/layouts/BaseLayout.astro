@@ -85,14 +85,14 @@ const absoluteOgImage = new URL(ogImage, Astro.site).href;
               <a href="/dj/articles/" class={Astro.url.pathname.startsWith('/dj/articles') || Astro.url.pathname.startsWith('/dj/history') ? 'active' : ''}>Resources &amp; Articles</a>
             </div>
           </div>
+          <a href="/dancer/" class={Astro.url.pathname.startsWith('/dancer') ? 'active' : ''}>Dancer</a>
           <div class="nav-group">
-            <button type="button" class={`nav-group-toggle ${Astro.url.pathname.startsWith('/dancer') ? 'active' : ''}`} aria-expanded="false" aria-haspopup="true">
-              Dancer <span class="nav-caret" aria-hidden="true">&#9662;</span>
+            <button type="button" class={`nav-group-toggle ${Astro.url.pathname.startsWith('/videos') ? 'active' : ''}`} aria-expanded="false" aria-haspopup="true">
+              Videos <span class="nav-caret" aria-hidden="true">&#9662;</span>
             </button>
             <div class="nav-dropdown">
-              <a href="/dancer/" class={Astro.url.pathname === '/dancer/' ? 'active' : ''}>Dancer Resources</a>
-              <a href="/dancer/videos/" class={Astro.url.pathname.startsWith('/dancer/videos') ? 'active' : ''}>Videos</a>
-              <a href="/dancer/interviews/" class={Astro.url.pathname.startsWith('/dancer/interviews') ? 'active' : ''}>Interviews</a>
+              <a href="/videos/" class={Astro.url.pathname.startsWith('/videos') && !Astro.url.pathname.startsWith('/videos/interviews') ? 'active' : ''}>All Videos</a>
+              <a href="/videos/interviews/" class={`nav-sub ${Astro.url.pathname.startsWith('/videos/interviews') ? 'active' : ''}`}>Interviews</a>
             </div>
           </div>
           <a href="/discographies/" class={Astro.url.pathname.startsWith('/discographies') ? 'active' : ''}>Discographies</a>
@@ -133,10 +133,13 @@ const absoluteOgImage = new URL(ogImage, Astro.site).href;
             <a href="/dj/articles/">Articles &amp; Links</a>
           </div>
           <div>
+            <strong>Videos</strong>
+            <a href="/videos/">All Videos</a>
+            <a href="/videos/interviews/">Interviews</a>
+          </div>
+          <div>
             <strong>For Dancers</strong>
             <a href="/dancer/">Dancer Resources</a>
-            <a href="/dancer/videos/">Videos</a>
-            <a href="/dancer/interviews/">Interviews</a>
           </div>
           <div>
             <strong>Help</strong>
