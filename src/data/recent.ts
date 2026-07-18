@@ -16,6 +16,10 @@ export interface RecentItem {
   /** Short badge label, e.g. 'Game', 'Article', 'DJ Players' */
   tag: string;
   external?: boolean;
+  /** Logo/icon shown on the card (URL or /public path). */
+  image?: string;
+  /** Made by The Tango Toolkit — the newest such item leads the "Recently Added" feed. */
+  firstParty?: boolean;
 }
 
 /** Non-tool additions — add new games, articles, and sections here. */
@@ -26,6 +30,7 @@ const extras: RecentItem[] = [
     href: '/name-that-tango/',
     date: '2026-06-29',
     tag: 'Game',
+    firstParty: true,
   },
 ];
 
@@ -38,13 +43,17 @@ const toolItems: RecentItem[] = tools.map((t) => ({
   date: t.dateAdded,
   tag: categoryTitles[t.category] ?? 'Tool',
   external: t.external,
+  image: t.image,
+  firstParty: t.author === 'The Tango Toolkit',
 }));
 
 /** The newest `n` additions across tools and extras. */
 export function recentlyAdded(n = 4): RecentItem[] {
-  return [...toolItems, ...extras]
-    .sort((a, b) => b.date.localeCompare(a.date))
-    .slice(0, n);
+  const byDate = [...toolItems, ...extras].sort((a, b) => b.date.localeCompare(a.date));
+  // Lead with the most recent Tango Toolkit item; everything else stays in date order.
+  const leadIdx = byDate.findIndex((item) => item.firstParty);
+  if (leadIdx > 0) byDate.unshift(byDate.splice(leadIdx, 1)[0]);
+  return byDate.slice(0, n);
 }
 
 /** Format '2026-07-02' as 'Jul 2, 2026' without timezone surprises. */

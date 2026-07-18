@@ -14,6 +14,9 @@ const ICON_ATTRS = 'viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke
 const PLAY_SVG = `<svg ${ICON_ATTRS}><circle cx="12" cy="12" r="10"/><polygon points="10 8 16 12 10 16 10 8"/></svg>`;
 const SLIDERS_SVG = `<svg ${ICON_ATTRS}><line x1="4" y1="21" x2="4" y2="14"/><line x1="4" y1="10" x2="4" y2="3"/><line x1="12" y1="21" x2="12" y2="12"/><line x1="12" y1="8" x2="12" y2="3"/><line x1="20" y1="21" x2="20" y2="16"/><line x1="20" y1="12" x2="20" y2="3"/><line x1="1" y1="14" x2="7" y2="14"/><line x1="9" y1="8" x2="15" y2="8"/><line x1="17" y1="16" x2="23" y2="16"/></svg>`;
 const DISC_SVG = `<svg ${ICON_ATTRS}><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>`;
+const MUSIC_SVG = `<svg ${ICON_ATTRS}><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>`;
+const LAYERS_SVG = `<svg ${ICON_ATTRS}><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>`;
+const MIC_SVG = `<svg ${ICON_ATTRS}><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>`;
 ---
 
 <BaseLayout title="Home" description="The Tango Toolkit - Tools and resources for tango DJs. Software, starter kits, and guides to elevate your tango DJing.">
@@ -21,11 +24,7 @@ const DISC_SVG = `<svg ${ICON_ATTRS}><circle cx="12" cy="12" r="10"/><circle cx=
     <div class="container">
       <h1>Welcome to The Tango Toolkit</h1>
       <p class="hero-subtitle">The tools you need to elevate your tango</p>
-      <p class="hero-intro">An expanding collection of quality tools and resources for tango DJs of all levels &mdash; with resources for dancers and organizers on the way.</p>
-      <div class="hero-actions">
-        <a href="/dj/starter-kit/" class="btn btn-primary btn-lg">Get the Starter Kit</a>
-        <a href="/dj/tools/" class="btn btn-secondary btn-lg">Browse DJ Tools</a>
-      </div>
+      <p class="hero-intro">An expanding collection of quality tools and resources for tango dancers, DJs, and organizers of all levels.</p>
     </div>
   </section>
   <section class="cta-section">
@@ -43,38 +42,30 @@ const DISC_SVG = `<svg ${ICON_ATTRS}><circle cx="12" cy="12" r="10"/><circle cx=
           <p>Players, displays, tanda builders, and plugins — tools for tango DJs from us and the community.</p>
           <span class="cta-link">Browse Tools &rarr;</span>
         </a>
+        <a href="/dj/tanda-builder/" class="cta-card">
+          <div class="cta-icon" set:html={LAYERS_SVG}></div>
+          <h2>Tanda Builder</h2>
+          <p>Build tandas right in your browser — find songs that belong together, no installation needed.</p>
+          <span class="cta-link">Build a Tanda &rarr;</span>
+        </a>
         <a href="/discographies/" class="cta-card">
           <div class="cta-icon" set:html={DISC_SVG}></div>
           <h2>Discographies</h2>
           <p>Discographies, articles, and guides to deepen your knowledge of tango music.</p>
           <span class="cta-link">Explore Discographies &rarr;</span>
         </a>
-      </div>
-    </div>
-  </section>
-
-  <section class="recent-section">
-    <div class="container">
-      <div class="recent-header">
-        <h2 class="section-heading">Recently Added</h2>
-        <a href="/dj/tools/" class="recent-all-link">All DJ tools &rarr;</a>
-      </div>
-      <div class="recent-grid">
-        {recentItems.map((item) => (
-          <a
-            href={item.href}
-            class="recent-card"
-            target={item.external ? '_blank' : undefined}
-            rel={item.external ? 'noopener noreferrer' : undefined}
-          >
-            <div class="recent-meta">
-              <span class="recent-tag">{item.tag}</span>
-              <time datetime={item.date}>{formatDate(item.date)}</time>
-            </div>
-            <h3>{item.title}</h3>
-            <p>{item.description}</p>
-          </a>
-        ))}
+        <a href="/name-that-tango/" class="cta-card">
+          <div class="cta-icon" set:html={MUSIC_SVG}></div>
+          <h2>Name That Tango</h2>
+          <p>Hear a clip and name the orchestra, title, singer, or year — ear training for tango DJs and dancers.</p>
+          <span class="cta-link">Play the Game &rarr;</span>
+        </a>
+        <a href="/videos/interviews/" class="cta-card">
+          <div class="cta-icon" set:html={MIC_SVG}></div>
+          <h2>Artist Interviews</h2>
+          <p>Video and podcast conversations with the dancers, musicians, and maestros of tango.</p>
+          <span class="cta-link">Watch Interviews &rarr;</span>
+        </a>
       </div>
     </div>
   </section>
@@ -141,6 +132,42 @@ const DISC_SVG = `<svg ${ICON_ATTRS}><circle cx="12" cy="12" r="10"/><circle cx=
   })();
   </script>
 
+  <section class="recent-section">
+    <div class="container">
+      <div class="recent-header">
+        <h2 class="section-heading">Recently Added</h2>
+        <a href="/dj/tools/" class="recent-all-link">All DJ tools &rarr;</a>
+      </div>
+      <div class="recent-grid">
+        {recentItems.map((item) => (
+          <a
+            href={item.href}
+            class="recent-card"
+            target={item.external ? '_blank' : undefined}
+            rel={item.external ? 'noopener noreferrer' : undefined}
+          >
+            <div class="recent-meta">
+              <span class="recent-tag">{item.tag}</span>
+              <time datetime={item.date}>{formatDate(item.date)}</time>
+            </div>
+            <div class="recent-head">
+              {item.image && (
+                <div class="recent-logo">
+                  <picture>
+                    <source srcset={item.image.replace(/\.png$/i, '.webp')} type="image/webp" />
+                    <img src={item.image} alt="" width="44" height="44" loading="lazy" decoding="async" />
+                  </picture>
+                </div>
+              )}
+              <h3>{item.title}</h3>
+            </div>
+            <p>{item.description}</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
   <section class="tools-section">
     <div class="container">
       <hr class="section-divider" />
@@ -193,23 +220,6 @@ const DISC_SVG = `<svg ${ICON_ATTRS}><circle cx="12" cy="12" r="10"/><circle cx=
     }
   }
 
-  .hero-actions {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.75rem;
-    margin-top: 1.75rem;
-  }
-
-  .hero-actions .btn-secondary {
-    background: white;
-    border: 1px solid var(--color-slate-300);
-  }
-
-  .hero-actions .btn-secondary:hover {
-    background: white;
-    border-color: var(--color-orange-400);
-  }
-
   .hero h1 {
     font-size: clamp(2rem, 5vw, 3.5rem);
     margin: 0 0 1rem;
@@ -253,7 +263,7 @@ const DISC_SVG = `<svg ${ICON_ATTRS}><circle cx="12" cy="12" r="10"/><circle cx=
     background: linear-gradient(180deg, var(--color-orange-50) 0%, white 100%);
     border: 2px solid var(--color-orange-400);
     border-radius: var(--radius-lg);
-    padding: 2rem;
+    padding: 1.5rem 2rem;
     text-align: center;
     text-decoration: none;
     color: inherit;
@@ -270,12 +280,12 @@ const DISC_SVG = `<svg ${ICON_ATTRS}><circle cx="12" cy="12" r="10"/><circle cx=
     align-items: center;
     justify-content: center;
     color: var(--color-orange-500);
-    margin-bottom: 0.75rem;
+    margin-bottom: 0.5rem;
   }
 
   .cta-icon :global(svg) {
-    width: 2.75rem;
-    height: 2.75rem;
+    width: 2.4rem;
+    height: 2.4rem;
   }
 
   .cta-card h2 {
@@ -284,7 +294,7 @@ const DISC_SVG = `<svg ${ICON_ATTRS}><circle cx="12" cy="12" r="10"/><circle cx=
   }
 
   .cta-card p {
-    margin: 0 0 1.25rem;
+    margin: 0 0 1rem;
     color: var(--color-slate-600);
     font-size: 0.95rem;
   }
@@ -366,8 +376,31 @@ const DISC_SVG = `<svg ${ICON_ATTRS}><circle cx="12" cy="12" r="10"/><circle cx=
     white-space: nowrap;
   }
 
+  .recent-head {
+    display: flex;
+    align-items: center;
+    gap: 0.65rem;
+    margin-bottom: 0.35rem;
+  }
+
+  .recent-logo {
+    flex-shrink: 0;
+    width: 44px;
+    height: 44px;
+    border-radius: var(--radius-sm);
+    overflow: hidden;
+    background: var(--color-slate-100);
+  }
+
+  .recent-logo img {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    display: block;
+  }
+
   .recent-card h3 {
-    margin: 0 0 0.35rem;
+    margin: 0;
     font-size: 1.15rem;
   }
 

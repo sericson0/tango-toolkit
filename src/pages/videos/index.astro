@@ -8,7 +8,8 @@ import { interviews } from '../../data/interviews';
 // Inline icon (Feather "mic", MIT)
 const MIC_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>';
 
-const interviewCount = interviews.filter((iv) => !iv.seriesCard).length;
+// Round down to the nearest ten so the "N+" phrasing stays honest as entries are added.
+const interviewCount = Math.floor(interviews.filter((iv) => !iv.seriesCard).length / 10) * 10;
 ---
 
 <BaseLayout title="Videos" description="Tango videos — performances, lessons, and interviews with dancers, teachers, and maestros.">
@@ -56,7 +57,7 @@ const interviewCount = interviews.filter((iv) => !iv.seriesCard).length;
           <div class="interview-link-icon" set:html={MIC_SVG}></div>
           <div class="interview-link-body">
             <h3>Browse the interview library</h3>
-            <p>{interviewCount}+ video and podcast conversations &mdash; browse by series, category, or artist.</p>
+            <p>{interviewCount}+ video and podcast conversations &mdash; browse by series or category.</p>
             <span class="card-cta">Explore interviews &rarr;</span>
           </div>
         </a>

@@ -1,7 +1,7 @@
 /**
  * Dancer interview library.
  * Powers /videos/interviews/ — a searchable directory of tango interviews that
- * can be browsed three ways: by resource (series), by category, or by artist.
+ * can be browsed by series or by category.
  *
  * Three layers:
  *   1. `interviewCategories` — the topic tags used for "browse by category".
@@ -9,12 +9,12 @@
  *      interviews. Each owns its section branding: logo, blurb, a "visit site"
  *      link, and (if they have one) donate/support buttons.
  *   3. `interviews` — the individual conversations. Each links to a group, names
- *      its guest/subject (the "artist"), and carries one or more categories.
+ *      its guest/subject, and carries one or more categories.
  *
  * To add an interview, copy this template into the `interviews` array:
  * {
  *   id: 'unique-slug',
- *   guest: 'Person or duo interviewed',   // drives "browse by artist"
+ *   guest: 'Person or duo interviewed',
  *   title: 'Optional episode title',       // falls back to `guest` if omitted
  *   description: 'Optional blurb',          // falls back to a generated line
  *   groupId: 'tengo-una-pregunta',          // must match an interviewGroups id
@@ -45,7 +45,7 @@ export interface InterviewCategory {
 export const interviewCategories: InterviewCategory[] = [
   { id: 'music', label: 'Music', blurb: 'Musicians, orchestras, singers, and composers.' },
   { id: 'dancers', label: 'Dancers & Maestros', blurb: 'Performers and teachers of the dance.' },
-  { id: 'milonguero-viejo', label: 'Milonguero viejo', blurb: 'The old guard — keepers of the social-dance tradition.' },
+  { id: 'milonguero-viejo', label: 'Milonguero Viejo', blurb: 'The old guard — keepers of the social-dance tradition.' },
   { id: 'history', label: 'History', blurb: 'Historians, researchers, poets, and documentaries.' },
   { id: 'community', label: 'Community', blurb: 'Organizers, DJs, and reflections on tango life.' },
 ];
@@ -75,7 +75,7 @@ export interface InterviewGroup {
 
 export interface Interview {
   id: string;
-  /** The person, duo, or subject featured — drives "browse by artist". */
+  /** The person, duo, or subject featured. */
   guest: string;
   /** Episode/interview title. Falls back to `guest` when omitted. */
   title?: string;
@@ -124,12 +124,12 @@ export const interviewGroups: InterviewGroup[] = [
       'A video series by bandleader and researcher Ignacio Varchausky, asking musicians, dancers, and thinkers how they relate to tango and its music.',
     language: 'spanish',
     website: 'https://www.ignaciovarchausky.com/home-english',
-    // logo: '/images/interviews/cual-es-tu-tango.png', // TODO: add logo asset
+    // This series has no logo asset.
   },
   {
     id: '030tango',
     name: '030tango Podcast',
-    host: 'Jonas · 030tango (Berlin)',
+    host: 'Jonas Zadow',
     description:
       'A Berlin-based, English-language podcast journeying through the world of Argentine tango — intimate conversations with dancers, organizers, musicians, and the people who make the scene tick.',
     language: 'english',
@@ -154,8 +154,8 @@ export const interviewGroups: InterviewGroup[] = [
     name: 'Discovering Troilo',
     host: 'Heyni Solera',
     description:
-      'A documentary miniseries by bandoneonist Heyni Solera, taking apart the music of Aníbal Troilo one landmark recording at a time.',
-    language: 'spanish',
+      'A documentary miniseries by bandoneonist Heyni Solera, taking apart the music of Aníbal Troilo one landmark recording at a time. Produced in English and Spanish — the interviews are in Spanish.',
+    language: 'spanish', // episodes exist in both languages; the interview footage is Spanish
     website: 'https://heynisolera.com/',
     logo: '/images/interviews/discovering-troilo.png',
   },
@@ -165,8 +165,7 @@ export const interviewGroups: InterviewGroup[] = [
     description:
       'Conversations and documentaries digging into tango history and the living artists who carry it forward.',
     language: 'english',
-    // website: '', // no site provided
-    // logo: '/images/interviews/tango-time-machine.png', // TODO: add logo asset
+    // This series has no website or logo asset.
   },
   {
     id: 'vienna-tango-school',
@@ -212,7 +211,7 @@ export const interviews: Interview[] = [
   { id: 'tengo-BoOApAeI-VU', guest: 'Sabrina Véliz, Milena Plebs & Noelia Hurtado', groupId: 'tengo-una-pregunta', url: yt('BoOApAeI-VU'), format: 'video', categories: ['dancers'], dateAdded: '2026-07-17' },
   { id: 'tengo-uxxRGd0whW0', guest: 'Vanesa Villalba y Facundo Piñero', groupId: 'tengo-una-pregunta', url: yt('uxxRGd0whW0'), format: 'video', categories: ['dancers'], dateAdded: '2026-07-17' },
   { id: 'tengo-ZSoOwVD54bU', guest: 'Cecilia García y Serkan Gökçesu', groupId: 'tengo-una-pregunta', url: yt('ZSoOwVD54bU'), format: 'video', categories: ['dancers'], dateAdded: '2026-07-17' },
-  { id: 'tengo-De9cuYYplc4', guest: 'Horacio "El Pebete" Godoy', groupId: 'tengo-una-pregunta', url: yt('De9cuYYplc4'), format: 'video', categories: ['milonguero-viejo'], dateAdded: '2026-07-17' },
+  { id: 'tengo-De9cuYYplc4', guest: 'Horacio "El Pebete" Godoy', groupId: 'tengo-una-pregunta', url: yt('De9cuYYplc4'), format: 'video', categories: ['dancers'], dateAdded: '2026-07-17' },
   { id: 'tengo-RI-IwmeVAno', guest: 'Fabián Peralta', groupId: 'tengo-una-pregunta', url: yt('RI-IwmeVAno'), format: 'video', categories: ['dancers'], dateAdded: '2026-07-17' },
   { id: 'tengo-JioMUPm9iF4', guest: 'El Chino Perico', groupId: 'tengo-una-pregunta', url: yt('JioMUPm9iF4'), format: 'video', categories: ['dancers'], dateAdded: '2026-07-17' },
   { id: 'tengo-6cWISgU-HbQ', guest: 'Raúl Bravo', groupId: 'tengo-una-pregunta', url: yt('6cWISgU-HbQ'), format: 'video', categories: ['dancers'], dateAdded: '2026-07-17' },
@@ -246,44 +245,44 @@ export const interviews: Interview[] = [
   // ============================================================
   // ¿Cuál es tu tango?  (Ignacio Varchausky) — YouTube
   // ============================================================
-  { id: 'cual-abJVi0yqPfk', guest: 'Pablo Estigarribia', title: '¿Cuál es tu tango? Ep. 19 — Pablo Estigarribia', groupId: 'cual-es-tu-tango', url: yt('abJVi0yqPfk'), format: 'video', categories: ['music'], dateAdded: '2026-07-17' },
-  { id: 'cual-mBppNNQN1b4', guest: 'Otilia Da Veiga', title: '¿Cuál es tu tango? Ep. 18 — Otilia Da Veiga', groupId: 'cual-es-tu-tango', url: yt('mBppNNQN1b4'), format: 'video', categories: ['milonguero-viejo', 'history'], dateAdded: '2026-07-17' },
-  { id: 'cual-DDpYf4xiUmg', guest: 'Horacio Avilano', title: '¿Cuál es tu tango? Ep. 17 — Horacio Avilano', groupId: 'cual-es-tu-tango', url: yt('DDpYf4xiUmg'), format: 'video', categories: ['music'], dateAdded: '2026-07-17' },
-  { id: 'cual-a_JB3y0kf60', guest: 'Lidia Borda y Daniel Godfrid', title: '¿Cuál es tu tango? Ep. 16 — Lidia Borda y Daniel Godfrid', groupId: 'cual-es-tu-tango', url: yt('a_JB3y0kf60'), format: 'video', categories: ['music'], dateAdded: '2026-07-17' },
-  { id: 'cual-jPFnExc2c7Q', guest: 'Graciela González', title: '¿Cuál es tu tango? Ep. 15 — Graciela González', groupId: 'cual-es-tu-tango', url: yt('jPFnExc2c7Q'), format: 'video', categories: ['dancers'], dateAdded: '2026-07-17' },
-  { id: 'cual-m4pg2Z7Vt3k', guest: 'Sergio Pujol', title: '¿Cuál es tu tango? Ep. 14 — Sergio Pujol', groupId: 'cual-es-tu-tango', url: yt('m4pg2Z7Vt3k'), format: 'video', categories: ['history'], dateAdded: '2026-07-17' },
-  { id: 'cual-EV0IkWjJot4', guest: 'Tango Bardo', title: '¿Cuál es tu tango? Ep. 13 — Tango Bardo', groupId: 'cual-es-tu-tango', url: yt('EV0IkWjJot4'), format: 'video', categories: ['music'], dateAdded: '2026-07-17' },
-  { id: 'cual-O07GXOq2aPk', guest: 'Inés Muzzopappa y Corina Herrera', title: '¿Cuál es tu tango? Ep. 12 — Inés Muzzopappa y Corina Herrera', groupId: 'cual-es-tu-tango', url: yt('O07GXOq2aPk'), format: 'video', categories: ['dancers'], dateAdded: '2026-07-17' },
-  { id: 'cual-RC-L_gs1F4U', guest: 'Víctor Lavallén', title: '¿Cuál es tu tango? Ep. 11 — Víctor Lavallén', groupId: 'cual-es-tu-tango', url: yt('RC-L_gs1F4U'), format: 'video', categories: ['music'], dateAdded: '2026-07-17' },
-  { id: 'cual-tpYW7CBsDhw', guest: 'Juan Villarreal y Patricio Crom', title: '¿Cuál es tu tango? Ep. 10 — Dúo Juan Villarreal & Patricio Crom', groupId: 'cual-es-tu-tango', url: yt('tpYW7CBsDhw'), format: 'video', categories: ['music'], dateAdded: '2026-07-17' },
-  { id: 'cual-che94MvnHZ0', guest: 'Claudia Codega y Esteban Moreno', title: '¿Cuál es tu tango? Ep. 9 — Claudia Codega y Esteban Moreno', groupId: 'cual-es-tu-tango', url: yt('che94MvnHZ0'), format: 'video', categories: ['dancers'], dateAdded: '2026-07-17' },
-  { id: 'cual-fU9hoKaS1Bw', guest: 'Oscar Del Priore', title: '¿Cuál es tu tango? Ep. 8 — Oscar Del Priore', groupId: 'cual-es-tu-tango', url: yt('fU9hoKaS1Bw'), format: 'video', categories: ['history'], dateAdded: '2026-07-17' },
-  { id: 'cual-nDm1tutSlGw', guest: 'Hugo Rivas', title: '¿Cuál es tu tango? Ep. 7 — Hugo Rivas', groupId: 'cual-es-tu-tango', url: yt('nDm1tutSlGw'), format: 'video', categories: ['music'], dateAdded: '2026-07-17' },
-  { id: 'cual-eFVjYHLpcuk', guest: 'Corina de la Rosa', title: '¿Cuál es tu tango? Ep. 6 — Corina de la Rosa', groupId: 'cual-es-tu-tango', url: yt('eFVjYHLpcuk'), format: 'video', categories: ['dancers'], dateAdded: '2026-07-17' },
-  { id: 'cual--C3_sdLcxTc', guest: 'El Tata Cedrón', title: '¿Cuál es tu tango? Ep. 5 — El Tata Cedrón', groupId: 'cual-es-tu-tango', url: yt('-C3_sdLcxTc'), format: 'video', categories: ['music'], dateAdded: '2026-07-17' },
-  { id: 'cual-BpcO_pbBOGU', guest: 'Rafael Spregelburd', title: '¿Cuál es tu tango? Ep. 4 — Rafael Spregelburd', groupId: 'cual-es-tu-tango', url: yt('BpcO_pbBOGU'), format: 'video', categories: ['community'], dateAdded: '2026-07-17' },
-  { id: 'cual-4EX-ANHxijw', guest: 'Nito y Elba', title: '¿Cuál es tu tango? Ep. 3 — Nito y Elba', groupId: 'cual-es-tu-tango', url: yt('4EX-ANHxijw'), format: 'video', categories: ['milonguero-viejo', 'dancers'], dateAdded: '2026-07-17' },
-  { id: 'cual-RWOmeoMVHco', guest: 'Color Tango', title: '¿Cuál es tu tango? Ep. 2 — Color Tango', groupId: 'cual-es-tu-tango', url: yt('RWOmeoMVHco'), format: 'video', categories: ['music'], dateAdded: '2026-07-17' },
-  { id: 'cual-F6V3Bahmvew', guest: 'Horacio Cabarcos', title: '¿Cuál es tu tango? Ep. 1 — Horacio Cabarcos', groupId: 'cual-es-tu-tango', url: yt('F6V3Bahmvew'), format: 'video', categories: ['music'], dateAdded: '2026-07-17' },
+  { id: 'cual-abJVi0yqPfk', guest: 'Pablo Estigarribia', title: 'Ep. 19 — Pablo Estigarribia', groupId: 'cual-es-tu-tango', url: yt('abJVi0yqPfk'), format: 'video', categories: ['music'], dateAdded: '2026-07-17' },
+  { id: 'cual-mBppNNQN1b4', guest: 'Otilia Da Veiga', title: 'Ep. 18 — Otilia Da Veiga', groupId: 'cual-es-tu-tango', url: yt('mBppNNQN1b4'), format: 'video', categories: ['milonguero-viejo', 'history'], dateAdded: '2026-07-17' },
+  { id: 'cual-DDpYf4xiUmg', guest: 'Horacio Avilano', title: 'Ep. 17 — Horacio Avilano', groupId: 'cual-es-tu-tango', url: yt('DDpYf4xiUmg'), format: 'video', categories: ['music'], dateAdded: '2026-07-17' },
+  { id: 'cual-a_JB3y0kf60', guest: 'Lidia Borda y Daniel Godfrid', title: 'Ep. 16 — Lidia Borda y Daniel Godfrid', groupId: 'cual-es-tu-tango', url: yt('a_JB3y0kf60'), format: 'video', categories: ['music'], dateAdded: '2026-07-17' },
+  { id: 'cual-jPFnExc2c7Q', guest: 'Graciela González', title: 'Ep. 15 — Graciela González', groupId: 'cual-es-tu-tango', url: yt('jPFnExc2c7Q'), format: 'video', categories: ['dancers'], dateAdded: '2026-07-17' },
+  { id: 'cual-m4pg2Z7Vt3k', guest: 'Sergio Pujol', title: 'Ep. 14 — Sergio Pujol', groupId: 'cual-es-tu-tango', url: yt('m4pg2Z7Vt3k'), format: 'video', categories: ['history'], dateAdded: '2026-07-17' },
+  { id: 'cual-EV0IkWjJot4', guest: 'Tango Bardo', title: 'Ep. 13 — Tango Bardo', groupId: 'cual-es-tu-tango', url: yt('EV0IkWjJot4'), format: 'video', categories: ['music'], dateAdded: '2026-07-17' },
+  { id: 'cual-O07GXOq2aPk', guest: 'Inés Muzzopappa y Corina Herrera', title: 'Ep. 12 — Inés Muzzopappa y Corina Herrera', groupId: 'cual-es-tu-tango', url: yt('O07GXOq2aPk'), format: 'video', categories: ['dancers'], dateAdded: '2026-07-17' },
+  { id: 'cual-RC-L_gs1F4U', guest: 'Víctor Lavallén', title: 'Ep. 11 — Víctor Lavallén', groupId: 'cual-es-tu-tango', url: yt('RC-L_gs1F4U'), format: 'video', categories: ['music'], dateAdded: '2026-07-17' },
+  { id: 'cual-tpYW7CBsDhw', guest: 'Juan Villarreal y Patricio Crom', title: 'Ep. 10 — Dúo Juan Villarreal & Patricio Crom', groupId: 'cual-es-tu-tango', url: yt('tpYW7CBsDhw'), format: 'video', categories: ['music'], dateAdded: '2026-07-17' },
+  { id: 'cual-che94MvnHZ0', guest: 'Claudia Codega y Esteban Moreno', title: 'Ep. 9 — Claudia Codega y Esteban Moreno', groupId: 'cual-es-tu-tango', url: yt('che94MvnHZ0'), format: 'video', categories: ['dancers'], dateAdded: '2026-07-17' },
+  { id: 'cual-fU9hoKaS1Bw', guest: 'Oscar Del Priore', title: 'Ep. 8 — Oscar Del Priore', groupId: 'cual-es-tu-tango', url: yt('fU9hoKaS1Bw'), format: 'video', categories: ['history'], dateAdded: '2026-07-17' },
+  { id: 'cual-nDm1tutSlGw', guest: 'Hugo Rivas', title: 'Ep. 7 — Hugo Rivas', groupId: 'cual-es-tu-tango', url: yt('nDm1tutSlGw'), format: 'video', categories: ['music'], dateAdded: '2026-07-17' },
+  { id: 'cual-eFVjYHLpcuk', guest: 'Corina de la Rosa', title: 'Ep. 6 — Corina de la Rosa', groupId: 'cual-es-tu-tango', url: yt('eFVjYHLpcuk'), format: 'video', categories: ['dancers'], dateAdded: '2026-07-17' },
+  { id: 'cual--C3_sdLcxTc', guest: 'El Tata Cedrón', title: 'Ep. 5 — El Tata Cedrón', groupId: 'cual-es-tu-tango', url: yt('-C3_sdLcxTc'), format: 'video', categories: ['music'], dateAdded: '2026-07-17' },
+  { id: 'cual-BpcO_pbBOGU', guest: 'Rafael Spregelburd', title: 'Ep. 4 — Rafael Spregelburd', groupId: 'cual-es-tu-tango', url: yt('BpcO_pbBOGU'), format: 'video', categories: ['community'], dateAdded: '2026-07-17' },
+  { id: 'cual-4EX-ANHxijw', guest: 'Nito y Elba', title: 'Ep. 3 — Nito y Elba', groupId: 'cual-es-tu-tango', url: yt('4EX-ANHxijw'), format: 'video', categories: ['milonguero-viejo', 'dancers'], dateAdded: '2026-07-17' },
+  { id: 'cual-RWOmeoMVHco', guest: 'Color Tango', title: 'Ep. 2 — Color Tango', groupId: 'cual-es-tu-tango', url: yt('RWOmeoMVHco'), format: 'video', categories: ['music'], dateAdded: '2026-07-17' },
+  { id: 'cual-F6V3Bahmvew', guest: 'Horacio Cabarcos', title: 'Ep. 1 — Horacio Cabarcos', groupId: 'cual-es-tu-tango', url: yt('F6V3Bahmvew'), format: 'video', categories: ['music'], dateAdded: '2026-07-17' },
 
   // ============================================================
   // 030tango Podcast  — video podcast (YouTube)
   // ============================================================
   {
     id: '030tango-tarantino-galdi', guest: 'Lorena Tarantino & Gianpiero Galdi',
-    title: 'Lorena Tarantino & Gianpiero Galdi · 030tango #01',
+    title: 'Episode 1 — Lorena Tarantino & Gianpiero Galdi',
     description: 'A conversation with dancers and teachers Lorena Tarantino and Gianpiero Galdi.',
     groupId: '030tango', url: yt('FVTq8ZS2efg'), format: 'podcast', categories: ['dancers'], dateAdded: '2026-07-17',
   },
   {
     id: '030tango-piaggio-espinoza', guest: 'Agustina Piaggio & Carlitos Espinoza',
-    title: 'Agustina Piaggio & Carlitos Espinoza · 030tango #02',
+    title: 'Episode 2 — Agustina Piaggio & Carlitos Espinoza',
     description: 'A conversation with celebrated social dancers and performers Agustina Piaggio and Carlitos Espinoza.',
     groupId: '030tango', url: yt('p1x5oyqximg'), format: 'podcast', categories: ['dancers'], dateAdded: '2026-07-17',
   },
   {
     id: '030tango-aktar-yigit', guest: 'Zeynep Aktar & Sercan Yigit',
-    title: 'Zeynep Aktar & Sercan Yigit · 030tango #03',
+    title: 'Episode 3 — Zeynep Aktar & Sercan Yigit',
     description: 'A conversation with Turkish tango dancers and organizers Zeynep Aktar and Sercan Yigit.',
     groupId: '030tango', url: yt('pDHWhXc64rQ'), format: 'podcast', categories: ['dancers', 'community'], dateAdded: '2026-07-17',
   },
@@ -292,7 +291,7 @@ export const interviews: Interview[] = [
   // Humans of Tango  (Liz Sabatiuk) — podcast (partial + full-series card)
   // ============================================================
   {
-    id: 'humans-series', guest: '', title: 'Humans of Tango — the full series', seriesCard: true,
+    id: 'humans-series', guest: '', title: 'The complete series', seriesCard: true,
     description: 'The complete Humans of Tango feed: intimate conversations about what tango teaches us.',
     groupId: 'humans-of-tango', url: 'https://www.humansoftango.com/', format: 'podcast', categories: [], dateAdded: '2026-07-17',
   },
@@ -324,14 +323,14 @@ export const interviews: Interview[] = [
   // ============================================================
   // Discovering Troilo  (Heyni Solera) — YouTube miniseries
   // ============================================================
-  { id: 'troilo-n5QMEXEYl5E', guest: 'Aníbal Troilo', title: 'Discovering Troilo — Ep. 1: An Idea Is Born', description: 'Heyni Solera opens the series and lays out the journey into Aníbal Troilo\'s music.', groupId: 'discovering-troilo', url: yt('n5QMEXEYl5E'), format: 'video', categories: ['history', 'music'], dateAdded: '2026-07-17' },
-  { id: 'troilo-M_GCfKF1pu8', guest: 'Aníbal Troilo', title: 'Discovering Troilo — Ep. 2: "El Africano"', description: 'A close listen to Troilo\'s recording of "El Africano".', groupId: 'discovering-troilo', url: yt('M_GCfKF1pu8'), format: 'video', categories: ['history', 'music'], dateAdded: '2026-07-17' },
-  { id: 'troilo-_LGzKFqA2Lg', guest: 'Aníbal Troilo', title: 'Discovering Troilo — Ep. 3: "El Entrerriano"', description: 'A close listen to Troilo\'s recording of "El Entrerriano".', groupId: 'discovering-troilo', url: yt('_LGzKFqA2Lg'), format: 'video', categories: ['history', 'music'], dateAdded: '2026-07-17' },
-  { id: 'troilo-F86M06f-y5g', guest: 'Aníbal Troilo', title: 'Discovering Troilo — Ep. 4: "Don Juan"', description: 'A close listen to Troilo\'s recording of "Don Juan".', groupId: 'discovering-troilo', url: yt('F86M06f-y5g'), format: 'video', categories: ['history', 'music'], dateAdded: '2026-07-17' },
-  { id: 'troilo-Ullox5fVw9A', guest: 'Aníbal Troilo', title: 'Discovering Troilo — Ep. 5: "El Irresistible"', description: 'A close listen to Troilo\'s recording of "El Irresistible".', groupId: 'discovering-troilo', url: yt('Ullox5fVw9A'), format: 'video', categories: ['history', 'music'], dateAdded: '2026-07-17' },
-  { id: 'troilo-K5DpYMSSIrk', guest: 'Aníbal Troilo', title: 'Discovering Troilo — Ep. 6: "La Bordona"', description: 'A close listen to Troilo\'s recording of "La Bordona".', groupId: 'discovering-troilo', url: yt('K5DpYMSSIrk'), format: 'video', categories: ['history', 'music'], dateAdded: '2026-07-17' },
-  { id: 'troilo-motMT0ONj78', guest: 'Aníbal Troilo', title: 'Discovering Troilo — Ep. 7: "Nostálgico"', description: 'A close listen to Troilo\'s recording of "Nostálgico".', groupId: 'discovering-troilo', url: yt('motMT0ONj78'), format: 'video', categories: ['history', 'music'], dateAdded: '2026-07-17' },
-  { id: 'troilo-fI2PpOLAWvY', guest: 'Aníbal Troilo', title: 'Discovering Troilo — Ep. 8: "Che, Buenos Aires"', description: 'A close listen to Troilo\'s recording of "Che, Buenos Aires".', groupId: 'discovering-troilo', url: yt('fI2PpOLAWvY'), format: 'video', categories: ['history', 'music'], dateAdded: '2026-07-17' },
+  { id: 'troilo-n5QMEXEYl5E', guest: 'Aníbal Troilo', title: 'Ep. 1 — An Idea Is Born', description: 'Heyni Solera opens the series and lays out the journey into Aníbal Troilo\'s music.', groupId: 'discovering-troilo', url: yt('n5QMEXEYl5E'), format: 'video', categories: ['history', 'music'], dateAdded: '2026-07-17' },
+  { id: 'troilo-M_GCfKF1pu8', guest: 'Aníbal Troilo', title: 'Ep. 2 — "El Africano"', description: 'A close listen to Troilo\'s recording of "El Africano".', groupId: 'discovering-troilo', url: yt('M_GCfKF1pu8'), format: 'video', categories: ['history', 'music'], dateAdded: '2026-07-17' },
+  { id: 'troilo-_LGzKFqA2Lg', guest: 'Aníbal Troilo', title: 'Ep. 3 — "El Entrerriano"', description: 'A close listen to Troilo\'s recording of "El Entrerriano".', groupId: 'discovering-troilo', url: yt('_LGzKFqA2Lg'), format: 'video', categories: ['history', 'music'], dateAdded: '2026-07-17' },
+  { id: 'troilo-F86M06f-y5g', guest: 'Aníbal Troilo', title: 'Ep. 4 — "Don Juan"', description: 'A close listen to Troilo\'s recording of "Don Juan".', groupId: 'discovering-troilo', url: yt('F86M06f-y5g'), format: 'video', categories: ['history', 'music'], dateAdded: '2026-07-17' },
+  { id: 'troilo-Ullox5fVw9A', guest: 'Aníbal Troilo', title: 'Ep. 5 — "El Irresistible"', description: 'A close listen to Troilo\'s recording of "El Irresistible".', groupId: 'discovering-troilo', url: yt('Ullox5fVw9A'), format: 'video', categories: ['history', 'music'], dateAdded: '2026-07-17' },
+  { id: 'troilo-K5DpYMSSIrk', guest: 'Aníbal Troilo', title: 'Ep. 6 — "La Bordona"', description: 'A close listen to Troilo\'s recording of "La Bordona".', groupId: 'discovering-troilo', url: yt('K5DpYMSSIrk'), format: 'video', categories: ['history', 'music'], dateAdded: '2026-07-17' },
+  { id: 'troilo-motMT0ONj78', guest: 'Aníbal Troilo', title: 'Ep. 7 — "Nostálgico"', description: 'A close listen to Troilo\'s recording of "Nostálgico".', groupId: 'discovering-troilo', url: yt('motMT0ONj78'), format: 'video', categories: ['history', 'music'], dateAdded: '2026-07-17' },
+  { id: 'troilo-fI2PpOLAWvY', guest: 'Aníbal Troilo', title: 'Ep. 8 — "Che, Buenos Aires"', description: 'A close listen to Troilo\'s recording of "Che, Buenos Aires".', groupId: 'discovering-troilo', url: yt('fI2PpOLAWvY'), format: 'video', categories: ['history', 'music'], dateAdded: '2026-07-17' },
 
   // ============================================================
   // Tango Time Machine — YouTube
@@ -357,8 +356,8 @@ export const interviews: Interview[] = [
     groupId: 'vienna-tango-school', url: 'https://viennatango.com/post/staying-grounded-17', format: 'video', categories: ['dancers'], dateAdded: '2026-07-17',
   },
   {
-    id: 'vts-staying-grounded-12', guest: 'Lorena & Gianpiero', title: 'Staying Grounded #12 — Lorena & Gianpiero',
-    description: 'Episode 12 of the "Staying Grounded" series, in conversation with Lorena and Gianpiero.',
+    id: 'vts-staying-grounded-12', guest: 'Lorena Tarantino & Gianpiero Galdi', title: 'Staying Grounded #12 — Lorena Tarantino & Gianpiero Galdi',
+    description: 'Episode 12 of the "Staying Grounded" series, in conversation with Lorena Tarantino and Gianpiero Galdi.',
     groupId: 'vienna-tango-school', url: yt('yydeAeWALoE'), format: 'video', categories: ['dancers'], dateAdded: '2026-07-17',
   },
 
@@ -421,7 +420,7 @@ export function youtubeId(url: string): string | null {
 export function interviewThumbnail(interview: Interview, group?: InterviewGroup): string | undefined {
   if (interview.thumbnail) return interview.thumbnail;
   const id = youtubeId(interview.url);
-  if (id) return `https://i.ytimg.com/vi/${id}/hqdefault.jpg`;
+  if (id) return `https://i.ytimg.com/vi/${id}/mqdefault.jpg`;
   return group?.logo;
 }
 
@@ -440,6 +439,14 @@ export function interviewSource(interview: Interview): string {
 /** Display title for a card. */
 export function interviewTitle(interview: Interview): string {
   return interview.title ?? interview.guest;
+}
+
+/** CTA verb for a card — 'Browse' for a whole-series card, 'Watch' for anything you
+ *  watch (video, including video podcasts hosted on YouTube), else 'Listen'. */
+export function interviewCta(interview: Interview): 'Browse' | 'Watch' | 'Listen' {
+  if (interview.seriesCard) return 'Browse';
+  if (interview.format === 'video' || youtubeId(interview.url) !== null) return 'Watch';
+  return 'Listen';
 }
 
 /** Effective language — the interview's own override, else its group's, else Spanish. */
@@ -463,7 +470,7 @@ export function interviewBlurb(interview: Interview, group?: InterviewGroup): st
   return group?.description ?? '';
 }
 
-/** Split a "X y Y, Z & W" guest string into individual names (for search + artist facets). */
+/** Split a "X y Y, Z & W" guest string into individual names (for search). */
 export function guestNames(guest: string): string[] {
   return guest
     .split(/\s*(?:,|&| y | e )\s*/i)
