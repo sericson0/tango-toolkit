@@ -5,172 +5,235 @@ import DonationGate from '../../../../components/DonationGate.astro';
 
 const setI = [
   { group: 1, artist: "D'Arienzo", singer: "Instrumental", era: "1936", songs: [
-    { title: "El Flete", date: "4/3/36" }, { title: "Lorenzo", date: "5/8/36" }, { title: "Retintín", date: "1/31/36" }, { title: "La Payanca", date: "6/9/36" }, { title: "Ataniche", date: "11/27/36" }, { title: "El Irresistible", date: "8/5/36" }, { title: "Rawson", date: "9/3/36" }, { title: "Comme Il Faut", date: "10/27/36" }
+    { title: "El Flete", date: "1936-04-03" }, { title: "Lorenzo", date: "1936-05-08" }, { title: "Retintín", date: "1936-01-31" }, { title: "La Payanca", date: "1936-06-09" }, { title: "Ataniche", date: "1936-11-27" }, { title: "El Irresistible", date: "1936-08-05" }, { title: "Rawson", date: "1936-09-03" }, { title: "Comme Il Faut", date: "1936-10-27" }
   ]},
   { group: 2, artist: "D'Arienzo", singer: "Echagüe", era: "1938–39", songs: [
-    { title: "Pensalo Bien", date: "6/22/38" }, { title: "Indiferencia", date: "1/4/38" }, { title: "Trago Amargo", date: "12/22/39" }, { title: "No Mientas", date: "12/28/38" }, { title: "La Bruja", date: "8/26/38" }, { title: "Nada Más", date: "7/8/38" }, { title: "Mandria", date: "8/9/39" }, { title: "Que Dios Te Ayude", date: "11/14/39" }
+    { title: "Pensalo Bien", date: "1938-06-22" }, { title: "Indiferencia", date: "1938-01-04" }, { title: "Trago Amargo", date: "1939-12-22" }, { title: "No Mientas", date: "1938-12-28" }, { title: "La Bruja", date: "1938-08-26" }, { title: "Nada Más", date: "1938-07-08" }, { title: "Mandria", date: "1939-08-09" }, { title: "Que Dios Te Ayude", date: "1939-11-14" }
   ]},
   { group: 3, artist: "D'Arienzo", singer: "Maure", era: "1941–44", songs: [
-    { title: "Dime Mi Amor", date: "5/25/41" }, { title: "Amarras", date: "7/21/44" }, { title: "Uno", date: "11/23/43" }, { title: "Compadrón", date: "12/22/42" }, { title: "Humillación", date: "7/14/41" }, { title: "Tango Brujo", date: "7/13/43" }, { title: "Lilián", date: "5/17/44" }, { title: "Ya Lo Ves", date: "4/28/41" }
+    { title: "Dime Mi Amor", date: "1941-05-25" }, { title: "Amarras", date: "1944-07-21" }, { title: "Uno", date: "1943-11-23" }, { title: "Compadrón", date: "1942-12-22" }, { title: "Humillación", date: "1941-07-14" }, { title: "Tango Brujo", date: "1943-07-13" }, { title: "Lilián", date: "1944-05-17" }, { title: "Ya Lo Ves", date: "1941-04-28" }
   ]},
   { group: 4, artist: "D'Arienzo", singer: "Instrumental", era: "1950–52", songs: [
-    { title: "La Cumparsita", date: "9/12/51" }, { title: "El Puntazo", date: "8/13/52" }, { title: "Canaro En Paris", date: "5/5/50" }, { title: "Pampa", date: "9/14/51" }, { title: "Yapeyú", date: "12/27/51" }, { title: "Florida", date: "11/12/52" }, { title: "El Simpático", date: "12/19/51" }, { title: "Don Juan", date: "12/28/50" }
+    { title: "La Cumparsita", date: "1951-09-12" }, { title: "El Puntazo", date: "1952-08-13" }, { title: "Canaro En Paris", date: "1950-05-05" }, { title: "Pampa", date: "1951-09-14" }, { title: "Yapeyú", date: "1951-12-27" }, { title: "Florida", date: "1952-11-12" }, { title: "El Simpático", date: "1951-12-19" }, { title: "Don Juan", date: "1950-12-28" }
   ]},
   { group: 5, artist: "Di Sarli", singer: "Instrumental", era: "1939–41", songs: [
-    { title: "El Retirao", date: "12/11/39" }, { title: "Catamarca", date: "2/9/40" }, { title: "El Jugar", date: "8/5/40" }, { title: "Shusheta", date: "10/8/40" }, { title: "Nobleza de Arrabal", date: "11/23/40" }, { title: "Marianito", date: "5/20/41" }, { title: "La Tocacita", date: "6/21/41" }, { title: "Germaine", date: "7/16/41" }
+    { title: "El Retirao", date: "1939-12-11" }, { title: "Catamarca", date: "1940-02-09" }, { title: "El Jugar", date: "1940-08-05" }, { title: "Shusheta", date: "1940-10-08" }, { title: "Nobleza de Arrabal", date: "1940-11-23" }, { title: "Marianito", date: "1941-05-20" }, { title: "La Tocacita", date: "1941-06-21" }, { title: "Germaine", date: "1941-07-16" }
   ]},
   { group: 6, artist: "Di Sarli", singer: "Rufino", era: "1939–41", songs: [
-    { title: "El Jugar", date: "8/5/40" }, { title: "En Un Beso La Vida", date: "9/23/40" }, { title: "Corazón", date: "12/11/39" }, { title: "Cosas Olvidadas", date: "6/19/40" }, { title: "Lo Pasado Pasó", date: "11/23/40" }, { title: "El Cielo en Tus Ojos", date: "10/3/41" }, { title: "Cascabelito", date: "6/6/41" }, { title: "Griseta", date: "6/21/41" }
+    { title: "El Jugar", date: "1940-08-05" }, { title: "En Un Beso La Vida", date: "1940-09-23" }, { title: "Corazón", date: "1939-12-11" }, { title: "Cosas Olvidadas", date: "1940-06-19" }, { title: "Lo Pasado Pasó", date: "1940-11-23" }, { title: "El Cielo en Tus Ojos", date: "1941-10-03" }, { title: "Cascabelito", date: "1941-06-06" }, { title: "Griseta", date: "1941-06-21" }
   ]},
   { group: 7, artist: "Di Sarli", singer: "Instrumental", era: "1954–55", songs: [
-    { title: "A La Gran Muñeca", date: "6/30/54" }, { title: "Bar Exposición", date: "11/16/54" }, { title: "Comme Il Faut", date: "7/15/55" }, { title: "El Amanecer", date: "8/31/54" }, { title: "El Ingeniero", date: "1/31/55" }, { title: "El Once", date: "11/16/54" }, { title: "Germaine", date: "7/15/55" }, { title: "Organito de La Tarde", date: "8/31/54" }
+    { title: "A La Gran Muñeca", date: "1954-06-30" }, { title: "Bar Exposición", date: "1954-11-16" }, { title: "Comme Il Faut", date: "1955-07-15" }, { title: "El Amanecer", date: "1954-08-31" }, { title: "El Ingeniero", date: "1955-01-31" }, { title: "El Once", date: "1954-11-16" }, { title: "Germaine", date: "1955-07-15" }, { title: "Organito de La Tarde", date: "1954-08-31" }, { title: "La Cumparsita", date: "1955-06-20" }, { title: "Milonguero Viejo", date: "1955-06-20" }
   ]},
   { group: 8, artist: "Di Sarli", singer: "Podestá", era: "1944", songs: [
-    { title: "La Capilla Blanca", date: "7/11/44" }, { title: "Lloran Las Campanas", date: "9/20/44" }, { title: "Llueve Otra Vez", date: "5/24/44" }, { title: "Motivo Sentimental", date: "7/20/44" }, { title: "Nada", date: "4/13/44" }, { title: "Otra Noche", date: "4/13/44" }, { title: "Tú, El Cielo Y Tú", date: "11/8/44" }, { title: "Vamos", date: "5/24/44" }
+    { title: "La Capilla Blanca", date: "1944-07-11" }, { title: "Lloran Las Campanas", date: "1944-09-20" }, { title: "Llueve Otra Vez", date: "1944-05-24" }, { title: "Motivo Sentimental", date: "1944-07-20" }, { title: "Nada", date: "1944-04-13" }, { title: "Otra Noche", date: "1944-04-13" }, { title: "Tú, El Cielo Y Tú", date: "1944-11-08" }, { title: "Vamos", date: "1944-05-24" }
   ]},
   { group: 9, artist: "Troilo", singer: "Fiorentino", era: "1941", songs: [
-    { title: "El Bulin de La Calle Ayacucho", date: "6/17/41" }, { title: "Maragata", date: "10/9/41" }, { title: "No Le Digas Que La Quiero", date: "10/23/41" }, { title: "Te Aconsejo Que Me Olvides", date: "4/16/41" }, { title: "Tinta Roja", date: "10/23/41" }, { title: "Toda Mi Vida", date: "3/4/41" }, { title: "Una Carta", date: "7/11/41" }, { title: "Yo Soy El Tango", date: "3/4/41" }
+    { title: "El Bulin de La Calle Ayacucho", date: "1941-06-17" }, { title: "Maragata", date: "1941-10-09" }, { title: "No Le Digas Que La Quiero", date: "1941-10-23" }, { title: "Te Aconsejo Que Me Olvides", date: "1941-04-16" }, { title: "Tinta Roja", date: "1941-10-23" }, { title: "Toda Mi Vida", date: "1941-03-04" }, { title: "Una Carta", date: "1941-07-11" }, { title: "Yo Soy El Tango", date: "1941-03-04" }
   ]},
   { group: 10, artist: "Troilo", singer: "Instrumental", era: "1938–42", songs: [
-    { title: "Comme Il Faut", date: "3/7/38" }, { title: "Guapeando", date: "7/11/41" }, { title: "Cachirulo", date: "3/4/41" }, { title: "Cordón de Oro", date: "7/18/41" }, { title: "Milongueando En El 40", date: "6/17/41" }, { title: "La Tablada", date: "7/23/42" }, { title: "C.T.V.", date: "1/8/42" }
+    { title: "Comme Il Faut", date: "1938-03-07" }, { title: "Guapeando", date: "1941-07-11" }, { title: "Cachirulo", date: "1941-03-04" }, { title: "Cordón de Oro", date: "1941-07-18" }, { title: "Milongueando En El 40", date: "1941-06-17" }, { title: "La Tablada", date: "1942-07-23" }, { title: "C.T.V.", date: "1942-01-08" }
   ]},
   { group: 11, artist: "Troilo", singer: "Fiorentino", era: "1942–43", songs: [
-    { title: "Malena", date: "4/16/42" }, { title: "Garúa", date: "8/4/43" }, { title: "Cada Vez Que Me Recuerdes", date: "4/5/43" }, { title: "Gricel", date: "10/30/42" }, { title: "Barrio de Tango", date: "12/14/42" }, { title: "Por Las Calles de La Vida", date: "12/14/42" }, { title: "Lejos de Buenos Aires", date: "9/1/42" }, { title: "El Encopao", date: "9/1/42" }
+    { title: "Malena", date: "1942-04-16" }, { title: "Garúa", date: "1943-08-04" }, { title: "Cada Vez Que Me Recuerdes", date: "1943-04-05" }, { title: "Gricel", date: "1942-10-30" }, { title: "Barrio de Tango", date: "1942-12-14" }, { title: "Por Las Calles de La Vida", date: "1942-12-14" }, { title: "Lejos de Buenos Aires", date: "1942-09-01" }, { title: "El Encopao", date: "1942-09-01" }
   ]},
   { group: 12, artist: "Troilo", singer: "Marino", era: "1943–44", songs: [
-    { title: "Alhucema", date: "8/31/44" }, { title: "Cristal", date: "6/7/44" }, { title: "Cuando Tallan Los Recuerdos", date: "4/27/43" }, { title: "La Vi Llegar", date: "6/27/44" }, { title: "Nada Más Que Un Corazón", date: "8/31/44" }, { title: "Tal Vez Será Su Voz", date: "8/4/43" }, { title: "Torrente", date: "10/6/44" }, { title: "Uno", date: "6/30/43" }
+    { title: "Alhucema", date: "1944-08-31" }, { title: "Cristal", date: "1944-06-07" }, { title: "Cuando Tallan Los Recuerdos", date: "1943-04-27" }, { title: "La Vi Llegar", date: "1944-06-27" }, { title: "Nada Más Que Un Corazón", date: "1944-08-31" }, { title: "Tal Vez Será Su Voz", date: "1943-08-04" }, { title: "Torrente", date: "1944-10-06" }, { title: "Uno", date: "1943-06-30" }
   ]},
   { group: 13, artist: "Pugliese", singer: "Chanel", era: "1943–46", songs: [
-    { title: "Fuimos", date: "3/28/46" }, { title: "Farol", date: "7/15/43" }, { title: "Corrientes Y Esmeralda", date: "10/17/44" }, { title: "El Sueño Del Pibe", date: "3/22/45" }, { title: "Tiempo", date: "7/31/46" }, { title: "Nada Más Que Un Corazón", date: "11/24/44" }, { title: "Rondando Tu Esquina", date: "7/18/45" }, { title: "La Abandoné Y No Sabía", date: "7/20/44" }
+    { title: "Fuimos", date: "1946-03-28" }, { title: "Farol", date: "1943-07-15" }, { title: "Corrientes Y Esmeralda", date: "1944-10-17" }, { title: "El Sueño Del Pibe", date: "1945-03-22" }, { title: "Tiempo", date: "1946-07-31" }, { title: "Nada Más Que Un Corazón", date: "1944-11-24" }, { title: "Rondando Tu Esquina", date: "1945-07-18" }, { title: "La Abandoné Y No Sabía", date: "1944-07-20" }
   ]},
   { group: 14, artist: "Pugliese", singer: "Instrumental", era: "1945–50", songs: [
-    { title: "Patético", date: "4/6/48" }, { title: "Negracha", date: "6/24/48" }, { title: "N.N.", date: "4/28/47" }, { title: "Malandraca", date: "5/31/49" }, { title: "Boedo", date: "7/14/48" }, { title: "De Floreo", date: "3/29/50" }, { title: "El Buscapié", date: "12/1/47" }, { title: "Flor de Tango", date: "8/28/45" }
+    { title: "Patético", date: "1948-04-06" }, { title: "Negracha", date: "1948-06-24" }, { title: "N.N.", date: "1947-04-28" }, { title: "Malandraca", date: "1949-05-31" }, { title: "Boedo", date: "1948-07-14" }, { title: "De Floreo", date: "1950-03-29" }, { title: "El Buscapié", date: "1947-12-01" }, { title: "Flor de Tango", date: "1945-08-28" }
   ]},
   { group: 15, artist: "Pugliese", singer: "Maciel", era: "1955–66", songs: [
-    { title: "Esta Noche de Luna", date: "9/2/55" }, { title: "Remembranza", date: "7/4/56" }, { title: "Adiós Corazón", date: "5/29/58" }, { title: "Y Todavía Te Quiero", date: "6/21/56" }, { title: "Recuerdo", date: "1966" }, { title: "El Adiós", date: "1963" }, { title: "La Vi Llegar", date: "1961" }, { title: "El Pañuelito", date: "7/23/59" }
+    { title: "Esta Noche de Luna", date: "1955-09-02" }, { title: "Remembranza", date: "1956-07-04" }, { title: "Adiós Corazón", date: "1958-05-29" }, { title: "Y Todavía Te Quiero", date: "1956-06-21" }, { title: "Recuerdo", date: "1966" }, { title: "El Adiós", date: "1963" }, { title: "La Vi Llegar", date: "1961" }, { title: "El Pañuelito", date: "1959-07-23" }
   ]},
   { group: 16, artist: "Pugliese", singer: "Instrumental", era: "1952–59", songs: [
-    { title: "La Yumba", date: "11/13/52" }, { title: "La Tupungatina", date: "6/27/52" }, { title: "Gallo Ciego", date: "7/23/59" }, { title: "Para Dos", date: "5/6/52" }, { title: "La Bordona", date: "8/6/58" }, { title: "Pata Ancha", date: "5/13/57" }, { title: "Seguíme Si Podés", date: "10/6/53" }, { title: "Chiqué", date: "5/28/53" }
+    { title: "La Yumba", date: "1952-11-13" }, { title: "La Tupungatina", date: "1952-06-27" }, { title: "Gallo Ciego", date: "1959-07-23" }, { title: "Para Dos", date: "1952-05-06" }, { title: "La Bordona", date: "1958-08-06" }, { title: "Pata Ancha", date: "1957-05-13" }, { title: "Seguíme Si Podés", date: "1953-10-06" }, { title: "Chiqué", date: "1953-05-28" }
   ]},
 ];
 
 const setII = [
   { group: 1, artist: "D'Arienzo", genre: "Milonga", singer: "Instrumental", era: "1935–38", songs: [
-    { title: "La Puñalada", date: "4/27/37" }, { title: "Milonga Vieja Milonga", date: "9/22/37" }, { title: "De Pura Cepa", date: "11/18/35" }, { title: "El Esquinazo", date: "1/4/38" }
+    { title: "La Puñalada", date: "1937-04-27" }, { title: "Milonga Vieja Milonga", date: "1937-09-22" }, { title: "De Pura Cepa", date: "1935-11-18" }, { title: "El Esquinazo", date: "1938-01-04" }
   ]},
   { group: 2, artist: "D'Arienzo", genre: "Milonga", singer: "Echagüe", era: "1938–39", songs: [
-    { title: "De Antaño", date: "9/27/39" }, { title: "Milonga del Recuerdo", date: "7/17/39" }, { title: "Milonga del Corazón", date: "5/6/38" }, { title: "El Temblor", date: "6/8/38" }, { title: "La Cicatriz", date: "10/31/39" }
+    { title: "De Antaño", date: "1939-09-27" }, { title: "Milonga del Recuerdo", date: "1939-07-17" }, { title: "Milonga del Corazón", date: "1938-05-06" }, { title: "El Temblor", date: "1938-06-08" }, { title: "La Cicatriz", date: "1939-10-31" }
   ]},
   { group: 3, artist: "Pedro Laurenz", genre: "Milonga", singer: "Various", era: "1938–44", songs: [
-    { title: "Milonga Compadre", date: "5/12/38" }, { title: "La Vida es una Milonga", date: "9/5/41" }, { title: "Maldonado", date: "12/9/43" }, { title: "Yo Soy de San Telmo", date: "11/16/43" }, { title: "Milonga de Mis Amores", date: "1/14/44" }
+    { title: "Milonga Compadre", date: "1938-05-12" }, { title: "La Vida es una Milonga", date: "1941-09-05" }, { title: "Maldonado", date: "1943-12-09" }, { title: "Yo Soy de San Telmo", date: "1943-11-16" }, { title: "Milonga de Mis Amores", date: "1944-01-14" }
   ]},
   { group: 4, artist: "Pedro Laurenz", genre: "Tango", singer: "Casas/Farrel", era: "1937–40", songs: [
-    { title: "Abandono", date: "9/24/37" }, { title: "Amurado", date: "7/29/40" }, { title: "Arrabal", date: "9/24/37" }, { title: "De Puro Guapo", date: "1/25/40" }, { title: "Desconsuelo", date: "2/21/40" }, { title: "No Me Extraña", date: "1/25/40" }, { title: "Vieja Amiga", date: "5/12/38" }
+    { title: "Abandono", date: "1937-09-24" }, { title: "Amurado", date: "1940-07-29" }, { title: "Arrabal", date: "1937-09-24" }, { title: "De Puro Guapo", date: "1940-01-25" }, { title: "Desconsuelo", date: "1940-02-21" }, { title: "No Me Extraña", date: "1940-01-25" }, { title: "Vieja Amiga", date: "1938-05-12" }
   ]},
   { group: 5, artist: "Pedro Laurenz", genre: "Tango", singer: "Podestá", era: "1943–44", songs: [
-    { title: "Alma de Bohemio", date: "7/15/43" }, { title: "Garúa", date: "8/6/43" }, { title: "Que Nunca me Falte", date: "9/22/43" }, { title: "Recién", date: "9/22/43" }, { title: "Todo", date: "12/9/43" }, { title: "Como El Hornero", date: "1/14/44" }, { title: "Muchachos Mi Último Tango", date: "3/1/44" }, { title: "Yo Quiero Cantar Un Tango", date: "11/16/43" }
+    { title: "Alma de Bohemio", date: "1943-07-15" }, { title: "Garúa", date: "1943-08-06" }, { title: "Que Nunca me Falte", date: "1943-09-22" }, { title: "Recién", date: "1943-09-22" }, { title: "Todo", date: "1943-12-09" }, { title: "Como El Hornero", date: "1944-01-14" }, { title: "Muchachos Mi Último Tango", date: "1944-03-01" }, { title: "Yo Quiero Cantar Un Tango", date: "1943-11-16" }
   ]},
   { group: 6, artist: "Rodolfo Biagi", genre: "Tango", singer: "Instrumental", era: "1938–42", songs: [
-    { title: "El 13", date: "11/15/38" }, { title: "Unión Cívica", date: "10/17/38" }, { title: "El Yaguarón", date: "6/19/40" }, { title: "Re Fa Si", date: "12/26/40" }, { title: "Bélgica", date: "1/20/42" }, { title: "El Incendio", date: "8/15/38" }, { title: "El Rápido", date: "9/18/39" }, { title: "El Entrerriano", date: "1/14/41" }
+    { title: "El 13", date: "1938-11-15" }, { title: "Unión Cívica", date: "1938-10-17" }, { title: "El Yaguarón", date: "1940-06-19" }, { title: "Re Fa Si", date: "1940-12-26" }, { title: "Bélgica", date: "1942-01-20" }, { title: "El Incendio", date: "1938-08-15" }, { title: "El Rápido", date: "1939-09-18" }, { title: "El Entrerriano", date: "1941-01-14" }
   ]},
   { group: 7, artist: "Rodolfo Biagi", genre: "Vals", singer: "Various", era: "1938–41", songs: [
-    { title: "Dichas Que Viví", date: "7/13/39" }, { title: "Déjame Amarte Aunque Sea Un Día", date: "9/22/39" }, { title: "Viejo Portón", date: "10/17/38" }, { title: "Lágrimas Y Sonrisas", date: "3/26/41" }, { title: "Cuatro Palabras", date: "7/29/41" }, { title: "Por Un Beso de Amor", date: "10/4/40" }, { title: "Lejos de Ti", date: "12/2/38" }, { title: "Loca de Amor", date: "11/15/38" }
+    { title: "Dichas Que Viví", date: "1939-07-13" }, { title: "Déjame Amarte Aunque Sea Un Día", date: "1939-09-22" }, { title: "Viejo Portón", date: "1938-10-17" }, { title: "Lágrimas Y Sonrisas", date: "1941-03-26" }, { title: "Cuatro Palabras", date: "1941-07-29" }, { title: "Por Un Beso de Amor", date: "1940-10-04" }, { title: "Lejos de Ti", date: "1938-12-02" }, { title: "Loca de Amor", date: "1938-11-15" }
   ]},
   { group: 8, artist: "Alfredo De Angelis", genre: "Vals", singer: "Dante/Martel", era: "1944–49", songs: [
-    { title: "Soñar y Nada Más", date: "8/29/44" }, { title: "Mi Novia de Ayer", date: "4/28/44" }, { title: "Para Ti Madre", date: "7/23/48" }, { title: "A Magaldi", date: "10/21/47" }, { title: "Mi Cariñito", date: "5/12/49" }, { title: "Flores de Alma", date: "7/3/47" }, { title: "Pobre Flor", date: "1/7/46" }, { title: "Ilusión Azul", date: "6/8/45" }
+    { title: "Soñar y Nada Más", date: "1944-08-29" }, { title: "Mi Novia de Ayer", date: "1944-04-28" }, { title: "Para Ti Madre", date: "1948-07-23" }, { title: "A Magaldi", date: "1947-10-21" }, { title: "Mi Cariñito", date: "1949-05-12" }, { title: "Flores de Alma", date: "1947-07-03" }, { title: "Pobre Flor", date: "1946-01-07" }, { title: "Ilusión Azul", date: "1945-06-08" }
   ]},
   { group: 9, artist: "Miguel Caló", genre: "Tango", singer: "Berón", era: "1942–44", songs: [
-    { title: "Al Compás Del Corazón", date: "4/29/42" }, { title: "Cuatro Compases", date: "12/1/42" }, { title: "Tristezas de La Calle Corrientes", date: "9/2/42" }, { title: "Qué Te Importa Que Te Llore", date: "6/30/42" }, { title: "Tarareando", date: "7/29/42" }, { title: "Jamás Retornarás", date: "10/9/42" }, { title: "Lejos de Buenos Aires", date: "7/29/42" }, { title: "En Tus Ojos de Cielo", date: "7/10/44" }
+    { title: "Al Compás Del Corazón", date: "1942-04-29" }, { title: "Cuatro Compases", date: "1942-12-01" }, { title: "Tristezas de La Calle Corrientes", date: "1942-09-02" }, { title: "Qué Te Importa Que Te Llore", date: "1942-06-30" }, { title: "Tarareando", date: "1942-07-29" }, { title: "Jamás Retornarás", date: "1942-10-09" }, { title: "Lejos de Buenos Aires", date: "1942-07-29" }, { title: "En Tus Ojos de Cielo", date: "1944-07-10" }
   ]},
   { group: 10, artist: "Miguel Caló", genre: "Tango", singer: "Iriarte", era: "1943–45", songs: [
-    { title: "Es En Vano Llorar", date: "5/17/43" }, { title: "Si Yo Pudiera Comprender", date: "1/28/44" }, { title: "Gime El Viento", date: "11/29/43" }, { title: "Verdemar", date: "9/28/43" }, { title: "Madalit", date: "11/7/44" }, { title: "Lluvia de Abril", date: "2/20/45" }, { title: "Nada", date: "3/9/44" }, { title: "La Vi Llegar", date: "4/19/44" }
+    { title: "Es En Vano Llorar", date: "1943-05-17" }, { title: "Si Yo Pudiera Comprender", date: "1944-01-28" }, { title: "Gime El Viento", date: "1943-11-29" }, { title: "Verdemar", date: "1943-09-28" }, { title: "Madalit", date: "1944-11-07" }, { title: "Lluvia de Abril", date: "1945-02-20" }, { title: "Nada", date: "1944-03-09" }, { title: "La Vi Llegar", date: "1944-04-19" }
   ]},
   { group: 11, artist: "Miguel Caló", genre: "Vals", singer: "Various", era: "1941–45", songs: [
-    { title: "Me Duele El Corazón", date: "11/7/44" }, { title: "Pedacito de Cielo", date: "9/2/42" }, { title: "Bajo Un Cielo de Estrellas", date: "3/12/41" }, { title: "El Vals Soñador", date: "4/29/42" }, { title: "Jugando Jugando", date: "8/28/44" }, { title: "El Mismo Dolor", date: "11/15/45" }
+    { title: "Me Duele El Corazón", date: "1944-11-07" }, { title: "Pedacito de Cielo", date: "1942-09-02" }, { title: "Bajo Un Cielo de Estrellas", date: "1941-03-12" }, { title: "El Vals Soñador", date: "1942-04-29" }, { title: "Jugando Jugando", date: "1944-08-28" }, { title: "El Mismo Dolor", date: "1945-11-15" }
   ]},
   { group: 12, artist: "Ricardo Tanturi", genre: "Tango", singer: "Castillo", era: "1941–43", songs: [
-    { title: "La Vida Es Corta", date: "2/19/41" }, { title: "Esta Noche Me Emborracho", date: "8/14/42" }, { title: "Madame Ivonne", date: "3/18/42" }, { title: "Recuerdo Malevo", date: "12/23/41" }, { title: "Así Se Baila El Tango", date: "12/4/42" }, { title: "Noches de Colón", date: "8/14/41" }, { title: "Ese Sos Vos", date: "12/23/41" }, { title: "La Copa Del Olvido", date: "7/20/42" }, { title: "El Tango Es El Tango", date: "8/14/42" }, { title: "La Última Copa", date: "4/29/43" }, { title: "Pocas Palabras", date: "6/16/41" }, { title: "Cómo Se Pianta La Vida", date: "9/15/42" }
+    { title: "La Vida Es Corta", date: "1941-02-19" }, { title: "Esta Noche Me Emborracho", date: "1942-08-14" }, { title: "Madame Ivonne", date: "1942-03-18" }, { title: "Recuerdo Malevo", date: "1941-12-23" }, { title: "Así Se Baila El Tango", date: "1942-12-04" }, { title: "Noches de Colón", date: "1941-08-14" }, { title: "Ese Sos Vos", date: "1941-12-23" }, { title: "La Copa Del Olvido", date: "1942-07-20" }, { title: "El Tango Es El Tango", date: "1942-08-14" }, { title: "La Última Copa", date: "1943-04-29" }, { title: "Pocas Palabras", date: "1941-06-16" }, { title: "Cómo Se Pianta La Vida", date: "1942-09-15" }
   ]},
   { group: 13, artist: "Edgardo Donato", genre: "Tango", singer: "Various", era: "1938–40", songs: [
-    { title: "La Melodía Del Corazón", date: "4/30/40" }, { title: "Mi Serenata", date: "1/11/40" }, { title: "Carnaval de mi Barrio", date: "3/27/39" }, { title: "Sinfonía de Arrabal", date: "4/5/40" }, { title: "Sinsabor", date: "6/5/39" }, { title: "Yo Te Amo", date: "9/30/40" }, { title: "Alas Rotas", date: "12/9/38" }, { title: "El Adiós", date: "4/2/38" }
+    { title: "La Melodía Del Corazón", date: "1940-04-30" }, { title: "Mi Serenata", date: "1940-01-11" }, { title: "Carnaval de mi Barrio", date: "1939-03-27" }, { title: "Sinfonía de Arrabal", date: "1940-04-05" }, { title: "Sinsabor", date: "1939-06-05" }, { title: "Yo Te Amo", date: "1940-09-30" }, { title: "Alas Rotas", date: "1938-12-09" }, { title: "El Adiós", date: "1938-04-02" }
   ]},
   { group: 14, artist: "Edgardo Donato", genre: "Milonga", singer: "Various", era: "1938–41", songs: [
-    { title: "Ella Es Así", date: "10/10/38" }, { title: "Sacale Punta", date: "3/9/38" }, { title: "La Milonga Que Faltaba", date: "2/5/38" }, { title: "El Torito", date: "11/14/39" }, { title: "El Lengue", date: "12/13/40" }, { title: "Repique Del Corazón", date: "2/18/41" }
+    { title: "Ella Es Así", date: "1938-10-10" }, { title: "Sacale Punta", date: "1938-03-09" }, { title: "La Milonga Que Faltaba", date: "1938-02-05" }, { title: "El Torito", date: "1939-11-14" }, { title: "El Lengue", date: "1940-12-13" }, { title: "Repique Del Corazón", date: "1941-02-18" }
   ]},
   { group: 15, artist: "Edgardo Donato", genre: "Vals", singer: "Various", era: "1936–41", songs: [
-    { title: "La Tapera", date: "3/10/36" }, { title: "Con Tus Besos", date: "4/2/38" }, { title: "Quién Será", date: "10/13/41" }, { title: "Estrellita Mía", date: "9/30/40" }, { title: "La Shunca", date: "1/21/41" }
+    { title: "La Tapera", date: "1936-03-10" }, { title: "Con Tus Besos", date: "1938-04-02" }, { title: "Quién Será", date: "1941-10-13" }, { title: "Estrellita Mía", date: "1940-09-30" }, { title: "La Shunca", date: "1941-01-21" }
   ]},
   { group: 16, artist: "Carlos Di Sarli", genre: "Milonga", singer: "Rufino", era: "1941–43", songs: [
-    { title: "Zorzal", date: "12/3/41" }, { title: "La Mulateada", date: "11/20/41" }, { title: "Pena Mulata", date: "2/18/41" }, { title: "Rosa Morena", date: "5/26/42" }, { title: "Cuando Un Viejo Se Enamora", date: "7/29/42" }, { title: "Yo Soy de San Telmo", date: "10/7/43" }
+    { title: "Zorzal", date: "1941-12-03" }, { title: "La Mulateada", date: "1941-11-20" }, { title: "Pena Mulata", date: "1941-02-18" }, { title: "Rosa Morena", date: "1942-05-26" }, { title: "Cuando Un Viejo Se Enamora", date: "1942-07-29" }, { title: "Yo Soy de San Telmo", date: "1943-10-07" }
   ]},
   { group: 17, artist: "Francisco Canaro", genre: "Milonga", singer: "Various", era: "1936–38", songs: [
-    { title: "Silueta Porteña", date: "7/17/36" }, { title: "Milonga Criolla", date: "10/6/36" }, { title: "Milonga de Mis Amores", date: "5/26/37" }, { title: "Reliquias Porteñas", date: "7/14/38" }, { title: "Milonga del Corazón", date: "3/3/38" }, { title: "Milongón", date: "6/20/38" }
+    { title: "Silueta Porteña", date: "1936-07-17" }, { title: "Milonga Criolla", date: "1936-10-06" }, { title: "Milonga de Mis Amores", date: "1937-05-26" }, { title: "Reliquias Porteñas", date: "1938-07-14" }, { title: "Milonga del Corazón", date: "1938-03-03" }, { title: "Milongón", date: "1938-06-20" }
   ]},
   { group: 18, artist: "Francisco Canaro", genre: "Tango", singer: "Fama", era: "1939–40", songs: [
-    { title: "Mala Suerte", date: "2/27/39" }, { title: "Tormenta", date: "3/28/39" }, { title: "El Vino Triste", date: "10/25/39" }, { title: "Todo te Nombra", date: "10/9/39" }, { title: "No me Pregunten Por Qué", date: "10/25/39" }, { title: "A Quién le Puede Importar", date: "1/26/40" }, { title: "Pájaro Ciego", date: "5/22/40" }
+    { title: "Mala Suerte", date: "1939-02-27" }, { title: "Tormenta", date: "1939-03-28" }, { title: "El Vino Triste", date: "1939-10-25" }, { title: "Todo te Nombra", date: "1939-10-09" }, { title: "No me Pregunten Por Qué", date: "1939-10-25" }, { title: "A Quién le Puede Importar", date: "1940-01-26" }, { title: "Pájaro Ciego", date: "1940-05-22" }
   ]},
   { group: 19, artist: "Osvaldo Fresedo", genre: "Tango", singer: "Ray", era: "1933–38", songs: [
-    { title: "Vida Mía", date: "9/13/33" }, { title: "Siempre es Carnaval", date: "2/22/37" }, { title: "Sueño Azul", date: "4/1/37" }, { title: "Telón", date: "11/23/38" }, { title: "Cordobesita", date: "8/2/33" }, { title: "Sollozos", date: "2/22/37" }, { title: "En La Huella Del Dolor", date: "4/27/34" }, { title: "Canto de Amor", date: "6/18/34" }
+    { title: "Vida Mía", date: "1933-09-13" }, { title: "Siempre es Carnaval", date: "1937-02-22" }, { title: "Sueño Azul", date: "1937-04-01" }, { title: "Telón", date: "1938-11-23" }, { title: "Cordobesita", date: "1933-08-02" }, { title: "Sollozos", date: "1937-02-22" }, { title: "En La Huella Del Dolor", date: "1934-04-27" }, { title: "Canto de Amor", date: "1934-06-18" }
   ]},
   { group: 20, artist: "Osvaldo Fresedo", genre: "Tango", singer: "Ruiz", era: "1939–41", songs: [
-    { title: "Un Amor", date: "9/13/40" }, { title: "No Preciso", date: "11/17/41" }, { title: "Vida Querida", date: "11/23/39" }, { title: "Buscándote", date: "12/31/41" }, { title: "Cuartito Azul", date: "10/13/39" }, { title: "Más Allá", date: "7/12/39" }, { title: "En Este Rincón Amigo", date: "1/13/41" }, { title: "Rosarina Linda", date: "4/15/40" }
+    { title: "Un Amor", date: "1940-09-13" }, { title: "No Preciso", date: "1941-11-17" }, { title: "Vida Querida", date: "1939-11-23" }, { title: "Buscándote", date: "1941-12-31" }, { title: "Cuartito Azul", date: "1939-10-13" }, { title: "Más Allá", date: "1939-07-12" }, { title: "En Este Rincón Amigo", date: "1941-01-13" }, { title: "Rosarina Linda", date: "1940-04-15" }
   ]},
 ];
 
 const setIII = [
   { group: 1, artist: "Rodolfo Biagi", genre: "Milonga", singer: "Various", era: "1939–1948", songs: [
-    { title: "Campo Afuera", singer: "Teófilo Ibáñez", date: "4/27/39" }, { title: "Cantando se van las penas", singer: "Jorge Ortiz", date: "6/28/40" }, { title: "Flor de Monserrat", singer: "Alberto Amor", date: "11/30/45" }, { title: "Por la Güeya", singer: "Carlos Saavedra", date: "7/22/48" }, { title: "Soy del 90", singer: "Carlos Acuña", date: "7/8/43" }, { title: "Con Mi Perro", singer: "Amor Alberto", date: "7/10/46" }, { title: "Picante", singer: "Instrumental", date: "10/21/41" }
+    { title: "Campo Afuera", singer: "Teófilo Ibáñez", date: "1939-04-27" }, { title: "Cantando se van las penas", singer: "Jorge Ortiz", date: "1940-06-28" }, { title: "Flor de Monserrat", singer: "Alberto Amor", date: "1945-11-30" }, { title: "Por la Güeya", singer: "Carlos Saavedra", date: "1948-07-22" }, { title: "Soy del 90", singer: "Carlos Acuña", date: "1943-07-08" }, { title: "Con Mi Perro", singer: "Amor Alberto", date: "1946-07-10" }, { title: "Picante", singer: "Instrumental", date: "1941-10-21" }
   ]},
   { group: 2, artist: "Aníbal Troilo", genre: "Vals", singer: "Various", era: "1942–1948", songs: [
-    { title: "Valsecito Amigo", singer: "Francisco Fiorentino", date: "3/25/43" }, { title: "Palomita Blanca", singer: "Marion y Ruiz", date: "11/23/44" }, { title: "Temblando", singer: "Francisco Fiorentino", date: "3/30/44" }, { title: "Flor De Lino", singer: "Roberto Ruiz", date: "4/29/47" }, { title: "Romance De Barrio", singer: "Roberto Ruiz", date: "8/19/47" }, { title: "Lagrimitas De Mi Corazón", singer: "Ruiz y Rivero", date: "7/8/48" }, { title: "Pedacito De Cielo", singer: "Francisco Fiorentino", date: "9/10/42" }, { title: "Soñar Y Nada Más", singer: "Fiorentino y Mandarino", date: "8/4/43" }
+    { title: "Valsecito Amigo", singer: "Francisco Fiorentino", date: "1943-03-25" }, { title: "Palomita Blanca", singer: "Marion y Ruiz", date: "1944-11-23" }, { title: "Temblando", singer: "Francisco Fiorentino", date: "1944-03-30" }, { title: "Flor De Lino", singer: "Roberto Ruiz", date: "1947-04-29" }, { title: "Romance De Barrio", singer: "Roberto Ruiz", date: "1947-08-19" }, { title: "Lagrimitas De Mi Corazón", singer: "Ruiz y Rivero", date: "1948-07-08" }, { title: "Pedacito De Cielo", singer: "Francisco Fiorentino", date: "1942-09-10" }, { title: "Soñar Y Nada Más", singer: "Fiorentino y Mandarino", date: "1943-08-04" }
   ]},
   { group: 3, artist: "Lucio Demare", genre: "Vals", singer: "Various", era: "1942–1944", songs: [
-    { title: "Se Fue", singer: "Berón", date: "7/13/43" }, { title: "Dos Corazones", singer: "Quintana", date: "9/25/44" }, { title: "Nunca Supe Porque", singer: "Miranda", date: "7/20/42" }, { title: "No Nos Veremos Más", singer: "Berón", date: "2/11/43" }, { title: "Al Pasar", singer: "Berón", date: "9/3/43" }
+    { title: "Se Fue", singer: "Berón", date: "1943-07-13" }, { title: "Dos Corazones", singer: "Quintana", date: "1944-09-25" }, { title: "Nunca Supe Porque", singer: "Miranda", date: "1942-07-20" }, { title: "No Nos Veremos Más", singer: "Berón", date: "1943-02-11" }, { title: "Al Pasar", singer: "Berón", date: "1943-09-03" }
   ]},
   { group: 4, artist: "Enrique Rodríguez", genre: "Vals", singer: "Various", era: "1939–1947", songs: [
-    { title: "Tengo mil novias", singer: "Roberto Flores", date: "10/10/39" }, { title: "Por aquí... por alla", singer: "Armando Moreno", date: "6/4/40" }, { title: "Isabelita", singer: "Armando Moreno", date: "8/14/40" }, { title: "Con tu mirar", singer: "Armando Moreno", date: "9/24/41" }, { title: "La Piconeros", singer: "Roberto Flores", date: "2/1/39" }, { title: "Mañana Por la Mañana", singer: "Ricardo Herrera", date: "1/17/47" }, { title: "Fru Fru", singer: "Roberto Flores", date: "6/5/39" }
+    { title: "Tengo mil novias", singer: "Roberto Flores", date: "1939-10-10" }, { title: "Por aquí... por alla", singer: "Armando Moreno", date: "1940-06-04" }, { title: "Isabelita", singer: "Armando Moreno", date: "1940-08-14" }, { title: "Con tu mirar", singer: "Armando Moreno", date: "1941-09-24" }, { title: "La Piconeros", singer: "Roberto Flores", date: "1939-02-01" }, { title: "Mañana Por la Mañana", singer: "Ricardo Herrera", date: "1947-01-17" }, { title: "Fru Fru", singer: "Roberto Flores", date: "1939-06-05" }
   ]},
   { group: 5, artist: "Juan D'Arienzo", genre: "Vals", singer: "Instrumental", era: "1935–1937", songs: [
-    { title: "Desde el Alma", singer: "Instrumental", date: "7/2/35" }, { title: "Pabellón De Las Rosas", singer: "Instrumental", date: "12/12/35" }, { title: "Francia", singer: "Instrumental", date: "10/3/35" }, { title: "Inolvidable", singer: "Instrumental", date: "8/5/36" }, { title: "Corazón de Artista", singer: "Instrumental", date: "11/27/36" }, { title: "Amor y Celo", singer: "Instrumental", date: "9/3/36" }, { title: "Valsecito Criollo", singer: "Instrumental", date: "7/26/37" }, { title: "Pasión", singer: "Instrumental", date: "7/2/37" }, { title: "Alma Dolorida", singer: "Instrumental", date: "3/5/37" }
+    { title: "Desde el Alma", singer: "Instrumental", date: "1935-07-02" }, { title: "Pabellón De Las Rosas", singer: "Instrumental", date: "1935-12-12" }, { title: "Francia", singer: "Instrumental", date: "1935-10-03" }, { title: "Inolvidable", singer: "Instrumental", date: "1936-08-05" }, { title: "Corazón de Artista", singer: "Instrumental", date: "1936-11-27" }, { title: "Amor y Celo", singer: "Instrumental", date: "1936-09-03" }, { title: "Valsecito Criollo", singer: "Instrumental", date: "1937-07-26" }, { title: "Pasión", singer: "Instrumental", date: "1937-07-02" }, { title: "Alma Dolorida", singer: "Instrumental", date: "1937-03-05" }
   ]},
   { group: 6, artist: "Ricardo Tanturi", genre: "Tango", singer: "Enrique Campos", era: "1943–1945", songs: [
-    { title: "Muchachos Comienza la Ronda", singer: "Enrique Campos", date: "8/6/43" }, { title: "Una Emoción", singer: "Enrique Campos", date: "11/17/43" }, { title: "Que Nunca Me Falte", singer: "Enrique Campos", date: "11/17/43" }, { title: "Malvón", singer: "Enrique Campos", date: "11/17/43" }, { title: "Recién", singer: "Enrique Campos", date: "3/24/44" }, { title: "Cantor de Barrio", singer: "Enrique Campos", date: "7/13/45" }, { title: "Ivón", singer: "Enrique Campos", date: "9/5/45" }, { title: "Oigo tu voz", singer: "Enrique Campos", date: "11/17/43" }, { title: "Igual que un bandoneón", singer: "Enrique Campos", date: "12/13/44" }, { title: "Sollozo de bandoneón", singer: "Enrique Campos", date: "12/16/43" }
+    { title: "Muchachos Comienza la Ronda", singer: "Enrique Campos", date: "1943-08-06" }, { title: "Una Emoción", singer: "Enrique Campos", date: "1943-11-17" }, { title: "Que Nunca Me Falte", singer: "Enrique Campos", date: "1943-11-17" }, { title: "Malvón", singer: "Enrique Campos", date: "1943-11-17" }, { title: "Recién", singer: "Enrique Campos", date: "1944-03-24" }, { title: "Cantor de Barrio", singer: "Enrique Campos", date: "1945-07-13" }, { title: "Ivón", singer: "Enrique Campos", date: "1945-09-05" }, { title: "Oigo tu voz", singer: "Enrique Campos", date: "1943-11-17" }, { title: "Igual que un bandoneón", singer: "Enrique Campos", date: "1944-12-13" }, { title: "Sollozo de bandoneón", singer: "Enrique Campos", date: "1943-12-16" }
   ]},
   { group: 7, artist: "Angel D'Agostino", genre: "Tango", singer: "Angel Vargas", era: "1941–1942", songs: [
-    { title: "Adiós Arrabal", singer: "Angel Vargas", date: "9/9/41" }, { title: "Agua Florida", singer: "Angel Vargas", date: "11/13/41" }, { title: "Ahora No Me Conocés", singer: "Angel Vargas", date: "9/9/41" }, { title: "El Yacaré", singer: "Angel Vargas", date: "12/12/41" }, { title: "Tres Esquinas", singer: "Angel Vargas", date: "7/24/41" }, { title: "Una Pena", singer: "Angel Vargas", date: "11/5/41" }, { title: "Adiós Para Siempre", singer: "Angel Vargas", date: "3/16/42" }, { title: "Barrio De Tango", singer: "Angel Vargas", date: "3/16/42" }, { title: "Pero Yo Sé", singer: "Angel Vargas", date: "9/2/42" }
+    { title: "Adiós Arrabal", singer: "Angel Vargas", date: "1941-09-09" }, { title: "Agua Florida", singer: "Angel Vargas", date: "1941-11-13" }, { title: "Ahora No Me Conocés", singer: "Angel Vargas", date: "1941-09-09" }, { title: "El Yacaré", singer: "Angel Vargas", date: "1941-12-12" }, { title: "Tres Esquinas", singer: "Angel Vargas", date: "1941-07-24" }, { title: "Una Pena", singer: "Angel Vargas", date: "1941-11-05" }, { title: "Adiós Para Siempre", singer: "Angel Vargas", date: "1942-03-16" }, { title: "Barrio De Tango", singer: "Angel Vargas", date: "1942-03-16" }, { title: "Pero Yo Sé", singer: "Angel Vargas", date: "1942-09-02" }
   ]},
   { group: 8, artist: "Angel D'Agostino", genre: "Tango", singer: "Angel Vargas", era: "1943–1945", songs: [
-    { title: "Me Llaman Tango", singer: "Angel Vargas", date: "4/30/43" }, { title: "Un Tango Argentino", singer: "Angel Vargas", date: "9/3/43" }, { title: "Madreselva", singer: "Angel Vargas", date: "12/5/44" }, { title: "Mano Blanca", singer: "Angel Vargas", date: "3/9/44" }, { title: "Mi Viejo Barrio", singer: "Angel Vargas", date: "8/8/44" }, { title: "Rondando Tu Esquina", singer: "Angel Vargas", date: "11/2/45" }, { title: "A Quién Le Puede Importar", singer: "Angel Vargas", date: "8/7/45" }, { title: "No Vendrá", singer: "Angel Vargas", date: "11/2/45" }
+    { title: "Me Llaman Tango", singer: "Angel Vargas", date: "1943-04-30" }, { title: "Un Tango Argentino", singer: "Angel Vargas", date: "1943-09-03" }, { title: "Madreselva", singer: "Angel Vargas", date: "1944-12-05" }, { title: "Mano Blanca", singer: "Angel Vargas", date: "1944-03-09" }, { title: "Mi Viejo Barrio", singer: "Angel Vargas", date: "1944-08-08" }, { title: "Rondando Tu Esquina", singer: "Angel Vargas", date: "1945-11-02" }, { title: "A Quién Le Puede Importar", singer: "Angel Vargas", date: "1945-08-07" }, { title: "No Vendrá", singer: "Angel Vargas", date: "1945-11-02" }
   ]},
   { group: 9, artist: "Alfredo De Angelis", genre: "Tango", singer: "Various", era: "1943–1956", songs: [
-    { title: "Marioneta", singer: "Ruiz", date: "7/23/43" }, { title: "Bajo el Cono Azul", singer: "Ruiz y Rodi", date: "2/29/44" }, { title: "Dejame Así", singer: "Ruiz", date: "8/10/43" }, { title: "Remolino", singer: "Dante y Martel", date: "5/24/46" }, { title: "Pregonera", singer: "Dante y Martel", date: "3/26/45" }, { title: "Adiós Marinero", singer: "Dante y Martel", date: "12/27/46" }, { title: "Fumando Espero", singer: "Dante", date: "4/3/56" }, { title: "Bajo Belgrano", singer: "Martel", date: "4/20/49" }
+    { title: "Marioneta", singer: "Ruiz", date: "1943-07-23" }, { title: "Bajo el Cono Azul", singer: "Ruiz y Rodi", date: "1944-02-29" }, { title: "Dejame Así", singer: "Ruiz", date: "1943-08-10" }, { title: "Remolino", singer: "Dante y Martel", date: "1946-05-24" }, { title: "Pregonera", singer: "Dante y Martel", date: "1945-03-26" }, { title: "Adiós Marinero", singer: "Dante y Martel", date: "1946-12-27" }, { title: "Fumando Espero", singer: "Dante", date: "1956-04-03" }, { title: "Bajo Belgrano", singer: "Martel", date: "1949-04-20" }
   ]},
   { group: 10, artist: "Carlos Di Sarli", genre: "Tango", singer: "Instrumental", era: "1942–1945", songs: [
-    { title: "Milonguero Viejo", singer: "Instrumental", date: "7/11/44" }, { title: "A la Gran Muñeca", singer: "Instrumental", date: "8/29/45" }, { title: "El Ingeniero", singer: "Instrumental", date: "2/20/45" }, { title: "Champagne Tango", singer: "Instrumental", date: "7/20/44" }, { title: "Rodríguez Peña", singer: "Instrumental", date: "1/3/45" }, { title: "Organito De La Tarde", singer: "Instrumental", date: "11/30/42" }, { title: "El Amanecer", singer: "Instrumental", date: "6/23/42" }, { title: "El Jagüel", singer: "Instrumental", date: "11/4/43" }, { title: "Ensueños", singer: "Instrumental", date: "9/7/43" }, { title: "Nueve Puntos", singer: "Instrumental", date: "5/5/43" }
+    { title: "Milonguero Viejo", singer: "Instrumental", date: "1944-07-11" }, { title: "A la Gran Muñeca", singer: "Instrumental", date: "1945-08-29" }, { title: "El Ingeniero", singer: "Instrumental", date: "1945-02-20" }, { title: "Champagne Tango", singer: "Instrumental", date: "1944-07-20" }, { title: "Rodríguez Peña", singer: "Instrumental", date: "1945-01-03" }, { title: "Organito De La Tarde", singer: "Instrumental", date: "1942-11-30" }, { title: "El Amanecer", singer: "Instrumental", date: "1942-06-23" }, { title: "El Jagüel", singer: "Instrumental", date: "1943-11-04" }, { title: "Ensueños", singer: "Instrumental", date: "1943-09-07" }, { title: "Nueve Puntos", singer: "Instrumental", date: "1943-05-05" }
   ]},
   { group: 11, artist: "Juan D'Arienzo", genre: "Tango", singer: "Echague", era: "1938–1939", songs: [
-    { title: "Ansiedad", singer: "Echague", date: "11/9/38" }, { title: "Qué Importa", singer: "Echague", date: "9/27/39" }, { title: "El Vino Triste", singer: "Echague", date: "9/1/39" }, { title: "Santa Milonguita", singer: "Echague", date: "9/27/39" }, { title: "Olvídame", singer: "Echague", date: "5/30/39" }
+    { title: "Ansiedad", singer: "Echague", date: "1938-11-09" }, { title: "Qué Importa", singer: "Echague", date: "1939-09-27" }, { title: "El Vino Triste", singer: "Echague", date: "1939-09-01" }, { title: "Santa Milonguita", singer: "Echague", date: "1939-09-27" }, { title: "Olvídame", singer: "Echague", date: "1939-05-30" }
   ]},
   { group: 12, artist: "Juan D'Arienzo", genre: "Tango", singer: "Laborde", era: "1944–1948", songs: [
-    { title: "Magdala", singer: "Laborde", date: "12/26/44" }, { title: "Aparcero", singer: "Laborde", date: "4/17/45" }, { title: "Yo No Sé Llorar", singer: "Laborde", date: "12/6/46" }, { title: "Desde Aquella Noche", singer: "Laborde", date: "8/26/46" }, { title: "Dios Te Salve M' Hijo", singer: "Laborde", date: "9/17/47" }, { title: "Pampa y Huella", singer: "Laborde", date: "9/23/48" }, { title: "Pregonera", singer: "Laborde", date: "8/28/45" }
+    { title: "Magdala", singer: "Laborde", date: "1944-12-26" }, { title: "Aparcero", singer: "Laborde", date: "1945-04-17" }, { title: "Yo No Sé Llorar", singer: "Laborde", date: "1946-12-06" }, { title: "Desde Aquella Noche", singer: "Laborde", date: "1946-08-26" }, { title: "Dios Te Salve M' Hijo", singer: "Laborde", date: "1947-09-17" }, { title: "Pampa y Huella", singer: "Laborde", date: "1948-09-23" }, { title: "Pregonera", singer: "Laborde", date: "1945-08-28" }
   ]},
   { group: 13, artist: "Francisco Canaro", genre: "Tango", singer: "Maida", era: "1935", songs: [
-    { title: "Ciego", singer: "Maida", date: "3/25/35" }, { title: "Alma del Bandoneón", singer: "Maida", date: "3/20/35" }, { title: "De Puro Guapo", singer: "Maida", date: "7/24/35" }, { title: "Poema", singer: "Maida", date: "6/11/35" }, { title: "Hotel Victoria", singer: "Maida", date: "6/18/35" }, { title: "Casas Viejas", singer: "Maida", date: "8/18/35" }, { title: "Dónde", singer: "Maida", date: "12/3/35" }, { title: "Soledad", singer: "Maida", date: "3/25/35" }
+    { title: "Ciego", singer: "Maida", date: "1935-03-25" }, { title: "Alma del Bandoneón", singer: "Maida", date: "1935-03-20" }, { title: "De Puro Guapo", singer: "Maida", date: "1935-07-24" }, { title: "Poema", singer: "Maida", date: "1935-06-11" }, { title: "Hotel Victoria", singer: "Maida", date: "1935-06-18" }, { title: "Casas Viejas", singer: "Maida", date: "1935-08-18" }, { title: "Dónde", singer: "Maida", date: "1935-12-03" }, { title: "Soledad", singer: "Maida", date: "1935-03-25" }
   ]},
   { group: 14, artist: "Francisco Canaro", genre: "Tango", singer: "Maida", era: "1936–1939", songs: [
-    { title: "Quiero Verte Una Vez Más", singer: "Maida", date: "4/13/39" }, { title: "Mano A Mano", singer: "Maida", date: "12/13/38" }, { title: "Madreselva", singer: "Maida", date: "11/18/38" }, { title: "El Adiós", singer: "Maida", date: "3/3/38" }, { title: "Nada Más", singer: "Maida", date: "8/22/38" }, { title: "Paciencia", singer: "Maida", date: "3/3/38" }, { title: "El Caburé", singer: "Maida", date: "4/13/36" }, { title: "La Maleva", singer: "Maida", date: "7/14/38" }
+    { title: "Quiero Verte Una Vez Más", singer: "Maida", date: "1939-04-13" }, { title: "Mano A Mano", singer: "Maida", date: "1938-12-13" }, { title: "Madreselva", singer: "Maida", date: "1938-11-18" }, { title: "El Adiós", singer: "Maida", date: "1938-03-03" }, { title: "Nada Más", singer: "Maida", date: "1938-08-22" }, { title: "Paciencia", singer: "Maida", date: "1938-03-03" }, { title: "El Caburé", singer: "Maida", date: "1936-04-13" }, { title: "La Maleva", singer: "Maida", date: "1938-07-14" }
   ]},
   { group: 15, artist: "Lucio Demare", genre: "Tango", singer: "Berón", era: "1943", songs: [
-    { title: "Moneda De Cobre", singer: "Berón", date: "4/1/43" }, { title: "Canta Pajarito", singer: "Berón", date: "6/10/43" }, { title: "Oigo Tu Voz", singer: "Berón", date: "11/25/43" }, { title: "Y Siempre Igual", singer: "Berón", date: "9/13/43" }, { title: "Qué Solo Estoy", singer: "Berón", date: "12/21/43" }, { title: "Soy Del Noventa", singer: "Berón", date: "5/6/43" }, { title: "Tal Vez Será Mí Alcohol", singer: "Berón", date: "5/6/43" }, { title: "Una Emoción", singer: "Berón", date: "9/3/43" }
+    { title: "Moneda De Cobre", singer: "Berón", date: "1943-04-01" }, { title: "Canta Pajarito", singer: "Berón", date: "1943-06-10" }, { title: "Oigo Tu Voz", singer: "Berón", date: "1943-11-25" }, { title: "Y Siempre Igual", singer: "Berón", date: "1943-09-13" }, { title: "Qué Solo Estoy", singer: "Berón", date: "1943-12-21" }, { title: "Soy Del Noventa", singer: "Berón", date: "1943-05-06" }, { title: "Tal Vez Será Mí Alcohol", singer: "Berón", date: "1943-05-06" }, { title: "Una Emoción", singer: "Berón", date: "1943-09-03" }
   ]},
   { group: 16, artist: "Ricardo Malerba", genre: "Tango", singer: "Medina", era: "1942–1944", songs: [
-    { title: "Gitana Rusa", singer: "Medina", date: "10/5/42" }, { title: "La Piba de los Jazmines", singer: "Medina", date: "1/18/43" }, { title: "Embrujamiento", singer: "Medina", date: "2/12/43" }, { title: "Remembranza", singer: "Medina", date: "2/12/43" }, { title: "Sollozos", singer: "Medina", date: "3/16/44" }, { title: "Ninguna", singer: "Medina", date: "11/19/42" }, { title: "Mi Taza de Café", singer: "Medina", date: "11/8/43" }, { title: "Oiga Mozo", singer: "Medina", date: "11/19/42" }
+    { title: "Gitana Rusa", singer: "Medina", date: "1942-10-05" }, { title: "La Piba de los Jazmines", singer: "Medina", date: "1943-01-18" }, { title: "Embrujamiento", singer: "Medina", date: "1943-02-12" }, { title: "Remembranza", singer: "Medina", date: "1943-02-12" }, { title: "Sollozos", singer: "Medina", date: "1944-03-16" }, { title: "Ninguna", singer: "Medina", date: "1942-11-19" }, { title: "Mi Taza de Café", singer: "Medina", date: "1943-11-08" }, { title: "Oiga Mozo", singer: "Medina", date: "1942-11-19" }
   ]},
   { group: 17, artist: "Adolfo Carabelli", genre: "Tango", singer: "Various", era: "1931–1933", songs: [
-    { title: "Felicia", singer: "Instrumental", date: "6/24/32" }, { title: "Mentíra", singer: "Carlos Lafuente", date: "10/2/31" }, { title: "El Pensamiento", singer: "Carlos Lafuente", date: "12/21/32" }, { title: "El Caburé", singer: "Instrumental", date: "10/28/32" }, { title: "La Guiñada", singer: "Instrumental", date: "10/28/32" }, { title: "Mía", singer: "Carlos Lafuente", date: "4/11/33" }, { title: "Pa' Qué Lagrimear", singer: "Carlos Lafuente", date: "9/12/33" }
+    { title: "Felicia", singer: "Instrumental", date: "1932-06-24" }, { title: "Mentíra", singer: "Carlos Lafuente", date: "1931-10-02" }, { title: "El Pensamiento", singer: "Carlos Lafuente", date: "1932-12-21" }, { title: "El Caburé", singer: "Instrumental", date: "1932-10-28" }, { title: "La Guiñada", singer: "Instrumental", date: "1932-10-28" }, { title: "Mía", singer: "Carlos Lafuente", date: "1933-04-11" }, { title: "Pa' Qué Lagrimear", singer: "Carlos Lafuente", date: "1933-09-12" }
   ]},
   { group: 18, artist: "Adolfo Carabelli", genre: "Tango", singer: "Various", era: "1931–1932", songs: [
-    { title: "Alma", singer: "Alberto Gómez", date: "9/9/32" }, { title: "Porque", singer: "Alberto Gómez", date: "11/2/31" }, { title: "El Trece", singer: "Alberto Gómez", date: "9/27/32" }, { title: "Tango del Querer", singer: "Alberto Gómez", date: "2/5/32" }, { title: "Inspiración", singer: "Alberto Gómez", date: "6/17/32" }, { title: "Cantando", singer: "Gomez y Simone", date: "9/4/31" }, { title: "Mi Refugio", singer: "Alberto Gómez", date: "9/4/31" }
+    { title: "Alma", singer: "Alberto Gómez", date: "1932-09-09" }, { title: "Porque", singer: "Alberto Gómez", date: "1931-11-02" }, { title: "El Trece", singer: "Alberto Gómez", date: "1932-09-27" }, { title: "Tango del Querer", singer: "Alberto Gómez", date: "1932-02-05" }, { title: "Inspiración", singer: "Alberto Gómez", date: "1932-06-17" }, { title: "Cantando", singer: "Gomez y Simone", date: "1931-09-04" }, { title: "Mi Refugio", singer: "Alberto Gómez", date: "1931-09-04" }
+  ]},
+];
+
+const setIV = [
+  { group: 1, artist: "Rodolfo Biagi", genre: "Tango", singer: "Various", era: "1954–1962", songs: [
+    { title: "Duerme Mi Niña", singer: "Carlos Almagro", date: "1962" }, { title: "Santa Milonguita", singer: "Hugo Duval", date: "1955-04-11" }, { title: "Mi Vida en tus Manos", singer: "Hugo Duval", date: "1957-01-09" }, { title: "Todo es Amor", singer: "Hugo Duval", date: "1958-11-12" }, { title: "En el Lago Azul", singer: "Hugo Duval", date: "1959-03-06" }, { title: "Amor Mio", singer: "Hugo Duval", date: "1958-11-12" }, { title: "Soñemos", singer: "Hugo Duval", date: "1957-01-09" }, { title: "Sangre de Mi Sangre", singer: "Hugo Duval", date: "1954-06-29" }, { title: "Cielito Mío", singer: "Instrumental", date: "1954-06-29" }
+  ]},
+  { group: 2, artist: "Aníbal Troilo", genre: "Tango", singer: "Instrumental", era: "1961–1967", songs: [
+    { title: "Melancólico", singer: "Instrumental", date: "1961-08-18" }, { title: "La Bordona", singer: "Instrumental", date: "1962-01-09" }, { title: "A Mis Viejos", singer: "Instrumental", date: "1963-04-09" }, { title: "Recuerdo", singer: "Instrumental", date: "1967-08-10" }, { title: "Danzarín", singer: "Instrumental", date: "1963-04-17" }, { title: "Lo Que Vendrá", singer: "Instrumental", date: "1963-04-05" }, { title: "La Cumparsita", singer: "Instrumental", date: "1963-04-09" }
+  ]},
+  { group: 3, artist: "Aníbal Troilo", genre: "Tango", singer: "Roberto Rufino", era: "1963–1965", songs: [
+    { title: "Quién Lo Habría De Pensar", singer: "Roberto Rufino", date: "1963-05-14" }, { title: "Mensaje", singer: "Roberto Rufino", date: "1965-01-04" }, { title: "María", singer: "Roberto Rufino", date: "1963-05-07" }, { title: "Ninguna", singer: "Roberto Rufino", date: "1963-04-24" }, { title: "Desencuentro", singer: "Roberto Rufino", date: "1963-06-05" }, { title: "Frente Al Mar", singer: "Roberto Rufino", date: "1963-04-23" }
+  ]},
+  { group: 4, artist: "Osvaldo Pugliese", genre: "Tango", singer: "Instrumental", era: "1961–1973", songs: [
+    { title: "A Evaristo Carriego", singer: "Instrumental", date: "1969-07" }, { title: "El Marne", singer: "Instrumental", date: "1969-06" }, { title: "Zum", singer: "Instrumental", date: "1973-12-12" }, { title: "La Mariposa", singer: "Instrumental", date: "1966-04" }, { title: "Cardo Y Malvón", singer: "Instrumental", date: "1962-06" }, { title: "Don Agustín Bardi", singer: "Instrumental", date: "1961-08" }, { title: "Locura Tanguera", singer: "Instrumental", date: "1966-10" }, { title: "Verano Porteño", singer: "Instrumental", date: "1966-05" }
+  ]},
+  { group: 5, artist: "Osvaldo Pugliese", genre: "Tango", singer: "Instrumental", era: "1952–1960", songs: [
+    { title: "A los Amigos", singer: "Instrumental", date: "1960-07-15" }, { title: "Emancipación", singer: "Instrumental", date: "1955-09-02" }, { title: "Entrador", singer: "Instrumental", date: "1952-05-06" }, { title: "La Cachila", singer: "Instrumental", date: "1952-11-24" }, { title: "N.N.", singer: "Instrumental", date: "1952-11-13" }, { title: "Nochero Soy", singer: "Instrumental", date: "1956-11-28" }, { title: "Si Sos Brujo", singer: "Instrumental", date: "1952-10-09" }, { title: "Yunta de Oro", singer: "Instrumental", date: "1957-10-25" }
+  ]},
+  { group: 6, artist: "Osvaldo Pugliese", genre: "Tango", singer: "Morán", era: "1945–1952", songs: [
+    { title: "El Abrojito", singer: "Morán", date: "1945-07-24" }, { title: "Pasional", singer: "Morán", date: "1952-11-24" }, { title: "Por Qué", singer: "Morán", date: "1945-08-28" }, { title: "Sin Palabras", singer: "Morán", date: "1947-01-02" }, { title: "Una Vez", singer: "Morán", date: "1946-11-08" }, { title: "Yuyo Verde", singer: "Morán", date: "1945-01-25" }, { title: "Cafetín", singer: "Morán", date: "1947-03-27" }, { title: "Demasiado Tarde", singer: "Morán", date: "1946-02-27" }, { title: "El Abrojito", singer: "Morán", date: "1945-07-24" }, { title: "Mentira", singer: "Morán", date: "1945-09-24" }
+  ]},
+  { group: 7, artist: "Alfredo Gobbi", genre: "Tango", singer: "Various", era: "1951–1956", songs: [
+    { title: "Si Sos Brujo", singer: "Instrumental", date: "1953-10-27" }, { title: "Camandulaje", singer: "Instrumental", date: "1955-06-13" }, { title: "Historia de un Amor", singer: "Landó", date: "1956-04-16" }, { title: "Tu Angustia y Mi Dolor", singer: "Landó", date: "1954-12-14" }, { title: "Tuya", singer: "Landó y Del Rio", date: "1956-07-16" }, { title: "Canzoneta", singer: "Maciel", date: "1954-06-22" }, { title: "Fraternal", singer: "Instrumental", date: "1954-08-26" }, { title: "El Andariego", singer: "Instrumental", date: "1951-06-27" }, { title: "Entrador", singer: "Instrumental", date: "1956-07-16" }
+  ]},
+  { group: 8, artist: "Héctor Varela", genre: "Tango", singer: "Various", era: "1955–1967", songs: [
+    { title: "Fueron Tres Años", singer: "Ledesma", date: "1956-05-18" }, { title: "Fumando Espero", singer: "Ledesma", date: "1955-06-01" }, { title: "Historia De Un Amor", singer: "Lesica", date: "1956-03-13" }, { title: "El Amanecer", singer: "Instrumental", date: "1967-07-04" }, { title: "El Caburé", singer: "Instrumental", date: "1966-10-23" }, { title: "El Marne", singer: "Instrumental", date: "1967-05-09" }, { title: "El Pensamiento", singer: "Instrumental", date: "1957-05-03" }
+  ]},
+  { group: 9, artist: "Florindo Sassone", genre: "Tango", singer: "Instrumental", era: "1959–1974", songs: [
+    { title: "Pescadores de Perlas", singer: "Instrumental", date: "1974" }, { title: "Ojos Negros", singer: "Instrumental", date: "1974" }, { title: "La Cumparsita", singer: "Instrumental", date: "1973" }, { title: "Orquídeas a la Luz de la Luna", singer: "Instrumental", date: "1968-07-12" }, { title: "Como Los Nardos En Flor", singer: "Instrumental", date: "1963-11-21" }, { title: "Lágrimas", singer: "Instrumental", date: "1962-09-21" }, { title: "Clavel Del Aire", singer: "Instrumental", date: "1962-08-16" }, { title: "Bar Exposición", singer: "Instrumental", date: "1959-09-10" }
+  ]},
+  { group: 10, artist: "Fulvio Salamanca", genre: "Tango", singer: "Various", era: "1957–1959", songs: [
+    { title: "Adiós, Corazón", singer: "Guerrico", date: "1957-11-29" }, { title: "Bomboncito", singer: "Guerrico", date: "1958-06-06" }, { title: "Hasta Siempre Amor", singer: "Guerrico", date: "1959-07-17" }, { title: "La Rayuela", singer: "Instrumental", date: "1959-07-17" }, { title: "Mano Cruel", singer: "Guerrico y Garre", date: "1957-08-14" }, { title: "Todo Es Amor", singer: "Guerrico", date: "1958-09-18" }, { title: "Vuelve Amor", singer: "Guerrico", date: "1959-04-16" }, { title: "Yo Tengo un Pecado Nuevo", singer: "Guerrico", date: "1958-04-10" }
+  ]},
+  { group: 11, artist: "Domingo Federico", genre: "Tango", singer: "Various", era: "1945–1960", songs: [
+    { title: "Canto", singer: "Hugo Roca", date: "1950-03-23" }, { title: "Yo", singer: "Carlos Vidal", date: "1945-04-20" }, { title: "Al Compás del Corazón", singer: "Carlos Vidal", date: "1947-11-14" }, { title: "Corazón Encadenado", singer: "Armando Moreno", date: "1955-01-20" }, { title: "Con el Mayor Gusto", singer: "Instrumental", date: "1949-10-14" }, { title: "Cualquier Cosa", singer: "Enzo Valentino", date: "1951-04-10" }, { title: "El Marajá", singer: "Instrumental", date: "1951-08-03" }, { title: "Muy Suave", singer: "Instrumental", date: "1954-04-07" }, { title: "Presentación", singer: "Instrumental", date: "1960-01-12" }, { title: "Y Todavía Te Quiero", singer: "Armando Moreno", date: "1956-06-29" }
+  ]},
+  { group: 12, artist: "Miguel Caló", genre: "Tango", singer: "Instrumental", era: "1963–1967", songs: [
+    { title: "Sans Souci", singer: "Instrumental", date: "1964-04-14" }, { title: "Uno", singer: "Instrumental", date: "1965-09-02" }, { title: "Para Osmar Maderna", singer: "Instrumental", date: "1963-05-24" }, { title: "Porteñísimo", singer: "Instrumental", date: "1967-06-12" }
+  ]},
+  { group: 13, artist: "Hugo Diaz", genre: "Tango", singer: "Instrumental", era: "1972–1975", songs: [
+    { title: "Malena", singer: "Instrumental", date: "1972" }, { title: "Volver", singer: "Instrumental", date: "1975" }, { title: "Cuesta Abajo", singer: "Instrumental", date: "1975" }, { title: "Mano a Mano", singer: "Instrumental", date: "1975" }, { title: "Melodía de Arrabal", singer: "Instrumental", date: "1975" }
+  ]},
+  { group: 14, artist: "Various", genre: "Milonga", singer: "Instrumental", era: "1972–2012", songs: [
+    { title: "Milonga Triste", singer: "Instrumental", date: "1972" }, { title: "El Llorón", singer: "Instrumental", date: "1972" }, { title: "Milonga Para una Armónica", singer: "Instrumental", date: "1974" }, { title: "Milonguea Del Ayer", singer: "Instrumental", date: "2005" }, { title: "Silueta Portena", singer: "Instrumental", date: "2008" }, { title: "Milonga Uruguaya", singer: "Instrumental", date: "2012" }
+  ]},
+  { group: 15, artist: "Juan Villarreal", genre: "Tango", singer: "Juan Villarreal", era: "2012–2026", songs: [
+    { title: "Buscándote", singer: "Juan Villarreal", date: "2012-09-01" }, { title: "Marión", singer: "Juan Villarreal", date: "2012-09-01" }, { title: "El Violín De Becho", singer: "Juan Villarreal", date: "2018" }, { title: "Ahora", singer: "Juan Villarreal", date: "2023" }, { title: "Milonga del Don", singer: "Juan Villarreal", date: "2015-08-08" }, { title: "Lo Más Lindo", singer: "Juan Villarreal", date: "2017-09-21" }, { title: "Tango Brujo", singer: "Juan Villarreal", date: "2022-02-12" }, { title: "Paciencia", singer: "Juan Villarreal", date: "2022-02-12" }, { title: "El Último Café", singer: "Juan Villarreal", date: "2026-06-04" }, { title: "Vuelvo al Sur", singer: "Juan Villarreal", date: "2026-06-04" }
+  ]},
+  { group: 16, artist: "Sexteto Cristal", genre: "Tango", singer: "Various", era: "2018–2019", songs: [
+    { title: "Viento Norte", singer: "Instrumental", date: "2018" }, { title: "El Adiós", singer: "Guillermo Rozenthuler", date: "2018" }, { title: "S.O.S.", singer: "Guillermo Rozenthuler", date: "2018" }, { title: "Dos Fracasos", singer: "Guillermo Rozenthuler", date: "2019" }, { title: "No te Apures Carablanca", singer: "Guillermo Rozenthuler", date: "2019" }, { title: "Pavadita", singer: "Instrumental", date: "2019" }, { title: "Siete Palabras", singer: "Instrumental", date: "2019" }, { title: "Caricias", singer: "Guillermo Rozenthuler", date: "2018" }, { title: "Despues del Carnaval", singer: "Guillermo Rozenthuler", date: "2018" }
+  ]},
+  { group: 17, artist: "Sexteto Cristal", genre: "Vals", singer: "Various", era: "2018–2019", songs: [
+    { title: "La Loca de Amor", singer: "Guillermo Rozenthuler", date: "2019" }, { title: "La Tapera", singer: "Guillermo Rozenthuler", date: "2019" }, { title: "Lágrimas y Sonrisas", singer: "Instrumental", date: "2019" }, { title: "Quién Será", singer: "Guillermo Rozenthuler", date: "2019" }, { title: "Cuando Florescan los Rosales", singer: "Guillermo Rozenthuler", date: "2018" }, { title: "Noches de Invierno", singer: "Guillermo Rozenthuler", date: "2018" }, { title: "Vals del Recuerdo", singer: "Guillermo Rozenthuler", date: "2018" }
+  ]},
+  { group: 18, artist: "Sexteto Cristal", genre: "Milonga", singer: "Guillermo Rozenthuler", era: "2018–2019", songs: [
+    { title: "La milonga que hacía falta", singer: "Guillermo Rozenthuler", date: "2019" }, { title: "La Vida es una Milonga", singer: "Guillermo Rozenthuler", date: "2019" }, { title: "Contando las Estrellas", singer: "Guillermo Rozenthuler", date: "2018" }, { title: "Flor de Montserrat", singer: "Guillermo Rozenthuler", date: "2018" }, { title: "Mi Vieja Linda", singer: "Guillermo Rozenthuler", date: "2018" }
+  ]},
+  { group: 19, artist: "Romantica Milonguera", genre: "Tango", singer: "Marisol Martínez y Roberto Minondi", era: "2018–2020", songs: [
+    { title: "Duerme mi amor", singer: "Marisol Martínez y Roberto Minondi", date: "2018" }, { title: "Perfidia", singer: "Marisol Martínez y Roberto Minondi", date: "2018" }, { title: "Adios Corazon", singer: "Marisol Martínez y Roberto Minondi", date: "2018" }, { title: "Bomboncito", singer: "Marisol Martínez y Roberto Minondi", date: "2018" }, { title: "Buscandote", singer: "Marisol Martínez y Roberto Minondi", date: "2018" }, { title: "Fueron Tres Años", singer: "Marisol Martínez y Roberto Minondi", date: "2018" }, { title: "Poema", singer: "Marisol Martínez y Roberto Minondi", date: "2018" }, { title: "Todo es Amor", singer: "Marisol Martínez y Roberto Minondi", date: "2018" }, { title: "Tus labios me diran", singer: "Marisol Martínez y Roberto Minondi", date: "2020" }
+  ]},
+  { group: 20, artist: "Orquesta Típica Misteriosa Buenos Aires", genre: "Tango", singer: "Various", era: "2013", songs: [
+    { title: "E.G.B", singer: "Instrumental", date: "2013" }, { title: "Invierno", singer: "Carlos Rossi", date: "2013" }, { title: "Quien sos", singer: "Instrumental", date: "2013" }, { title: "Quien Tiene tu Amor", singer: "Eliana Sosa", date: "2013" }, { title: "Seguir Viviendo Sin tu Amor", singer: "Eliana Sosa", date: "2013" }, { title: "Tu Corazón", singer: "Eliana Sosa", date: "2013" }
   ]},
 ];
 
@@ -190,7 +253,7 @@ function groupLabel(g: any): string {
           <span class="download-icon">&#128196;</span>
           <div>
             <strong>Set List I &mdash; The Big Four</strong>
-            <span>D'Arienzo, Di Sarli, Troilo, Pugliese (.xlsx)</span>
+            <span>D'Arienzo, Di Sarli, Troilo, Pugliese (.csv)</span>
           </div>
           <span class="download-btn">Download</span>
         </a>
@@ -198,7 +261,7 @@ function groupLabel(g: any): string {
           <span class="download-icon">&#128196;</span>
           <div>
             <strong>Set List II &mdash; Expanded</strong>
-            <span>Laurenz, Biagi, De Angelis, Cal&oacute;, Tanturi, Donato, Canaro, Fresedo (.xlsx)</span>
+            <span>Laurenz, Biagi, De Angelis, Cal&oacute;, Tanturi, Donato, Canaro, Fresedo (.csv)</span>
           </div>
           <span class="download-btn">Download</span>
         </a>
@@ -268,7 +331,15 @@ function groupLabel(g: any): string {
             <span class="download-icon">&#128196;</span>
             <div>
               <strong>Set List III &mdash; Valses, Milongas &amp; More</strong>
-              <span>Biagi, Troilo, Demare, Rodr&iacute;guez, D'Agostino, Tanturi, De Angelis, Malerba, Carabelli &amp; more (.xlsx)</span>
+              <span>Biagi, Troilo, Demare, Rodr&iacute;guez, D'Agostino, Tanturi, De Angelis, Malerba, Carabelli &amp; more (.csv)</span>
+            </div>
+            <span class="download-btn">Download</span>
+          </a>
+          <a href="/api/download?id=set-list-4" download class="download-card">
+            <span class="download-icon">&#128196;</span>
+            <div>
+              <strong>Set List IV &mdash; Later Golden Age &amp; Contemporary</strong>
+              <span>Pugliese, Troilo, Sassone, Gobbi, Varela, Salamanca, Sexteto Cristal, Rom&aacute;ntica Milonguera &amp; more (.csv)</span>
             </div>
             <span class="download-btn">Download</span>
           </a>
@@ -297,7 +368,26 @@ function groupLabel(g: any): string {
         ))}
 
         <h2 style="margin-top: 3rem;">Set List IV &mdash; Later Golden Age &amp; Contemporary</h2>
-        <p class="coming-soon">Later Golden Age recordings and key contemporary orchestras for the milonga. Coming soon &mdash; check back shortly.</p>
+        <p>Later Golden Age recordings from Pugliese, Troilo, Sassone, Gobbi, Varela, Salamanca, and more, plus key contemporary orchestras for the modern milonga &mdash; Sexteto Cristal, Rom&aacute;ntica Milonguera, Juan Villarreal, and Orquesta T&iacute;pica Misteriosa. Includes tango, vals, and milonga sets; singers vary within some groups, so the singer is listed per track.</p>
+
+        {setIV.map((g) => (
+          <details class="group-details">
+            <summary>
+              <span class="group-num">Group {g.group}</span>
+              <span class="group-label">{groupLabel(g)}</span>
+            </summary>
+            <div class="table-scroll">
+              <table>
+                <thead><tr><th>Orchestra</th><th>Title</th><th>Singer</th><th>Date</th></tr></thead>
+                <tbody>
+                  {g.songs.map((s) => (
+                    <tr><td>{g.artist}</td><td>{s.title}</td><td>{s.singer}</td><td>{s.date}</td></tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </details>
+        ))}
 
         <h2 style="margin-top: 3rem;">Additional Resources</h2>
         <p class="coming-soon">More library-building resources and DJ notes are on the way. Have a suggestion? Email <a href="mailto:tangotoolkit@gmail.com">tangotoolkit@gmail.com</a>.</p>

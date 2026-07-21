@@ -11,9 +11,10 @@ import { recordDownload } from "../lib/download-stats.mts";
  */
 
 const FILES: Record<string, string> = {
-  "set-list-1": "/downloads/DJ Training Set List I.xlsx",
-  "set-list-2": "/downloads/DJ Training Set List II.xlsx",
-  "set-list-3": "/downloads/DJ Training Set List III.xlsx",
+  "set-list-1": "/downloads/DJ Training Set List I.csv",
+  "set-list-2": "/downloads/DJ Training Set List II.csv",
+  "set-list-3": "/downloads/DJ Training Set List III.csv",
+  "set-list-4": "/downloads/DJ Training Set List IV.csv",
 };
 
 export default async (req: Request, _context: Context) => {
