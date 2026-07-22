@@ -9,9 +9,14 @@ import { recordDownload } from "../lib/download-stats.mts";
  * /releases/latest/download/<name> shortcut can't be used directly.
  *
  * Query params:
- *   repo - required, "owner/name"
- *   ext  - optional file extension to match, defaults to "zip"
- *   id   - optional tool id used for download stats (defaults to repo)
+ *   repo  - required, "owner/name"
+ *   match - optional case-insensitive substring of the asset filename. Use
+ *           when tools ship several platform builds in one release (e.g.
+ *           "beam-win", "beam-lin") or assets without a useful extension.
+ *           Takes precedence over `ext`.
+ *   ext   - optional file extension to match, defaults to "zip" (ignored if
+ *           `match` is given)
+ *   id    - optional tool id used for download stats (defaults to repo)
  */
 
 export default async (req: Request, _context: Context) => {
@@ -21,6 +26,7 @@ export default async (req: Request, _context: Context) => {
 
   const url = new URL(req.url);
   const repo = url.searchParams.get("repo");
+  const match = url.searchParams.get("match");
   const ext = url.searchParams.get("ext") ?? "zip";
   const statsId = url.searchParams.get("id") ?? repo ?? undefined;
 
@@ -43,11 +49,14 @@ export default async (req: Request, _context: Context) => {
   }
 
   const asset = (release.assets ?? []).find((a: { name: string }) =>
-    a.name.toLowerCase().endsWith(`.${ext.toLowerCase()}`)
+    match
+      ? a.name.toLowerCase().includes(match.toLowerCase())
+      : a.name.toLowerCase().endsWith(`.${ext.toLowerCase()}`)
   );
 
   if (!asset) {
-    return new Response(`No .${ext} asset found in latest release`, { status: 404 });
+    const criteria = match ? `matching "${match}"` : `with .${ext} extension`;
+    return new Response(`No asset ${criteria} found in latest release`, { status: 404 });
   }
 
   // Count the download (best-effort; never blocks the redirect).

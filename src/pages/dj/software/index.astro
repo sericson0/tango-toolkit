@@ -49,7 +49,7 @@ const productSchemas = products.map((p) => {
 });
 ---
 
-<BaseLayout title="Tango Toolkit Software" description="Software and plugins built by The Tango Toolkit for tango DJs. Download free tools and pro-level utilities for music management, audio restoration, and tanda building." ogImage="/images/TigerTangoLogo.png">
+<BaseLayout title="Tango Toolkit Software" description="Software and plugins built by The Tango Toolkit for tango DJs. Download free tools and pro-level utilities for music management, audio restoration, and tanda building." ogImage="/images/dj-tools/TigerTangoLogo.png">
   <Fragment slot="head">
     {productSchemas.map((schema) => (
       <script type="application/ld+json" set:html={JSON.stringify(schema)} />
@@ -123,8 +123,8 @@ const productSchemas = products.map((p) => {
         </a>
         <a href="#plugin-play" class="tool-card-nav">
           <picture>
-            <source srcset="/images/plugin-play-icon.webp" type="image/webp" />
-            <img src="/images/plugin-play-icon.png" alt="Plugin Play" class="tool-card-icon" width="48" height="48" loading="lazy" decoding="async" />
+            <source srcset="/images/dj-tools/plugin-play-icon.webp" type="image/webp" />
+            <img src="/images/dj-tools/plugin-play-icon.png" alt="Plugin Play" class="tool-card-icon" width="48" height="48" loading="lazy" decoding="async" />
           </picture>
           <div>
             <strong>Plugin Play</strong>

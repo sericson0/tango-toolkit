@@ -37,7 +37,7 @@ export const products: Product[] = [
     description: 'A customized VirtualDJ skin specifically designed for tango DJs.',
     price: 'Free',
     downloadLink: 'https://github.com/sericson0/TigerTango/releases',
-    image: '/images/TigerTangoLogo.png',
+    image: '/images/dj-tools/TigerTangoLogo.png',
   },
   {
     id: 'hisstory',
@@ -47,7 +47,7 @@ export const products: Product[] = [
     price: '$40',
     stripePriceId: 'price_1TMJvsBGhFYtRptA3axQycOs',
     downloadLink: 'https://github.com/sericson0/hisstory-releases/releases',
-    image: '/images/hisstory-logo.png',
+    image: '/images/dj-tools/hisstory-logo.png',
     trial: true,
   },
   {
@@ -60,7 +60,7 @@ export const products: Product[] = [
     // uses HISSTORY_LITE_STRIPE_PRICE_ID on the server.
     stripePriceId: 'price_1Tons6BGhFYtRptA2QSa5NO7',
     downloadLink: 'https://github.com/sericson0/hisstory-releases/releases',
-    image: '/images/hisstory-logo.png',
+    image: '/images/dj-tools/hisstory-logo.png',
     trial: true,
   },
   {
@@ -71,7 +71,7 @@ export const products: Product[] = [
     price: '$40',
     stripePriceId: 'price_1TML8VBGhFYtRptAguU7QGWV',
     downloadLink: 'https://github.com/sericson0/tigertag-releases/releases',
-    image: '/images/TigerTag.png',
+    image: '/images/dj-tools/TigerTag.png',
     trial: true,
   },
   {
@@ -81,7 +81,7 @@ export const products: Product[] = [
     description: 'VirtualDJ plugin that helps you quickly find the perfect matches to build out a tanda.',
     price: 'Free',
     downloadLink: 'https://github.com/sericson0/TigerTanda/releases',
-    image: '/images/TigerTanda.png',
+    image: '/images/dj-tools/TigerTanda.png',
   },
   {
     id: 'plugin-play',
@@ -90,6 +90,6 @@ export const products: Product[] = [
     description: 'Route any app — your DJ software, a browser, Spotify — through a chain of VST3 effects in real time, then out to your speakers. Free and open source.',
     price: 'Free',
     downloadLink: 'https://github.com/sericson0/plugin-play/releases',
-    image: '/images/plugin-play-icon.png',
+    image: '/images/dj-tools/plugin-play-icon.png',
   },
 ];

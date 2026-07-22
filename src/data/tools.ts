@@ -58,6 +58,16 @@ export const toolCategories: ToolCategory[] = [
   },
 ];
 
+/** A single platform-specific download shown as its own button on the card. */
+export interface ToolDownload {
+  /** Button label, e.g. 'Windows', 'macOS', 'Linux'. */
+  platform: string;
+  /** Direct download link or an /api/github-latest-asset URL. */
+  url: string;
+  /** Small caveat shown beneath the downloads (e.g. an unsigned-app warning). */
+  note?: string;
+}
+
 export interface Tool {
   id: string;
   name: string;
@@ -72,8 +82,14 @@ export interface Tool {
   url: string;
   /** true → link opens in a new tab (third-party sites). */
   external?: boolean;
-  /** Optional direct download link — renders a Download button on the card. */
+  /** Optional direct download link — renders a single Download button on the card. */
   downloadUrl?: string;
+  /**
+   * Multiple platform-specific downloads — renders one button per platform
+   * (plus any notes) instead of a single Download button. Use for tools that
+   * ship separate installers per OS; use `downloadUrl` for a single download.
+   */
+  downloads?: ToolDownload[];
   /**
    * Where the card's "Feedback" button sends messages. Omit for Tango Toolkit
    * tools — they default to tangotoolkit@gmail.com. For third-party tools, set
@@ -108,7 +124,7 @@ export const tools: Tool[] = [
     githubRepo: 'sericson0/TigerTango',
     price: 'Free',
     platforms: ['Windows', 'macOS'],
-    image: '/images/TigerTangoLogo.png',
+    image: '/images/dj-tools/TigerTangoLogo.png',
     dateAdded: '2026-04-17',
   },
   {
@@ -126,13 +142,13 @@ export const tools: Tool[] = [
     // feedbackEmail: '', // TODO: add Abbas's email to route feedback directly (falls back to tangotoolkit@gmail.com)
     price: 'Free (beta)',
     platforms: ['macOS 13+'],
-    image: '/images/eleje-player.png',
+    image: '/images/dj-tools/eleje-player.png',
     dateAdded: '2026-07-05',
   },
   {
     id: 'virtual-tango-dj',
     name: 'Virtual Tango DJ',
-    tagline: 'AI-generated tandas for your milonga',
+    tagline: 'Your always-ready Tango DJ',
     description: 'A music app that automatically creates authentic tango tandas based on your \
                  preferences, giving you real dance flow whether you are practicing at home or hosting a \
                  pop-up milonga. <strong>Currently in beta.</strong>',
@@ -143,7 +159,7 @@ export const tools: Tool[] = [
     // feedbackEmail: 'tangoapp.official@gmail.com', // route feedback directly (falls back to tangotoolkit@gmail.com)
     price: 'Free–$7.99/mo',
     platforms: ['Web'],
-    image: '/images/virtualtangodj.png',
+    image: '/images/dj-tools/virtualtangodj.png',
     dateAdded: '2026-07-16',
   },
 
@@ -152,13 +168,13 @@ export const tools: Tool[] = [
     id: 'tigertango-video',
     name: 'TigerTango Video',
     tagline: 'Song and tanda display for the dance floor',
-    description: 'Companion video skin for TigerTango that projects the current song, orchestra, and tanda info onto a second screen or projector.',
+    description: 'Companion video skin for TigerTango to project the current song, orchestra, and tanda info.',
     category: 'displays-projections',
     author: 'The Tango Toolkit',
     url: '/dj/software/#tigertango',
     price: 'Free',
     platforms: ['Windows', 'macOS'],
-    image: '/images/TigerTangoLogo.png',
+    image: '/images/dj-tools/TigerTangoLogo.png',
     dateAdded: '2026-04-17',
   },
   {
@@ -179,7 +195,7 @@ export const tools: Tool[] = [
     // feedbackEmail: '', // TODO: add Richard's email to route feedback directly (falls back to tangotoolkit@gmail.com)
     price: 'Free',
     platforms: ['macOS 13+'],
-    image: '/images/TangoDisplay.png',
+    image: '/images/dj-tools/TangoDisplay.png',
     dateAdded: '2026-07-04',
   },
   {
@@ -197,8 +213,41 @@ export const tools: Tool[] = [
     // feedbackEmail: '', // TODO: add Biryer's email to route feedback directly (falls back to tangotoolkit@gmail.com)
     price: 'Free',
     platforms: ['Windows', 'macOS'],
-    image: '/images/Milonga.png',
+    image: '/images/dj-tools/Milonga.png',
     dateAdded: '2026-07-15',
+  },
+  {
+    id: 'beam',
+    name: 'Beam',
+    tagline: 'Clean live song display for milongas',
+    description: 'Project the current song and next tango information. Reads from a wide range \
+                 of players (VirtualDJ, foobar2000, Mixxx, Spotify, and many more). Works on Windows, macOS, \
+                 and Linux, with customizable backgrounds and layouts. <strong>Free and open source.</strong>',
+    category: 'displays-projections',
+    author: 'Angel de Paz',
+    url: 'https://mrnidnan.github.io/beam-project/',
+    external: true,
+    downloads: [
+      {
+        platform: 'Windows',
+        url: '/api/github-latest-asset?repo=MrNidnan/beam-project&match=beam-win&id=beam',
+        note: 'The Windows build is unsigned, so Windows SmartScreen will flag it. Click “More info” → “Run anyway” to accept and install.',
+      },
+      {
+        platform: 'macOS',
+        url: '/api/github-latest-asset?repo=MrNidnan/beam-project&match=beam-mac&id=beam',
+      },
+      {
+        platform: 'Linux',
+        url: '/api/github-latest-asset?repo=MrNidnan/beam-project&match=beam-lin&id=beam',
+      },
+    ],
+    feedbackEmail: 'angel.depaz@gmail.com',
+    githubRepo: 'MrNidnan/beam-project',
+    price: 'Free',
+    platforms: ['Windows', 'macOS', 'Linux'],
+    image: '/images/dj-tools/beam.png',
+    dateAdded: '2026-07-22',
   },
 
   // ===== Tanda Builders =====
@@ -213,7 +262,7 @@ export const tools: Tool[] = [
     githubRepo: 'sericson0/tigertanda-vdj',
     price: 'Free',
     platforms: ['Windows', 'macOS'],
-    image: '/images/TigerTanda.png',
+    image: '/images/dj-tools/TigerTanda.png',
     dateAdded: '2026-04-17',
   },
   {
@@ -226,7 +275,7 @@ export const tools: Tool[] = [
     url: '/dj/tanda-builder/',
     price: 'Free',
     platforms: ['Web'],
-    image: '/images/TigerTanda.png',
+    image: '/images/dj-tools/TigerTanda.png',
     dateAdded: '2026-05-01',
   },
 
@@ -246,7 +295,7 @@ export const tools: Tool[] = [
     githubRepo: 'sericson0/plugin-play',
     price: 'Free',
     platforms: ['Windows', 'macOS'],
-    image: '/images/plugin-play-icon.png',
+    image: '/images/dj-tools/plugin-play-icon.png',
     dateAdded: '2026-07-10',
   },
   {
@@ -260,7 +309,7 @@ export const tools: Tool[] = [
     githubRepo: 'sericson0/hisstory-releases',
     price: '$9.99–$40',
     platforms: ['Windows', 'macOS'],
-    image: '/images/hisstory-logo.png',
+    image: '/images/dj-tools/hisstory-logo.png',
     dateAdded: '2026-04-17',
   },
   {
@@ -273,7 +322,7 @@ export const tools: Tool[] = [
     url: '/dj/software/#hisstory',
     price: '$9.99',
     platforms: ['Windows', 'macOS'],
-    image: '/images/hisstory-logo.png',
+    image: '/images/dj-tools/hisstory-logo.png',
     dateAdded: '2026-07-02',
   },
   {
@@ -287,7 +336,7 @@ export const tools: Tool[] = [
     githubRepo: 'sericson0/tigertag-releases',
     price: '$40',
     platforms: ['Windows', 'macOS'],
-    image: '/images/TigerTag.png',
+    image: '/images/dj-tools/TigerTag.png',
     dateAdded: '2026-04-17',
   },
 ];
