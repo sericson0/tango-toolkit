@@ -52,13 +52,26 @@ export function joinKey(bandleader, title, date) {
   return norm(bandleader) + '|' + norm(title) + '|' + parseDate(date);
 }
 
-// Local calendar date (YYYY-MM-DD), so the Daily Challenge rolls over at the
-// player's midnight and share cards are stamped with the player's own date.
-export function todayKey() {
-  var d = new Date();
+// Format a Date as a local YYYY-MM-DD key.
+export function dateKey(d) {
   var m = String(d.getMonth() + 1);
   var day = String(d.getDate());
   return d.getFullYear() + '-' + (m.length < 2 ? '0' + m : m) + '-' + (day.length < 2 ? '0' + day : day);
+}
+
+// Local calendar date (YYYY-MM-DD), so the Daily Challenge rolls over at the
+// player's midnight and share cards are stamped with the player's own date.
+export function todayKey() {
+  return dateKey(new Date());
+}
+
+// The YYYY-MM-DD one calendar day before the given key. Used to tell whether a
+// perfect Daily Challenge continues yesterday's streak or starts a new one.
+export function prevDayKey(key) {
+  var parts = (key || '').split('-');
+  var d = new Date(parseInt(parts[0], 10), parseInt(parts[1], 10) - 1, parseInt(parts[2], 10));
+  d.setDate(d.getDate() - 1);
+  return dateKey(d);
 }
 
 // --- Last-name helpers for the orchestra dropdown (matches tanda-builder) ---

@@ -2,15 +2,18 @@
 // reveal card, and the session summary (with share / replay-misses).
 import {
   MC_OPTION_COUNT, YEAR_CLOSE_THRESHOLD, YEAR_OPTION_MIN_GAP,
-  FIELD_LABELS, FIELD_ORDER, DAILY_KEY
+  FIELD_LABELS, FIELD_ORDER, DAILY_KEY, DAILY_ROUNDS, DAILY_STREAK_MIN,
+  SURVIVAL_STAGES, SURVIVAL_STAGE_SONGS, SURVIVAL_MAX_MISSES, SURVIVAL_CHALLENGE_EVERY
 } from './config.js';
 import {
   norm, normLoose, esc, extractYear, uniqueSorted, shuffle, sampleN,
-  pickSpacedYears, personThumb, resolveFields, todayKey
+  pickSpacedYears, personThumb, resolveFields, todayKey, weightedSampleByBandleader
 } from './util.js';
 import { setupTypeahead } from './combo.js';
 import { Stats } from './stats.js';
 import { Player } from './player.js';
+import { fetchBoards, submitScore, renderAllBoards, getSavedName, saveName } from './leaderboard.js';
+import { recordDaily, currentStreak } from './streak.js';
 
 var quizSection = document.getElementById('quizSection');
 var summarySection = document.getElementById('summarySection');
@@ -18,6 +21,7 @@ var roundCounter = document.getElementById('roundCounter');
 var quizContext = document.getElementById('quizContext');
 var scoreDisplay = document.getElementById('scoreDisplay');
 var streakDisplay = document.getElementById('streakDisplay');
+var livesDisplay = document.getElementById('livesDisplay');
 var endQuizBtn = document.getElementById('endQuizBtn');
 var skipBtn = document.getElementById('skipBtn');
 var answerArea = document.getElementById('answerArea');
@@ -46,8 +50,15 @@ var shareCardLink = document.getElementById('shareCardLink');
 var shareNativeBtn = document.getElementById('shareNativeBtn');
 var shareCopyBtn = document.getElementById('shareCopyBtn');
 
+var summaryBoardCard = document.getElementById('summaryBoardCard');
+var summaryBoardSubmit = document.getElementById('summaryBoardSubmit');
+var summaryNameInput = document.getElementById('summaryNameInput');
+var summaryBoardSubmitBtn = document.getElementById('summaryBoardSubmitBtn');
+var summaryBoardStatus = document.getElementById('summaryBoardStatus');
+var summaryBoardTables = document.getElementById('summaryBoardTables');
+
 // --- State ---
-var sessionOpts = null;   // { moduleId, level, pool, contextLabel, daily: {date}|null }
+var sessionOpts = null;   // { moduleId, level, pool, contextLabel, daily: {date}|null, survival|null }
 var sessionRounds = [];
 var sessionResults = [];
 var roundIndex = 0;
@@ -55,6 +66,13 @@ var currentFields = null;
 var currentMcChoices = {};
 var summaryPlayingIdx = -1;
 var lastSummary = null;   // numbers behind the last summary, for the share text
+// Survival run state: { pools, score, misses, used, lastStage, submitted }.
+// Null for every other game — each survival branch below checks this.
+var survival = null;
+// A leaderboard score the just-finished session earned, or null: e.g.
+// { board: 'survival'|'daily-streak', score, submitted }. Drives the summary
+// board card's submit row.
+var pendingSubmit = null;
 
 var exitCallback = null;     // back to setup
 var restartCallback = null;  // same settings, fresh songs (main re-runs Start)
@@ -62,14 +80,59 @@ var restartCallback = null;  // same settings, fresh songs (main re-runs Start)
 // --- Session entry points ---
 export function startQuizSession(opts) {
   sessionOpts = opts;
+  survival = opts.survival || null;
+  if (survival) {
+    survival.score = 0;
+    survival.misses = 0;
+    survival.used = {};        // row._idx -> true, so a run never repeats a song
+    survival.lastStage = -1;   // last stage announced, for the stage-up banner
+    survival.submitted = false;
+  }
   quizContext.textContent = opts.contextLabel || '';
   beginRounds(opts.rows);
+}
+
+// --- Survival helpers ---
+// Songs are numbered from 1; every SURVIVAL_STAGE_SONGS songs move one stage
+// up the ladder, and the final stage is endless.
+function survivalStageIndexFor(songNum) {
+  return Math.min(Math.floor((songNum - 1) / SURVIVAL_STAGE_SONGS), SURVIVAL_STAGES.length - 1);
+}
+
+// In the endless stage, every SURVIVAL_CHALLENGE_EVERY-th song swaps the
+// multiple-choice fields for the stage's all-type-in challenge fields.
+function survivalIsChallenge(songNum) {
+  var lastIdx = SURVIVAL_STAGES.length - 1;
+  if (survivalStageIndexFor(songNum) !== lastIdx || !SURVIVAL_STAGES[lastIdx].challengeFields) return false;
+  var intoEndless = songNum - lastIdx * SURVIVAL_STAGE_SONGS;
+  return intoEndless % SURVIVAL_CHALLENGE_EVERY === 0;
+}
+
+function survivalFieldsFor(songNum) {
+  var stage = SURVIVAL_STAGES[survivalStageIndexFor(songNum)];
+  return survivalIsChallenge(songNum) ? stage.challengeFields : stage.fields;
+}
+
+function survivalPoolFor(songNum) {
+  return survival.pools[SURVIVAL_STAGES[survivalStageIndexFor(songNum)].pool];
+}
+
+// Deal the song for a given song number from that song's stage pool,
+// bandleader-weighted (like the Big Four game) so prolific orchestras don't
+// dominate. Falls back to allowing repeats only if a whole pool is exhausted.
+function survivalRowFor(songNum) {
+  var pool = survivalPoolFor(songNum).filter(function (r) { return !survival.used[r._idx]; });
+  if (!pool.length) pool = survivalPoolFor(songNum);
+  var row = weightedSampleByBandleader(pool, 1)[0];
+  survival.used[row._idx] = true;
+  return row;
 }
 
 function beginRounds(rows) {
   sessionRounds = rows;
   sessionResults = [];
   roundIndex = 0;
+  nextBtn.textContent = 'Next Song →';
   document.getElementById('setupSection').style.display = 'none';
   summarySection.style.display = 'none';
   quizSection.style.display = '';
@@ -83,21 +146,37 @@ export function initQuiz(callbacks) {
 
 // --- Quiz: render a round ---
 function renderRound() {
+  if (survival) {
+    // Rounds are dealt lazily (the run has no fixed length) and kept one
+    // ahead so the next clip can preload. Fields and decoy pool both come
+    // from the song's stage, not a fixed session level.
+    if (!sessionRounds[roundIndex]) sessionRounds.push(survivalRowFor(roundIndex + 1));
+    if (!sessionRounds[roundIndex + 1]) sessionRounds.push(survivalRowFor(roundIndex + 2));
+    sessionOpts.pool = survivalPoolFor(roundIndex + 1);
+  }
   var row = sessionRounds[roundIndex];
-  currentFields = resolveFields(sessionOpts.level.fields, row);
+  var levelFields = survival ? survivalFieldsFor(roundIndex + 1) : sessionOpts.level.fields;
+  currentFields = resolveFields(levelFields, row);
   currentMcChoices = {};
 
   var singerAsked = currentFields.some(function (f) { return f.key === 'Singer'; });
   Player.loadTrack(row._audioUrl, { singerAsked: singerAsked });
 
   nextBtn.style.display = 'none';
-  skipBtn.style.display = '';
+  // Survival has no Skip — dodging hard songs for free would break the score.
+  skipBtn.style.display = survival ? 'none' : '';
 
   // Warm the next round's audio so its first Play is instant.
   var nextRow = sessionRounds[roundIndex + 1];
   Player.preloadNext(nextRow && nextRow._audioUrl);
 
-  roundCounter.textContent = 'Song ' + (roundIndex + 1) + ' of ' + sessionRounds.length;
+  if (survival) {
+    var stage = SURVIVAL_STAGES[survivalStageIndexFor(roundIndex + 1)];
+    roundCounter.textContent = 'Song ' + (roundIndex + 1) + ' · ' + stage.label +
+      (survivalIsChallenge(roundIndex + 1) ? ' · Challenge' : '');
+  } else {
+    roundCounter.textContent = 'Song ' + (roundIndex + 1) + ' of ' + sessionRounds.length;
+  }
   updateScoreDisplay();
 
   var html = '';
@@ -109,7 +188,7 @@ function renderRound() {
     if (f.mode === 'mc') {
       var options = buildMcOptions(row, f);
       currentMcChoices[f.key] = options;
-      var isBandleaderThumbs = (sessionOpts.moduleId === 'bigfour' || sessionOpts.moduleId === 'goldenage' || sessionOpts.moduleId === 'daily') && f.key === 'Bandleader';
+      var isBandleaderThumbs = (sessionOpts.moduleId === 'bigfour' || sessionOpts.moduleId === 'goldenage' || sessionOpts.moduleId === 'daily' || sessionOpts.moduleId === 'survival') && f.key === 'Bandleader';
       var isSingerThumbs = f.key === 'Singer';
       var thumbDir = isBandleaderThumbs ? 'bandleaders' : (isSingerThumbs ? 'singers' : '');
       html += '<div class="ntt-mc-group' + (thumbDir ? ' ntt-mc-group-thumbs' : '') + '">';
@@ -145,6 +224,22 @@ function renderRound() {
   revealPanel.style.display = 'none';
   answerArea.style.display = '';
   answerHint.hidden = true;
+  // Announce a stage step-up (or a challenge song) in the hint bar.
+  if (survival) {
+    var songNum = roundIndex + 1;
+    var stageIdx = survivalStageIndexFor(songNum);
+    if (stageIdx !== survival.lastStage) {
+      if (survival.lastStage !== -1) {
+        var s = SURVIVAL_STAGES[stageIdx];
+        answerHint.textContent = '⬆ Stage ' + (stageIdx + 1) + ' · ' + s.label + ' — ' + (s.desc || '');
+        answerHint.hidden = false;
+      }
+      survival.lastStage = stageIdx;
+    } else if (survivalIsChallenge(songNum)) {
+      answerHint.textContent = '🔥 Challenge song — everything is type-in!';
+      answerHint.hidden = false;
+    }
+  }
   submitBtn.style.display = '';
   submitBtn.disabled = false;
   if (firstInput) { try { firstInput.focus(); } catch (e) {} }
@@ -239,7 +334,20 @@ submitBtn.addEventListener('click', function () {
   sessionResults.push({ row: row, fieldResults: fieldResults, allCorrect: allCorrect });
   Stats.recordSong(row.Bandleader, fieldResults, allCorrect);
 
+  if (survival) {
+    if (allCorrect) survival.score++;
+    else survival.misses++;
+  }
+
   renderReveal(row, fieldResults, allCorrect);
+
+  if (survival && !allCorrect) {
+    var livesLeft = SURVIVAL_MAX_MISSES - survival.misses;
+    revealBanner.textContent += livesLeft > 0
+      ? ' — ' + livesLeft + (livesLeft === 1 ? ' life' : ' lives') + ' left'
+      : ' — that’s three, run over!';
+  }
+  nextBtn.textContent = (survival && survival.misses >= SURVIVAL_MAX_MISSES) ? 'See results →' : 'Next Song →';
 
   answerArea.style.display = 'none';
   submitBtn.style.display = 'none';
@@ -253,6 +361,7 @@ submitBtn.addEventListener('click', function () {
 // Skip: reveal the answer without grading. Skipped songs are shown as their
 // own row in the summary and are not counted in accuracy or stats.
 function skipRound() {
+  if (survival) return; // no free skips in Survival — every song must be answered
   if (submitBtn.style.display === 'none') return; // round already answered
   var row = sessionRounds[roundIndex];
   var fieldResults = currentFields.map(function (f) {
@@ -318,6 +427,14 @@ function updateScoreDisplay() {
   var streak = Stats.getCurrentStreak();
   streakDisplay.textContent = streak >= 2 ? '🔥 ' + streak : '';
   streakDisplay.title = streak >= 2 ? streak + ' fully-correct songs in a row' : '';
+
+  if (survival) {
+    scoreDisplay.textContent = 'Score: ' + survival.score;
+    var left = Math.max(0, SURVIVAL_MAX_MISSES - survival.misses);
+    livesDisplay.textContent = '❤️'.repeat(left) + '🖤'.repeat(SURVIVAL_MAX_MISSES - left);
+    return;
+  }
+  livesDisplay.textContent = '';
 
   var graded = sessionResults.filter(function (r) { return !r.skipped; });
   if (!graded.length) { scoreDisplay.textContent = 'Score: —'; return; }
@@ -469,8 +586,12 @@ document.addEventListener('keydown', function (e) {
 
 // --- Next / summary / end early ---
 nextBtn.addEventListener('click', function () {
+  if (survival && survival.misses >= SURVIVAL_MAX_MISSES) {
+    showSummary();
+    return;
+  }
   roundIndex++;
-  if (roundIndex >= sessionRounds.length) {
+  if (!survival && roundIndex >= sessionRounds.length) {
     showSummary();
   } else {
     renderRound();
@@ -625,29 +746,88 @@ function showSummary() {
                   date: sessionOpts.daily ? sessionOpts.daily.date : todayKey(),
                   grid: shareRows, gems: anyGem ? gemHeader : '' };
 
+  if (survival) {
+    var reachedIdx = survivalStageIndexFor(Math.max(sessionResults.length, 1));
+    var stageLabel = SURVIVAL_STAGES[reachedIdx].label;
+    summaryScore.textContent = 'Survival score: ' + survival.score +
+      ' (songs fully correct). Reached stage ' + (reachedIdx + 1) + ' · ' + stageLabel +
+      ' in ' + sessionResults.length + ' song' + (sessionResults.length === 1 ? '' : 's') +
+      (survival.misses >= SURVIVAL_MAX_MISSES ? ' — three misses, run over.' : ' — run ended early.');
+    // A run-length share grid can be 30+ rows tall — share the score instead.
+    lastSummary.survival = { score: survival.score, stageLabel: stageLabel };
+    lastSummary.grid = [];
+    lastSummary.gems = '';
+  }
+
   // Replay-the-misses: the natural study loop — a fresh mini-session from
-  // just the songs that weren't fully correct (skips included).
+  // just the songs that weren't fully correct (skips included). Survival has
+  // no fixed level to replay them at, so it hides the button.
   var missed = sessionResults.filter(function (r) { return !r.allCorrect; });
-  replayMissesBtn.style.display = missed.length ? '' : 'none';
+  replayMissesBtn.style.display = missed.length && !survival ? '' : 'none';
   replayMissesBtn.textContent = 'Replay missed songs (' + missed.length + ')';
 
-  if (shareCard) showShareCard();
+  // --- Leaderboard achievements: Survival high score + Daily perfect streak ---
+  // pendingSubmit holds any score this session earned the right to post; the
+  // summary board card reads it (and shows both boards regardless).
+  pendingSubmit = null;
+  var boardContext = '';
 
-  // Record the first Daily Challenge result of the day (later replays are
-  // practice and don't overwrite the honest first attempt).
-  if (sessionOpts.daily && sessionResults.length) {
-    try {
-      var raw = window.localStorage.getItem(DAILY_KEY);
-      var prev = raw ? JSON.parse(raw) : null;
-      if (!prev || prev.date !== sessionOpts.daily.date) {
-        window.localStorage.setItem(DAILY_KEY, JSON.stringify({
-          date: sessionOpts.daily.date,
-          songsCorrect: songsCorrect, gradedSongs: gradedSongs,
-          fieldsCorrect: fieldsCorrect, fieldsAsked: fieldsAsked
-        }));
-      }
-    } catch (e) {}
+  if (survival && survival.score >= 1) {
+    pendingSubmit = { board: 'survival', score: survival.score, submitted: false };
   }
+
+  if (sessionOpts.daily && sessionResults.length) {
+    boardContext = updateDailyStreak(songsCorrect, gradedSongs, fieldsCorrect, fieldsAsked);
+  }
+
+  var showBoard = !!survival || !!sessionOpts.daily;
+  if (summaryBoardCard) {
+    if (showBoard) showSummaryBoard(boardContext);
+    else summaryBoardCard.hidden = true;
+  }
+
+  if (shareCard) showShareCard();
+}
+
+// Record the first Daily Challenge result of the day (later replays are
+// practice and don't overwrite the honest first attempt), fold it into the
+// perfect-streak counter, and return a one-line status for the summary. Also
+// arms pendingSubmit when a perfect run extends the streak.
+function updateDailyStreak(songsCorrect, gradedSongs, fieldsCorrect, fieldsAsked) {
+  var date = sessionOpts.daily.date;
+  var prev = null;
+  try {
+    var raw = window.localStorage.getItem(DAILY_KEY);
+    prev = raw ? JSON.parse(raw) : null;
+  } catch (e) {}
+
+  if (prev && prev.date === date) {
+    // A replay today — show the standing streak, don't touch it.
+    var live = currentStreak();
+    return live ? '🔥 Current daily streak: ' + live + ' day' + (live === 1 ? '' : 's') + '.' : '';
+  }
+
+  try {
+    window.localStorage.setItem(DAILY_KEY, JSON.stringify({
+      date: date, songsCorrect: songsCorrect, gradedSongs: gradedSongs,
+      fieldsCorrect: fieldsCorrect, fieldsAsked: fieldsAsked
+    }));
+  } catch (e) {}
+
+  var perfect = songsCorrect === DAILY_ROUNDS && gradedSongs === DAILY_ROUNDS;
+  var res = recordDaily(date, perfect);
+  if (res.extended) {
+    var msg = '🔥 Perfect! That’s ' + res.streak + ' perfect dai' + (res.streak === 1 ? 'ly' : 'lies') + ' in a row.';
+    // Only a streak of at least DAILY_STREAK_MIN earns a leaderboard spot.
+    if (res.streak >= DAILY_STREAK_MIN) {
+      pendingSubmit = { board: 'daily-streak', score: res.streak, submitted: false };
+    } else {
+      msg += ' Reach ' + DAILY_STREAK_MIN + ' in a row to make the leaderboard.';
+    }
+    return msg;
+  }
+  if (res.broken) return 'Streak broken — a perfect run tomorrow starts a new one.';
+  return 'Get all ' + DAILY_ROUNDS + ' right to build a daily streak.';
 }
 
 replayMissesBtn.addEventListener('click', function () {
@@ -661,13 +841,15 @@ replayMissesBtn.addEventListener('click', function () {
 // Pieces of the shareable result, so the card and the copied text stay in sync.
 function shareParts() {
   var s = lastSummary || { fieldsCorrect: 0, guessesTotal: 0, date: todayKey(), grid: [], gems: '' };
-  var head = 'Name That Tango ' + s.date;
+  var head = 'Name That Tango ' + (s.survival ? 'Survival ' : '') + s.date;
   var gridLines = [];
   if (s.grid && s.grid.length) {
     if (s.gems) gridLines.push(s.gems);   // 💎 marks any field you got right on every song
     s.grid.forEach(function (row) { gridLines.push(row); });
   }
-  var score = s.fieldsCorrect + '/' + s.guessesTotal + ' Correct';
+  var score = s.survival
+    ? 'Score ' + s.survival.score + ' · reached ' + s.survival.stageLabel
+    : s.fieldsCorrect + '/' + s.guessesTotal + ' Correct';
   return { head: head, gridLines: gridLines, score: score, url: window.location.href };
 }
 
@@ -726,6 +908,67 @@ shareCopyBtn.addEventListener('click', function () {
     done(legacyCopy(text));
   }
 });
+
+// --- Summary leaderboard card (shown with the summary; both boards always,
+// plus a submit row when the session earned a spot). ---
+function showSummaryBoard(contextMsg) {
+  summaryBoardCard.hidden = false;
+  var canSubmit = pendingSubmit && !pendingSubmit.submitted && pendingSubmit.score >= 1;
+  summaryBoardSubmit.hidden = !canSubmit;
+  if (contextMsg) { summaryBoardStatus.textContent = contextMsg; summaryBoardStatus.hidden = false; }
+  else summaryBoardStatus.hidden = true;
+  if (canSubmit) {
+    if (!summaryNameInput.value) summaryNameInput.value = getSavedName();
+    summaryBoardSubmitBtn.disabled = false;
+    summaryBoardSubmitBtn.textContent = 'Add my score';
+    summaryNameInput.placeholder = pendingSubmit.board === 'daily-streak'
+      ? 'Your name (post your streak)' : 'Your name (post your score)';
+  }
+  summaryBoardTables.textContent = 'Loading scores…';
+  fetchBoards().then(function (data) {
+    renderAllBoards(summaryBoardTables, data, null);
+  }).catch(function () {
+    summaryBoardTables.textContent = 'Could not load the leaderboards.';
+  });
+}
+
+function celebrationMsg(you) {
+  if (you.monthlyRank && you.monthlyRank <= 5) {
+    return '🎉 You’re #' + you.monthlyRank + ' this month' +
+      (you.alltimeRank && you.alltimeRank <= 5 ? ' and #' + you.alltimeRank + ' all-time!' : '!');
+  }
+  if (you.alltimeRank && you.alltimeRank <= 5) return '🎉 You’re #' + you.alltimeRank + ' all-time!';
+  return 'Score added — not in the top 5 yet. Keep training!';
+}
+
+if (summaryBoardSubmitBtn) {
+  summaryBoardSubmitBtn.addEventListener('click', function () {
+    if (!pendingSubmit || pendingSubmit.submitted || pendingSubmit.score < 1) return;
+    var name = summaryNameInput.value.replace(/\s+/g, ' ').trim();
+    if (!name) { try { summaryNameInput.focus(); } catch (e) {} return; }
+    saveName(name);
+    summaryBoardSubmitBtn.disabled = true;
+    summaryBoardSubmitBtn.textContent = 'Submitting…';
+    submitScore(pendingSubmit.board, name, pendingSubmit.score).then(function (res) {
+      pendingSubmit.submitted = true;
+      summaryBoardSubmit.hidden = true;
+      var you = res.you || {};
+      summaryBoardStatus.textContent = celebrationMsg(you);
+      summaryBoardStatus.hidden = false;
+      renderAllBoards(summaryBoardTables, res, you);
+    }).catch(function (err) {
+      summaryBoardSubmitBtn.disabled = false;
+      summaryBoardSubmitBtn.textContent = 'Add my score';
+      summaryBoardStatus.textContent = err && err.status === 400
+        ? 'That name can’t be used — try another.'
+        : 'Could not submit — please try again.';
+      summaryBoardStatus.hidden = false;
+    });
+  });
+  summaryNameInput.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') { e.preventDefault(); summaryBoardSubmitBtn.click(); }
+  });
+}
 
 playAgainBtn.addEventListener('click', function () {
   resetSummaryPlayback();

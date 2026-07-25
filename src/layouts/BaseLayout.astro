@@ -93,6 +93,7 @@ const absoluteOgImage = new URL(ogImage, Astro.site).href;
             </button>
             <div class="nav-dropdown">
               <a href="/videos/" class={Astro.url.pathname.startsWith('/videos') && !Astro.url.pathname.startsWith('/videos/interviews') ? 'active' : ''}>All Videos</a>
+              <a href="/videos/#music-visualization" class="nav-sub">Music Visualization</a>
               <a href="/videos/interviews/" class={`nav-sub ${Astro.url.pathname.startsWith('/videos/interviews') ? 'active' : ''}`}>Interviews</a>
             </div>
           </div>
@@ -136,6 +137,7 @@ const absoluteOgImage = new URL(ogImage, Astro.site).href;
           <div>
             <strong>Videos</strong>
             <a href="/videos/">All Videos</a>
+            <a href="/videos/#music-visualization">Music Visualization</a>
             <a href="/videos/interviews/">Interviews</a>
           </div>
           {/* Dancer section hidden for now — restore this block to re-enable. */}

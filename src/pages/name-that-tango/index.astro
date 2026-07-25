@@ -25,6 +25,7 @@ import { eras } from '../../data/eras';
             <option value="bigfour" title="Quiz on D'Arienzo, Di Sarli, Pugliese and Troilo — tango's four most iconic bandleaders">The Big Four</option>
             <option value="goldenage" title="Quiz on any orchestra recording from the Golden Age of tango (1935-1959)">Golden Age</option>
             <option value="daily" title="Five Golden Age songs, the same for every player — a new set each day">Daily Challenge</option>
+            <option value="survival" title="An escalating gauntlet — five songs per stage, from Big Four basics to the whole discography. Three misses ends the run; top scores make the leaderboard">Survival</option>
             <option value="matching" title="Drag or tap tiles to match audio clips to their orchestra (and title)">Matching</option>
           </select>
         </div>
@@ -79,6 +80,12 @@ import { eras } from '../../data/eras';
 
       <button type="button" class="ntt-btn-primary" id="startBtn" disabled title="Start a session with these settings">Start Quiz</button>
 
+      <!-- Leaderboards (always visible: Survival high scores + Daily streaks) -->
+      <div class="ntt-board-card" id="setupBoardCard">
+        <div class="ntt-board-title">Leaderboards</div>
+        <div class="ntt-board-groups" id="setupBoardTables"></div>
+      </div>
+
       <!-- Persistent progress (localStorage) -->
       <div class="ntt-stats-panel" id="statsPanel" hidden>
         <button type="button" class="ntt-stats-toggle" id="statsToggle" aria-expanded="false" title="Lifetime accuracy, saved on this device">Your progress &#9662;</button>
@@ -92,6 +99,7 @@ import { eras } from '../../data/eras';
         <span class="ntt-round-counter" id="roundCounter"></span>
         <span class="ntt-quiz-context" id="quizContext"></span>
         <span class="ntt-score" id="scoreDisplay"></span>
+        <span class="ntt-lives" id="livesDisplay" title="Lives left — a song not fully correct costs one"></span>
         <span class="ntt-streak" id="streakDisplay"></span>
         <button type="button" class="ntt-btn-text" id="endQuizBtn" title="End the session now and see your summary">End Quiz</button>
       </div>
@@ -156,6 +164,17 @@ import { eras } from '../../data/eras';
         <button type="button" class="ntt-btn-primary" id="playAgainBtn" title="Same settings, new random songs">Play Again</button>
         <button type="button" class="ntt-btn-secondary" id="replayMissesBtn" style="display:none;" title="A fresh mini-session with just the songs you missed">Replay missed songs</button>
         <button type="button" class="ntt-btn-secondary" id="changeSettingsBtn" title="Back to setup to pick a different game or difficulty">New Game</button>
+      </div>
+
+      <!-- Leaderboards + score submission (shown after Survival / Daily runs) -->
+      <div class="ntt-board-card" id="summaryBoardCard" hidden>
+        <div class="ntt-board-title" id="summaryBoardTitle">Leaderboards</div>
+        <p class="ntt-board-status" id="summaryBoardStatus" hidden></p>
+        <div class="ntt-board-submit" id="summaryBoardSubmit" hidden>
+          <input type="text" id="summaryNameInput" maxlength="20" placeholder="Your name" autocomplete="nickname" aria-label="Name for the leaderboard">
+          <button type="button" class="ntt-btn-primary" id="summaryBoardSubmitBtn">Add my score</button>
+        </div>
+        <div class="ntt-board-groups" id="summaryBoardTables"></div>
       </div>
 
       <!-- Shareable result card (shown automatically with the summary) -->
@@ -705,6 +724,84 @@ import { eras } from '../../data/eras';
     text-decoration: underline;
   }
   .ntt-share-link:hover { color: var(--color-primary-hover); }
+
+  /* Survival: lives in the quiz header */
+  .ntt-lives { white-space: nowrap; letter-spacing: 1px; font-size: 0.85rem; }
+
+  /* Survival leaderboard (setup screen + post-run summary) */
+  .ntt-board-card {
+    margin-top: 1rem;
+    padding: 1.1rem 1.25rem 1.25rem;
+    border: 1px solid var(--color-orange-200);
+    background: var(--color-orange-50);
+    border-radius: var(--radius-md);
+  }
+  .ntt-board-card[hidden] { display: none; }
+  .ntt-board-title { font-weight: 700; color: var(--color-slate-800); margin-bottom: 0.75rem; }
+  /* One board group per game (Survival, Daily Streak), stacked. */
+  .ntt-board-group + .ntt-board-group {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid var(--color-orange-200);
+  }
+  .ntt-board-group-title {
+    font-size: 0.9rem;
+    font-weight: 700;
+    color: var(--color-slate-700);
+    margin-bottom: 0.6rem;
+  }
+  .ntt-board-group-note {
+    font-weight: 500;
+    font-size: 0.72rem;
+    color: var(--color-slate-500);
+    margin-left: 0.5rem;
+  }
+  .ntt-board-tables {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.25rem;
+    font-size: 0.9rem;
+    color: var(--color-slate-600);
+  }
+  .ntt-board {
+    flex: 1;
+    min-width: 220px;
+    background: white;
+    border: 1px solid var(--color-orange-200);
+    border-radius: var(--radius-sm);
+    padding: 0.75rem 0.9rem;
+  }
+  .ntt-board-heading {
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.8px;
+    color: var(--color-orange-700);
+    margin-bottom: 0.5rem;
+  }
+  .ntt-board-table { width: 100%; border-collapse: collapse; }
+  .ntt-board-table td { padding: 0.3rem 0.3rem; border-bottom: 1px solid var(--color-slate-100); color: var(--color-slate-700); }
+  .ntt-board-table tr:last-child td { border-bottom: none; }
+  .ntt-board-rank { width: 2rem; }
+  .ntt-board-score { text-align: right; font-weight: 700; color: var(--color-slate-900); }
+  .ntt-board-you td { background: var(--color-orange-50); font-weight: 600; }
+  .ntt-board-empty { font-size: 0.85rem; color: var(--color-slate-500); margin: 0; }
+  .ntt-board-submit { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 0.75rem; }
+  /* A class `display` rule ties the UA [hidden] rule on specificity and wins,
+     so the hidden attribute needs an explicit override to actually hide. */
+  .ntt-board-submit[hidden] { display: none; }
+  .ntt-board-submit input {
+    flex: 1;
+    min-width: 160px;
+    padding: 0.5rem 0.6rem;
+    border: 1px solid var(--color-slate-300);
+    border-radius: var(--radius-sm);
+    font-size: 0.95rem;
+    font-family: var(--font-sans);
+  }
+  .ntt-board-submit input:focus { outline: 2px solid var(--color-primary); outline-offset: 1px; }
+  .ntt-board-status { font-size: 0.85rem; font-weight: 600; color: var(--color-orange-700); margin: 0 0 0.75rem; }
+  .ntt-board-status[hidden] { display: none; }
 
   /* Matching game board */
   .ntt-match-rows {

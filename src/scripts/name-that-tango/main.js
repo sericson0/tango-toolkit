@@ -6,7 +6,8 @@
 import {
   ROUNDS_OPTIONS, DEFAULT_ROUNDS, ORCHESTRA_MIN_SONGS, ERA_MIN_BANDLEADERS,
   ERA_MIN_SONGS, SETTINGS_KEY, DAILY_KEY, DAILY_ROUNDS,
-  BIG_FOUR_RANGES, GOLDEN_AGE_RANGES, BIG_FOUR_SET, MODULES
+  BIG_FOUR_RANGES, GOLDEN_AGE_RANGES, BIG_FOUR_SET, MODULES,
+  SURVIVAL_STAGE_SONGS
 } from './config.js';
 import {
   norm, esc, extractYear, joinKey, getSortLastName, uniqueSorted, todayKey,
@@ -16,6 +17,7 @@ import { setupCombo } from './combo.js';
 import { Stats } from './stats.js';
 import { initQuiz, startQuizSession } from './quiz.js';
 import { initMatching, startMatching } from './matching.js';
+import { fetchBoards, renderAllBoards } from './leaderboard.js';
 
 // --- DOM refs (setup section) ---
 var root = document.getElementById('nttRoot');
@@ -44,6 +46,7 @@ var roundsSelect = document.getElementById('roundsSelect');
 var poolInfo = document.getElementById('poolInfo');
 var startBtn = document.getElementById('startBtn');
 var setupSection = document.getElementById('setupSection');
+var setupBoardTables = document.getElementById('setupBoardTables');
 
 // --- State ---
 var allMetadata = [];
@@ -106,6 +109,7 @@ function onDataLoaded(audioMapRows) {
   Stats.render();
   applySavedSettings();
   applyUrlParams();
+  loadSetupBoard();
 }
 
 // --- Setup: game (module) selector ---
@@ -118,10 +122,11 @@ function syncModuleUI() {
   eraPickerWrap.style.display = currentModuleId === 'era' ? '' : 'none';
   bigFourRangeWrap.style.display = currentModuleId === 'bigfour' ? '' : 'none';
   goldenAgeRangeWrap.style.display = currentModuleId === 'goldenage' ? '' : 'none';
-  // Daily has a single fixed level and round count — nothing to configure.
-  levelWrap.style.display = currentModuleId === 'daily' ? 'none' : '';
-  // Matching's round count comes from the selected level (board size), not this picker.
-  roundsWrap.style.display = (currentModuleId === 'matching' || currentModuleId === 'daily') ? 'none' : '';
+  // Daily and Survival have a single fixed level — nothing to configure.
+  levelWrap.style.display = (currentModuleId === 'daily' || currentModuleId === 'survival') ? 'none' : '';
+  // Matching's round count comes from the selected level (board size), not
+  // this picker; Daily's is fixed and Survival runs until three misses.
+  roundsWrap.style.display = (currentModuleId === 'matching' || currentModuleId === 'daily' || currentModuleId === 'survival') ? 'none' : '';
   populateLevelSelect();
   applyBigFourRangeDefault();
   updatePoolInfo();
@@ -250,6 +255,33 @@ function goldenAgePool() {
   });
 }
 
+// The three pools Survival's stage ladder climbs through (see SURVIVAL_STAGES).
+function survivalPools() {
+  var golden = goldenAgePool();
+  return {
+    bigfour: golden.filter(function (r) { return BIG_FOUR_SET[norm(r.Bandleader)]; }),
+    goldenage: golden,
+    all: playableRows
+  };
+}
+
+// --- Leaderboards on the setup screen (always visible, both boards) ---
+// Cached briefly so repeated setup interactions don't each hit the API.
+var boardsCache = { time: 0, promise: null };
+function loadSetupBoard(force) {
+  if (!setupBoardTables) return;
+  var now = Date.now();
+  if (force || !boardsCache.promise || now - boardsCache.time > 15000) {
+    boardsCache = { time: now, promise: fetchBoards() };
+    if (!setupBoardTables.querySelector('.ntt-board')) setupBoardTables.textContent = 'Loading scores…';
+  }
+  boardsCache.promise.then(function (data) {
+    renderAllBoards(setupBoardTables, data, null);
+  }).catch(function () {
+    if (!setupBoardTables.querySelector('.ntt-board')) setupBoardTables.textContent = 'Could not load the leaderboards.';
+  });
+}
+
 function getSelectedPool() {
   if (currentModuleId === 'orchestra') {
     var b = orchestraSelect.value;
@@ -304,6 +336,14 @@ function readDailyRecord() {
 }
 
 function updatePoolInfo() {
+  if (currentModuleId === 'survival') {
+    var sPools = survivalPools();
+    currentPool = sPools.all;
+    poolInfo.textContent = 'Five songs per stage, each stage harder — from Big Four basics to the whole discography, endless at the top. ' +
+      'A song not fully correct costs a life; lose 3 and the run ends. Fully-correct songs are your score.';
+    startBtn.disabled = sPools.bigfour.length < SURVIVAL_STAGE_SONGS || sPools.goldenage.length < SURVIVAL_STAGE_SONGS;
+    return;
+  }
   if (currentModuleId === 'matching') {
     currentPool = [];
     var mCfg = getMatchingConfig();
@@ -367,6 +407,23 @@ startBtn.addEventListener('click', function () {
     resetRand();
     updateSessionUrl();
     startMatching({ cfg: getMatchingConfig(), playableRows: playableRows, eligibleOrchestras: matchingEligibleOrchestras() });
+    return;
+  }
+
+  if (currentModuleId === 'survival') {
+    resetRand();
+    updateSessionUrl();
+    var pools = survivalPools();
+    // Rows are dealt lazily inside the quiz (the run has no fixed length).
+    startQuizSession({
+      moduleId: 'survival',
+      level: MODULES.survival.levels[0],
+      rows: [],
+      pool: pools.bigfour,
+      contextLabel: 'Survival',
+      daily: null,
+      survival: { pools: pools }
+    });
     return;
   }
 
@@ -488,6 +545,8 @@ function showSetup() {
   resetRand();
   setupSection.style.display = '';
   updatePoolInfo();
+  // A game just finished — a fresh score may be on the board now.
+  loadSetupBoard(true);
 }
 
 initQuiz({

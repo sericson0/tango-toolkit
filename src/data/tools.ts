@@ -162,6 +162,26 @@ export const tools: Tool[] = [
     image: '/images/dj-tools/virtualtangodj.png',
     dateAdded: '2026-07-16',
   },
+  {
+    id: 'tangodj',
+    name: 'TangoDJ',
+    tagline: 'Purpose-built software for Argentine tango DJs',
+    description: 'A tool built around how a milonga actually runs: import \
+                 your library, assemble tandas and cortinas, and lay out the night. \
+                 Playback protections ensure a smooth set, \
+                 builtin EQ, and VST3 chain ensure the perfect sound. \
+                 Includes info Display for dancers and free iOS and Android companion \
+                 apps for remote control. <strong>Perpetual license with a 14-day refund period.</strong>',
+    category: 'dj-players',
+    author: 'Rick Kim',
+    url: 'https://tangodj.app/',
+    external: true,
+    feedbackEmail: 'info@bukdugroup.com',
+    price: '$199',
+    platforms: ['Windows', 'MacOS'],
+    image: '/images/dj-tools/tangodj.png',
+    dateAdded: '2026-07-23',
+  },
 
   // ===== Displays & Projections =====
   {

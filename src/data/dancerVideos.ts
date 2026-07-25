@@ -12,13 +12,13 @@
  *   title: 'Video Title',
  *   description: 'A sentence about what the video covers.',
  *   url: 'https://www.youtube.com/watch?v=...', // YouTube or Vimeo
- *   category: 'videos',
+ *   category: 'videos',                          // or 'music-visualization'
  *   author: 'Speaker or channel name',          // optional
  *   dateAdded: '2026-07-16',                     // optional, YYYY-MM-DD
  * },
  */
 
-export type DancerVideoCategoryId = 'videos';
+export type DancerVideoCategoryId = 'videos' | 'music-visualization';
 
 export interface DancerVideoCategory {
   id: DancerVideoCategoryId;
@@ -32,6 +32,11 @@ export const dancerVideoCategories: DancerVideoCategory[] = [
     id: 'videos',
     title: 'Videos',
     blurb: 'Performances, lessons, and talks for tango dancers.',
+  },
+  {
+    id: 'music-visualization',
+    title: 'Music Visualization',
+    blurb: 'Animated visualizations that reveal the structure, layers, and phrasing of classic tango recordings.',
   },
 ];
 
@@ -49,10 +54,19 @@ export interface DancerVideo {
 }
 
 /**
- * The video list. Empty for now — this section is under construction.
+ * The video list.
  * Add entries using the template in the comment at the top of this file.
  */
-export const dancerVideos: DancerVideo[] = [];
+export const dancerVideos: DancerVideo[] = [
+  {
+    id: 'toda-mi-vida-visualization',
+    title: 'Toda Mi Vida',
+    author: 'Aníbal Troilo & Francisco Fiorentino, 1941',
+    url: 'https://www.youtube.com/watch?v=RDcTfSs2lqU',
+    category: 'music-visualization',
+    dateAdded: '2026-07-24',
+  },
+];
 
 /** Videos in a given section, newest first when dates are present. */
 export function videosByCategory(category: DancerVideoCategoryId): DancerVideo[] {
