@@ -165,15 +165,14 @@ export const tools: Tool[] = [
   {
     id: 'tangodj',
     name: 'TangoDJ',
-    tagline: 'Purpose-built software for Argentine tango DJs',
-    description: 'A tool built around how a milonga actually runs: import \
-                 your library, assemble tandas and cortinas, and lay out the night. \
-                 Playback protections ensure a smooth set, \
-                 builtin EQ, and VST3 chain ensure the perfect sound. \
-                 Includes info Display for dancers and free iOS and Android companion \
-                 apps for remote control. <strong>Perpetual license with a 14-day refund period.</strong>',
+    tagline: 'Prepare faster. DJ milongas with confidence.',
+    description: 'Built by a tango DJ for tango DJs, and shaped around how milongas actually run, \
+                 TangoDJ brings library management, tanda building, precise playlist timing, \
+                 private preview, playback safeguards, and sound control into one focused workspace. \
+                 The included iOS and Android companion lets you control playback, playlists, and \
+                 sound from anywhere in the venue. <strong>One-time purchase with a 14-day refund period.</strong>',
     category: 'dj-players',
-    author: 'Rick Kim',
+    author: 'Ryangguk Kim',
     url: 'https://tangodj.app/',
     external: true,
     feedbackEmail: 'info@bukdugroup.com',
