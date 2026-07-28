@@ -16,7 +16,20 @@ export type DancerSectionId =
   | 'musicality'
   | 'connection'
   | 'steps'
+  | 'drills'
   | 'resources';
+
+/**
+ * A page that belongs on a hub but does not live in the content collection —
+ * a printable sheet, a tool, an index. Rendered after the section's topics.
+ */
+export interface SectionExtra {
+  title: string;
+  summary: string;
+  href: string;
+  /** Small label on the card — "Printable", "Tool", ... */
+  badge?: string;
+}
 
 export interface DancerSection {
   id: DancerSectionId;
@@ -28,12 +41,13 @@ export interface DancerSection {
   blurb: string;
   /** Longer intro, used as the hub page lead. */
   lead: string;
-  /** Which toolbox icon represents the section. */
+  /** Which toolbox icon represents the section. See TOOL_ICONS in ToolIcon.astro. */
   tool:
     | 'toolbox'
     | 'sliders'
     | 'gears'
     | 'tools'
+    | 'hammer'
     | 'compass';
   /** Hidden sections generate no pages and appear in no menus. */
   hidden?: boolean;
@@ -48,6 +62,13 @@ export interface DancerSection {
    * beneath this hub's topics — books, sites, and downloads by other people.
    */
   showResourceLibrary?: boolean;
+  /**
+   * Also render the filterable drill library (src/data/dancerDrills.ts)
+   * beneath this hub's topics.
+   */
+  showDrillLibrary?: boolean;
+  /** Non-collection pages to list on the hub after the topics. */
+  extras?: SectionExtra[];
 }
 
 export const dancerSections: DancerSection[] = [
@@ -56,9 +77,18 @@ export const dancerSections: DancerSection[] = [
     title: 'Starter Kit',
     navTitle: 'Starter Kit',
     blurb: 'New to tango? Start here.',
-    lead: 'What to expect, what to work on first, and how to get the most out of your first year of tango. Read it in order — each part builds on the one before.',
+    lead: 'What tango actually is, what to work on first, the movements everything is built from, and how to survive your first milonga. Read it in order — each part builds on the one before.',
     tool: 'toolbox',
     hubLayout: 'path',
+    extras: [
+      {
+        title: 'Quick Reference Sheet',
+        summary:
+          'The whole starter kit on two pages — the pillars, the movements, the milonga codes, and a first-month checklist. Print it or save it to your phone.',
+        href: '/dancer/starter-kit/cheat-sheet/',
+        badge: 'Printable',
+      },
+    ],
   },
   {
     id: 'musicality',
@@ -85,6 +115,15 @@ export const dancerSections: DancerSection[] = [
     blurb: 'The walk, ochos, crosses, pivots — one tool at a time.',
     lead: 'Each movement gets its own page: what it is, why it happens, how to make it feel good, and exercises you can take to a practica.',
     tool: 'tools',
+  },
+  {
+    id: 'drills',
+    title: 'Drills & Exercises',
+    navTitle: 'Drills & Exercises',
+    blurb: 'Things to actually do, sorted by what they fix.',
+    lead: 'A searchable library of drills — most of them ten minutes, many of them alone in a kitchen. Filter by what you want to work on, how much time you have, and whether you have a partner.',
+    tool: 'hammer',
+    showDrillLibrary: true,
   },
   {
     id: 'resources',

@@ -3,14 +3,23 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import ToolIcon from '../../components/dancer/ToolIcon.astro';
 import { getSectionTopics, topicHref } from '../../data/dancerContent';
 import { visibleDancerSections } from '../../data/dancerSections';
+import { dancerDrills } from '../../data/dancerDrills';
 
 // Each section card shows how much is behind it, so an empty section reads as
-// "being written" rather than as a broken link.
+// "being written" rather than as a broken link. Sections carrying a library
+// instead of content topics count their library entries.
 const sections = await Promise.all(
-  visibleDancerSections.map(async (section) => ({
-    section,
-    topics: await getSectionTopics(section.id),
-  })),
+  visibleDancerSections.map(async (section) => {
+    const topics = await getSectionTopics(section.id);
+    const extras = section.extras?.length ?? 0;
+    const count = section.showDrillLibrary ? dancerDrills.length : topics.length + extras;
+    const noun = section.showDrillLibrary ? 'drill' : 'page';
+    return {
+      section,
+      topics,
+      countLabel: count === 0 ? 'Coming soon' : `${count} ${noun}${count === 1 ? '' : 's'}`,
+    };
+  }),
 );
 
 const starterKit = sections.find((s) => s.section.id === 'starter-kit');
@@ -58,7 +67,7 @@ const elsewhere = [
       </p>
 
       <div class="toolbox-grid">
-        {sections.map(({ section, topics }) => (
+        {sections.map(({ section, countLabel }) => (
           <a href={`/dancer/${section.id}/`} class="toolbox-card">
             <span class="toolbox-card-icon" aria-hidden="true">
               <ToolIcon name={section.tool} size={30} />
@@ -66,11 +75,7 @@ const elsewhere = [
             <h2>{section.title}</h2>
             <p>{section.blurb}</p>
             <span class="toolbox-card-foot">
-              <span class="toolbox-card-count">
-                {topics.length === 0
-                  ? 'Coming soon'
-                  : `${topics.length} ${topics.length === 1 ? 'page' : 'pages'}`}
-              </span>
+              <span class="toolbox-card-count">{countLabel}</span>
               <span class="toolbox-card-cta">Open &rarr;</span>
             </span>
           </a>

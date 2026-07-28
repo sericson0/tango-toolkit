@@ -1,0 +1,753 @@
+---
+import ToolIcon from './ToolIcon.astro';
+import {
+  sortedDrills,
+  drillPillars,
+  DRILL_MODE_LABELS,
+  DRILL_LEVEL_LABELS,
+} from '../../data/dancerDrills';
+
+/**
+ * The filterable drill library, rendered on the /dancer/drills/ hub.
+ *
+ * Every drill in src/data/dancerDrills.ts is rendered once, server-side, and
+ * the client script only shows and hides them — so the whole library is in the
+ * HTML for search engines and for anyone with JavaScript off.
+ */
+const drills = sortedDrills;
+
+const cards = drills.map((d) => ({
+  drill: d,
+  pillar: drillPillars.find((p) => p.id === d.pillar)!,
+  // Everything the search box should match against.
+  searchText: [
+    d.title,
+    d.goal,
+    d.watchFor ?? '',
+    d.progression ?? '',
+    ...d.steps,
+    d.related?.label ?? '',
+    drillPillars.find((p) => p.id === d.pillar)?.label ?? '',
+    DRILL_MODE_LABELS[d.mode],
+  ]
+    .join(' ')
+    .toLowerCase(),
+}));
+
+const pillarCounts = drillPillars.map((p) => ({
+  ...p,
+  count: drills.filter((d) => d.pillar === p.id).length,
+}));
+---
+
+<section class="drills" id="drills">
+  <header class="drills-head">
+    <h2>The drill library</h2>
+    <p class="drills-lead">
+      {drills.length} drills, sorted by the four pillars from the
+      <a href="/dancer/starter-kit/where-to-start/">starter kit</a>. Most of the
+      body and music ones need nothing but a floor and ten minutes. Tick them off as
+      you go &mdash; progress is saved in this browser.
+    </p>
+  </header>
+
+  <div class="drills-toolbar">
+    <div class="drills-search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="8" /><line x1="21" y1="21" x2="16.65" y2="16.65" />
+      </svg>
+      <input
+        type="search"
+        id="drill-search"
+        placeholder="Search drills — balance, pivot, cabeceo…"
+        aria-label="Search drills"
+        autocomplete="off"
+      />
+      <button type="button" class="drills-clear" data-clear hidden aria-label="Clear search">&times;</button>
+    </div>
+
+    <div class="drills-selects">
+      <label class="drills-field">
+        <span>Pillar</span>
+        <select id="drill-pillar">
+          <option value="">All pillars</option>
+          {pillarCounts.map((p) => (
+            <option value={p.id}>{p.label} ({p.count})</option>
+          ))}
+        </select>
+      </label>
+
+      <label class="drills-field">
+        <span>Setting</span>
+        <select id="drill-mode">
+          <option value="">Anywhere</option>
+          <option value="solo">On your own</option>
+          <option value="partner">With a partner</option>
+        </select>
+      </label>
+
+      <label class="drills-field">
+        <span>Level</span>
+        <select id="drill-level">
+          <option value="">Any level</option>
+          <option value="new">New dancers</option>
+          <option value="developing">Once you have the basics</option>
+        </select>
+      </label>
+
+      <label class="drills-field drills-field--check">
+        <input type="checkbox" id="drill-quick" />
+        <span>Under 6 min</span>
+      </label>
+    </div>
+  </div>
+
+  <div class="drills-status">
+    <span data-count>{drills.length} drills</span>
+    <button type="button" class="drills-reset" data-reset hidden>Reset filters</button>
+  </div>
+
+  <div class="drills-list" data-list>
+    {drillPillars.map((pillar) => (
+      <section class="drills-group" data-group={pillar.id}>
+        <header class="drills-group-head">
+          <span class="drills-group-icon" aria-hidden="true">
+            <ToolIcon name={pillar.tool} size={20} />
+          </span>
+          <div>
+            <h3>{pillar.label}</h3>
+            <p>{pillar.blurb}</p>
+          </div>
+        </header>
+
+        <div class="drills-cards">
+          {cards
+            .filter((c) => c.drill.pillar === pillar.id)
+            .map(({ drill, searchText }) => (
+              <details
+                class="drill"
+                data-drill={drill.id}
+                data-pillar={drill.pillar}
+                data-mode={drill.mode}
+                data-level={drill.level}
+                data-minutes={drill.minutes}
+                data-search={searchText}
+              >
+                <summary class="drill-summary">
+                  <button
+                    type="button"
+                    class="drill-tick"
+                    data-tick={drill.id}
+                    aria-pressed="false"
+                    aria-label={`Mark "${drill.title}" as done`}
+                  >
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                      <polyline points="20 6 9 17 4 12" />
+                    </svg>
+                  </button>
+                  <span class="drill-main">
+                    <span class="drill-title">{drill.title}</span>
+                    <span class="drill-goal">{drill.goal}</span>
+                    <span class="drill-meta">
+                      <span class="drill-chip drill-chip--time">{drill.minutes} min</span>
+                      <span class="drill-chip">{DRILL_MODE_LABELS[drill.mode]}</span>
+                      {drill.level !== 'all' && (
+                        <span class="drill-chip">{DRILL_LEVEL_LABELS[drill.level]}</span>
+                      )}
+                      {drill.music && <span class="drill-chip">Needs music</span>}
+                    </span>
+                  </span>
+                  <svg class="drill-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+                    <polyline points="6 9 12 15 18 9" />
+                  </svg>
+                </summary>
+
+                <div class="drill-body">
+                  <ol class="drill-steps">
+                    {drill.steps.map((step) => <li>{step}</li>)}
+                  </ol>
+
+                  {drill.watchFor && (
+                    <p class="drill-note drill-note--watch">
+                      <strong>Watch for</strong>
+                      {drill.watchFor}
+                    </p>
+                  )}
+
+                  {drill.progression && (
+                    <p class="drill-note drill-note--next">
+                      <strong>Make it harder</strong>
+                      {drill.progression}
+                    </p>
+                  )}
+
+                  {drill.related && (
+                    <a class="drill-related" href={drill.related.href}>
+                      The technique behind it: {drill.related.label} &rarr;
+                    </a>
+                  )}
+                </div>
+              </details>
+            ))}
+        </div>
+      </section>
+    ))}
+  </div>
+
+  <p class="drills-empty" data-empty hidden>
+    Nothing matches that. <button type="button" data-reset>Reset the filters</button> and try again.
+  </p>
+</section>
+
+<script is:inline>
+  (function () {
+    var root = document.getElementById('drills');
+    if (!root) return;
+
+    var search = document.getElementById('drill-search');
+    var pillarSel = document.getElementById('drill-pillar');
+    var modeSel = document.getElementById('drill-mode');
+    var levelSel = document.getElementById('drill-level');
+    var quickBox = document.getElementById('drill-quick');
+    var countEl = root.querySelector('[data-count]');
+    var emptyEl = root.querySelector('[data-empty]');
+    var clearBtn = root.querySelector('[data-clear]');
+    var groups = Array.prototype.slice.call(root.querySelectorAll('[data-group]'));
+    var drills = Array.prototype.slice.call(root.querySelectorAll('[data-drill]'));
+
+    var QUICK_MAX = 6;
+    var STORE = 'tt-drills-done';
+
+    // ---- done state -------------------------------------------------------
+    function loadDone() {
+      try {
+        return JSON.parse(localStorage.getItem(STORE) || '{}') || {};
+      } catch (e) {
+        return {};
+      }
+    }
+
+    function saveDone(done) {
+      try {
+        localStorage.setItem(STORE, JSON.stringify(done));
+      } catch (e) {
+        /* private browsing — the page still works, it just does not remember */
+      }
+    }
+
+    var done = loadDone();
+
+    function paintDone() {
+      Array.prototype.forEach.call(root.querySelectorAll('[data-tick]'), function (btn) {
+        var isDone = !!done[btn.getAttribute('data-tick')];
+        btn.setAttribute('aria-pressed', isDone ? 'true' : 'false');
+        var card = btn.closest('[data-drill]');
+        if (card) card.classList.toggle('is-done', isDone);
+      });
+    }
+
+    root.addEventListener('click', function (e) {
+      var btn = e.target.closest ? e.target.closest('[data-tick]') : null;
+      if (!btn) return;
+      // The tick lives inside <summary>; stop it toggling the disclosure.
+      e.preventDefault();
+      e.stopPropagation();
+      var id = btn.getAttribute('data-tick');
+      if (done[id]) delete done[id];
+      else done[id] = 1;
+      saveDone(done);
+      paintDone();
+    });
+
+    // ---- filtering --------------------------------------------------------
+    function render() {
+      var query = (search.value || '').trim().toLowerCase();
+      var pillar = pillarSel.value;
+      var mode = modeSel.value;
+      var level = levelSel.value;
+      var quick = quickBox.checked;
+      var filtering = !!(query || pillar || mode || level || quick);
+      var shown = 0;
+
+      drills.forEach(function (card) {
+        var ok = true;
+        if (query && card.getAttribute('data-search').indexOf(query) === -1) ok = false;
+        if (ok && pillar && card.getAttribute('data-pillar') !== pillar) ok = false;
+        // "either" drills belong to both settings.
+        if (ok && mode) {
+          var m = card.getAttribute('data-mode');
+          if (m !== mode && m !== 'either') ok = false;
+        }
+        // "all"-level drills are never filtered out by level.
+        if (ok && level) {
+          var l = card.getAttribute('data-level');
+          if (l !== level && l !== 'all') ok = false;
+        }
+        if (ok && quick && Number(card.getAttribute('data-minutes')) > QUICK_MAX) ok = false;
+
+        card.hidden = !ok;
+        if (!ok) card.open = false;
+        if (ok) shown++;
+      });
+
+      // Hide a pillar heading when nothing under it survived.
+      groups.forEach(function (group) {
+        var any = Array.prototype.some.call(
+          group.querySelectorAll('[data-drill]'),
+          function (c) { return !c.hidden; }
+        );
+        group.hidden = !any;
+      });
+
+      countEl.textContent = shown === drills.length
+        ? drills.length + ' drills'
+        : shown + ' of ' + drills.length + ' drills';
+      emptyEl.hidden = shown !== 0;
+      clearBtn.hidden = !query;
+      Array.prototype.forEach.call(root.querySelectorAll('[data-reset]'), function (b) {
+        b.hidden = !filtering;
+      });
+    }
+
+    function reset() {
+      search.value = '';
+      pillarSel.value = '';
+      modeSel.value = '';
+      levelSel.value = '';
+      quickBox.checked = false;
+      render();
+    }
+
+    search.addEventListener('input', render);
+    pillarSel.addEventListener('change', render);
+    modeSel.addEventListener('change', render);
+    levelSel.addEventListener('change', render);
+    quickBox.addEventListener('change', render);
+    clearBtn.addEventListener('click', function () {
+      search.value = '';
+      search.focus();
+      render();
+    });
+    root.addEventListener('click', function (e) {
+      var b = e.target.closest ? e.target.closest('[data-reset]') : null;
+      if (b) reset();
+    });
+
+    // Deep link: /dancer/drills/#body opens that pillar filtered. The hash is
+    // not an element id, so nothing scrolls on its own — do it here.
+    var hash = (window.location.hash || '').replace('#', '');
+    var deepLinked =
+      hash && Array.prototype.some.call(pillarSel.options, function (o) { return o.value === hash; });
+    if (deepLinked) pillarSel.value = hash;
+
+    paintDone();
+    render();
+
+    if (deepLinked) root.scrollIntoView({ behavior: 'auto', block: 'start' });
+  })();
+</script>
+
+<style>
+  .drills {
+    margin-top: 1rem;
+    scroll-margin-top: 5rem;
+  }
+
+  .drills-head h2 {
+    margin: 0 0 0.35rem;
+    font-size: 1.5rem;
+  }
+
+  .drills-lead {
+    margin: 0 0 1.5rem;
+    max-width: 60ch;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--color-slate-600);
+  }
+
+  .drills-lead a {
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  /* ===== Toolbar ===== */
+  .drills-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.85rem;
+    align-items: flex-end;
+    padding: 1rem 1.1rem;
+    background: white;
+    border: 1px solid var(--color-slate-200);
+    border-radius: var(--radius-lg);
+  }
+
+  .drills-search {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex: 1 1 18rem;
+  }
+
+  .drills-search svg {
+    position: absolute;
+    left: 0.7rem;
+    width: 1rem;
+    height: 1rem;
+    color: var(--color-slate-400);
+    pointer-events: none;
+  }
+
+  .drills-search input {
+    width: 100%;
+    padding: 0.55rem 2rem 0.55rem 2.2rem;
+    font: inherit;
+    font-size: 0.92rem;
+    color: var(--color-slate-800);
+    background: var(--color-slate-50);
+    border: 1px solid var(--color-slate-200);
+    border-radius: var(--radius-md);
+  }
+
+  .drills-search input:focus {
+    outline: none;
+    border-color: var(--color-orange-400);
+    background: white;
+  }
+
+  .drills-search input::-webkit-search-cancel-button { display: none; }
+
+  .drills-clear {
+    position: absolute;
+    right: 0.4rem;
+    display: grid;
+    place-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    border: 0;
+    border-radius: 999px;
+    background: transparent;
+    color: var(--color-slate-500);
+    font-size: 1.1rem;
+    line-height: 1;
+    cursor: pointer;
+  }
+
+  .drills-clear:hover { background: var(--color-slate-100); }
+
+  .drills-selects {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .drills-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+  }
+
+  .drills-field > span {
+    font-size: 0.7rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--color-slate-400);
+  }
+
+  .drills-field select {
+    padding: 0.5rem 0.6rem;
+    font: inherit;
+    font-size: 0.88rem;
+    color: var(--color-slate-700);
+    background: var(--color-slate-50);
+    border: 1px solid var(--color-slate-200);
+    border-radius: var(--radius-md);
+    cursor: pointer;
+  }
+
+  .drills-field select:focus {
+    outline: none;
+    border-color: var(--color-orange-400);
+  }
+
+  .drills-field--check {
+    flex-direction: row;
+    align-items: center;
+    gap: 0.4rem;
+    padding-bottom: 0.6rem;
+  }
+
+  .drills-field--check input {
+    width: 1rem;
+    height: 1rem;
+    accent-color: var(--color-primary);
+    cursor: pointer;
+  }
+
+  .drills-field--check > span {
+    font-size: 0.85rem;
+    font-weight: 500;
+    letter-spacing: 0;
+    text-transform: none;
+    color: var(--color-slate-600);
+    cursor: pointer;
+  }
+
+  /* ===== Status row ===== */
+  .drills-status {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin: 1rem 0 1.25rem;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    text-transform: uppercase;
+    color: var(--color-slate-400);
+  }
+
+  .drills-reset,
+  .drills-empty button {
+    padding: 0;
+    border: 0;
+    background: none;
+    font: inherit;
+    color: var(--color-primary);
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: 2px;
+  }
+
+  /* ===== Groups ===== */
+  .drills-group + .drills-group { margin-top: 2.5rem; }
+
+  .drills-group-head {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.8rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid var(--color-slate-200);
+  }
+
+  .drills-group-icon {
+    display: grid;
+    place-items: center;
+    width: 2.4rem;
+    height: 2.4rem;
+    flex-shrink: 0;
+    border-radius: var(--radius-md);
+    background: var(--color-orange-50);
+    color: var(--color-orange-600);
+  }
+
+  .drills-group-head h3 {
+    margin: 0 0 0.15rem;
+    font-size: 1.2rem;
+  }
+
+  .drills-group-head p {
+    margin: 0;
+    max-width: 62ch;
+    font-size: 0.88rem;
+    line-height: 1.5;
+    color: var(--color-slate-500);
+  }
+
+  .drills-cards {
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+  }
+
+  /* The script hides filtered-out drills and empty pillar headings. Stated
+     explicitly so a `display` rule elsewhere can never outrank [hidden]. */
+  .drill[hidden],
+  .drills-group[hidden] {
+    display: none;
+  }
+
+  /* ===== A drill ===== */
+  .drill {
+    background: white;
+    border: 1px solid var(--color-slate-200);
+    border-radius: var(--radius-lg);
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .drill:hover { border-color: var(--color-orange-300); }
+  .drill[open] {
+    border-color: var(--color-orange-400);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .drill.is-done { background: var(--color-slate-50); }
+  .drill.is-done .drill-title {
+    color: var(--color-slate-400);
+    text-decoration: line-through;
+  }
+
+  .drill-summary {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.85rem;
+    padding: 0.95rem 1.1rem;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .drill-summary::-webkit-details-marker { display: none; }
+
+  .drill-tick {
+    display: grid;
+    place-items: center;
+    width: 1.5rem;
+    height: 1.5rem;
+    margin-top: 0.1rem;
+    flex-shrink: 0;
+    border: 1.5px solid var(--color-slate-300);
+    border-radius: var(--radius-sm);
+    background: white;
+    color: transparent;
+    cursor: pointer;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+  }
+
+  .drill-tick svg { width: 0.85rem; height: 0.85rem; }
+
+  .drill-tick:hover { border-color: var(--color-orange-400); }
+
+  .drill-tick[aria-pressed='true'] {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: white;
+  }
+
+  .drill-main {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .drill-title {
+    font-weight: 600;
+    font-size: 1rem;
+    color: var(--color-slate-800);
+  }
+
+  .drill-goal {
+    font-size: 0.88rem;
+    line-height: 1.5;
+    color: var(--color-slate-600);
+  }
+
+  .drill-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.35rem;
+    margin-top: 0.15rem;
+  }
+
+  .drill-chip {
+    padding: 0.1rem 0.5rem;
+    border-radius: 999px;
+    background: var(--color-slate-100);
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--color-slate-500);
+  }
+
+  .drill-chip--time {
+    background: var(--color-orange-50);
+    color: var(--color-orange-700);
+  }
+
+  .drill-chevron {
+    flex-shrink: 0;
+    width: 1.1rem;
+    height: 1.1rem;
+    margin-top: 0.3rem;
+    color: var(--color-slate-400);
+    transition: transform 0.2s;
+  }
+
+  .drill[open] .drill-chevron { transform: rotate(180deg); }
+
+  .drill-body {
+    padding: 0 1.1rem 1.1rem 3.45rem;
+  }
+
+  .drill-steps {
+    margin: 0 0 0.9rem;
+    padding-left: 1.1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .drill-steps li {
+    font-size: 0.9rem;
+    line-height: 1.55;
+    color: var(--color-slate-700);
+  }
+
+  .drill-steps li::marker {
+    color: var(--color-orange-500);
+    font-weight: 700;
+  }
+
+  .drill-note {
+    margin: 0 0 0.6rem;
+    padding: 0.65rem 0.85rem;
+    border-radius: var(--radius-md);
+    font-size: 0.87rem;
+    line-height: 1.55;
+  }
+
+  .drill-note strong {
+    display: block;
+    margin-bottom: 0.1rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+
+  .drill-note--watch {
+    background: var(--color-red-50);
+    color: var(--color-slate-700);
+  }
+
+  .drill-note--watch strong { color: var(--color-red-700); }
+
+  .drill-note--next {
+    background: var(--color-green-50);
+    color: var(--color-slate-700);
+  }
+
+  .drill-note--next strong { color: var(--color-green-700); }
+
+  .drill-related {
+    display: inline-block;
+    margin-top: 0.2rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+  }
+
+  .drills-empty {
+    padding: 2rem 1rem;
+    text-align: center;
+    color: var(--color-slate-500);
+  }
+
+  @media (max-width: 640px) {
+    .drills-selects { width: 100%; }
+    .drills-field { flex: 1 1 8rem; }
+    .drills-field select { width: 100%; }
+    .drill-body { padding-left: 1.1rem; }
+  }
+</style>

@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../../layouts/BaseLayout.astro';
 import ToolIcon from '../../../components/dancer/ToolIcon.astro';
+import DrillLibrary from '../../../components/dancer/DrillLibrary.astro';
 import { getSectionTopics, topicHref } from '../../../data/dancerContent';
 import { dancerResources } from '../../../data/dancerResources';
 import {
@@ -23,6 +24,9 @@ const { section } = Astro.props;
 const topics = await getSectionTopics(section.id);
 const isPath = section.hubLayout === 'path';
 const others = visibleDancerSections.filter((s) => s.id !== section.id);
+const extras = section.extras ?? [];
+// A section can carry a library instead of topics — only then is it "empty".
+const isEmpty = topics.length === 0 && extras.length === 0 && !section.showDrillLibrary;
 
 const LEVEL_LABELS: Record<string, string> = {
   new: 'New dancers',
@@ -49,13 +53,13 @@ const LEVEL_LABELS: Record<string, string> = {
 
   <div class="hub-body">
     <div class="container">
-      {topics.length === 0 ? (
+      {isEmpty ? (
         <p class="callout callout-warning hub-empty">
           <strong>Being written</strong>
           There is nothing here yet. If there is something you want covered first,
           say so at <a href="mailto:tangotoolkit@gmail.com">tangotoolkit@gmail.com</a>.
         </p>
-      ) : isPath ? (
+      ) : topics.length === 0 ? null : isPath ? (
         <ol class="hub-path">
           {topics.map((topic, i) => (
             <li>
@@ -89,6 +93,34 @@ const LEVEL_LABELS: Record<string, string> = {
           ))}
         </div>
       )}
+
+      {extras.length > 0 && (
+        <ul class="hub-extras">
+          {extras.map((extra) => (
+            <li>
+              <a href={extra.href} class="hub-extra">
+                <span class="hub-extra-icon" aria-hidden="true">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <polyline points="6 9 6 2 18 2 18 9" />
+                    <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+                    <rect x="6" y="14" width="12" height="8" />
+                  </svg>
+                </span>
+                <span class="hub-extra-body">
+                  <span class="hub-extra-title">
+                    {extra.title}
+                    {extra.badge && <span class="hub-extra-badge">{extra.badge}</span>}
+                  </span>
+                  <span class="hub-extra-summary">{extra.summary}</span>
+                </span>
+                <span class="hub-extra-arrow" aria-hidden="true">&rarr;</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      )}
+
+      {section.showDrillLibrary && <DrillLibrary />}
 
       {section.showResourceLibrary && dancerResources.length > 0 && (
         <section class="hub-library">
@@ -341,6 +373,84 @@ const LEVEL_LABELS: Record<string, string> = {
   .hub-path-arrow {
     flex-shrink: 0;
     color: var(--color-primary);
+    font-weight: 600;
+  }
+
+  /* ===== Extras (printables, tools) ===== */
+  .hub-extras {
+    list-style: none;
+    margin: 0.75rem 0 0;
+    padding: 0;
+    max-width: 46rem;
+  }
+
+  .hub-extra {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 1rem 1.25rem;
+    background: var(--color-orange-50);
+    border: 1px dashed var(--color-orange-300);
+    border-radius: var(--radius-lg);
+    text-decoration: none;
+    color: inherit;
+    transition: border-color 0.2s, background 0.2s;
+  }
+
+  .hub-extra:hover {
+    border-color: var(--color-orange-500);
+    background: var(--color-orange-100);
+    color: inherit;
+  }
+
+  .hub-extra-icon {
+    display: grid;
+    place-items: center;
+    width: 2.1rem;
+    height: 2.1rem;
+    flex-shrink: 0;
+    color: var(--color-orange-600);
+  }
+
+  .hub-extra-icon svg { width: 1.35rem; height: 1.35rem; }
+
+  .hub-extra-body {
+    display: flex;
+    flex-direction: column;
+    gap: 0.15rem;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .hub-extra-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+    font-weight: 600;
+    color: var(--color-slate-800);
+  }
+
+  .hub-extra-badge {
+    padding: 0.1rem 0.45rem;
+    border-radius: 999px;
+    background: var(--color-orange-600);
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: white;
+  }
+
+  .hub-extra-summary {
+    font-size: 0.88rem;
+    line-height: 1.45;
+    color: var(--color-slate-600);
+  }
+
+  .hub-extra-arrow {
+    flex-shrink: 0;
+    color: var(--color-orange-600);
     font-weight: 600;
   }
 
