@@ -66,6 +66,22 @@ export const dancerVideos: DancerVideo[] = [
     category: 'music-visualization',
     dateAdded: '2026-07-24',
   },
+  {
+    id: 'nada-visualization',
+    title: 'Nada',
+    author: 'Carlos Di Sarli & Alberto Podestá, 1944',
+    url: 'https://www.youtube.com/watch?v=FxGWhKzwRYY',
+    category: 'music-visualization',
+    dateAdded: '2026-07-28',
+  },
+  {
+    id: 'el-flete-visualization',
+    title: 'El Flete',
+    author: 'Juan D\'Arienzo, 1936',
+    url: 'https://www.youtube.com/watch?v=RK_iDpPXP1s',
+    category: 'music-visualization',
+    dateAdded: '2026-07-28',
+  },
 ];
 
 /** Videos in a given section, newest first when dates are present. */
