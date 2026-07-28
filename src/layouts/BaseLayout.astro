@@ -1,5 +1,6 @@
 ---
 import '../styles/global.css';
+import { visibleDancerSections } from '../data/dancerSections';
 
 interface Props {
   title: string;
@@ -85,8 +86,22 @@ const absoluteOgImage = new URL(ogImage, Astro.site).href;
               <a href="/dj/articles/" class={Astro.url.pathname.startsWith('/dj/articles') || Astro.url.pathname.startsWith('/dj/history') ? 'active' : ''}>Resources &amp; Articles</a>
             </div>
           </div>
-          {/* Dancer section hidden for now — restore this link to re-enable. */}
-          {/* <a href="/dancer/" class={Astro.url.pathname.startsWith('/dancer') ? 'active' : ''}>Dancer</a> */}
+          <div class="nav-group">
+            <button type="button" class={`nav-group-toggle ${Astro.url.pathname.startsWith('/dancer') ? 'active' : ''}`} aria-expanded="false" aria-haspopup="true">
+              Dancer <span class="nav-caret" aria-hidden="true">&#9662;</span>
+            </button>
+            <div class="nav-dropdown">
+              <a href="/dancer/" class={Astro.url.pathname === '/dancer/' ? 'active' : ''}>Dancer Toolkit</a>
+              <div class="nav-dropdown-divider" role="separator"></div>
+              {/* Driven by src/data/dancerSections.ts — hidden sections never appear. */}
+              {visibleDancerSections.map((section) => (
+                <a
+                  href={`/dancer/${section.id}/`}
+                  class={`nav-sub ${Astro.url.pathname.startsWith(`/dancer/${section.id}`) ? 'active' : ''}`}
+                >{section.navTitle}</a>
+              ))}
+            </div>
+          </div>
           <div class="nav-group">
             <button type="button" class={`nav-group-toggle ${Astro.url.pathname.startsWith('/videos') ? 'active' : ''}`} aria-expanded="false" aria-haspopup="true">
               Videos <span class="nav-caret" aria-hidden="true">&#9662;</span>
@@ -140,11 +155,13 @@ const absoluteOgImage = new URL(ogImage, Astro.site).href;
             <a href="/videos/#music-visualization">Music Visualization</a>
             <a href="/videos/interviews/">Interviews</a>
           </div>
-          {/* Dancer section hidden for now — restore this block to re-enable. */}
-          {/* <div>
+          <div>
             <strong>For Dancers</strong>
-            <a href="/dancer/">Dancer Resources</a>
-          </div> */}
+            <a href="/dancer/">Dancer Toolkit</a>
+            {visibleDancerSections.map((section) => (
+              <a href={`/dancer/${section.id}/`}>{section.navTitle}</a>
+            ))}
+          </div>
           <div>
             <strong>Help</strong>
             <a href="/dj/faq/">FAQ & Changelog</a>

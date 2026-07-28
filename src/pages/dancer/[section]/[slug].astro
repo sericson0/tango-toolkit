@@ -1,0 +1,43 @@
+---
+import DancerTopicLayout from '../../../layouts/DancerTopicLayout.astro';
+import {
+  getDancerTopics,
+  getSectionTopics,
+  getSiblingTopics,
+  topicSection,
+  topicSlug,
+  type DancerTopic,
+} from '../../../data/dancerContent';
+import { getDancerSection } from '../../../data/dancerSections';
+
+export async function getStaticPaths() {
+  const topics = await getDancerTopics();
+  return topics.map((entry) => ({
+    params: { section: topicSection(entry), slug: topicSlug(entry) },
+    props: { entry },
+  }));
+}
+
+interface Props {
+  entry: DancerTopic;
+}
+
+const { entry } = Astro.props;
+const sectionId = topicSection(entry);
+const section = getDancerSection(sectionId)!;
+
+const { Content, headings } = await entry.render();
+const siblings = await getSectionTopics(sectionId);
+const { prev, next } = await getSiblingTopics(entry);
+---
+
+<DancerTopicLayout
+  entry={entry}
+  section={section}
+  headings={headings}
+  siblings={siblings}
+  prev={prev}
+  next={next}
+>
+  <Content />
+</DancerTopicLayout>

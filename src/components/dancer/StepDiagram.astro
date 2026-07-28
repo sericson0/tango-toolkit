@@ -1,0 +1,265 @@
+---
+/**
+ * Footprint diagrams, drawn from data instead of scanned from a notebook.
+ *
+ *   <StepDiagram
+ *     caption="Walk to the cross — together"
+ *     lanes={[0, 1.1]}
+ *     feet={[
+ *       { role: 'leader',   x: 0,   y: 0, foot: 'L', label: 1 },
+ *       { role: 'follower', x: 1.1, y: 0, foot: 'R', label: 1 },
+ *     ]}
+ *   />
+ *
+ * Coordinates
+ *   x  across the floor, left to right. One unit ≈ one foot width.
+ *   y  along the line of dance. Higher y is FURTHER ALONG (up the page),
+ *      so step 1 can sit at y: 0 and step 8 at y: 7 and read naturally.
+ *
+ * Everything is optional except `feet`. Bounds, size, and the legend are
+ * worked out from the data.
+ */
+type Role = 'leader' | 'follower';
+
+interface Foot {
+  role: Role;
+  x: number;
+  y: number;
+  /** Which foot. Mirrors the sole shape; also shown in the tooltip. */
+  foot?: 'L' | 'R';
+  /** Facing, in degrees. 0 points up the page, 90 points right. */
+  rot?: number;
+  /** Step number or short label drawn on the sole. */
+  label?: string | number;
+  /** Draw faded — a previous position, or a step still to come. */
+  ghost?: boolean;
+}
+
+interface Arrow {
+  from: [number, number];
+  to: [number, number];
+  label?: string;
+  /** Dashed by default; solid reads as "this actually happens". */
+  solid?: boolean;
+}
+
+interface Props {
+  feet: Foot[];
+  caption?: string;
+  /** x positions to draw as neutral guide lines (the floor's "rails"). */
+  lanes?: number[];
+  /** x positions drawn in the accent colour. */
+  accentLanes?: number[];
+  arrows?: Arrow[];
+  /** Force the legend on or off. Defaults to on when both roles appear. */
+  legend?: boolean;
+}
+
+const {
+  feet,
+  caption,
+  lanes = [],
+  accentLanes = [],
+  arrows = [],
+  legend,
+} = Astro.props;
+
+// ---- geometry -------------------------------------------------------------
+const UNIT = 42;
+const PAD = 40;
+
+const allX = [...feet.map((f) => f.x), ...lanes, ...accentLanes, ...arrows.flatMap((a) => [a.from[0], a.to[0]])];
+const allY = [...feet.map((f) => f.y), ...arrows.flatMap((a) => [a.from[1], a.to[1]])];
+
+const minX = Math.min(...allX);
+const maxX = Math.max(...allX);
+const minY = Math.min(...allY);
+const maxY = Math.max(...allY);
+
+const width = (maxX - minX) * UNIT + PAD * 2;
+const height = (maxY - minY) * UNIT + PAD * 2;
+
+/** Data x -> SVG x. */
+const px = (x: number) => PAD + (x - minX) * UNIT;
+/** Data y -> SVG y, flipped so higher y sits higher on the page. */
+const py = (y: number) => height - PAD - (y - minY) * UNIT;
+
+/** A shoe sole: wide at the ball of the foot, narrow at the arch, round heel. */
+const SOLE =
+  'M0,-19 C5.6,-19 9,-14.6 9,-9 C9,-3.5 7.2,-1 7.2,3 C7.2,10.5 5,19 0,19 C-5,19 -7.2,10.5 -7.2,3 C-7.2,-1 -9,-3.5 -9,-9 C-9,-14.6 -5.6,-19 0,-19 Z';
+
+const roles = new Set(feet.map((f) => f.role));
+const showLegend = legend ?? roles.size > 1;
+const title = caption ?? 'Footwork diagram';
+---
+
+<figure class="d-diagram">
+  <div class="d-diagram-canvas">
+    <svg
+      viewBox={`0 0 ${width} ${height}`}
+      style={`max-width:${Math.round(width)}px`}
+      role="img"
+      aria-label={title}
+    >
+      <title>{title}</title>
+
+      {lanes.map((x) => (
+        <line class="d-lane" x1={px(x)} y1={PAD * 0.4} x2={px(x)} y2={height - PAD * 0.4} />
+      ))}
+      {accentLanes.map((x) => (
+        <line class="d-lane d-lane--accent" x1={px(x)} y1={PAD * 0.4} x2={px(x)} y2={height - PAD * 0.4} />
+      ))}
+
+      {arrows.map((a, i) => (
+        <>
+          <line
+            class:list={['d-arrow', { 'd-arrow--solid': a.solid }]}
+            x1={px(a.from[0])}
+            y1={py(a.from[1])}
+            x2={px(a.to[0])}
+            y2={py(a.to[1])}
+            marker-end={`url(#d-arrowhead)`}
+          />
+          {a.label && (
+            <text
+              class="d-arrow-label"
+              x={(px(a.from[0]) + px(a.to[0])) / 2}
+              y={(py(a.from[1]) + py(a.to[1])) / 2 - 6}
+              text-anchor="middle"
+            >{a.label}</text>
+          )}
+        </>
+      ))}
+
+      {feet.map((f) => {
+        const mirror = f.foot === 'L' ? -1 : 1;
+        return (
+          <g
+            class:list={['d-foot', `d-foot--${f.role}`, { 'd-foot--ghost': f.ghost }]}
+            transform={`translate(${px(f.x)} ${py(f.y)}) rotate(${f.rot ?? 0})`}
+          >
+            <path d={SOLE} transform={`scale(${mirror} 1)`} />
+            {f.label !== undefined && (
+              <text class="d-foot-label" text-anchor="middle" dominant-baseline="central">{f.label}</text>
+            )}
+          </g>
+        );
+      })}
+
+      <defs>
+        <marker id="d-arrowhead" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
+          <path d="M 0 1 L 9 5 L 0 9 z" />
+        </marker>
+      </defs>
+    </svg>
+  </div>
+
+  {showLegend && (
+    <div class="d-diagram-legend">
+      {roles.has('leader') && <span class="d-legend-item d-legend-item--leader">Leader</span>}
+      {roles.has('follower') && <span class="d-legend-item d-legend-item--follower">Follower</span>}
+    </div>
+  )}
+
+  {caption && <figcaption>{caption}</figcaption>}
+</figure>
+
+<style>
+  .d-diagram {
+    margin: 1.75rem 0;
+    padding: 1rem 1rem 0.85rem;
+    background: white;
+    border: 1px solid var(--color-slate-200);
+    border-radius: var(--radius-lg);
+  }
+
+  .d-diagram-canvas {
+    overflow-x: auto;
+    display: flex;
+    justify-content: center;
+  }
+
+  .d-diagram svg {
+    width: 100%;
+    height: auto;
+  }
+
+  .d-lane {
+    stroke: var(--color-slate-200);
+    stroke-width: 5;
+    stroke-linecap: round;
+  }
+
+  .d-lane--accent { stroke: var(--color-orange-200); }
+
+  .d-arrow {
+    stroke: var(--color-slate-400);
+    stroke-width: 1.8;
+    stroke-dasharray: 5 4;
+    stroke-linecap: round;
+  }
+
+  .d-arrow--solid { stroke-dasharray: none; }
+
+  .d-diagram :global(#d-arrowhead path) { fill: var(--color-slate-400); }
+
+  .d-arrow-label {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    fill: var(--color-slate-500);
+  }
+
+  .d-foot path {
+    stroke-width: 1.5;
+    stroke: white;
+  }
+
+  .d-foot--leader path { fill: var(--color-blue-500); }
+  .d-foot--follower path { fill: var(--color-orange-500); }
+
+  .d-foot--ghost path {
+    fill: var(--color-slate-300);
+    opacity: 0.55;
+  }
+
+  .d-foot-label {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 700;
+    fill: white;
+  }
+
+  .d-foot--ghost .d-foot-label { fill: var(--color-slate-600); }
+
+  .d-diagram-legend {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-top: 0.5rem;
+  }
+
+  .d-legend-item {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.78rem;
+    color: var(--color-slate-500);
+  }
+
+  .d-legend-item::before {
+    content: '';
+    width: 0.6rem;
+    height: 0.9rem;
+    border-radius: 999px;
+  }
+
+  .d-legend-item--leader::before { background: var(--color-blue-500); }
+  .d-legend-item--follower::before { background: var(--color-orange-500); }
+
+  .d-diagram figcaption {
+    margin-top: 0.4rem;
+    text-align: center;
+    font-size: 0.85rem;
+    color: var(--color-slate-500);
+  }
+</style>

@@ -1,0 +1,79 @@
+---
+title: Ochos
+summary: Step, pivot, step. The figure eight that shows up everywhere once you start looking for it.
+tool: wrench
+order: 30
+level: developing
+related:
+  - label: Pivots & Disassociation
+    href: /dancer/steps/pivots/
+    note: The half of an ocho that people skip.
+  - label: Crosses
+    href: /dancer/steps/crosses/
+  - label: The Walk
+    href: /dancer/steps/walk/
+---
+
+import { Callout, Accordion, Exercise, StepDiagram, LinkCard, Term } from '@/components/dancer';
+
+An <Term id="ocho" /> is a step followed by a pivot, repeated. The eight it draws on the floor
+is a by-product, not a goal — chase the shape and you will get a wobble; do the step and the
+pivot properly and the shape appears on its own.
+
+<Callout type="note" title="Still being written">
+This page is a skeleton. The exercises below are worth doing today; the technique sections are
+coming. If there is something specific you want covered, say so at
+[tangotoolkit@gmail.com](mailto:tangotoolkit@gmail.com).
+</Callout>
+
+## Forward and back
+
+**Back ochos** are usually taught first: the follower steps back, pivots, steps back the other
+way. **Forward ochos** travel forwards around the leader and ask for more from the standing leg.
+
+<StepDiagram
+  caption="Back ochos: the follower stays roughly on one line while the feet alternate around it."
+  legend={false}
+  accentLanes={[1]}
+  feet={[
+    { role: 'follower', x: 0, y: 0, foot: 'R', rot: 150, label: 1 },
+    { role: 'follower', x: 2, y: 1.1, foot: 'L', rot: 210, label: 2 },
+    { role: 'follower', x: 0, y: 2.2, foot: 'R', rot: 150, label: 3 },
+    { role: 'follower', x: 2, y: 3.3, foot: 'L', rot: 210, label: 4 },
+  ]}
+/>
+
+## Keeping the follower on the line
+
+A useful exercise from the leader's side: keep the follower travelling along a straight line
+while they pivot. To do that, the leader has to move in a zig-zag — out to one side, back
+across, out to the other — while the follower's line stays straight.
+
+<Callout type="question">
+Could you make it completely circular instead? Yes — turn the follower's first step into a
+forward ocho and the third into a back ocho, and what you have is a turn. The last steps are
+simply the exit.
+</Callout>
+
+## Take it to the practica
+
+<Exercise
+  id="ochos-basics"
+  title="Ochos"
+  intro="A tanda each. Slow enough that nothing has to be rescued."
+  items={[
+    'Solo: step back, pivot, step back the other way. Pause fully at each end.',
+    { text: 'Solo: the same, forwards.', note: 'Harder. Keep the standing leg long.' },
+    'With a partner: back ochos, follower staying on one line.',
+    { text: 'With a partner: back ochos where the leader travels and the follower stays.', note: 'Then swap which of you is doing the travelling.' },
+    'Work on making the pivot smooth rather than fast.',
+  ]}
+/>
+
+<LinkCard
+  kicker="Prerequisite"
+  title="Pivots & Disassociation"
+  href="/dancer/steps/pivots/"
+  tool="gears"
+  description="If your ochos stall halfway, the problem is almost always here rather than in the ocho."
+/>
