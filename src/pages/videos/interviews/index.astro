@@ -694,7 +694,7 @@ const suggestPool = cards
     padding: 0.45rem 2rem 0.45rem 2.2rem;
     font-family: var(--font-sans); font-size: 0.88rem; color: var(--color-slate-700); background: white;
   }
-  .search-input:focus { outline: none; border-color: var(--color-orange-400); box-shadow: 0 0 0 3px var(--color-orange-100); }
+  .search-input:focus { outline: none; border-color: var(--color-primary); box-shadow: 0 0 0 3px var(--color-orange-100); }
   .search-clear {
     position: absolute; right: 0.5rem; top: 50%; transform: translateY(-50%);
     width: 1.35rem; height: 1.35rem; border: none; background: var(--color-slate-100);
@@ -717,7 +717,7 @@ const suggestPool = cards
     -moz-appearance: none;
   }
   .iv-select:hover { border-color: var(--color-orange-400); }
-  .iv-select:focus { outline: none; border-color: var(--color-orange-400); box-shadow: 0 0 0 3px var(--color-orange-100); }
+  .iv-select:focus { outline: none; border-color: var(--color-primary); box-shadow: 0 0 0 3px var(--color-orange-100); }
 
   .iv-groupby {
     display: inline-flex; align-items: center; gap: 0.4rem;
@@ -747,7 +747,7 @@ const suggestPool = cards
     background: white; cursor: pointer; transition: border-color 0.15s, color 0.15s, background 0.15s;
   }
   .iv-starred:hover { border-color: var(--color-orange-400); color: var(--color-orange-600); }
-  .iv-starred:focus-visible { outline: 2px solid var(--color-orange-400); outline-offset: 2px; }
+  .iv-starred:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 2px; }
   .iv-starred-icon { width: 0.85rem; height: 0.85rem; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linejoin: round; }
   .iv-starred[aria-pressed="true"] { border-color: var(--color-orange-200); background: var(--color-orange-50); color: var(--color-orange-700); }
   .iv-starred[aria-pressed="true"] .iv-starred-icon { fill: var(--color-orange-500); stroke: var(--color-orange-500); }
@@ -816,7 +816,7 @@ const suggestPool = cards
   .sg-card-body { display: flex; flex-direction: column; gap: 0.15rem; padding: 0.55rem 0.7rem 0.6rem; min-width: 0; }
   .sg-card-group { font-size: 0.68rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.03em; color: var(--color-slate-500); }
   .sg-card-body h3 { margin: 0; font-size: 0.92rem; line-height: 1.3; }
-  .sg-card-cta { margin-top: auto; padding-top: 0.25rem; font-size: 0.75rem; font-weight: 600; color: var(--color-primary); }
+  .sg-card-cta { margin-top: auto; padding-top: 0.25rem; font-size: 0.75rem; font-weight: 600; color: var(--color-link); }
   .sg-again { margin-top: 0.75rem; width: 100%; background: none; border: 1px solid var(--color-slate-300); border-radius: var(--radius-md); padding: 0.5rem; font-family: var(--font-sans); font-size: 0.85rem; font-weight: 600; color: var(--color-slate-600); cursor: pointer; transition: all 0.15s; }
   .sg-again:hover { border-color: var(--color-orange-400); color: var(--color-orange-700); }
 
@@ -850,7 +850,7 @@ const suggestPool = cards
   #iv-results .group-titlebar h2 { margin: 0; font-size: 1rem; line-height: 1.2; }
   #iv-results .group-host { font-size: 0.75rem; font-style: italic; color: var(--color-slate-500); }
   #iv-results .group-links { margin-left: auto; display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
-  #iv-results .group-site { font-size: 0.75rem; font-weight: 600; color: var(--color-primary); white-space: nowrap; }
+  #iv-results .group-site { font-size: 0.75rem; font-weight: 600; color: var(--color-link); white-space: nowrap; }
   #iv-results .group-donate {
     display: inline-flex; align-items: center; gap: 0.25rem; font-size: 0.72rem; font-weight: 600;
     color: var(--color-orange-700); background: var(--color-orange-50); border: 1px solid var(--color-orange-200);
@@ -954,7 +954,7 @@ const suggestPool = cards
     cursor: pointer; transition: color 0.15s, border-color 0.15s, background 0.15s;
   }
   #iv-results .iv-like:hover { border-color: var(--color-orange-400); color: var(--color-orange-600); background: var(--color-orange-50); }
-  #iv-results .iv-like:focus-visible { outline: 2px solid var(--color-orange-400); outline-offset: 2px; }
+  #iv-results .iv-like:focus-visible { outline: 2px solid var(--color-primary); outline-offset: 2px; }
   #iv-results .iv-like-star { width: 0.9rem; height: 0.9rem; fill: none; stroke: currentColor; stroke-width: 1.6; stroke-linejoin: round; }
   #iv-results .iv-like.is-liked { color: var(--color-orange-600); border-color: var(--color-orange-200); background: var(--color-orange-50); }
   #iv-results .iv-like.is-liked .iv-like-star { fill: var(--color-orange-500); stroke: var(--color-orange-500); }

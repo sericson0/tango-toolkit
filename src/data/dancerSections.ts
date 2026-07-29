@@ -77,7 +77,9 @@ export const dancerSections: DancerSection[] = [
     title: 'Starter Kit',
     navTitle: 'Starter Kit',
     blurb: 'New to tango? Start here.',
-    lead: 'What tango actually is, what to work on first, the movements everything is built from, and how to survive your first milonga. Read it in order — each part builds on the one before.',
+    lead: 'Your starting guide to the world of tango. \
+         This guide is designed with people new to tango in mind, \
+         but contains valuable information for everyone',
     tool: 'toolbox',
     hubLayout: 'path',
     extras: [
