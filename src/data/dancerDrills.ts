@@ -298,7 +298,7 @@ export const dancerDrills: Drill[] = [
       'Now walk four steps and stop. Has the embrace survived, or did it change shape the moment you moved?',
     ],
     watchFor: 'Gripping. Arms hold a shape; they do not clamp. If your partner cannot breathe easily, it is too much.',
-    related: { label: 'The Embrace', href: '/dancer/steps/embrace/' },
+    related: { label: 'The Embrace', href: '/dancer/connection/embrace/' },
   },
   {
     id: 'mirror-no-embrace',

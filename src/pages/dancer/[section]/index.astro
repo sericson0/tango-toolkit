@@ -53,6 +53,12 @@ const LEVEL_LABELS: Record<string, string> = {
 
   <div class="hub-body">
     <div class="container">
+      {section.intro && section.intro.length > 0 && (
+        <div class="hub-intro">
+          {section.intro.map((paragraph) => <p>{paragraph}</p>)}
+        </div>
+      )}
+
       {isEmpty ? (
         <p class="callout callout-warning hub-empty">
           <strong>Being written</strong>
@@ -213,6 +219,21 @@ const LEVEL_LABELS: Record<string, string> = {
   .hub-hero .lead { max-width: 55ch; }
 
   .hub-body { padding: 2.5rem 0 1rem; }
+
+  /* ===== Opening text ===== */
+  .hub-intro {
+    max-width: 46rem;
+    margin-bottom: 2.25rem;
+  }
+
+  .hub-intro p {
+    margin: 0 0 1rem;
+    font-size: 1.02rem;
+    line-height: 1.65;
+    color: var(--color-slate-700);
+  }
+
+  .hub-intro p:last-child { margin-bottom: 0; }
 
   .hub-empty { max-width: 44rem; }
 

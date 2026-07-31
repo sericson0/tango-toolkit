@@ -145,7 +145,7 @@ export const dancerGlossary: GlossaryTerm[] = [
     term: 'vals',
     definition:
       'Tango waltz — the same dance in three-time, played lighter and more continuously. No new steps required.',
-    href: '/dancer/starter-kit/what-is-tango/',
+    href: '/dancer/starter-kit/milonga-survival-guide/',
   },
   {
     id: 'codigos',
@@ -159,7 +159,7 @@ export const dancerGlossary: GlossaryTerm[] = [
     term: 'abrazo',
     definition:
       'The embrace — the frame you share with your partner, and the channel every lead and every response travels through.',
-    href: '/dancer/steps/embrace/',
+    href: '/dancer/connection/embrace/',
   },
   {
     id: 'axis',

@@ -41,6 +41,12 @@ export interface DancerSection {
   blurb: string;
   /** Longer intro, used as the hub page lead. */
   lead: string;
+  /**
+   * Opening body text shown on the hub page itself, before the topic list —
+   * one string per paragraph. Lets a section say something readable up front
+   * instead of greeting visitors with nothing but cards to click.
+   */
+  intro?: string[];
   /** Which toolbox icon represents the section. See TOOL_ICONS in ToolIcon.astro. */
   tool:
     | 'toolbox'
@@ -77,11 +83,17 @@ export const dancerSections: DancerSection[] = [
     title: 'Starter Kit',
     navTitle: 'Starter Kit',
     blurb: 'New to tango? Start here.',
-    lead: 'Your starting guide to the world of tango. \
-         This guide is designed with people new to tango in mind, \
-         but contains valuable information for everyone',
+    lead: 'Tools to help build your tango. \
+         New to tango? Or looking for new ways to continue progressing? This kit is for you.',
     tool: 'toolbox',
     hubLayout: 'path',
+    intro: [
+      'Welcome to the wonderful world of tango! From its origins in the late 1800s in Buenos Aires \
+      and the broader Río de la Plata, tango has grown to a thriving international community \
+      accessible to anyone willing to learn. Travel anywhere in the world, and you can find \
+      connection among fellow musicians, dancers, and artists.',
+      'This starter kit is designed as a set of tools and resources to support your tango development.'
+    ],
     extras: [
       {
         title: 'Quick Reference Sheet',
@@ -102,13 +114,19 @@ export const dancerSections: DancerSection[] = [
   },
   {
     id: 'connection',
-    title: 'Connection',
-    navTitle: 'Connection',
+    title: 'Embrace & Connection',
+    navTitle: 'Embrace & Connection',
     blurb: 'The embrace, the lead, and the conversation between two dancers.',
     lead: 'How two people share an axis, an intention, and a moment.',
     tool: 'gears',
-    // Being built out — nothing renders and nothing links here until this flips.
-    hidden: true,
+    intro: [
+      'Tango is a conversation held in contact. Before a single step happens, two people have \
+      to agree on how they are going to stand together, where the weight is, and who is \
+      listening for what. That agreement is the embrace, and everything else travels through it.',
+      'These pages cover the part of the dance that is felt rather than seen — offering and \
+      receiving an embrace, leading without pushing, following without waiting, and repairing \
+      the connection when it slips. None of it requires knowing a single figure.',
+    ],
   },
   {
     id: 'steps',

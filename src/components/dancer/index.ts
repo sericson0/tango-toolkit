@@ -10,6 +10,7 @@
  * every page.
  */
 export { default as Accordion } from './Accordion.astro';
+export { default as ActivityGrid } from './ActivityGrid.astro';
 export { default as Callout } from './Callout.astro';
 export { default as Exercise } from './Exercise.astro';
 export { default as Figure } from './Figure.astro';
