@@ -57,7 +57,23 @@ const { showButton = true } = Astro.props;
     if (!modal) return;
 
     var open = function() { modal.classList.add('support-modal-open'); };
-    var close = function() { modal.classList.remove('support-modal-open'); };
+    var close = function() {
+      modal.classList.remove('support-modal-open');
+      // Drop the #support hash so the same link can reopen it later.
+      if (window.location.hash === '#support') {
+        history.replaceState(null, '', window.location.pathname + window.location.search);
+      }
+    };
+
+    // Deep link: /#support (or ?support=1) opens the modal on page load.
+    var linkWantsModal = function() {
+      return window.location.hash === '#support'
+        || new URLSearchParams(window.location.search).has('support');
+    };
+    if (linkWantsModal()) open();
+    window.addEventListener('hashchange', function() {
+      if (linkWantsModal()) open();
+    });
 
     document.querySelectorAll('[data-support-open]').forEach(function(btn) {
       btn.addEventListener('click', open);

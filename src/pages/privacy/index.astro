@@ -29,6 +29,8 @@ import PageHero from '../../components/PageHero.astro';
         <h3>Analytics Data</h3>
         <p>We use Google Analytics to understand how visitors use the site. This collects anonymous usage data such as pages visited, time on site, and general geographic region. Google Analytics uses cookies to distinguish unique visitors. No personally identifiable information is collected through analytics.</p>
 
+        <p>We also keep our own simple counters, hosted by us rather than by any third party. When you open a page, or use a free web tool such as Name That Tango, we add 1 to a running total for that page or tool. These counters record no cookies, no IP addresses, no identifiers, and nothing about you &mdash; only that a page was viewed or a tool was used. So that repeat visits can be told apart from new ones, your browser stores a small flag in its own local storage (<code>tt-seen</code>, <code>tt-session</code>, <code>tt-used-*</code>); these flags never leave your browser and are never sent to us or linked to any other data.</p>
+
         <h3>Form Submissions</h3>
         <p>Support and registration forms are processed by <a href="https://www.netlify.com/privacy/" target="_blank" rel="noopener noreferrer">Netlify</a>. Submissions include the information you provide (name, email, message) and are stored in our Netlify dashboard.</p>
 
@@ -57,6 +59,7 @@ import PageHero from '../../components/PageHero.astro';
         <ul>
           <li><strong>Google Analytics cookies</strong> (<code>_ga</code>, <code>_ga_*</code>) &mdash; Used to distinguish unique visitors and track site usage. These cookies are only set if you click &ldquo;Accept&rdquo; on the cookie consent banner. If you decline, no analytics cookies are set and Google Analytics does not load.</li>
           <li><strong>Cookie consent preference</strong> &mdash; Stored in your browser's localStorage (not a cookie) to remember your choice.</li>
+          <li><strong>Our own page and tool counters</strong> &mdash; No cookies at all. These use small local-storage flags (<code>tt-seen</code>, <code>tt-session</code>, <code>tt-used-*</code>) that stay in your browser, so that first-time and repeat visits can be counted separately.</li>
         </ul>
         <p>No advertising or tracking cookies are used. You can change your preference at any time by clearing your browser's localStorage for this site.</p>
 
