@@ -2,6 +2,7 @@
 import '../styles/global.css';
 import { visibleDancerSections } from '../data/dancerSections';
 import ToolIcon from '../components/dancer/ToolIcon.astro';
+import PageTracker from '../components/PageTracker.astro';
 
 interface Props {
   title: string;
@@ -185,6 +186,8 @@ const absoluteOgImage = new URL(ogImage, Astro.site).href;
         </div>
       </div>
     </footer>
+
+    <PageTracker />
 
     {import.meta.env.PUBLIC_GA_ID && (
       <div class="cookie-banner" id="cookieBanner" style="display:none;" data-ga-id={import.meta.env.PUBLIC_GA_ID}>

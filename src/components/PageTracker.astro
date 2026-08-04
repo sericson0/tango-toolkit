@@ -1,0 +1,62 @@
+---
+/**
+ * PageTracker — counts one anonymous page view per page load by pinging
+ * /api/track-page. Rendered once by BaseLayout, so every page is covered
+ * automatically; there is nothing to register when a new page ships.
+ *
+ * Two flags let unique visitors and sessions be told apart from raw views:
+ * a localStorage flag marks the browser's first ever visit, and a
+ * sessionStorage flag marks the first page of each session. No cookies and no
+ * identifiers — just aggregate counters.
+ *
+ * Only runs on the canonical host, so `astro dev`, `netlify dev`, and deploy
+ * previews never write into the production counters.
+ */
+
+const canonicalHost = Astro.site
+  ? new URL(Astro.site).hostname.replace(/^www\./, '')
+  : '';
+const allowedHosts = canonicalHost ? [canonicalHost, `www.${canonicalHost}`] : [];
+---
+
+<script define:vars={{ allowedHosts }}>
+  (function () {
+    if (window.__ttPageTracked) return;
+    if (allowedHosts.indexOf(location.hostname) === -1) return;
+    window.__ttPageTracked = true;
+
+    var firstVisit = false;
+    var newSession = false;
+    try {
+      if (!window.localStorage.getItem('tt-seen')) {
+        window.localStorage.setItem('tt-seen', '1');
+        firstVisit = true;
+      }
+    } catch (e) { /* private mode — still count the view */ }
+    try {
+      if (!window.sessionStorage.getItem('tt-session')) {
+        window.sessionStorage.setItem('tt-session', '1');
+        newSession = true;
+      }
+    } catch (e) { /* private mode — still count the view */ }
+
+    var body = JSON.stringify({
+      path: location.pathname,
+      firstVisit: firstVisit,
+      newSession: newSession
+    });
+
+    try {
+      if (navigator.sendBeacon) {
+        navigator.sendBeacon('/api/track-page', new Blob([body], { type: 'application/json' }));
+      } else {
+        fetch('/api/track-page', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: body,
+          keepalive: true
+        }).catch(function () {});
+      }
+    } catch (e) {}
+  })();
+</script>
