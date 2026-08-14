@@ -43,18 +43,11 @@
   --color-green-500: #22c55e;
   --color-green-700: #15803d;
 
-  /* Semantic.
-     primary  UI accent: focus rings, icons, active borders (3.6:1 on white — ok non-text)
-     link     text links on light backgrounds (5.2:1 on white — passes AA)
-     label    informational chips/tags/badges — neutral so orange reads as interactive */
-  --color-primary: var(--color-orange-600);
-  --color-primary-hover: var(--color-orange-700);
+  /* Semantic */
+  --color-primary: var(--color-orange-500);
+  --color-primary-hover: var(--color-orange-600);
   --color-primary-light: var(--color-orange-100);
   --color-accent: var(--color-orange-400);
-  --color-link: var(--color-orange-700);
-  --color-link-hover: var(--color-orange-800);
-  --color-label-bg: var(--color-slate-100);
-  --color-label-text: var(--color-slate-600);
   --color-bg: var(--color-slate-50);
   --color-bg-alt: white;
   --color-text: var(--color-slate-800);
@@ -111,7 +104,7 @@ main {
   left: 0.75rem;
   z-index: 300;
   background: white;
-  color: var(--color-link);
+  color: var(--color-primary);
   font-weight: 600;
   padding: 0.6rem 1rem;
   border-radius: var(--radius-md);
@@ -135,13 +128,13 @@ h3 { font-size: 1.5rem; }
 h4 { font-size: 1.25rem; }
 
 a {
-  color: var(--color-link);
+  color: var(--color-primary);
   text-decoration: none;
   transition: color 0.2s ease;
 }
 
 a:hover {
-  color: var(--color-link-hover);
+  color: var(--color-primary-hover);
 }
 
 .prose a {
@@ -151,7 +144,7 @@ a:hover {
 }
 
 .prose a:hover {
-  text-decoration-color: var(--color-link-hover);
+  text-decoration-color: var(--color-primary-hover);
 }
 
 img {
@@ -200,7 +193,7 @@ img {
 }
 
 .prose code {
-  background: var(--color-slate-100);
+  background: var(--color-orange-50);
   padding: 0.2em 0.4em;
   border-radius: var(--radius-sm);
 }
@@ -249,8 +242,8 @@ img {
 
 .page-hero {
   padding: 3rem 0;
-  background: linear-gradient(135deg, var(--color-slate-50) 0%, white 100%);
-  border-bottom: 1px solid var(--color-slate-200);
+  background: linear-gradient(135deg, var(--color-orange-50) 0%, white 100%);
+  border-bottom: 1px solid var(--color-orange-100);
 }
 
 .page-hero h1 { margin: 0 0 0.5rem; }
@@ -262,7 +255,7 @@ img {
   color: var(--color-slate-600);
 }
 
-.back-link:hover { color: var(--color-link); }
+.back-link:hover { color: var(--color-primary); }
 
 .lead {
   font-size: 1.2rem;
@@ -288,9 +281,8 @@ img {
   transition: background 0.2s, color 0.2s;
 }
 
-/* orange-700: white text passes AA (5.2:1); 500/600 don't */
-.btn-primary { background: var(--color-orange-700); color: white; }
-.btn-primary:hover { background: var(--color-orange-800); color: white; }
+.btn-primary { background: var(--color-primary); color: white; }
+.btn-primary:hover { background: var(--color-primary-hover); color: white; }
 .btn-secondary { background: var(--color-slate-100); color: var(--color-slate-700); }
 .btn-secondary:hover { background: var(--color-slate-200); color: var(--color-slate-800); }
 .btn-lg { padding: 0.75rem 2rem; font-size: 1.05rem; }
@@ -336,7 +328,7 @@ img {
 .copy-btn {
   flex-shrink: 0;
   padding: 0.4rem 0.9rem;
-  background: var(--color-orange-700);
+  background: var(--color-orange-500);
   color: white;
   border: none;
   border-radius: var(--radius-md);
@@ -348,7 +340,7 @@ img {
 }
 
 .copy-btn:hover {
-  background: var(--color-orange-800);
+  background: var(--color-orange-600);
 }
 
 /* ===== Callouts ===== */
@@ -507,7 +499,7 @@ hr {
   color: var(--color-slate-500);
 }
 
-.contact-note a { color: var(--color-link); }
+.contact-note a { color: var(--color-primary); }
 
 /* ===== Responsive Video Embed ===== */
 .video-embed {

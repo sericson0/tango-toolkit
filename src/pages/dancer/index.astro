@@ -1,334 +1,293 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
-import ToolIcon from '../../components/dancer/ToolIcon.astro';
-import { getSectionTopics, topicHref } from '../../data/dancerContent';
-import { visibleDancerSections } from '../../data/dancerSections';
-import { dancerDrills } from '../../data/dancerDrills';
-
-// Each section card shows how much is behind it, so an empty section reads as
-// "being written" rather than as a broken link. Sections carrying a library
-// instead of content topics count their library entries.
-const sections = await Promise.all(
-  visibleDancerSections.map(async (section) => {
-    const topics = await getSectionTopics(section.id);
-    const extras = section.extras?.length ?? 0;
-    const count = section.showDrillLibrary ? dancerDrills.length : topics.length + extras;
-    const noun = section.showDrillLibrary ? 'drill' : 'page';
-    return {
-      section,
-      topics,
-      countLabel: count === 0 ? 'Coming soon' : `${count} ${noun}${count === 1 ? '' : 's'}`,
-    };
-  }),
-);
-
-const starterKit = sections.find((s) => s.section.id === 'starter-kit');
-const firstStep = starterKit?.topics[0];
+import PageHero from '../../components/PageHero.astro';
+import { dancerResources } from '../../data/dancerResources';
 
 // Inline icons (Feather, MIT) — consistent rendering across platforms, unlike emoji
-const ICON_ATTRS =
-  'viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"';
+const ICON_ATTRS = 'viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"';
 const VIDEO_SVG = `<svg ${ICON_ATTRS}><polygon points="23 7 16 12 23 17 23 7"/><rect x="1" y="5" width="15" height="14" rx="2" ry="2"/></svg>`;
 const MIC_SVG = `<svg ${ICON_ATTRS}><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0V4a3 3 0 0 0-3-3z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" y1="19" x2="12" y2="23"/><line x1="8" y1="23" x2="16" y2="23"/></svg>`;
-const DISC_SVG = `<svg ${ICON_ATTRS}><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="3"/></svg>`;
-const DJ_SVG = `<svg ${ICON_ATTRS}><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>`;
-
-const elsewhere = [
-  { href: '/videos/', title: 'Videos', desc: 'Performances, lessons, and music visualizations.', svg: VIDEO_SVG },
-  { href: '/videos/interviews/', title: 'Interviews', desc: 'Conversations with dancers, teachers, and maestros.', svg: MIC_SVG },
-  { href: '/discographies/', title: 'Discographies', desc: 'Every recording, by orchestra, singer, and year.', svg: DISC_SVG },
-  { href: '/dj/starter-kit/', title: 'DJ Starter Kit', desc: 'The other side of the booth, if you are curious.', svg: DJ_SVG },
-];
 ---
 
-<BaseLayout
-  title="Dancer Toolkit"
-  description="Tools for tango dancers — a starter kit for new dancers, musicality, steps and technique, and practice resources."
->
-  <section class="toolbox-hero">
-    <div class="container">
-      <a href="/" class="back-link">&larr; Back to Home</a>
-      <h1>The Dancer&rsquo;s Toolkit</h1>
-      <p class="lead">
-        Tango is not a list of steps to memorise. It is a small set of tools you keep
-        sharpening. This is where those tools live &mdash; what each one is for, how to
-        make it feel good, and what to practice next.
-      </p>
-    </div>
-  </section>
+<BaseLayout title="Dancer Resources" description="Videos, interviews, and resources for tango dancers. More on the way — this section is under construction.">
+  <PageHero title="Dancer Resources" lead="Videos, interviews, and resources for tango dancers." />
 
-  <div class="toolbox-body">
+  <section class="dancer-section">
     <div class="container">
-      <p class="callout callout-warning toolbox-note">
-        <strong>Being built</strong>
-        This section is new and filling out steadily. Pages marked as coming soon are on the
-        list &mdash; <a href="/#subscribe">subscribe</a> to hear when they land, or tell us what
-        you want first at <a href="mailto:tangotoolkit@gmail.com">tangotoolkit@gmail.com</a>.
+      <p class="callout callout-warning construction-note">
+        <strong>Under construction</strong>
+        We&rsquo;re building out a home for tango dancers &mdash; videos, interviews, and guides to
+        deepen your dancing and your ear for the music. Check back soon, and
+        <a href="/#subscribe">subscribe</a> to hear when new resources land.
       </p>
 
-      <div class="toolbox-grid">
-        {sections.map(({ section, countLabel }) => (
-          <a href={`/dancer/${section.id}/`} class="toolbox-card">
-            <span class="toolbox-card-icon" aria-hidden="true">
-              <ToolIcon name={section.tool} size={30} />
-            </span>
-            <h2>{section.title}</h2>
-            <p>{section.blurb}</p>
-            <span class="toolbox-card-foot">
-              <span class="toolbox-card-count">{countLabel}</span>
-              <span class="toolbox-card-cta">Open &rarr;</span>
-            </span>
-          </a>
+      <h2 class="section-heading">Explore</h2>
+      <div class="dancer-grid">
+        <a href="/videos/" class="dancer-card">
+          <div class="dancer-card-icon" set:html={VIDEO_SVG}></div>
+          <div>
+            <h3>Videos</h3>
+            <p>Performances, lessons, and talks to deepen your dancing and your ear.</p>
+            <span class="card-cta">Watch &rarr;</span>
+          </div>
+        </a>
+
+        <a href="/videos/interviews/" class="dancer-card">
+          <div class="dancer-card-icon" set:html={MIC_SVG}></div>
+          <div>
+            <h3>Interviews</h3>
+            <p>A searchable library of conversations with dancers, teachers, and maestros of the tango world.</p>
+            <span class="card-cta">Listen in &rarr;</span>
+          </div>
+        </a>
+      </div>
+
+      <h2 class="section-heading" style="margin-top: 2.5rem;">Resources</h2>
+      <div class="resource-list">
+        {dancerResources.map((resource) => (
+          <article class="resource-card">
+            {resource.image && (
+              <div class="resource-card-media">
+                <img src={resource.image} alt="" loading="lazy" decoding="async" />
+              </div>
+            )}
+            <div class="resource-card-body">
+              <h3>{resource.title}</h3>
+              <span class="resource-card-author">by {resource.author}</span>
+              <p class="resource-card-desc">{resource.description}</p>
+              <div class="resource-card-actions">
+                {resource.downloadUrl && (
+                  <a
+                    href={resource.downloadUrl}
+                    class="resource-card-dl"
+                    target={resource.external ? '_blank' : undefined}
+                    rel={resource.external ? 'noopener noreferrer' : undefined}
+                  >{resource.downloadLabel ?? 'Download'}</a>
+                )}
+                <a
+                  href={resource.url}
+                  class="resource-card-cta"
+                  target={resource.external ? '_blank' : undefined}
+                  rel={resource.external ? 'noopener noreferrer' : undefined}
+                >{resource.external ? 'Visit site ↗' : 'Learn more →'}</a>
+              </div>
+            </div>
+          </article>
         ))}
       </div>
 
-      {firstStep && (
-        <section class="toolbox-start">
-          <div>
-            <span class="toolbox-start-kicker">Never danced tango before?</span>
-            <h2>Start here</h2>
-            <p>
-              The starter kit walks you through your first months &mdash; what actually matters,
-              what to ignore, and how to survive your first milonga.
-            </p>
-          </div>
-          <a href={topicHref(firstStep)} class="btn btn-primary btn-lg">
-            {firstStep.data.title} &rarr;
-          </a>
-        </section>
-      )}
+      <h2 class="section-heading" style="margin-top: 2.5rem;">Coming soon</h2>
+      <ul class="coming-list">
+        <li>A curated library of dancer videos and interviews</li>
+        <li>Guides to understanding tango music from the dance floor</li>
+        <li>Etiquette, cabeceo, and codigos for milongas</li>
+        <li>Recommended teachers, festivals, and communities</li>
+      </ul>
 
-      <section class="toolbox-elsewhere">
-        <h2>Elsewhere in the Tango Toolkit</h2>
-        <div class="toolbox-elsewhere-grid">
-          {elsewhere.map((item) => (
-            <a href={item.href} class="toolbox-mini">
-              <span class="toolbox-mini-icon" set:html={item.svg} />
-              <span>
-                <strong>{item.title}</strong>
-                <em>{item.desc}</em>
-              </span>
-            </a>
-          ))}
-        </div>
-      </section>
+      <p class="prose" style="margin-top: 2rem;">
+        In the meantime, explore our <a href="/discographies/">discographies</a> and the
+        <a href="/dj/history-of-tango-music/">history of tango music</a> to learn more about
+        the music you dance to.
+      </p>
     </div>
-  </div>
+  </section>
 </BaseLayout>
 
 <style>
-  .toolbox-hero {
-    padding: 3.25rem 0;
-    background: linear-gradient(135deg, var(--color-orange-50) 0%, white 100%);
-    border-bottom: 1px solid var(--color-orange-100);
+  .dancer-section {
+    padding: 3rem 0;
   }
 
-  .toolbox-hero h1 {
-    margin: 0 0 0.6rem;
-    font-size: 2.75rem;
-  }
-
-  .toolbox-hero .lead { max-width: 58ch; }
-
-  .toolbox-body { padding: 2.75rem 0 1rem; }
-
-  .toolbox-note {
-    max-width: 48rem;
+  .construction-note {
     margin-bottom: 2.5rem;
   }
 
-  .toolbox-note a {
-    color: var(--color-link);
+  .construction-note a {
+    color: var(--color-orange-700);
     text-decoration: underline;
     text-underline-offset: 2px;
   }
 
-  .toolbox-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(16.5rem, 1fr));
-    gap: 1.25rem;
-  }
-
-  .toolbox-card {
-    display: flex;
-    flex-direction: column;
-    padding: 1.6rem;
-    background: white;
-    border: 1px solid var(--color-slate-200);
-    border-radius: var(--radius-xl);
-    text-decoration: none;
-    color: inherit;
-    transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
-  }
-
-  .toolbox-card:hover {
-    border-color: var(--color-orange-400);
-    box-shadow: var(--shadow-lg);
-    transform: translateY(-3px);
-    color: inherit;
-  }
-
-  .toolbox-card-icon {
-    display: grid;
-    place-items: center;
-    width: 3.25rem;
-    height: 3.25rem;
-    margin-bottom: 1rem;
-    border-radius: var(--radius-lg);
-    background: var(--color-orange-50);
-    color: var(--color-orange-600);
-    transition: background 0.2s, color 0.2s;
-  }
-
-  .toolbox-card:hover .toolbox-card-icon {
-    background: var(--color-primary);
-    color: white;
-  }
-
-  .toolbox-card h2 {
-    margin: 0 0 0.45rem;
-    font-size: 1.3rem;
-    line-height: 1.2;
-  }
-
-  .toolbox-card p {
+  .section-heading {
     margin: 0 0 1.25rem;
-    flex: 1;
-    font-size: 0.93rem;
-    line-height: 1.55;
-    color: var(--color-slate-600);
+    font-size: 1.5rem;
   }
 
-  .toolbox-card-foot {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.75rem;
-    padding-top: 0.85rem;
-    border-top: 1px solid var(--color-slate-100);
-  }
-
-  .toolbox-card-count {
-    font-size: 0.78rem;
-    font-weight: 600;
-    letter-spacing: 0.03em;
-    text-transform: uppercase;
-    color: var(--color-slate-400);
-  }
-
-  .toolbox-card-cta {
-    font-size: 0.9rem;
-    font-weight: 600;
-    color: var(--color-primary);
-  }
-
-  /* ===== Start here band ===== */
-  .toolbox-start {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 2rem;
-    flex-wrap: wrap;
-    margin-top: 2.5rem;
-    padding: 1.75rem 2rem;
-    background: var(--color-slate-800);
-    border-radius: var(--radius-xl);
-    color: var(--color-slate-200);
-  }
-
-  .toolbox-start-kicker {
-    font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--color-orange-300);
-  }
-
-  .toolbox-start h2 {
-    margin: 0.3rem 0 0.4rem;
-    font-size: 1.6rem;
-    color: white;
-  }
-
-  .toolbox-start p {
-    margin: 0;
-    max-width: 46ch;
-    font-size: 0.95rem;
-    line-height: 1.55;
-  }
-
-  .toolbox-start .btn { flex-shrink: 0; }
-
-  /* ===== Elsewhere ===== */
-  .toolbox-elsewhere {
-    margin-top: 3.5rem;
-    padding-top: 2rem;
-    border-top: 1px solid var(--color-slate-200);
-  }
-
-  .toolbox-elsewhere h2 {
-    margin: 0 0 1.1rem;
-    font-family: var(--font-sans);
-    font-size: 0.78rem;
-    font-weight: 700;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--color-slate-400);
-  }
-
-  .toolbox-elsewhere-grid {
+  .dancer-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
-    gap: 0.85rem;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1rem;
+    max-width: 640px;
   }
 
-  .toolbox-mini {
+  .dancer-card {
     display: flex;
-    align-items: flex-start;
-    gap: 0.7rem;
-    padding: 0.9rem 1rem;
+    gap: 0.85rem;
+    text-decoration: none;
+    color: inherit;
     background: white;
     border: 1px solid var(--color-slate-200);
     border-radius: var(--radius-lg);
-    text-decoration: none;
-    transition: border-color 0.2s, box-shadow 0.2s;
+    padding: 1.1rem;
+    transition: all 0.2s;
   }
 
-  .toolbox-mini:hover {
+  .dancer-card:hover {
     border-color: var(--color-orange-400);
-    box-shadow: var(--shadow-sm);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
   }
 
-  .toolbox-mini-icon {
+  .dancer-card-icon {
     flex-shrink: 0;
     color: var(--color-orange-500);
   }
 
-  .toolbox-mini-icon :global(svg) {
-    width: 1.3rem;
-    height: 1.3rem;
+  .dancer-card-icon :global(svg) {
+    width: 1.5rem;
+    height: 1.5rem;
   }
 
-  .toolbox-mini span {
+  .dancer-card h3 {
+    margin: 0 0 0.25rem;
+    font-size: 1.05rem;
+  }
+
+  .dancer-card p {
+    margin: 0 0 0.5rem;
+    color: var(--color-slate-600);
+    font-size: 0.85rem;
+    line-height: 1.5;
+  }
+
+  .card-cta {
+    font-weight: 600;
+    color: var(--color-primary);
+    font-size: 0.85rem;
+  }
+
+  .coming-list {
+    margin: 0;
+    padding-left: 1.25rem;
+    color: var(--color-slate-600);
+    line-height: 1.8;
+    max-width: 60ch;
+  }
+
+  /* Resource cards */
+  .resource-list {
+    display: grid;
+    gap: 1.5rem;
+    max-width: 640px;
+  }
+
+  .resource-card {
+    position: relative;
+    display: flex;
+    gap: 1.25rem;
+    background: white;
+    border: 1px solid var(--color-slate-200);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: all 0.2s;
+  }
+
+  .resource-card:hover {
+    border-color: var(--color-orange-400);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
+
+  .resource-card-media {
+    flex-shrink: 0;
+    width: 150px;
+    background: var(--color-slate-100);
+  }
+
+  .resource-card-media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .resource-card-body {
     display: flex;
     flex-direction: column;
-    gap: 0.15rem;
+    padding: 1.25rem 1.25rem 1.25rem 0;
   }
 
-  .toolbox-mini strong {
-    font-size: 0.95rem;
-    color: var(--color-slate-800);
+  .resource-card-body h3 {
+    margin: 0 0 0.15rem;
+    font-size: 1.2rem;
   }
 
-  .toolbox-mini em {
-    font-style: normal;
-    font-size: 0.82rem;
-    line-height: 1.4;
+  .resource-card-author {
+    margin-bottom: 0.6rem;
+    font-size: 0.8rem;
     color: var(--color-slate-500);
   }
 
-  @media (max-width: 640px) {
-    .toolbox-hero h1 { font-size: 2rem; }
-    .toolbox-start { padding: 1.5rem; }
+  .resource-card-desc {
+    margin: 0 0 1rem;
+    color: var(--color-slate-600);
+    font-size: 0.92rem;
+    line-height: 1.55;
+    flex: 1;
+  }
+
+  .resource-card-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+  }
+
+  /* Primary link stretches over the whole card */
+  .resource-card-cta {
+    font-size: 0.88rem;
+    font-weight: 600;
+    color: var(--color-primary);
+    white-space: nowrap;
+  }
+
+  .resource-card-cta::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: var(--radius-lg);
+  }
+
+  /* Download button sits above the stretched link */
+  .resource-card-dl {
+    position: relative;
+    z-index: 1;
+    font-size: 0.82rem;
+    font-weight: 600;
+    color: white;
+    background: var(--color-primary);
+    padding: 0.35rem 0.85rem;
+    border-radius: var(--radius-md);
+    white-space: nowrap;
+    transition: background 0.2s;
+  }
+
+  .resource-card-dl:hover {
+    background: var(--color-primary-hover);
+    color: white;
+  }
+
+  @media (max-width: 520px) {
+    .resource-card {
+      flex-direction: column;
+    }
+
+    .resource-card-media {
+      width: 100%;
+      height: 170px;
+    }
+
+    .resource-card-body {
+      padding: 0 1.25rem 1.25rem;
+    }
   }
 </style>
