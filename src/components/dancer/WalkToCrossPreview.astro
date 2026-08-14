@@ -1,0 +1,216 @@
+---
+import StepDiagram from './StepDiagram.astro';
+
+type PreviewFoot = {
+  role: 'leader' | 'follower';
+  tone: 'blue' | 'orange';
+  x: number;
+  y: number;
+  foot: 'L' | 'R';
+  label: number;
+  rot?: number;
+  uprightLabel?: boolean;
+  darkOutline?: boolean;
+  greenOutline?: boolean;
+};
+
+type PreviewRail = {
+  x: number;
+  fromY: number;
+  toY: number;
+  tone: 'grey' | 'orange';
+};
+
+// Match the established follower diagram's vertical interval from step 3 to 4.
+const LEADER_LEVEL = 1.7;
+
+const leader: PreviewFoot[] = [
+  { role: 'leader', tone: 'blue',   x: 2.10, y: LEADER_LEVEL, foot: 'L', label: 0, rot: -6, greenOutline: true },
+  { role: 'leader', tone: 'orange', x: 2.60, y: 0,    foot: 'R', label: 1, rot: 6, greenOutline: true },
+  { role: 'leader', tone: 'blue',   x: 0.85, y: 0,    foot: 'L', label: 2, rot: -6, greenOutline: true },
+  { role: 'leader', tone: 'orange', x: 0.50, y: LEADER_LEVEL, foot: 'R', label: 3, rot: 6, greenOutline: true },
+  { role: 'leader', tone: 'blue',   x: 0,    y: LEADER_LEVEL * 2, foot: 'L', label: 4, rot: -6, greenOutline: true },
+  { role: 'leader', tone: 'orange', x: 0.50, y: LEADER_LEVEL * 2, foot: 'R', label: 5, rot: 6, greenOutline: true },
+  { role: 'leader', tone: 'blue',   x: 0,    y: LEADER_LEVEL * 3, foot: 'L', label: 6, rot: -6, greenOutline: true },
+  { role: 'leader', tone: 'orange', x: 1.75, y: LEADER_LEVEL * 3, foot: 'R', label: 7, rot: 6, greenOutline: true },
+  { role: 'leader', tone: 'blue',   x: 1.25, y: LEADER_LEVEL * 3, foot: 'L', label: 8, rot: -6, greenOutline: true },
+];
+
+const leaderRails: PreviewRail[] = [
+  // Group 1: steps 0–1. Grey is the leader track; orange is shifted right by 0.25.
+  { x: 2.10, fromY: -0.90, toY: 2.65, tone: 'grey' },
+  { x: 2.60, fromY: -0.90, toY: 2.65, tone: 'grey' },
+  { x: 2.35, fromY: -0.90, toY: 2.65, tone: 'orange' },
+  { x: 2.85, fromY: -0.90, toY: 2.65, tone: 'orange' },
+
+  // Group 2: step 2. It begins and ends with the other lower rail group.
+  { x: 0.85, fromY: -0.90, toY: LEADER_LEVEL + 0.16, tone: 'grey' },
+  { x: 1.35, fromY: -0.90, toY: LEADER_LEVEL + 0.16, tone: 'grey' },
+  { x: 1.10, fromY: -0.90, toY: LEADER_LEVEL + 0.16, tone: 'orange' },
+  { x: 1.60, fromY: -0.90, toY: LEADER_LEVEL + 0.16, tone: 'orange' },
+
+  // Group 3: steps 3–6. This is the long middle section in the reference.
+  { x: 0,    fromY: 0.75, toY: 6.05, tone: 'grey' },
+  { x: 0.50, fromY: 0.75, toY: 6.05, tone: 'grey' },
+  { x: 0.25, fromY: 0.75, toY: 6.05, tone: 'orange' },
+  { x: 0.75, fromY: 0.75, toY: 6.05, tone: 'orange' },
+
+  // Group 4: steps 7–8. A shorter top section after the final side step.
+  { x: 1.25, fromY: 4.45, toY: 6.05, tone: 'grey' },
+  { x: 1.75, fromY: 4.45, toY: 6.05, tone: 'grey' },
+  { x: 1.50, fromY: 4.45, toY: 6.05, tone: 'orange' },
+  { x: 2.00, fromY: 4.45, toY: 6.05, tone: 'orange' },
+];
+
+const follower: PreviewFoot[] = [
+  { role: 'follower', tone: 'orange', x: 2.35, y: 2.70, foot: 'R', label: 0, rot: 186, uprightLabel: true, darkOutline: true },
+  { role: 'follower', tone: 'blue',   x: 2.85, y: 1.00, foot: 'L', label: 1, rot: 174, uprightLabel: true, darkOutline: true },
+  { role: 'follower', tone: 'orange', x: 1.10, y: 1.00, foot: 'R', label: 2, rot: 186, uprightLabel: true, darkOutline: true },
+  { role: 'follower', tone: 'blue',   x: 1.60, y: 2.70, foot: 'L', label: 3, rot: 174, uprightLabel: true, darkOutline: true },
+  { role: 'follower', tone: 'orange', x: 1.10, y: 4.40, foot: 'R', label: 4, rot: 186, uprightLabel: true, darkOutline: true },
+  { role: 'follower', tone: 'blue',   x: 0.75, y: 4.40, foot: 'L', label: 5, rot: 174, uprightLabel: true, darkOutline: true },
+  { role: 'follower', tone: 'orange', x: 0.25, y: 6.10, foot: 'R', label: 6, rot: 186, uprightLabel: true, darkOutline: true },
+  { role: 'follower', tone: 'blue',   x: 2.00, y: 6.10, foot: 'L', label: 7, rot: 174, uprightLabel: true, darkOutline: true },
+  { role: 'follower', tone: 'orange', x: 1.50, y: 6.10, foot: 'R', label: 8, rot: 186, uprightLabel: true, darkOutline: true },
+];
+
+const followerRails: PreviewRail[] = [
+  // Group 1: steps 0–1 on the orange version of the leader's first track.
+  { x: 2.10, fromY: 0.10, toY: 3.65, tone: 'grey' },
+  { x: 2.60, fromY: 0.10, toY: 3.65, tone: 'grey' },
+  { x: 2.35, fromY: 0.10, toY: 3.65, tone: 'orange' },
+  { x: 2.85, fromY: 0.10, toY: 3.65, tone: 'orange' },
+
+  // Group 2: steps 2–4.
+  { x: 0.85, fromY: 0.10, toY: 5.35, tone: 'grey' },
+  { x: 1.35, fromY: 0.10, toY: 5.35, tone: 'grey' },
+  { x: 1.10, fromY: 0.10, toY: 5.35, tone: 'orange' },
+  { x: 1.60, fromY: 0.10, toY: 5.35, tone: 'orange' },
+
+  // Group 3: steps 5–6.
+  { x: 0,    fromY: 3.45, toY: 7.05, tone: 'grey' },
+  { x: 0.50, fromY: 3.45, toY: 7.05, tone: 'grey' },
+  { x: 0.25, fromY: 3.45, toY: 7.05, tone: 'orange' },
+  { x: 0.75, fromY: 3.45, toY: 7.05, tone: 'orange' },
+
+  // Group 4: steps 7–8.
+  { x: 1.25, fromY: 5.15, toY: 7.05, tone: 'grey' },
+  { x: 1.75, fromY: 5.15, toY: 7.05, tone: 'grey' },
+  { x: 1.50, fromY: 5.15, toY: 7.05, tone: 'orange' },
+  { x: 2.00, fromY: 5.15, toY: 7.05, tone: 'orange' },
+];
+
+// A common floor coordinate system keeps identical steps aligned in all three panels.
+const sharedBounds = { minX: 0, maxX: 2.85, minY: -0.90, maxY: 7.05 };
+---
+
+<section class="d-walk-cross" aria-labelledby="walk-cross-title">
+  <header class="d-walk-cross__header">
+    <h2 id="walk-cross-title">Classic eight-count basic (in parallel system)</h2>
+  </header>
+
+  <div class="d-walk-cross__panels">
+    <div class="d-walk-cross__panel">
+      <h3>Leader</h3>
+      <StepDiagram
+        caption="Leader's steps."
+        legend={false}
+        bounds={sharedBounds}
+        rails={leaderRails}
+        feet={leader}
+      />
+    </div>
+
+    <div class="d-walk-cross__panel">
+      <h3>Follower</h3>
+      <StepDiagram
+        caption="Follower's steps."
+        legend={false}
+        bounds={sharedBounds}
+        rails={followerRails}
+        feet={follower}
+      />
+    </div>
+
+    <div class="d-walk-cross__panel d-walk-cross__panel--together">
+      <h3>Together</h3>
+      <StepDiagram
+        caption="Steps together."
+        legend={false}
+        bounds={sharedBounds}
+        rails={[...leaderRails, ...followerRails]}
+        feet={[...leader, ...follower]}
+      />
+    </div>
+  </div>
+
+  <div class="d-walk-cross__exercise">
+    <strong>Lead exercise</strong>
+    <ol type="a">
+      <li>Parallel system</li>
+      <li>Cross system</li>
+      <li>Single time cross</li>
+      <li>Double time cross</li>
+    </ol>
+  </div>
+</section>
+
+<style>
+  .d-walk-cross {
+    margin: 0 0 2.25rem;
+    padding: 1.25rem;
+    border: 1px solid var(--color-slate-200);
+    border-radius: var(--radius-lg);
+    background: var(--color-slate-50);
+  }
+
+  .d-walk-cross__header { text-align: center; }
+
+  .d-walk-cross h2 { margin: 0; }
+
+  .d-walk-cross__panels {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 0.8rem;
+    margin-top: 1rem;
+  }
+
+  .d-walk-cross__panel h3 {
+    margin: 0;
+    text-align: center;
+    font-size: 1rem;
+  }
+
+  .d-walk-cross__panel :global(.d-diagram) { margin: 0.5rem 0 0; }
+
+  .d-walk-cross__exercise {
+    display: flex;
+    align-items: baseline;
+    gap: 1.25rem;
+    margin-top: 1rem;
+    padding: 0.85rem 1rem;
+    border-radius: var(--radius-md);
+    background: white;
+  }
+
+  .d-walk-cross__exercise strong { white-space: nowrap; }
+
+  .d-walk-cross__exercise ol {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 0.25rem 2rem;
+    width: 100%;
+    margin: 0;
+  }
+
+  @media (max-width: 760px) {
+    .d-walk-cross { padding: 1rem; }
+    .d-walk-cross__panels { grid-template-columns: 1fr; }
+    .d-walk-cross__exercise { display: block; }
+    .d-walk-cross__exercise ol { margin-top: 0.5rem; }
+  }
+
+  @media (max-width: 430px) {
+    .d-walk-cross__exercise ol { grid-template-columns: 1fr; }
+  }
+</style>

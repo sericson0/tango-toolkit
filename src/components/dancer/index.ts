@@ -20,3 +20,4 @@ export { default as StepDiagram } from './StepDiagram.astro';
 export { default as Term } from './Term.astro';
 export { default as ToolIcon } from './ToolIcon.astro';
 export { default as Video } from '../VideoEmbed.astro';
+export { default as WalkToCrossPreview } from './WalkToCrossPreview.astro';

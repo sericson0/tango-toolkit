@@ -23,12 +23,20 @@ type Role = 'leader' | 'follower';
 
 interface Foot {
   role: Role;
+  /** Optional visual tone. Useful when colour identifies the foot rather than the role. */
+  tone?: 'blue' | 'orange';
   x: number;
   y: number;
   /** Which foot. Mirrors the sole shape; also shown in the tooltip. */
   foot?: 'L' | 'R';
   /** Facing, in degrees. 0 points up the page, 90 points right. */
   rot?: number;
+  /** Keep the step number upright when the sole faces another direction. */
+  uprightLabel?: boolean;
+  /** Use a dark sole boundary to distinguish overlapping dancers. */
+  darkOutline?: boolean;
+  /** Use the diagram's green title colour for the sole boundary. */
+  greenOutline?: boolean;
   /** Step number or short label drawn on the sole. */
   label?: string | number;
   /** Draw faded — a previous position, or a step still to come. */
@@ -43,6 +51,20 @@ interface Arrow {
   solid?: boolean;
 }
 
+interface Rail {
+  x: number;
+  fromY: number;
+  toY: number;
+  tone?: 'grey' | 'orange';
+}
+
+interface Bounds {
+  minX: number;
+  maxX: number;
+  minY: number;
+  maxY: number;
+}
+
 interface Props {
   feet: Foot[];
   caption?: string;
@@ -51,6 +73,10 @@ interface Props {
   /** x positions drawn in the accent colour. */
   accentLanes?: number[];
   arrows?: Arrow[];
+  /** Short rail sections when a diagram changes to another pair of tracks. */
+  rails?: Rail[];
+  /** Shared drawing bounds, used to align coordinates across related diagrams. */
+  bounds?: Bounds;
   /** Force the legend on or off. Defaults to on when both roles appear. */
   legend?: boolean;
 }
@@ -61,6 +87,8 @@ const {
   lanes = [],
   accentLanes = [],
   arrows = [],
+  rails = [],
+  bounds,
   legend,
 } = Astro.props;
 
@@ -68,8 +96,20 @@ const {
 const UNIT = 42;
 const PAD = 40;
 
-const allX = [...feet.map((f) => f.x), ...lanes, ...accentLanes, ...arrows.flatMap((a) => [a.from[0], a.to[0]])];
-const allY = [...feet.map((f) => f.y), ...arrows.flatMap((a) => [a.from[1], a.to[1]])];
+const allX = [
+  ...feet.map((f) => f.x),
+  ...lanes,
+  ...accentLanes,
+  ...rails.map((r) => r.x),
+  ...arrows.flatMap((a) => [a.from[0], a.to[0]]),
+  ...(bounds ? [bounds.minX, bounds.maxX] : []),
+];
+const allY = [
+  ...feet.map((f) => f.y),
+  ...rails.flatMap((r) => [r.fromY, r.toY]),
+  ...arrows.flatMap((a) => [a.from[1], a.to[1]]),
+  ...(bounds ? [bounds.minY, bounds.maxY] : []),
+];
 
 const minX = Math.min(...allX);
 const maxX = Math.max(...allX);
@@ -109,6 +149,15 @@ const title = caption ?? 'Footwork diagram';
       {accentLanes.map((x) => (
         <line class="d-lane d-lane--accent" x1={px(x)} y1={PAD * 0.4} x2={px(x)} y2={height - PAD * 0.4} />
       ))}
+      {rails.map((rail) => (
+        <line
+          class:list={['d-lane', rail.tone === 'orange' && 'd-lane--accent']}
+          x1={px(rail.x)}
+          y1={py(rail.toY)}
+          x2={px(rail.x)}
+          y2={py(rail.fromY)}
+        />
+      ))}
 
       {arrows.map((a, i) => (
         <>
@@ -135,12 +184,24 @@ const title = caption ?? 'Footwork diagram';
         const mirror = f.foot === 'L' ? -1 : 1;
         return (
           <g
-            class:list={['d-foot', `d-foot--${f.role}`, { 'd-foot--ghost': f.ghost }]}
+            class:list={[
+              'd-foot',
+              `d-foot--${f.role}`,
+              f.tone && `d-foot--tone-${f.tone}`,
+              f.darkOutline && 'd-foot--dark-outline',
+              f.greenOutline && 'd-foot--green-outline',
+              { 'd-foot--ghost': f.ghost },
+            ]}
             transform={`translate(${px(f.x)} ${py(f.y)}) rotate(${f.rot ?? 0})`}
           >
             <path d={SOLE} transform={`scale(${mirror} 1)`} />
             {f.label !== undefined && (
-              <text class="d-foot-label" text-anchor="middle" dominant-baseline="central">{f.label}</text>
+              <text
+                class="d-foot-label"
+                text-anchor="middle"
+                dominant-baseline="central"
+                transform={f.uprightLabel ? `rotate(${-(f.rot ?? 0)})` : undefined}
+              >{f.label}</text>
             )}
           </g>
         );
@@ -216,6 +277,11 @@ const title = caption ?? 'Footwork diagram';
 
   .d-foot--leader path { fill: var(--color-blue-500); }
   .d-foot--follower path { fill: var(--color-orange-500); }
+  .d-foot--tone-blue path { fill: var(--color-blue-500); }
+  .d-foot--tone-orange path { fill: var(--color-orange-500); }
+
+  .d-foot--dark-outline path { stroke: var(--color-slate-900); }
+  .d-foot--green-outline path { stroke: var(--color-green-700); }
 
   .d-foot--ghost path {
     fill: var(--color-slate-300);
