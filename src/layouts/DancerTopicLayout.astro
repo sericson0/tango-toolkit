@@ -1,0 +1,440 @@
+---
+import type { MarkdownHeading } from 'astro';
+import BaseLayout from './BaseLayout.astro';
+import ToolIcon from '../components/dancer/ToolIcon.astro';
+import { topicHref, type DancerTopic } from '../data/dancerContent';
+import type { DancerSection } from '../data/dancerSections';
+
+interface Props {
+  entry: DancerTopic;
+  section: DancerSection;
+  headings: MarkdownHeading[];
+  siblings: DancerTopic[];
+  prev?: DancerTopic;
+  next?: DancerTopic;
+}
+
+const { entry, section, headings, siblings, prev, next } = Astro.props;
+const { title, summary, description, tool, level, related, updated } = entry.data;
+
+// Only top-level sections go in the contents list — subheads would swamp it.
+const toc = headings.filter((h) => h.depth === 2);
+
+const LEVEL_LABELS: Record<string, string> = {
+  new: 'New dancers',
+  developing: 'Once you have the basics',
+  all: '',
+};
+const levelLabel = LEVEL_LABELS[level];
+
+// YAML gives us a UTC midnight; format in UTC so the date never slips a day.
+const updatedLabel = updated
+  ? new Intl.DateTimeFormat('en-GB', {
+      day: 'numeric',
+      month: 'long',
+      year: 'numeric',
+      timeZone: 'UTC',
+    }).format(updated)
+  : undefined;
+---
+
+<BaseLayout title={`${title} — ${section.title}`} description={description ?? summary}>
+  <article class="topic">
+    <header class="topic-hero">
+      <div class="container">
+        <nav class="topic-crumbs" aria-label="Breadcrumb">
+          <a href="/dancer/">Dancer</a>
+          <span aria-hidden="true">/</span>
+          <a href={`/dancer/${section.id}/`}>{section.title}</a>
+        </nav>
+        <div class="topic-hero-main">
+          <span class="topic-hero-icon" aria-hidden="true">
+            <ToolIcon name={tool} size={30} />
+          </span>
+          <div>
+            <h1>{title}</h1>
+            <p class="lead">{summary}</p>
+            <div class="topic-meta">
+              {levelLabel && <span class="topic-chip">{levelLabel}</span>}
+              {updatedLabel && <span class="topic-updated">Updated {updatedLabel}</span>}
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <div class="topic-body">
+      <div class="container topic-grid">
+        <aside class="topic-aside">
+          <div class="topic-aside-inner">
+            {toc.length > 0 && (
+              <nav class="topic-toc" aria-label="On this page">
+                <h2>On this page</h2>
+                <ol>
+                  {toc.map((h) => (
+                    <li><a href={`#${h.slug}`}>{h.text}</a></li>
+                  ))}
+                </ol>
+              </nav>
+            )}
+
+            {siblings.length > 1 && (
+              <nav class="topic-siblings" aria-label={`More in ${section.title}`}>
+                <h2>{section.navTitle}</h2>
+                <ul>
+                  {siblings.map((s) => (
+                    <li>
+                      <a
+                        href={topicHref(s)}
+                        class:list={{ current: s.slug === entry.slug }}
+                        aria-current={s.slug === entry.slug ? 'page' : undefined}
+                      >{s.data.title}</a>
+                    </li>
+                  ))}
+                </ul>
+              </nav>
+            )}
+          </div>
+        </aside>
+
+        <div class="topic-content prose">
+          <slot />
+        </div>
+      </div>
+
+      <div class="container topic-footer-wrap">
+        {related.length > 0 && (
+          <section class="topic-related">
+            <h2>Keep going</h2>
+            <div class="topic-related-grid">
+              {related.map((link) => {
+                const external = /^https?:\/\//.test(link.href);
+                return (
+                  <a
+                    href={link.href}
+                    class="topic-related-card"
+                    target={external ? '_blank' : undefined}
+                    rel={external ? 'noopener noreferrer' : undefined}
+                  >
+                    <span class="topic-related-title">{link.label}</span>
+                    {link.note && <span class="topic-related-note">{link.note}</span>}
+                    <span class="topic-related-arrow" aria-hidden="true">{external ? '↗' : '→'}</span>
+                  </a>
+                );
+              })}
+            </div>
+          </section>
+        )}
+
+        {(prev || next) && (
+          <nav class="topic-pager" aria-label="Section navigation">
+            {prev ? (
+              <a href={topicHref(prev)} class="topic-pager-link topic-pager-prev">
+                <span class="topic-pager-dir">← Previous</span>
+                <span class="topic-pager-title">{prev.data.title}</span>
+              </a>
+            ) : <span />}
+            {next && (
+              <a href={topicHref(next)} class="topic-pager-link topic-pager-next">
+                <span class="topic-pager-dir">Next →</span>
+                <span class="topic-pager-title">{next.data.title}</span>
+              </a>
+            )}
+          </nav>
+        )}
+
+        <p class="contact-note">
+          This section is a work in progress. Corrections, additions, and things you
+          wish someone had told you are welcome at
+          <a href="mailto:tangotoolkit@gmail.com"> tangotoolkit@gmail.com</a>.
+        </p>
+      </div>
+    </div>
+  </article>
+</BaseLayout>
+
+<style>
+  .topic-hero {
+    padding: 2rem 0 2.25rem;
+    background: linear-gradient(135deg, var(--color-slate-50) 0%, white 100%);
+    border-bottom: 1px solid var(--color-slate-200);
+  }
+
+  .topic-crumbs {
+    display: flex;
+    gap: 0.5rem;
+    margin-bottom: 1rem;
+    font-size: 0.88rem;
+    color: var(--color-slate-400);
+  }
+
+  .topic-crumbs a { color: var(--color-slate-600); }
+  .topic-crumbs a:hover { color: var(--color-primary); }
+
+  .topic-hero-main {
+    display: flex;
+    gap: 1.1rem;
+    align-items: flex-start;
+  }
+
+  .topic-hero-icon {
+    display: grid;
+    place-items: center;
+    width: 3.5rem;
+    height: 3.5rem;
+    flex-shrink: 0;
+    border-radius: var(--radius-lg);
+    background: white;
+    border: 1px solid var(--color-orange-200);
+    color: var(--color-orange-600);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .topic-hero h1 {
+    margin: 0 0 0.35rem;
+    font-size: 2.25rem;
+    line-height: 1.15;
+  }
+
+  .topic-meta {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 0.85rem;
+  }
+
+  .topic-chip {
+    padding: 0.2rem 0.65rem;
+    border-radius: 999px;
+    background: white;
+    border: 1px solid var(--color-slate-200);
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--color-label-text);
+  }
+
+  .topic-updated {
+    font-size: 0.78rem;
+    color: var(--color-slate-500);
+  }
+
+  .topic-body { padding: 2.5rem 0 1rem; }
+
+  .topic-grid {
+    display: grid;
+    grid-template-columns: 15rem minmax(0, 1fr);
+    gap: 3rem;
+    align-items: start;
+  }
+
+  .topic-aside-inner {
+    position: sticky;
+    top: calc(var(--header-height) + 1.5rem);
+    display: flex;
+    flex-direction: column;
+    gap: 1.75rem;
+  }
+
+  .topic-toc h2,
+  .topic-siblings h2 {
+    margin: 0 0 0.6rem;
+    font-family: var(--font-sans);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--color-slate-400);
+  }
+
+  .topic-toc ol {
+    margin: 0;
+    padding-left: 1.1rem;
+    color: var(--color-slate-400);
+  }
+
+  .topic-toc li { margin-bottom: 0.4rem; }
+
+  .topic-toc a,
+  .topic-siblings a {
+    font-size: 0.9rem;
+    color: var(--color-slate-600);
+    line-height: 1.35;
+  }
+
+  .topic-toc a:hover,
+  .topic-siblings a:hover { color: var(--color-primary); }
+
+  .topic-siblings ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    border-left: 2px solid var(--color-slate-200);
+  }
+
+  .topic-siblings li { margin: 0; }
+
+  .topic-siblings a {
+    display: block;
+    padding: 0.3rem 0 0.3rem 0.85rem;
+    margin-left: -2px;
+    border-left: 2px solid transparent;
+  }
+
+  .topic-siblings a.current {
+    border-left-color: var(--color-primary);
+    color: var(--color-orange-700);
+    font-weight: 600;
+  }
+
+  /* Content column — wider than the site default prose so diagrams breathe. */
+  .topic-content {
+    max-width: 44rem;
+  }
+
+  .topic-content :global(h2) {
+    margin: 2.75rem 0 1rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--color-slate-200);
+    font-size: 1.7rem;
+    scroll-margin-top: calc(var(--header-height) + 1rem);
+  }
+
+  .topic-content :global(h2:first-child) {
+    margin-top: 0;
+    padding-top: 0;
+    border-top: none;
+  }
+
+  .topic-content :global(h3) {
+    margin: 2rem 0 0.6rem;
+    font-size: 1.25rem;
+    scroll-margin-top: calc(var(--header-height) + 1rem);
+  }
+
+  .topic-content :global(h4) {
+    margin: 1.5rem 0 0.5rem;
+    font-size: 1.05rem;
+  }
+
+  .topic-content :global(hr) {
+    margin: 2.5rem 0;
+    border: none;
+    border-top: 1px solid var(--color-slate-200);
+  }
+
+  .topic-footer-wrap {
+    max-width: 62rem;
+    margin-top: 3rem;
+  }
+
+  .topic-related h2 {
+    margin: 0 0 1rem;
+    font-size: 1.25rem;
+  }
+
+  .topic-related-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 0.85rem;
+  }
+
+  .topic-related-card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    padding: 0.9rem 2rem 0.9rem 1rem;
+    background: white;
+    border: 1px solid var(--color-slate-200);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .topic-related-card:hover {
+    border-color: var(--color-orange-400);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .topic-related-title {
+    font-weight: 600;
+    font-size: 0.95rem;
+    color: var(--color-slate-800);
+  }
+
+  .topic-related-note {
+    font-size: 0.83rem;
+    line-height: 1.4;
+    color: var(--color-slate-500);
+  }
+
+  .topic-related-arrow {
+    position: absolute;
+    top: 0.9rem;
+    right: 0.9rem;
+    color: var(--color-primary);
+  }
+
+  .topic-pager {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    margin-top: 2.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-slate-200);
+  }
+
+  .topic-pager-link {
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    padding: 0.85rem 1rem;
+    border: 1px solid var(--color-slate-200);
+    border-radius: var(--radius-md);
+    text-decoration: none;
+    transition: border-color 0.2s;
+  }
+
+  .topic-pager-link:hover { border-color: var(--color-orange-400); }
+
+  .topic-pager-next { text-align: right; }
+
+  .topic-pager-dir {
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--color-slate-400);
+  }
+
+  .topic-pager-title {
+    font-weight: 600;
+    color: var(--color-slate-800);
+  }
+
+  @media (max-width: 900px) {
+    .topic-grid {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 1.75rem;
+    }
+
+    .topic-aside-inner {
+      position: static;
+      flex-direction: row;
+      flex-wrap: wrap;
+      gap: 1.5rem 2.5rem;
+      padding: 1rem 1.15rem;
+      background: var(--color-slate-50);
+      border: 1px solid var(--color-slate-200);
+      border-radius: var(--radius-lg);
+    }
+
+    .topic-content { max-width: none; }
+  }
+
+  @media (max-width: 560px) {
+    .topic-hero h1 { font-size: 1.75rem; }
+    .topic-pager { grid-template-columns: 1fr; }
+    .topic-pager-next { text-align: left; }
+  }
+</style>

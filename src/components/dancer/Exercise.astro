@@ -1,0 +1,306 @@
+---
+/**
+ * A practice list you can tick off. Progress is kept in the reader's browser
+ * (localStorage) so it survives a reload — no account, no server.
+ *
+ *   <Exercise
+ *     id="walk-cross-basics"
+ *     title="Walk to the cross"
+ *     intro="Do each one for a full tanda before moving on."
+ *     items={[
+ *       'Parallel system',
+ *       { text: 'Cross system', note: 'Change weight on the side step.' },
+ *     ]}
+ *   />
+ *
+ * `id` must be unique across the site — it is the storage key.
+ */
+interface Item {
+  text: string;
+  note?: string;
+}
+
+interface Props {
+  id: string;
+  title?: string;
+  intro?: string;
+  items: (string | Item)[];
+  /** Small line under the list — where this came from, how long to spend. */
+  footnote?: string;
+}
+
+const { id, title = 'Practice', intro, items, footnote } = Astro.props;
+
+const normalized: Item[] = items.map((item) =>
+  typeof item === 'string' ? { text: item } : item,
+);
+---
+
+<section class="d-exercise" data-exercise={id} aria-labelledby={`ex-${id}`}>
+  <header class="d-exercise-head">
+    <span class="d-exercise-kicker">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <polyline points="9 11 12 14 22 4" />
+        <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+      </svg>
+      Practice
+    </span>
+    <h4 id={`ex-${id}`}>{title}</h4>
+    {intro && <p class="d-exercise-intro">{intro}</p>}
+  </header>
+
+  <ul class="d-exercise-list">
+    {normalized.map((item, i) => (
+      <li>
+        <label>
+          <input type="checkbox" data-ex-item={i} />
+          <span class="d-exercise-box" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="20 6 9 17 4 12" />
+            </svg>
+          </span>
+          <span class="d-exercise-text">
+            {item.text}
+            {item.note && <em>{item.note}</em>}
+          </span>
+        </label>
+      </li>
+    ))}
+  </ul>
+
+  <footer class="d-exercise-foot">
+    <div class="d-exercise-bar" data-ex-bar aria-hidden="true"><span></span></div>
+    <span class="d-exercise-count" data-ex-progress aria-live="polite">0 of {normalized.length}</span>
+    <button type="button" class="d-exercise-reset" data-ex-reset>Reset</button>
+  </footer>
+
+  {footnote && <p class="d-exercise-footnote">{footnote}</p>}
+</section>
+
+<script>
+  // One handler for every exercise list on the page.
+  const storageKey = (id: string) => `tt-dancer-ex:${id}`;
+
+  document.querySelectorAll<HTMLElement>('[data-exercise]').forEach((root) => {
+    const id = root.dataset.exercise;
+    if (!id) return;
+
+    const boxes = Array.from(root.querySelectorAll<HTMLInputElement>('input[type="checkbox"]'));
+    const progress = root.querySelector<HTMLElement>('[data-ex-progress]');
+    const bar = root.querySelector<HTMLElement>('[data-ex-bar] span');
+    const resetBtn = root.querySelector<HTMLButtonElement>('[data-ex-reset]');
+
+    const read = (): number[] => {
+      try {
+        const raw = localStorage.getItem(storageKey(id));
+        const parsed = raw ? JSON.parse(raw) : [];
+        return Array.isArray(parsed) ? parsed : [];
+      } catch {
+        return [];
+      }
+    };
+
+    const write = () => {
+      try {
+        const done = boxes.reduce<number[]>((acc, box, i) => (box.checked ? [...acc, i] : acc), []);
+        localStorage.setItem(storageKey(id), JSON.stringify(done));
+      } catch {
+        /* private browsing — progress just won't persist */
+      }
+    };
+
+    const render = () => {
+      const done = boxes.filter((b) => b.checked).length;
+      if (progress) progress.textContent = `${done} of ${boxes.length}`;
+      if (bar) bar.style.width = boxes.length ? `${(done / boxes.length) * 100}%` : '0%';
+      root.classList.toggle('is-complete', boxes.length > 0 && done === boxes.length);
+    };
+
+    const saved = read();
+    boxes.forEach((box, i) => {
+      box.checked = saved.includes(i);
+      box.addEventListener('change', () => {
+        write();
+        render();
+      });
+    });
+
+    resetBtn?.addEventListener('click', () => {
+      boxes.forEach((box) => (box.checked = false));
+      write();
+      render();
+    });
+
+    render();
+  });
+</script>
+
+<style>
+  .d-exercise {
+    margin: 1.75rem 0;
+    padding: 1.25rem 1.35rem;
+    background: linear-gradient(160deg, var(--color-orange-50) 0%, white 60%);
+    border: 1px solid var(--color-orange-200);
+    border-radius: var(--radius-lg);
+    transition: border-color 0.2s;
+  }
+
+  .d-exercise.is-complete { border-color: var(--color-green-500); }
+
+  .d-exercise-head { margin-bottom: 0.9rem; }
+
+  .d-exercise-kicker {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--color-orange-700);
+  }
+
+  .d-exercise-kicker svg { width: 0.9rem; height: 0.9rem; }
+
+  .d-exercise-head h4 {
+    margin: 0.3rem 0 0;
+    font-size: 1.1rem;
+    color: var(--color-slate-800);
+  }
+
+  .d-exercise-intro {
+    margin: 0.35rem 0 0;
+    font-size: 0.92rem;
+    color: var(--color-slate-600);
+  }
+
+  .d-exercise-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .d-exercise-list li { margin: 0; }
+
+  .d-exercise-list label {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.7rem;
+    padding: 0.5rem 0.4rem;
+    border-radius: var(--radius-md);
+    cursor: pointer;
+  }
+
+  .d-exercise-list label:hover { background: rgb(255 255 255 / 0.75); }
+
+  .d-exercise-list input {
+    position: absolute;
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .d-exercise-box {
+    display: grid;
+    place-items: center;
+    width: 1.25rem;
+    height: 1.25rem;
+    margin-top: 0.1rem;
+    flex-shrink: 0;
+    border: 2px solid var(--color-orange-300);
+    border-radius: 0.35rem;
+    background: white;
+    color: transparent;
+    transition: background 0.15s, border-color 0.15s, color 0.15s;
+  }
+
+  .d-exercise-box svg { width: 0.75rem; height: 0.75rem; }
+
+  .d-exercise-list input:checked + .d-exercise-box {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: white;
+  }
+
+  .d-exercise-list input:focus-visible + .d-exercise-box {
+    outline: 2px solid var(--color-primary);
+    outline-offset: 2px;
+  }
+
+  .d-exercise-text {
+    font-size: 0.95rem;
+    line-height: 1.45;
+    color: var(--color-slate-700);
+  }
+
+  .d-exercise-list input:checked ~ .d-exercise-text {
+    color: var(--color-slate-400);
+    text-decoration: line-through;
+    text-decoration-color: var(--color-orange-300);
+  }
+
+  .d-exercise-text em {
+    display: block;
+    margin-top: 0.15rem;
+    font-size: 0.85rem;
+    font-style: normal;
+    color: var(--color-slate-500);
+  }
+
+  .d-exercise-foot {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 0.9rem;
+    padding-top: 0.8rem;
+    border-top: 1px solid var(--color-orange-200);
+  }
+
+  .d-exercise-bar {
+    flex: 1;
+    height: 5px;
+    border-radius: 999px;
+    background: var(--color-orange-100);
+    overflow: hidden;
+  }
+
+  .d-exercise-bar span {
+    display: block;
+    width: 0;
+    height: 100%;
+    border-radius: 999px;
+    background: var(--color-primary);
+    transition: width 0.25s ease;
+  }
+
+  .is-complete .d-exercise-bar span { background: var(--color-green-500); }
+
+  .d-exercise-count {
+    font-size: 0.8rem;
+    font-variant-numeric: tabular-nums;
+    color: var(--color-slate-500);
+  }
+
+  .d-exercise-reset {
+    padding: 0.2rem 0.6rem;
+    border: 1px solid var(--color-slate-200);
+    border-radius: var(--radius-sm);
+    background: white;
+    font-family: inherit;
+    font-size: 0.78rem;
+    color: var(--color-slate-500);
+    cursor: pointer;
+    transition: color 0.15s, border-color 0.15s;
+  }
+
+  .d-exercise-reset:hover {
+    color: var(--color-slate-700);
+    border-color: var(--color-slate-300);
+  }
+
+  .d-exercise-footnote {
+    margin: 0.7rem 0 0;
+    font-size: 0.82rem;
+    color: var(--color-slate-500);
+  }
+</style>

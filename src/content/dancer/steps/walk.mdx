@@ -1,0 +1,199 @@
+---
+title: The Walk
+summary: Everything else is built on this one. How to move your weight, how to arrive, and how to make a plain walk feel like something.
+tool: hammer
+order: 10
+level: new
+updated: 2026-07-28
+related:
+  - label: Crosses
+    href: /dancer/steps/crosses/
+    note: Where "walk to the cross" ends up.
+  - label: The Beat
+    href: /dancer/musicality/the-beat/
+    note: What you are walking on.
+  - label: Posture & Axis
+    href: /dancer/steps/posture/
+    note: The thing that makes a walk feel calm.
+  - label: Discographies
+    href: /discographies/
+    note: Find recordings with a clear, walkable pulse.
+---
+
+import { Callout, Accordion, Exercise, StepDiagram, KeyPoints, LinkCard, Term } from '@/components/dancer';
+
+Tango is a walking dance. Almost everything else — <Term id="ocho" />, turns, the
+<Term id="cruzada" /> — is a walk that has been bent, delayed, or turned. Which is good news
+and bad news: you can start dancing on your first night, and you will still be working on
+your walk in twenty years.
+
+<KeyPoints title="The whole page in four lines">
+
+- A step is a **weight transfer**, not a foot placement.
+- Arrive fully before you leave again.
+- Push the floor away with the standing leg; don't reach with the free one.
+- Your upper body tells your partner what is coming.
+
+</KeyPoints>
+
+## Part 1 — Move your weight
+
+Before you go anywhere, get comfortable going nowhere. Stand with your feet together and
+move your weight from one foot to the other. That is a complete tango step, minus the travel.
+
+<StepDiagram
+  caption="A change of weight. Nothing above the hips should announce it."
+  legend={false}
+  feet={[
+    { role: 'leader', x: 0, y: 0, foot: 'L', label: 'L' },
+    { role: 'leader', x: 0.6, y: 0, foot: 'R', label: 'R' },
+  ]}
+  arrows={[{ from: [0.05, 0.7], to: [0.55, 0.7], label: 'weight', solid: true }]}
+/>
+
+What you are looking for: the moment where you could stop, and stay, and nobody would know
+you had been mid-anything. If you wobble, you left before you arrived.
+
+<Callout type="tip" title="Test it">
+Change weight, then lift the free foot a centimetre off the floor without shifting anything
+else. If you have to adjust to do it, you were not fully on the standing leg yet.
+</Callout>
+
+Now add a side step, so the feet are apart, and play with where your body sits between them.
+
+<StepDiagram
+  caption="A side step. The foot travels, and then the weight follows it."
+  legend={false}
+  feet={[
+    { role: 'leader', x: 0, y: 0, foot: 'L', label: 1 },
+    { role: 'leader', x: 0.6, y: 0, foot: 'R', ghost: true },
+    { role: 'leader', x: 2, y: 0, foot: 'R', label: 2 },
+  ]}
+  arrows={[{ from: [0.65, 0.7], to: [1.95, 0.7], label: 'travel' }]}
+/>
+
+<Callout type="warning" title="Move your upper body honestly">
+As your weight travels between the feet, let the upper body come with it. Sitting halfway
+with your chest still over the old foot is the single most common reason a follower cannot
+tell what you want. Being over the far foot already **is** the beginning of the next step.
+</Callout>
+
+## Part 2 — Add projection
+
+A tango step has a moment before it: the free leg extends, the body leans into the intention,
+and only then does the weight go. That gap is where the lead lives, and it is also what makes
+the walk look like tango rather than like walking to the shops.
+
+<Accordion title="How to practice projection on your own" tool="hammer" label="Technique" open>
+
+Stand on your left. Send the right foot out along the floor — toe in contact, no weight on it —
+until you are at the edge of where you could still pull it back. Hold. Then let the weight go
+and arrive.
+
+- Push the floor away with the **standing** leg. The free leg is not reaching, it is being sent.
+- Keep the standing knee soft but not bent; think "long", not "locked".
+- The foot stays in contact with the floor the whole way out.
+- Arrive through the whole foot, not onto the heel.
+
+</Accordion>
+
+<Callout type="source" title="Learned from Alex Krebs">
+Consider a small delay before a short step, so the walk stays smooth instead of arriving
+early and waiting. Make sure you can transfer your weight *slowly* — if you can only do it
+fast, you don't have a choice, you have a fall.
+</Callout>
+
+## Walking together
+
+Facing your partner, the two of you walk as one shape. In **parallel system** the leader's
+left goes with the follower's right — opposite feet, the default. Change your own weight
+without moving your partner and you are in **cross system**, on the same foot, which is where
+a lot of the interesting material lives.
+
+<StepDiagram
+  caption="Three steps in parallel system. Leader walks forward, follower walks back, both travel up the page."
+  lanes={[0, 0.8]}
+  feet={[
+    { role: 'leader', x: 0, y: 0, foot: 'L', label: 1 },
+    { role: 'leader', x: 0.8, y: 1.3, foot: 'R', label: 2 },
+    { role: 'leader', x: 0, y: 2.6, foot: 'L', label: 3 },
+    { role: 'follower', x: 0, y: 1.6, foot: 'R', rot: 180, label: 1 },
+    { role: 'follower', x: 0.8, y: 2.9, foot: 'L', rot: 180, label: 2 },
+    { role: 'follower', x: 0, y: 4.2, foot: 'R', rot: 180, label: 3 },
+  ]}
+/>
+
+<Callout type="question">
+Why does the follower's foot land where it lands? Try walking three steps while deliberately
+arriving a beat late, and watch what your partner has to do about it.
+</Callout>
+
+## Step length
+
+Steps do not all have to be the same size, and a walk made of identical steps sounds like a
+metronome rather than like music. A useful sequence to own, from the leader's steps in cross
+system on the way to the cross:
+
+<StepDiagram
+  caption="Long, collect, short, long, medium — the leader's steps walking to the cross."
+  legend={false}
+  lanes={[0, 0.75]}
+  feet={[
+    { role: 'leader', x: 0, y: 0, foot: 'L', label: 1 },
+    { role: 'leader', x: 0.75, y: 2.3, foot: 'R', label: 2 },
+    { role: 'leader', x: 0, y: 2.6, foot: 'L', label: 3 },
+    { role: 'leader', x: 0.75, y: 3.5, foot: 'R', label: 4 },
+    { role: 'leader', x: 0, y: 5.4, foot: 'L', label: 5 },
+    { role: 'leader', x: 0.75, y: 6.8, foot: 'R', label: 6 },
+  ]}
+/>
+
+1. Start on the left.
+2. **Long** step onto the right.
+3. **Change weight** — the left collects and takes over, going nowhere.
+4. **Short** step onto the right.
+5. **Long** step onto the left.
+6. **Medium** step onto the right.
+
+<Callout type="remark">
+Steps 2 and 3 are the same beat's worth of music if you want them to be, or two beats if you
+want the change of weight to be an event. That choice is musicality, and it is available to
+you on every single step.
+</Callout>
+
+## Take it to the practica
+
+<Exercise
+  id="walk-foundation"
+  title="Walking on your own"
+  intro="Put on a D'Arienzo tango and give each of these a full track before moving on."
+  items={[
+    'Change weight in place, on the beat, without letting your head move up and down.',
+    { text: 'Walk forward slowly, arriving completely on every step.', note: 'Slower is harder. That is the point.' },
+    { text: 'Walk backwards with the same quality.', note: 'Reach with the whole leg from the hip, and keep the toe on the floor.' },
+    'Walk long, short, long, short on the beat.',
+    { text: 'Walk a full track without looking at the floor.', note: 'Trust the standing leg.' },
+  ]}
+  footnote="Progress is saved in this browser, so you can come back to it."
+/>
+
+<Exercise
+  id="walk-partner"
+  title="Walking with a partner"
+  intro="Same track, same patience. Swap roles halfway."
+  items={[
+    'Three steps forward in parallel system, then stop together.',
+    'The same three steps, changing your own weight first so you start in cross system.',
+    { text: 'Walk single time for a phrase, then double time for a phrase.', note: 'Double time is not "faster" — it is twice as many steps in the same space.' },
+    { text: 'Walk with your eyes closed as the follower.', note: 'Ask first. Then notice how much earlier you can feel the step coming.' },
+    'Walk to the cross, four times in a row, without discussing it.',
+  ]}
+/>
+
+<LinkCard
+  kicker="Next tool"
+  title="Crosses"
+  href="/dancer/steps/crosses/"
+  tool="pliers"
+  description="Once the walk is honest, the cross stops being a trick you do and starts being something that happens."
+/>

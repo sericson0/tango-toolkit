@@ -1,5 +1,7 @@
 ---
 import '../styles/global.css';
+import { visibleDancerSections } from '../data/dancerSections';
+import ToolIcon from '../components/dancer/ToolIcon.astro';
 import PageTracker from '../components/PageTracker.astro';
 
 interface Props {
@@ -86,8 +88,26 @@ const absoluteOgImage = new URL(ogImage, Astro.site).href;
               <a href="/dj/articles/" class={Astro.url.pathname.startsWith('/dj/articles') || Astro.url.pathname.startsWith('/dj/history') ? 'active' : ''}>Resources &amp; Articles</a>
             </div>
           </div>
-          {/* Dancer section hidden for now — restore this link to re-enable. */}
-          {/* <a href="/dancer/" class={Astro.url.pathname.startsWith('/dancer') ? 'active' : ''}>Dancer</a> */}
+          <div class="nav-group">
+            <button type="button" class={`nav-group-toggle ${Astro.url.pathname.startsWith('/dancer') ? 'active' : ''}`} aria-expanded="false" aria-haspopup="true">
+              Dancer <span class="nav-caret" aria-hidden="true">&#9662;</span>
+            </button>
+            <div class="nav-dropdown">
+              <a href="/dancer/" class={Astro.url.pathname === '/dancer/' ? 'active' : ''}>Dancer Toolkit</a>
+              <div class="nav-dropdown-divider" role="separator"></div>
+              {/* Driven by src/data/dancerSections.ts — hidden sections never appear.
+                  Each row wears its section's toolbox icon (the `tool` field). */}
+              {visibleDancerSections.map((section) => (
+                <a
+                  href={`/dancer/${section.id}/`}
+                  class={`nav-sub nav-sub-tool ${Astro.url.pathname.startsWith(`/dancer/${section.id}`) ? 'active' : ''}`}
+                >
+                  <span class="nav-tool-icon"><ToolIcon name={section.tool} variant="doodle" size={18} /></span>
+                  <span>{section.navTitle}</span>
+                </a>
+              ))}
+            </div>
+          </div>
           <div class="nav-group">
             <button type="button" class={`nav-group-toggle ${Astro.url.pathname.startsWith('/videos') ? 'active' : ''}`} aria-expanded="false" aria-haspopup="true">
               Videos <span class="nav-caret" aria-hidden="true">&#9662;</span>
@@ -141,11 +161,13 @@ const absoluteOgImage = new URL(ogImage, Astro.site).href;
             <a href="/videos/#music-visualization">Music Visualization</a>
             <a href="/videos/interviews/">Interviews</a>
           </div>
-          {/* Dancer section hidden for now — restore this block to re-enable. */}
-          {/* <div>
+          <div>
             <strong>For Dancers</strong>
-            <a href="/dancer/">Dancer Resources</a>
-          </div> */}
+            <a href="/dancer/">Dancer Toolkit</a>
+            {visibleDancerSections.map((section) => (
+              <a href={`/dancer/${section.id}/`}>{section.navTitle}</a>
+            ))}
+          </div>
           <div>
             <strong>Help</strong>
             <a href="/dj/faq/">FAQ & Changelog</a>
@@ -287,7 +309,7 @@ const absoluteOgImage = new URL(ogImage, Astro.site).href;
   }
 
   .logo:hover {
-    color: var(--color-primary);
+    color: var(--color-link);
   }
 
   .logo-img {
@@ -308,7 +330,7 @@ const absoluteOgImage = new URL(ogImage, Astro.site).href;
 
   .nav a:hover,
   .nav a.active {
-    color: var(--color-primary);
+    color: var(--color-link);
   }
 
   /* Dropdown group */
@@ -333,7 +355,7 @@ const absoluteOgImage = new URL(ogImage, Astro.site).href;
 
   .nav-group-toggle:hover,
   .nav-group-toggle.active {
-    color: var(--color-primary);
+    color: var(--color-link);
   }
 
   .nav-caret {
@@ -395,6 +417,40 @@ const absoluteOgImage = new URL(ogImage, Astro.site).href;
   .nav-dropdown a.nav-sub {
     padding-left: 2rem;
     font-size: 0.9rem;
+  }
+
+  /* Dancer sections: the icon stands in for the indent. */
+  .nav-dropdown a.nav-sub-tool {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding-left: 1.1rem;
+  }
+
+  .nav-tool-icon {
+    display: flex;
+    color: var(--color-slate-500);
+    opacity: 0.85;
+    transition: transform 0.18s ease, opacity 0.18s ease, color 0.18s ease;
+  }
+
+  /* A small wiggle on the way past. */
+  .nav-sub-tool:hover .nav-tool-icon,
+  .nav-sub-tool:focus-visible .nav-tool-icon,
+  .nav-sub-tool.active .nav-tool-icon {
+    opacity: 1;
+    color: var(--color-slate-700);
+    transform: rotate(-9deg) scale(1.1);
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .nav-tool-icon,
+    .nav-sub-tool:hover .nav-tool-icon,
+    .nav-sub-tool:focus-visible .nav-tool-icon,
+    .nav-sub-tool.active .nav-tool-icon {
+      transition: none;
+      transform: none;
+    }
   }
 
   .nav-dropdown-divider {
@@ -488,6 +544,11 @@ const absoluteOgImage = new URL(ogImage, Astro.site).href;
       padding: 0.5rem 1rem;
       text-align: center;
       white-space: normal;
+    }
+
+    .nav-dropdown a.nav-sub-tool {
+      justify-content: center;
+      padding: 0.5rem 1rem;
     }
   }
 

@@ -1,0 +1,346 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import { summaryBlocks, summaryIntro } from '../../../data/starterKitSummary';
+
+/**
+ * The printable starter-kit summary.
+ *
+ * A static route, so it sits alongside the content-collection topics at
+ * /dancer/starter-kit/<slug>/ without being one of them. Content lives in
+ * src/data/starterKitSummary.ts; this file is layout and print rules only.
+ *
+ * The print stylesheet strips the site chrome and lays the blocks out in two
+ * columns on A4/Letter. Check a print preview after adding much to the data.
+ */
+
+/** "Balance — can you stand?" -> bold label + rest. */
+function splitItem(item: string): { label?: string; text: string } {
+  const i = item.indexOf(' — ');
+  if (i === -1) return { text: item };
+  return { label: item.slice(0, i), text: item.slice(i + 3) };
+}
+
+const blocks = summaryBlocks.map((b) => ({ ...b, parsed: b.items.map(splitItem) }));
+---
+
+<BaseLayout
+  title="Tango Starter Kit — Quick Reference"
+  description="A printable two-page summary of the Tango Toolkit starter kit: the four pillars, the core movements, milonga etiquette, and a first-month checklist."
+>
+  <div class="sheet-page">
+    <div class="container">
+      <div class="sheet-actions no-print">
+        <a href="/dancer/starter-kit/" class="back-link">&larr; Starter Kit</a>
+        <button type="button" class="btn btn-primary" id="print-sheet">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <polyline points="6 9 6 2 18 2 18 9" />
+            <path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2" />
+            <rect x="6" y="14" width="12" height="8" />
+          </svg>
+          Print / Save as PDF
+        </button>
+      </div>
+
+      <article class="sheet">
+        <header class="sheet-head">
+          <div>
+            <p class="sheet-kicker">Tango Toolkit &middot; Dancer Starter Kit</p>
+            <h1>Quick Reference</h1>
+          </div>
+          <p class="sheet-url">tangotoolkit.com/dancer/</p>
+        </header>
+
+        <p class="sheet-intro">{summaryIntro}</p>
+
+        <div class="sheet-grid">
+          {blocks.map((block) => (
+            <section
+              class:list={['sheet-block', { 'sheet-block--full': block.span === 'full' }]}
+            >
+              <h2>{block.title}</h2>
+              {block.intro && <p class="sheet-block-intro">{block.intro}</p>}
+              <ul class:list={['sheet-list', { 'sheet-list--check': block.id === 'checklist' }]}>
+                {block.parsed.map((item) => (
+                  <li>
+                    {item.label && <strong>{item.label}</strong>}
+                    {item.text}
+                  </li>
+                ))}
+              </ul>
+              {block.note && <p class="sheet-note">{block.note}</p>}
+            </section>
+          ))}
+        </div>
+
+        <footer class="sheet-foot">
+          <span>The full starter kit, with the reasoning behind all of this, is at <strong>tangotoolkit.com/dancer/starter-kit/</strong></span>
+        </footer>
+      </article>
+
+      <p class="sheet-tip no-print">
+        Printing to PDF works in every browser &mdash; choose &ldquo;Save as PDF&rdquo; as the
+        destination. Two pages on A4 or Letter, background graphics off or on.
+      </p>
+    </div>
+  </div>
+</BaseLayout>
+
+<script is:inline>
+  var printBtn = document.getElementById('print-sheet');
+  if (printBtn) printBtn.addEventListener('click', function () { window.print(); });
+</script>
+
+<style is:global>
+  /* Site chrome disappears when printing — only the sheet goes on paper. */
+  @media print {
+    .site-header,
+    .site-footer,
+    .no-print {
+      display: none !important;
+    }
+
+    #main-content { padding: 0 !important; }
+
+    html, body {
+      background: white !important;
+      font-size: 10pt;
+    }
+  }
+</style>
+
+<style>
+  .sheet-page { padding: 2rem 0 3rem; }
+
+  .sheet-actions {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    margin-bottom: 1.5rem;
+  }
+
+  .sheet-actions .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+
+  .sheet-actions .btn svg { width: 1.05rem; height: 1.05rem; }
+
+  /* ===== The sheet itself ===== */
+  .sheet {
+    max-width: 52rem;
+    margin: 0 auto;
+    padding: 2.25rem 2.5rem 2rem;
+    background: white;
+    border: 1px solid var(--color-slate-200);
+    border-radius: var(--radius-lg);
+    box-shadow: var(--shadow-md);
+  }
+
+  .sheet-head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1rem;
+    flex-wrap: wrap;
+    padding-bottom: 0.9rem;
+    border-bottom: 2.5px solid var(--color-primary);
+  }
+
+  .sheet-kicker {
+    margin: 0 0 0.15rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.09em;
+    text-transform: uppercase;
+    color: var(--color-orange-600);
+  }
+
+  .sheet-head h1 {
+    margin: 0;
+    font-size: 2.1rem;
+    line-height: 1.05;
+  }
+
+  .sheet-url {
+    margin: 0;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--color-slate-400);
+  }
+
+  .sheet-intro {
+    margin: 1rem 0 1.5rem;
+    max-width: 62ch;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    color: var(--color-slate-600);
+  }
+
+  .sheet-grid {
+    columns: 2;
+    column-gap: 2rem;
+  }
+
+  .sheet-block {
+    break-inside: avoid;
+    page-break-inside: avoid;
+    margin: 0 0 1.4rem;
+    padding-left: 0.75rem;
+    border-left: 2.5px solid var(--color-orange-200);
+  }
+
+  .sheet-block--full {
+    column-span: all;
+    margin-top: 0.4rem;
+  }
+
+  .sheet-block h2 {
+    margin: 0 0 0.3rem;
+    font-family: var(--font-sans);
+    font-size: 0.82rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+    color: var(--color-orange-700);
+  }
+
+  .sheet-block-intro {
+    margin: 0 0 0.45rem;
+    font-size: 0.8rem;
+    line-height: 1.45;
+    font-style: italic;
+    color: var(--color-slate-500);
+  }
+
+  .sheet-list {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .sheet-list li {
+    position: relative;
+    margin-bottom: 0.35rem;
+    padding-left: 0.85rem;
+    font-size: 0.86rem;
+    line-height: 1.45;
+    color: var(--color-slate-700);
+  }
+
+  .sheet-list li::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0.5rem;
+    width: 0.3rem;
+    height: 0.3rem;
+    border-radius: 999px;
+    background: var(--color-orange-400);
+  }
+
+  .sheet-list li strong {
+    color: var(--color-slate-900);
+  }
+
+  .sheet-list li strong::after {
+    content: ' — ';
+    font-weight: 400;
+    color: var(--color-slate-400);
+  }
+
+  /* Checklist gets printable boxes instead of bullets. */
+  .sheet-list--check {
+    columns: 2;
+    column-gap: 2rem;
+  }
+
+  .sheet-list--check li {
+    break-inside: avoid;
+    padding-left: 1.35rem;
+  }
+
+  .sheet-list--check li::before {
+    top: 0.15rem;
+    width: 0.85rem;
+    height: 0.85rem;
+    border: 1.5px solid var(--color-slate-400);
+    border-radius: 0.15rem;
+    background: transparent;
+  }
+
+  .sheet-note {
+    margin: 0.5rem 0 0;
+    font-size: 0.78rem;
+    line-height: 1.45;
+    color: var(--color-slate-500);
+  }
+
+  .sheet-foot {
+    margin-top: 1.25rem;
+    padding-top: 0.8rem;
+    border-top: 1px solid var(--color-slate-200);
+    font-size: 0.78rem;
+    color: var(--color-slate-500);
+  }
+
+  .sheet-foot strong { color: var(--color-slate-700); }
+
+  .sheet-tip {
+    max-width: 52rem;
+    margin: 1.25rem auto 0;
+    font-size: 0.85rem;
+    color: var(--color-slate-500);
+  }
+
+  @media (max-width: 700px) {
+    .sheet { padding: 1.5rem 1.25rem; }
+    .sheet-grid { columns: 1; }
+    .sheet-list--check { columns: 1; }
+    .sheet-head h1 { font-size: 1.7rem; }
+  }
+
+  /* ===== Print ===== */
+  @media print {
+    .sheet-page { padding: 0; }
+
+    .sheet {
+      max-width: none;
+      margin: 0;
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      box-shadow: none;
+    }
+
+    .sheet-head { padding-bottom: 0.5rem; }
+    .sheet-head h1 { font-size: 20pt; }
+    .sheet-kicker { font-size: 7pt; }
+    .sheet-url { font-size: 7.5pt; }
+
+    .sheet-intro {
+      margin: 0.6rem 0 0.9rem;
+      font-size: 8.5pt;
+      line-height: 1.4;
+    }
+
+    .sheet-grid { column-gap: 1.5rem; }
+
+    .sheet-block { margin-bottom: 0.9rem; }
+    .sheet-block h2 { font-size: 8pt; }
+    .sheet-block-intro { font-size: 7.5pt; }
+    .sheet-list li { font-size: 8pt; line-height: 1.35; margin-bottom: 0.2rem; }
+    .sheet-note { font-size: 7.5pt; }
+    .sheet-foot { font-size: 7.5pt; }
+
+    /* Keep the checklist whole rather than split across the page break. */
+    .sheet-block--full { break-before: auto; }
+  }
+
+  @page {
+    size: A4;
+    margin: 12mm;
+  }
+</style>

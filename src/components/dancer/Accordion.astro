@@ -1,0 +1,153 @@
+---
+import ToolIcon from './ToolIcon.astro';
+
+/**
+ * A collapsible block. Use it to keep a page skimmable while still holding
+ * the detail — technique notes, exercises, a diagram, a video.
+ *
+ *   <Accordion title="Technique for the cross" tool="screwdriver" label="Technique">
+ *   ...markdown...
+ *   </Accordion>
+ *
+ * Put a blank line above and below the content so MDX parses it as Markdown.
+ */
+interface Props {
+  title: string;
+  /** Small chip on the right — "Exercise", "Technique", "Video", ... */
+  label?: string;
+  /** Icon name from ToolIcon. Omit for no icon. */
+  tool?: string;
+  /** Start expanded. */
+  open?: boolean;
+  /** One line of context shown under the title while collapsed. */
+  summary?: string;
+}
+
+const { title, label, tool, open = false, summary } = Astro.props;
+---
+
+<details class="d-accordion" open={open}>
+  <summary class="d-accordion-summary">
+    {tool && (
+      <span class="d-accordion-tool" aria-hidden="true">
+        <ToolIcon name={tool} size={18} />
+      </span>
+    )}
+    <span class="d-accordion-text">
+      <span class="d-accordion-title">{title}</span>
+      {summary && <span class="d-accordion-sub">{summary}</span>}
+    </span>
+    {label && <span class="d-accordion-label">{label}</span>}
+    <svg class="d-accordion-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <polyline points="6 9 12 15 18 9" />
+    </svg>
+  </summary>
+  <div class="d-accordion-body">
+    <slot />
+  </div>
+</details>
+
+<style>
+  .d-accordion {
+    margin: 1.25rem 0;
+    background: white;
+    border: 1px solid var(--color-slate-200);
+    border-radius: var(--radius-lg);
+    overflow: hidden;
+    transition: border-color 0.2s, box-shadow 0.2s;
+  }
+
+  .d-accordion[open] {
+    border-color: var(--color-orange-200);
+    box-shadow: var(--shadow-sm);
+  }
+
+  .d-accordion-summary {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.85rem 1.1rem;
+    cursor: pointer;
+    list-style: none;
+    user-select: none;
+  }
+
+  .d-accordion-summary::-webkit-details-marker { display: none; }
+
+  .d-accordion-summary:hover { background: var(--color-orange-50); }
+
+  .d-accordion-summary:focus-visible {
+    outline: 2px solid var(--color-primary);
+    outline-offset: -2px;
+  }
+
+  .d-accordion-tool {
+    display: grid;
+    place-items: center;
+    width: 2rem;
+    height: 2rem;
+    flex-shrink: 0;
+    border-radius: var(--radius-md);
+    background: var(--color-orange-50);
+    color: var(--color-orange-600);
+  }
+
+  .d-accordion[open] .d-accordion-tool {
+    background: var(--color-primary);
+    color: white;
+  }
+
+  .d-accordion-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    min-width: 0;
+    flex: 1;
+  }
+
+  .d-accordion-title {
+    font-weight: 600;
+    color: var(--color-slate-800);
+    line-height: 1.3;
+  }
+
+  .d-accordion-sub {
+    font-size: 0.85rem;
+    color: var(--color-slate-500);
+  }
+
+  .d-accordion-label {
+    flex-shrink: 0;
+    padding: 0.15rem 0.55rem;
+    border-radius: 999px;
+    background: var(--color-slate-100);
+    color: var(--color-slate-600);
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
+
+  .d-accordion-chevron {
+    width: 1.1rem;
+    height: 1.1rem;
+    flex-shrink: 0;
+    color: var(--color-slate-400);
+    transition: transform 0.2s;
+  }
+
+  .d-accordion[open] .d-accordion-chevron { transform: rotate(180deg); }
+
+  .d-accordion-body {
+    padding: 0.25rem 1.1rem 1.1rem;
+    border-top: 1px solid var(--color-slate-100);
+  }
+
+  .d-accordion-body :global(> :first-child) { margin-top: 1rem; }
+  .d-accordion-body :global(> :last-child) { margin-bottom: 0; }
+
+  @media print {
+    .d-accordion-body { display: block !important; }
+    .d-accordion-chevron { display: none; }
+  }
+</style>
