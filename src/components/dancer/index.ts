@@ -12,6 +12,7 @@
 export { default as Accordion } from './Accordion.astro';
 export { default as ActivityGrid } from './ActivityGrid.astro';
 export { default as Callout } from './Callout.astro';
+export { default as CrossQuestionHint } from './CrossQuestionHint.astro';
 export { default as Exercise } from './Exercise.astro';
 export { default as Figure } from './Figure.astro';
 export { default as KeyPoints } from './KeyPoints.astro';

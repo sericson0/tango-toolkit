@@ -1,0 +1,110 @@
+<details class="d-cross-hint">
+  <summary>Hint</summary>
+  <figure>
+    <svg viewBox="0 0 620 280" role="img" aria-labelledby="cross-hint-title cross-hint-desc">
+      <title id="cross-hint-title">How the rails change when walking to the cross</title>
+      <desc id="cross-hint-desc">
+        In the walk, the follower's orange rails sit halfway between the leader's grey rails.
+        Walking to the cross shifts the follower's rails to the leader's right.
+      </desc>
+
+      <g class="d-hint-panel">
+        <text class="d-hint-heading" x="145" y="28" text-anchor="middle">Walk</text>
+        <line class="d-hint-rail d-hint-rail--leader" x1="129.25" y1="90" x2="129.25" y2="234" />
+        <line class="d-hint-rail d-hint-rail--leader" x1="150.25" y1="90" x2="150.25" y2="234" />
+        <line class="d-hint-rail d-hint-rail--follower" x1="139.75" y1="66" x2="139.75" y2="204" />
+        <line class="d-hint-rail d-hint-rail--follower" x1="160.75" y1="66" x2="160.75" y2="204" />
+        <text class="d-hint-role d-hint-role--follower" x="170" y="83">F</text>
+        <text class="d-hint-role d-hint-role--leader" x="160" y="250">L</text>
+      </g>
+
+      <path class="d-hint-shift" d="M255 136H345" />
+      <path class="d-hint-shift-head" d="M334 126L346 136L334 146" />
+
+      <g class="d-hint-panel">
+        <text class="d-hint-heading" x="475" y="28" text-anchor="middle">Walk to the cross</text>
+        <line class="d-hint-rail d-hint-rail--leader" x1="441.4" y1="90" x2="441.4" y2="234" />
+        <line class="d-hint-rail d-hint-rail--leader" x1="462.4" y1="90" x2="462.4" y2="234" />
+        <line class="d-hint-rail d-hint-rail--follower" x1="487.6" y1="66" x2="487.6" y2="204" />
+        <line class="d-hint-rail d-hint-rail--follower" x1="508.6" y1="66" x2="508.6" y2="204" />
+        <text class="d-hint-role d-hint-role--follower" x="518" y="83">F</text>
+        <text class="d-hint-role d-hint-role--leader" x="472" y="250">L</text>
+      </g>
+    </svg>
+  </figure>
+</details>
+
+<style>
+  .d-cross-hint { margin-top: 0.8rem; }
+
+  .d-cross-hint summary {
+    width: fit-content;
+    padding: 0.28rem 0.7rem;
+    border: 1px solid var(--color-blue-500);
+    border-radius: 999px;
+    color: var(--color-blue-700);
+    background: white;
+    font-size: 0.82rem;
+    font-weight: 700;
+    cursor: pointer;
+    user-select: none;
+  }
+
+  .d-cross-hint summary:hover { background: var(--color-blue-50); }
+
+  .d-cross-hint summary:focus-visible {
+    outline: 2px solid var(--color-blue-500);
+    outline-offset: 2px;
+  }
+
+  .d-cross-hint figure {
+    margin: 0.8rem 0 0;
+    padding: 0.65rem;
+    border: 1px solid var(--color-slate-200);
+    border-radius: var(--radius-lg);
+    background: white;
+  }
+
+  .d-cross-hint svg {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  .d-hint-rail {
+    stroke-width: 6;
+    stroke-linecap: round;
+  }
+
+  .d-hint-rail--leader { stroke: var(--color-slate-300); }
+  .d-hint-rail--follower { stroke: var(--color-orange-200); }
+
+  .d-hint-heading {
+    fill: var(--color-slate-800);
+    font-family: var(--font-display);
+    font-size: 22px;
+  }
+
+  .d-hint-role {
+    font-family: var(--font-sans);
+    font-size: 18px;
+    font-weight: 700;
+  }
+
+  .d-hint-role--leader { fill: var(--color-slate-500); }
+  .d-hint-role--follower { fill: var(--color-orange-500); }
+
+  .d-hint-shift,
+  .d-hint-shift-head {
+    fill: none;
+    stroke: var(--color-slate-400);
+    stroke-width: 3;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+  }
+
+  @media (max-width: 520px) {
+    .d-hint-heading { font-size: 19px; }
+    .d-cross-hint figure { padding: 0.35rem; }
+  }
+</style>

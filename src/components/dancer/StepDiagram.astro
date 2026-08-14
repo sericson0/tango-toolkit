@@ -37,6 +37,10 @@ interface Foot {
   darkOutline?: boolean;
   /** Use the diagram's green title colour for the sole boundary. */
   greenOutline?: boolean;
+  /** Draw a black sole boundary. */
+  blackOutline?: boolean;
+  /** Fill with role-coloured diagonal lines; direction identifies left/right. */
+  hatched?: boolean;
   /** Step number or short label drawn on the sole. */
   label?: string | number;
   /** Draw faded — a previous position, or a step still to come. */
@@ -190,24 +194,57 @@ const title = caption ?? 'Footwork diagram';
               f.tone && `d-foot--tone-${f.tone}`,
               f.darkOutline && 'd-foot--dark-outline',
               f.greenOutline && 'd-foot--green-outline',
+              f.blackOutline && 'd-foot--black-outline',
+              f.hatched && 'd-foot--hatched',
               { 'd-foot--ghost': f.ghost },
             ]}
             transform={`translate(${px(f.x)} ${py(f.y)}) rotate(${f.rot ?? 0})`}
           >
-            <path d={SOLE} transform={`scale(${mirror} 1)`} />
+            <path
+              d={SOLE}
+              transform={`scale(${mirror} 1)`}
+              style={f.hatched ? `fill:url(#d-hatch-${f.role}-${f.foot ?? 'R'})` : undefined}
+            />
             {f.label !== undefined && (
-              <text
-                class="d-foot-label"
-                text-anchor="middle"
-                dominant-baseline="central"
-                transform={f.uprightLabel ? `rotate(${-(f.rot ?? 0)})` : undefined}
-              >{f.label}</text>
+              <>
+                {f.hatched && (
+                  <text
+                    class="d-foot-label d-foot-label--halo"
+                    text-anchor="middle"
+                    dominant-baseline="central"
+                    transform={f.uprightLabel ? `rotate(${-(f.rot ?? 0)})` : undefined}
+                    aria-hidden="true"
+                  >{f.label}</text>
+                )}
+                <text
+                  class="d-foot-label"
+                  text-anchor="middle"
+                  dominant-baseline="central"
+                  transform={f.uprightLabel ? `rotate(${-(f.rot ?? 0)})` : undefined}
+                >{f.label}</text>
+              </>
             )}
           </g>
         );
       })}
 
       <defs>
+        <pattern id="d-hatch-leader-L" width="8" height="8" patternUnits="userSpaceOnUse">
+          <rect width="8" height="8" fill="var(--color-blue-50)" />
+          <path d="M-2 2L2-2M0 8L8 0M6 10L10 6" stroke="var(--color-blue-500)" stroke-width="2.4" />
+        </pattern>
+        <pattern id="d-hatch-leader-R" width="8" height="8" patternUnits="userSpaceOnUse">
+          <rect width="8" height="8" fill="var(--color-blue-50)" />
+          <path d="M-2 2L2-2M0 8L8 0M6 10L10 6" stroke="var(--color-blue-500)" stroke-width="2.4" />
+        </pattern>
+        <pattern id="d-hatch-follower-L" width="8" height="8" patternUnits="userSpaceOnUse">
+          <rect width="8" height="8" fill="var(--color-orange-50)" />
+          <path d="M-2 2L2-2M0 8L8 0M6 10L10 6" stroke="var(--color-orange-500)" stroke-width="2.4" />
+        </pattern>
+        <pattern id="d-hatch-follower-R" width="8" height="8" patternUnits="userSpaceOnUse">
+          <rect width="8" height="8" fill="var(--color-orange-50)" />
+          <path d="M-2 2L2-2M0 8L8 0M6 10L10 6" stroke="var(--color-orange-500)" stroke-width="2.4" />
+        </pattern>
         <marker id="d-arrowhead" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse">
           <path d="M 0 1 L 9 5 L 0 9 z" />
         </marker>
@@ -282,6 +319,16 @@ const title = caption ?? 'Footwork diagram';
 
   .d-foot--dark-outline path { stroke: var(--color-slate-900); }
   .d-foot--green-outline path { stroke: var(--color-green-700); }
+  .d-foot--black-outline path { stroke: #000; }
+  .d-foot--hatched .d-foot-label { fill: #000; }
+
+  .d-foot--hatched .d-foot-label--halo {
+    fill: white;
+    stroke: white;
+    stroke-width: 2.5px;
+    stroke-linejoin: round;
+    paint-order: stroke;
+  }
 
   .d-foot--ghost path {
     fill: var(--color-slate-300);

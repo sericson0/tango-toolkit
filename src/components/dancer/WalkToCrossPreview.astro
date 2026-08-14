@@ -1,5 +1,6 @@
 ---
 import StepDiagram from './StepDiagram.astro';
+import Exercise from './Exercise.astro';
 
 type PreviewFoot = {
   role: 'leader' | 'follower';
@@ -12,6 +13,8 @@ type PreviewFoot = {
   uprightLabel?: boolean;
   darkOutline?: boolean;
   greenOutline?: boolean;
+  blackOutline?: boolean;
+  hatched?: boolean;
 };
 
 type PreviewRail = {
@@ -25,15 +28,15 @@ type PreviewRail = {
 const LEADER_LEVEL = 1.7;
 
 const leader: PreviewFoot[] = [
-  { role: 'leader', tone: 'blue',   x: 2.10, y: LEADER_LEVEL, foot: 'L', label: 0, rot: -6, greenOutline: true },
-  { role: 'leader', tone: 'orange', x: 2.60, y: 0,    foot: 'R', label: 1, rot: 6, greenOutline: true },
-  { role: 'leader', tone: 'blue',   x: 0.85, y: 0,    foot: 'L', label: 2, rot: -6, greenOutline: true },
-  { role: 'leader', tone: 'orange', x: 0.50, y: LEADER_LEVEL, foot: 'R', label: 3, rot: 6, greenOutline: true },
-  { role: 'leader', tone: 'blue',   x: 0,    y: LEADER_LEVEL * 2, foot: 'L', label: 4, rot: -6, greenOutline: true },
-  { role: 'leader', tone: 'orange', x: 0.50, y: LEADER_LEVEL * 2, foot: 'R', label: 5, rot: 6, greenOutline: true },
-  { role: 'leader', tone: 'blue',   x: 0,    y: LEADER_LEVEL * 3, foot: 'L', label: 6, rot: -6, greenOutline: true },
-  { role: 'leader', tone: 'orange', x: 1.75, y: LEADER_LEVEL * 3, foot: 'R', label: 7, rot: 6, greenOutline: true },
-  { role: 'leader', tone: 'blue',   x: 1.25, y: LEADER_LEVEL * 3, foot: 'L', label: 8, rot: -6, greenOutline: true },
+  { role: 'leader', tone: 'blue', x: 2.10, y: LEADER_LEVEL, foot: 'L', label: 0, rot: -6, blackOutline: true, hatched: true },
+  { role: 'leader', tone: 'blue', x: 2.60, y: 0, foot: 'R', label: 1, rot: 6, blackOutline: true, hatched: true },
+  { role: 'leader', tone: 'blue', x: 0.85, y: 0, foot: 'L', label: 2, rot: -6, blackOutline: true, hatched: true },
+  { role: 'leader', tone: 'blue', x: 0.50, y: LEADER_LEVEL, foot: 'R', label: 3, rot: 6, blackOutline: true, hatched: true },
+  { role: 'leader', tone: 'blue', x: 0, y: LEADER_LEVEL * 2, foot: 'L', label: 4, rot: -6, blackOutline: true, hatched: true },
+  { role: 'leader', tone: 'blue', x: 0.50, y: LEADER_LEVEL * 2, foot: 'R', label: 5, rot: 6, blackOutline: true, hatched: true },
+  { role: 'leader', tone: 'blue', x: 0, y: LEADER_LEVEL * 3, foot: 'L', label: 6, rot: -6, blackOutline: true, hatched: true },
+  { role: 'leader', tone: 'blue', x: 1.75, y: LEADER_LEVEL * 3, foot: 'R', label: 7, rot: 6, blackOutline: true, hatched: true },
+  { role: 'leader', tone: 'blue', x: 1.25, y: LEADER_LEVEL * 3, foot: 'L', label: 8, rot: -6, blackOutline: true, hatched: true },
 ];
 
 const leaderRails: PreviewRail[] = [
@@ -63,15 +66,15 @@ const leaderRails: PreviewRail[] = [
 ];
 
 const follower: PreviewFoot[] = [
-  { role: 'follower', tone: 'orange', x: 2.35, y: 2.70, foot: 'R', label: 0, rot: 186, uprightLabel: true, darkOutline: true },
-  { role: 'follower', tone: 'blue',   x: 2.85, y: 1.00, foot: 'L', label: 1, rot: 174, uprightLabel: true, darkOutline: true },
-  { role: 'follower', tone: 'orange', x: 1.10, y: 1.00, foot: 'R', label: 2, rot: 186, uprightLabel: true, darkOutline: true },
-  { role: 'follower', tone: 'blue',   x: 1.60, y: 2.70, foot: 'L', label: 3, rot: 174, uprightLabel: true, darkOutline: true },
-  { role: 'follower', tone: 'orange', x: 1.10, y: 4.40, foot: 'R', label: 4, rot: 186, uprightLabel: true, darkOutline: true },
-  { role: 'follower', tone: 'blue',   x: 0.75, y: 4.40, foot: 'L', label: 5, rot: 174, uprightLabel: true, darkOutline: true },
-  { role: 'follower', tone: 'orange', x: 0.25, y: 6.10, foot: 'R', label: 6, rot: 186, uprightLabel: true, darkOutline: true },
-  { role: 'follower', tone: 'blue',   x: 2.00, y: 6.10, foot: 'L', label: 7, rot: 174, uprightLabel: true, darkOutline: true },
-  { role: 'follower', tone: 'orange', x: 1.50, y: 6.10, foot: 'R', label: 8, rot: 186, uprightLabel: true, darkOutline: true },
+  { role: 'follower', tone: 'orange', x: 2.35, y: 2.70, foot: 'R', label: 0, rot: 186, uprightLabel: true, blackOutline: true, hatched: true },
+  { role: 'follower', tone: 'orange', x: 2.85, y: 1.00, foot: 'L', label: 1, rot: 174, uprightLabel: true, blackOutline: true, hatched: true },
+  { role: 'follower', tone: 'orange', x: 1.10, y: 1.00, foot: 'R', label: 2, rot: 186, uprightLabel: true, blackOutline: true, hatched: true },
+  { role: 'follower', tone: 'orange', x: 1.60, y: 2.70, foot: 'L', label: 3, rot: 174, uprightLabel: true, blackOutline: true, hatched: true },
+  { role: 'follower', tone: 'orange', x: 1.10, y: 4.40, foot: 'R', label: 4, rot: 186, uprightLabel: true, blackOutline: true, hatched: true },
+  { role: 'follower', tone: 'orange', x: 0.75, y: 4.40, foot: 'L', label: 5, rot: 174, uprightLabel: true, blackOutline: true, hatched: true },
+  { role: 'follower', tone: 'orange', x: 0.25, y: 6.10, foot: 'R', label: 6, rot: 186, uprightLabel: true, blackOutline: true, hatched: true },
+  { role: 'follower', tone: 'orange', x: 2.00, y: 6.10, foot: 'L', label: 7, rot: 174, uprightLabel: true, blackOutline: true, hatched: true },
+  { role: 'follower', tone: 'orange', x: 1.50, y: 6.10, foot: 'R', label: 8, rot: 186, uprightLabel: true, blackOutline: true, hatched: true },
 ];
 
 const followerRails: PreviewRail[] = [
@@ -144,15 +147,16 @@ const sharedBounds = { minX: 0, maxX: 2.85, minY: -0.90, maxY: 7.05 };
     </div>
   </div>
 
-  <div class="d-walk-cross__exercise">
-    <strong>Lead exercise</strong>
-    <ol type="a">
-      <li>Parallel system</li>
-      <li>Cross system</li>
-      <li>Single time cross</li>
-      <li>Double time cross</li>
-    </ol>
-  </div>
+  <Exercise
+    id="classic-eight-count-lead"
+    title="Lead exercise"
+    items={[
+      'Parallel system',
+      'Cross system',
+      'Single time cross',
+      'Double time cross',
+    ]}
+  />
 </section>
 
 <style>
@@ -183,34 +187,8 @@ const sharedBounds = { minX: 0, maxX: 2.85, minY: -0.90, maxY: 7.05 };
 
   .d-walk-cross__panel :global(.d-diagram) { margin: 0.5rem 0 0; }
 
-  .d-walk-cross__exercise {
-    display: flex;
-    align-items: baseline;
-    gap: 1.25rem;
-    margin-top: 1rem;
-    padding: 0.85rem 1rem;
-    border-radius: var(--radius-md);
-    background: white;
-  }
-
-  .d-walk-cross__exercise strong { white-space: nowrap; }
-
-  .d-walk-cross__exercise ol {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 0.25rem 2rem;
-    width: 100%;
-    margin: 0;
-  }
-
   @media (max-width: 760px) {
     .d-walk-cross { padding: 1rem; }
     .d-walk-cross__panels { grid-template-columns: 1fr; }
-    .d-walk-cross__exercise { display: block; }
-    .d-walk-cross__exercise ol { margin-top: 0.5rem; }
-  }
-
-  @media (max-width: 430px) {
-    .d-walk-cross__exercise ol { grid-template-columns: 1fr; }
   }
 </style>
