@@ -128,6 +128,31 @@ Why does the follower's foot land where it lands? Try walking three steps while 
 arriving a beat late, and watch what your partner has to do about it.
 </Callout>
 
+<Callout type="remark">
+When dancing, the leader's and follower's paths are slightly offset rather than perfectly aligned.
+This is especially noticeable in close embrace, where the natural offset of the dancers' heads
+shifts their walking paths as well.
+
+<StepDiagram
+  caption="Three steps in parallel system: the leader walks along the grey tracks, while the follower walks along the orange tracks."
+  bounds={{ minX: -0.35, maxX: 1.55, minY: -0.55, maxY: 4.75 }}
+  rails={[
+    { x: 0, fromY: -0.45, toY: 4.65, tone: 'grey' },
+    { x: 0.8, fromY: -0.45, toY: 4.65, tone: 'grey' },
+    { x: 0.4, fromY: -0.45, toY: 4.65, tone: 'orange' },
+    { x: 1.2, fromY: -0.45, toY: 4.65, tone: 'orange' },
+  ]}
+  feet={[
+    { role: 'leader', x: 0, y: 0, foot: 'L', label: 1 },
+    { role: 'leader', x: 0.8, y: 1.3, foot: 'R', label: 2 },
+    { role: 'leader', x: 0, y: 2.6, foot: 'L', label: 3 },
+    { role: 'follower', x: 0.4, y: 1.6, foot: 'R', rot: 180, label: 1 },
+    { role: 'follower', x: 1.2, y: 2.9, foot: 'L', rot: 180, label: 2 },
+    { role: 'follower', x: 0.4, y: 4.2, foot: 'R', rot: 180, label: 3 },
+  ]}
+/>
+</Callout>
+
 ## Step length
 
 Steps do not all have to be the same size, and a walk made of identical steps sounds like a

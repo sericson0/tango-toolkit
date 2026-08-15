@@ -19,6 +19,7 @@ const { title, summary, description, tool, level, related, updated } = entry.dat
 
 // Only top-level sections go in the contents list — subheads would swamp it.
 const toc = headings.filter((h) => h.depth === 2);
+const tocStartsAtZero = toc[0]?.text.startsWith('Classic eight-count basic') ?? false;
 
 const LEVEL_LABELS: Record<string, string> = {
   new: 'New dancers',
@@ -70,7 +71,7 @@ const updatedLabel = updated
             {toc.length > 0 && (
               <nav class="topic-toc" aria-label="On this page">
                 <h2>On this page</h2>
-                <ol>
+                <ol start={tocStartsAtZero ? 0 : 1}>
                   {toc.map((h) => (
                     <li><a href={`#${h.slug}`}>{h.text}</a></li>
                   ))}

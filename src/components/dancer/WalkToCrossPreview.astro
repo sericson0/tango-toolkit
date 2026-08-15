@@ -107,11 +107,7 @@ const followerRails: PreviewRail[] = [
 const sharedBounds = { minX: 0, maxX: 2.85, minY: -0.90, maxY: 7.05 };
 ---
 
-<section class="d-walk-cross" aria-labelledby="walk-cross-title">
-  <header class="d-walk-cross__header">
-    <h2 id="walk-cross-title">Classic eight-count basic (in parallel system)</h2>
-  </header>
-
+<section class="d-walk-cross" aria-labelledby="classic-eight-count-basic">
   <div class="d-walk-cross__panels">
     <div class="d-walk-cross__panel">
       <h3>Leader</h3>
@@ -147,17 +143,24 @@ const sharedBounds = { minX: 0, maxX: 2.85, minY: -0.90, maxY: 7.05 };
     </div>
   </div>
 
-  <Exercise
-    id="classic-eight-count-lead"
-    title="Lead exercise"
-    items={[
-      'Parallel system',
-      'Cross system',
-      'Single time cross',
-      'Double time cross',
-    ]}
-  />
+  <div class="d-walk-cross__key" aria-label="Footstep key">
+    <span><i class="d-walk-cross__role d-walk-cross__role--leader"></i>Leader</span>
+    <span><i class="d-walk-cross__role d-walk-cross__role--follower"></i>Follower</span>
+    <span><i class="d-walk-cross__hatch d-walk-cross__hatch--left"></i>Left foot</span>
+    <span><i class="d-walk-cross__hatch d-walk-cross__hatch--right"></i>Right foot</span>
+  </div>
 </section>
+
+<Exercise
+  id="classic-eight-count-lead"
+  title="Lead exercise"
+  items={[
+    'Parallel system',
+    'Cross system',
+    'Single time cross',
+    'Double time cross',
+  ]}
+/>
 
 <style>
   .d-walk-cross {
@@ -168,15 +171,10 @@ const sharedBounds = { minX: 0, maxX: 2.85, minY: -0.90, maxY: 7.05 };
     background: var(--color-slate-50);
   }
 
-  .d-walk-cross__header { text-align: center; }
-
-  .d-walk-cross h2 { margin: 0; }
-
   .d-walk-cross__panels {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 0.8rem;
-    margin-top: 1rem;
   }
 
   .d-walk-cross__panel h3 {
@@ -186,6 +184,42 @@ const sharedBounds = { minX: 0, maxX: 2.85, minY: -0.90, maxY: 7.05 };
   }
 
   .d-walk-cross__panel :global(.d-diagram) { margin: 0.5rem 0 0; }
+
+  .d-walk-cross__key {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.6rem 1.25rem;
+    margin: 1rem 0 1.25rem;
+    color: var(--color-slate-700);
+    font-size: 0.82rem;
+  }
+
+  .d-walk-cross__key span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .d-walk-cross__role,
+  .d-walk-cross__hatch {
+    display: inline-block;
+    width: 1.25rem;
+    height: 1.25rem;
+    border: 1.5px solid #111;
+    border-radius: 0.3rem;
+  }
+
+  .d-walk-cross__role--leader { background: var(--color-blue-500); }
+  .d-walk-cross__role--follower { background: var(--color-orange-500); }
+
+  .d-walk-cross__hatch--left {
+    background: repeating-linear-gradient(45deg, transparent 0 4px, #111 4px 6px);
+  }
+
+  .d-walk-cross__hatch--right {
+    background: repeating-linear-gradient(-45deg, transparent 0 4px, #111 4px 6px);
+  }
 
   @media (max-width: 760px) {
     .d-walk-cross { padding: 1rem; }
