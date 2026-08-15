@@ -1,0 +1,48 @@
+<div class="d-rock-step-intro">
+  <figure class="d-rock-step-intro__figure">
+    <img
+      src="/images/dancer/rock-step-river.png"
+      alt="A hand-drawn person testing the first of five rocks in a small river."
+      width="390"
+      height="390"
+    />
+  </figure>
+
+  <div class="d-rock-step-intro__text">
+    <p>
+      Imagine that you are about to cross a small river using the rocks in it. Before committing
+      your weight to the next rock, you test whether it is stable. You touch it with one foot and
+      transfer a little weight toward it, then quickly return to the leg you know is secure.
+    </p>
+  </div>
+</div>
+
+<style>
+  .d-rock-step-intro {
+    display: grid;
+    grid-template-columns: minmax(0, 8.125rem) minmax(18rem, 1fr);
+    align-items: center;
+    gap: clamp(1.5rem, 4vw, 3.5rem);
+    margin: 1rem 0;
+  }
+
+  .d-rock-step-intro__figure { width: 100%; max-width: 8.125rem; margin: 0; }
+  .d-rock-step-intro__figure img {
+    display: block;
+    width: 100%;
+    height: auto;
+    mix-blend-mode: multiply;
+  }
+
+  .d-rock-step-intro__text p {
+    margin: 0 0 1rem;
+    color: var(--color-slate-800);
+  }
+
+  .d-rock-step-intro__text p:last-child { margin-bottom: 0; }
+
+  @media (max-width: 700px) {
+    .d-rock-step-intro { grid-template-columns: 1fr; }
+    .d-rock-step-intro__figure { max-width: 28rem; margin-inline: auto; }
+  }
+</style>

@@ -1,0 +1,171 @@
+---
+import StepDiagram from './StepDiagram.astro';
+
+const leader = { role: 'leader' as const, tone: 'blue' as const, blackOutline: true, hatched: true };
+const follower = {
+  role: 'follower' as const,
+  tone: 'orange' as const,
+  blackOutline: true,
+  hatched: true,
+  uprightLabel: true,
+};
+const circle = [{ cx: 0, cy: 0, r: 2.15 }];
+const circleBounds = { minX: -2.35, maxX: 2.35, minY: -2.35, maxY: 2.35 };
+---
+
+<figure class="d-ocho-sequence">
+  <div class="d-ocho-sequence__scroll">
+    <div class="d-ocho-sequence__track">
+      <div class="d-ocho-sequence__panel d-ocho-sequence__panel--start">
+        <span class="d-ocho-sequence__number">0</span>
+        <StepDiagram legend={false} bounds={{ minX: -0.8, maxX: 0.8, minY: -0.6, maxY: 3.4 }} feet={[
+          { ...leader, x: -0.25, y: 0, foot: 'L', rot: -6 },
+          { ...leader, x: 0.25, y: 0, foot: 'R', rot: 6, emphasis: true },
+          { ...follower, x: -0.25, y: 2, foot: 'R', rot: 186 },
+          { ...follower, x: 0.25, y: 2, foot: 'L', rot: 174, emphasis: true },
+        ]} />
+      </div>
+
+      <span class="d-ocho-sequence__arrow">→</span>
+
+      <div class="d-ocho-sequence__panel d-ocho-sequence__panel--start">
+        <span class="d-ocho-sequence__number">1</span>
+        <StepDiagram legend={false} bounds={{ minX: -0.8, maxX: 0.8, minY: -0.6, maxY: 3.4 }} feet={[
+          { ...leader, x: -0.25, y: 0.8, foot: 'L', rot: -6, emphasis: true },
+          { ...leader, x: 0.25, y: 0, foot: 'R', rot: 6 },
+          { ...follower, x: -0.25, y: 2.8, foot: 'R', rot: 186, emphasis: true },
+          { ...follower, x: 0.25, y: 2, foot: 'L', rot: 174 },
+        ]} />
+      </div>
+
+      <span class="d-ocho-sequence__arrow">→</span>
+
+      <div class="d-ocho-sequence__panel d-ocho-sequence__panel--start">
+        <span class="d-ocho-sequence__number">2</span>
+        <StepDiagram legend={false} bounds={{ minX: -0.8, maxX: 0.8, minY: -0.6, maxY: 3.4 }} feet={[
+          { ...leader, x: -0.25, y: 0.8, foot: 'L', rot: -6 },
+          { ...leader, x: -0.08, y: 0, foot: 'R', rot: 82, emphasis: true },
+          { ...follower, x: -0.25, y: 2.8, foot: 'R', rot: 186 },
+          { ...follower, x: 0.25, y: 2, foot: 'L', rot: 174, emphasis: true },
+        ]} />
+      </div>
+
+      <span class="d-ocho-sequence__arrow">→</span>
+
+      <div class="d-ocho-sequence__panel">
+        <span class="d-ocho-sequence__number">3</span>
+        <StepDiagram legend={false} bounds={circleBounds} circles={circle} feet={[
+          { ...leader, x: -0.06, y: 0.24, foot: 'L', rot: 70, emphasis: true },
+          { ...leader, x: 0.06, y: -0.24, foot: 'R', rot: 82 },
+          { ...follower, x: 1.64, y: -1.39, foot: 'R', rot: 220, emphasis: true },
+          { ...follower, x: 1.64, y: 1.39, foot: 'L', rot: 152 },
+        ]} />
+      </div>
+
+      <span class="d-ocho-sequence__arrow">→</span>
+
+      <div class="d-ocho-sequence__panel">
+        <span class="d-ocho-sequence__number">4</span>
+        <StepDiagram legend={false} bounds={circleBounds} circles={circle} feet={[
+          { ...leader, x: -0.06, y: 0.24, foot: 'L', rot: 70 },
+          { ...leader, x: -0.33, y: -0.75, foot: 'R', rot: 172, emphasis: true },
+          { ...follower, x: 1.64, y: -1.39, foot: 'R', rot: 25 },
+          { ...follower, x: -1.1, y: -1.85, foot: 'L', rot: 315, emphasis: true },
+        ]} />
+      </div>
+
+      <span class="d-ocho-sequence__arrow">→</span>
+
+      <div class="d-ocho-sequence__panel">
+        <span class="d-ocho-sequence__number">5</span>
+        <StepDiagram legend={false} bounds={circleBounds} circles={circle} feet={[
+          { ...leader, x: 0.12, y: 0.14, foot: 'L', rot: 130, emphasis: true },
+          { ...leader, x: -0.33, y: -0.75, foot: 'R', rot: 172 },
+          { ...follower, x: 1.64, y: -1.39, foot: 'R', rot: 25, emphasis: true },
+          { ...follower, x: -1.1, y: -1.85, foot: 'L', rot: 315 },
+        ]} />
+      </div>
+
+      <span class="d-ocho-sequence__arrow">→</span>
+
+      <div class="d-ocho-sequence__panel">
+        <span class="d-ocho-sequence__number">6</span>
+        <StepDiagram legend={false} bounds={circleBounds} circles={circle} feet={[
+          { ...leader, x: 0.12, y: 0.14, foot: 'L', rot: 130 },
+          { ...leader, x: -0.24, y: -0.21, foot: 'R', rot: 142, emphasis: true },
+          { ...follower, x: 1.64, y: -1.4, foot: 'L', rot: 321, emphasis: true },
+          { ...follower, x: 1.4, y: -1.64, foot: 'R', rot: 309 },
+        ]} />
+      </div>
+    </div>
+  </div>
+
+  <div class="d-ocho-sequence__key">
+    <span><i class="d-ocho-sequence__role d-ocho-sequence__role--leader"></i>Leader</span>
+    <span><i class="d-ocho-sequence__role d-ocho-sequence__role--follower"></i>Follower</span>
+    <span><i class="d-ocho-sequence__foot d-ocho-sequence__foot--left"></i>Left foot</span>
+    <span><i class="d-ocho-sequence__foot d-ocho-sequence__foot--right"></i>Right foot</span>
+    <span><i class="d-ocho-sequence__foot d-ocho-sequence__foot--standing"></i>Standing leg</span>
+  </div>
+</figure>
+
+<style>
+  .d-ocho-sequence { margin: 1rem 0 2rem; }
+  .d-ocho-sequence__scroll { overflow-x: auto; padding-bottom: 0.5rem; }
+  .d-ocho-sequence__track {
+    display: grid;
+    grid-template-columns: 8rem 2rem 8rem 2rem 8rem 2rem 13rem 2rem 13rem 2rem 13rem 2rem 13rem;
+    align-items: center;
+    min-width: 90rem;
+  }
+  .d-ocho-sequence__panel { position: relative; }
+  .d-ocho-sequence__panel :global(.d-diagram) { margin: 0; }
+  .d-ocho-sequence__number {
+    position: absolute;
+    z-index: 1;
+    top: 0.3rem;
+    left: 0.4rem;
+    color: var(--color-slate-700);
+    font-weight: 700;
+  }
+  .d-ocho-sequence__arrow {
+    text-align: center;
+    color: var(--color-slate-800);
+    font-size: 1.75rem;
+  }
+  .d-ocho-sequence__key {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.6rem 1.25rem;
+    margin-top: 0.7rem;
+    color: var(--color-slate-700);
+    font-size: 0.82rem;
+  }
+  .d-ocho-sequence__key span { display: inline-flex; align-items: center; gap: 0.4rem; }
+  .d-ocho-sequence__role {
+    width: 1.15rem;
+    height: 1.15rem;
+    border: 1.5px solid #111;
+    border-radius: 0.3rem;
+  }
+  .d-ocho-sequence__role--leader { background: var(--color-blue-500); }
+  .d-ocho-sequence__role--follower { background: var(--color-orange-500); }
+  .d-ocho-sequence__foot {
+    width: 1.15rem;
+    height: 1.15rem;
+    border: 1.5px solid #111;
+    border-radius: 0.3rem;
+    background-color: var(--color-slate-50);
+  }
+  .d-ocho-sequence__foot--left {
+    background-image: repeating-linear-gradient(45deg, transparent 0 3px, var(--color-slate-500) 3px 5px);
+  }
+  .d-ocho-sequence__foot--right {
+    background-image: repeating-linear-gradient(-45deg, transparent 0 3px, var(--color-slate-500) 3px 5px);
+  }
+  .d-ocho-sequence__foot--standing {
+    background: var(--color-slate-400);
+    box-shadow: 0 0 4px 2px rgb(100 116 139 / 0.5), 0 0 8px 3px rgb(203 213 225 / 0.8);
+  }
+</style>

@@ -1,0 +1,225 @@
+---
+import StepDiagram from './StepDiagram.astro';
+import Callout from './Callout.astro';
+
+const leaderFoot = {
+  role: 'leader' as const,
+  tone: 'blue' as const,
+  blackOutline: true,
+  hatched: true,
+};
+---
+
+<section class="d-rock-practice" aria-labelledby="rock-practice-title">
+  <header class="d-rock-practice__header">
+    <span class="d-rock-practice__kicker">Practice</span>
+    <h3 id="rock-practice-title">Forward and back rock steps</h3>
+  </header>
+
+  <div class="d-rock-practice__key" aria-label="Footstep notation">
+    <span><i class="d-rock-practice__foot d-rock-practice__foot--left"></i>Left foot</span>
+    <span><i class="d-rock-practice__foot d-rock-practice__foot--right"></i>Right foot</span>
+    <span><i class="d-rock-practice__foot d-rock-practice__foot--standing"></i>Standing leg</span>
+  </div>
+
+  <div class="d-rock-practice__sequence">
+    <div class="d-rock-practice__groups" aria-hidden="true">
+      <span>Forward rock step with the left foot</span>
+      <span>Back rock step with the right foot</span>
+    </div>
+
+    <StepDiagram
+      legend={false}
+      bounds={{ minX: -0.5, maxX: 12.5, minY: -1.15, maxY: 1.65 }}
+      arrows={[
+        { from: [0.55, 0], to: [1.45, 0], label: 'quick', solid: true },
+        { from: [2.55, 0], to: [3.45, 0], label: 'quick', solid: true },
+        { from: [4.55, 0], to: [5.45, 0], label: 'slow', solid: true },
+        { from: [6.55, 0], to: [7.45, 0], label: 'quick', solid: true },
+        { from: [8.55, 0], to: [9.45, 0], label: 'quick', solid: true },
+        { from: [10.55, 0], to: [11.45, 0], label: 'slow', solid: true },
+      ]}
+      feet={[
+      { ...leaderFoot, x: -0.25, y: 0, foot: 'L', rot: -6 },
+      { ...leaderFoot, x: 0.25, y: 0, foot: 'R', rot: 6, emphasis: true },
+
+      { ...leaderFoot, x: 1.82, y: 0.8, foot: 'L', rot: -6, emphasis: true },
+      { ...leaderFoot, x: 2.18, y: 0, foot: 'R', rot: 6 },
+
+      { ...leaderFoot, x: 3.82, y: 0.8, foot: 'L', rot: -6 },
+      { ...leaderFoot, x: 4.18, y: 0, foot: 'R', rot: 6, emphasis: true },
+
+      { ...leaderFoot, x: 5.75, y: 0, foot: 'L', rot: -6, emphasis: true },
+      { ...leaderFoot, x: 6.25, y: 0, foot: 'R', rot: 6 },
+
+      { ...leaderFoot, x: 7.82, y: 0, foot: 'L', rot: -6 },
+      { ...leaderFoot, x: 8.18, y: -0.8, foot: 'R', rot: 6, emphasis: true },
+
+      { ...leaderFoot, x: 9.82, y: 0, foot: 'L', rot: -6, emphasis: true },
+      { ...leaderFoot, x: 10.18, y: -0.8, foot: 'R', rot: 6 },
+
+      { ...leaderFoot, x: 11.75, y: 0, foot: 'L', rot: -6 },
+      { ...leaderFoot, x: 12.25, y: 0, foot: 'R', rot: 6, emphasis: true },
+      ]}
+    />
+  </div>
+
+  <ul class="d-rock-practice__items">
+    <li>
+      <label>
+        <input type="checkbox" />
+        <span>
+          <strong>Practice on your own.</strong> Repeat the full sequence continuously. The classic
+          rhythm is quick–quick–slow, but rock steps are not limited to this timing.
+        </span>
+      </label>
+    </li>
+    <li>
+      <label>
+        <input type="checkbox" />
+        <span>
+          <strong>Practice with a partner.</strong> You can lead the follower's back rock step while
+          doing a forward rock step yourself. Conversely, the follower's forward rock step
+          corresponds to your back rock step.
+        </span>
+      </label>
+    </li>
+    <li>
+      <label>
+        <input type="checkbox" />
+        <span>
+          Use a practice embrace and switch roles midway through the sequence. In this exercise,
+          the person doing the forward rock step leads, while the person doing the back rock step
+          follows.
+        </span>
+      </label>
+    </li>
+  </ul>
+
+  <Callout type="remark">
+    When practicing with a partner, continue to <em>lead</em> every step when you are in the leader's
+    role. When you are in the follower's role, wait for the lead rather than anticipating the next
+    step. Do not let the movement become a sequence that both partners merely repeat.
+  </Callout>
+</section>
+
+<style>
+  .d-rock-practice {
+    margin: 1.75rem 0;
+    padding: 1.25rem 1.35rem;
+    overflow: hidden;
+    border: 1px solid var(--color-orange-200);
+    border-radius: var(--radius-lg);
+    background: linear-gradient(160deg, var(--color-orange-50) 0%, white 60%);
+  }
+
+  .d-rock-practice__header { margin-bottom: 1rem; }
+
+  .d-rock-practice__kicker {
+    color: var(--color-orange-700);
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.07em;
+    text-transform: uppercase;
+  }
+
+  .d-rock-practice__header h3 {
+    margin: 0.3rem 0 0;
+    color: var(--color-slate-800);
+    font-size: 1.1rem;
+  }
+
+  .d-rock-practice__groups {
+    position: absolute;
+    z-index: 1;
+    top: 0.35rem;
+    right: 0;
+    left: 0;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+    text-align: center;
+    color: var(--color-slate-700);
+    font-size: 0.86rem;
+    font-weight: 600;
+  }
+
+  .d-rock-practice__sequence { position: relative; }
+
+  .d-rock-practice__key {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 0.55rem 1.1rem;
+    margin: 0.65rem 0 0.35rem;
+    color: var(--color-slate-700);
+    font-size: 0.78rem;
+  }
+
+  .d-rock-practice__key span {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.38rem;
+  }
+
+  .d-rock-practice__foot {
+    display: inline-block;
+    width: 1.15rem;
+    height: 1.15rem;
+    border: 1.5px solid #111;
+    border-radius: 0.3rem;
+    background-color: var(--color-blue-50);
+  }
+
+  .d-rock-practice__foot--left {
+    background-image: repeating-linear-gradient(45deg, transparent 0 3px, var(--color-blue-500) 3px 5px);
+  }
+
+  .d-rock-practice__foot--right {
+    background-image: repeating-linear-gradient(-45deg, transparent 0 3px, var(--color-blue-500) 3px 5px);
+  }
+
+  .d-rock-practice__foot--standing {
+    background: var(--color-blue-500);
+    box-shadow: 0 0 4px 2px rgb(59 130 246 / 0.55), 0 0 8px 3px rgb(147 197 253 / 0.7);
+  }
+
+  .d-rock-practice :global(.d-diagram) { margin: 0; }
+
+  .d-rock-practice__items {
+    display: grid;
+    gap: 0.25rem;
+    margin: 0.75rem 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .d-rock-practice__items li { margin: 0; }
+
+  .d-rock-practice__items label {
+    display: flex;
+    align-items: flex-start;
+    gap: 0.7rem;
+    padding: 0.55rem 0.4rem;
+    border-radius: var(--radius-md);
+    color: var(--color-slate-700);
+    cursor: pointer;
+  }
+
+  .d-rock-practice__items label:hover { background: rgb(255 255 255 / 0.75); }
+
+  .d-rock-practice__items input {
+    width: 1.15rem;
+    height: 1.15rem;
+    margin-top: 0.15rem;
+    flex: 0 0 auto;
+    accent-color: var(--color-primary);
+  }
+
+  .d-rock-practice :global(.d-callout) { margin-bottom: 0; }
+
+  @media (max-width: 620px) {
+    .d-rock-practice { padding-inline: 0.8rem; }
+    .d-rock-practice__groups { font-size: 0.75rem; }
+  }
+</style>
