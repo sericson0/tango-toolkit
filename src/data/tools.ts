@@ -345,6 +345,39 @@ export const tools: Tool[] = [
     dateAdded: '2026-07-02',
   },
   {
+    id: 'shellacfilters',
+    name: 'ShellacFilters',
+    tagline: 'Declick and dehum for 78 rpm transfers',
+    description: 'Declicker and dehummer to remove surface \
+                 crackle and low-frequency rumble found in many transfers. \
+                 Tuned on TangoTunes and Tango Time \
+                 Travel tracks. Available as a foobar2000 DSP and a VirtualDJ plugin. \
+                 <strong>Free and open source.</strong>',
+    category: 'plugins-sound-quality',
+    author: 'Nick Shaforostoff',
+    url: 'https://github.com/shaforostoff/shellacfilters',
+    external: true,
+    downloads: [
+      {
+        platform: 'VirtualDJ (Windows)',
+        url: '/api/github-latest-asset?repo=shaforostoff/shellacfilters&ext=exe&id=shellacfilters',
+      },
+      {
+        platform: 'VirtualDJ (macOS)',
+        url: '/api/github-latest-asset?repo=shaforostoff/shellacfilters&ext=pkg&id=shellacfilters',
+      },
+      {
+        platform: 'foobar2000',
+        url: '/api/github-latest-asset?repo=shaforostoff/shellacfilters&ext=zip&id=shellacfilters',
+      },
+    ],
+    // feedbackEmail: '', // TODO: Nick takes contact via facebook.com/shaforostoff (falls back to tangotoolkit@gmail.com)
+    githubRepo: 'shaforostoff/shellacfilters',
+    price: 'Free',
+    platforms: ['Windows', 'macOS'],
+    dateAdded: '2026-09-05',
+  },
+  {
     id: 'tigertag',
     name: 'TigerTag',
     tagline: 'Tag your tango tunes',

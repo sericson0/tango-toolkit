@@ -25,6 +25,15 @@ export interface RecentItem {
 /** Non-tool additions — add new games, articles, and sections here. */
 const extras: RecentItem[] = [
   {
+    title: 'InForm Motion Analysis',
+    description: 'Video analysis app for dancers — loop, slow down, draw, and measure angles on iOS and Android.',
+    href: '/#inform',
+    date: '2026-09-05',
+    tag: 'App',
+    image: '/images/inform/inform-icon.png',
+    firstParty: true,
+  },
+  {
     title: 'Name That Tango',
     description: 'Ear-training game — guess the orchestra, now with bandleader portraits and more rounds.',
     href: '/name-that-tango/',

@@ -27,6 +27,67 @@ const MIC_SVG = `<svg ${ICON_ATTRS}><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0
       <p class="hero-intro">An expanding collection of quality tools and resources for tango dancers, DJs, and organizers of all levels.</p>
     </div>
   </section>
+  <section class="inform-section" id="inform">
+    <div class="container">
+      <aside class="inform-banner">
+        <div class="inform-content">
+          <p class="inform-eyebrow">New app</p>
+          <picture class="inform-logo">
+            <source srcset="/images/inform/inform-logo.webp" type="image/webp" />
+            <img src="/images/inform/inform-logo.png" alt="InForm &mdash; Motion Analysis" width="337" height="325" decoding="async" />
+          </picture>
+          <h2>The video analysis app for movers</h2>
+          <p class="inform-from">From the maker of The Tango Toolkit</p>
+          <p class="inform-lede">
+            Film your practica, load a class video off your phone, or pull a performance straight from
+            YouTube &mdash; then loop it, slow it down, and see exactly what your body is doing.
+          </p>
+          <ul class="inform-features">
+            <li>Loop, slow down, and zoom in on the exact moment</li>
+            <li>Draw, annotate, and measure angles</li>
+            <li>Compare two clips side by side to track progress</li>
+            <li>Written or recorded notes and feedback in the app</li>
+            <li>Save and share your marked-up videos</li>
+          </ul>
+          <div class="inform-badges">
+            <a
+              href="https://apps.apple.com/us/app/inform-motion-analysis/id6797707923"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inform-badge inform-badge-apple"
+            >
+              <img src="/images/inform/app-store-badge.svg" alt="Download InForm on the App Store" width="120" height="40" />
+            </a>
+            <a
+              href="https://play.google.com/store/apps/details?id=dev.sericson.inform"
+              target="_blank"
+              rel="noopener noreferrer"
+              class="inform-badge inform-badge-google"
+            >
+              <img src="/images/inform/google-play-badge.png" alt="Get InForm on Google Play" width="646" height="250" />
+            </a>
+          </div>
+          <p class="inform-free">
+            Free for everyone &mdash; no subscriptions, no ads, nothing hidden behind a paywall.
+            Donations keep development going.
+          </p>
+        </div>
+        <div class="inform-shot">
+          <picture>
+            <source srcset="/images/inform/inform-tango.webp" type="image/webp" />
+            <img
+              src="/images/inform/inform-tango.jpg"
+              alt="InForm measuring a 90&deg; angle on a tango back sacada, paused mid-step"
+              width="560"
+              height="1213"
+              loading="lazy"
+              decoding="async"
+            />
+          </picture>
+        </div>
+      </aside>
+    </div>
+  </section>
   <section class="cta-section">
     <div class="container">
       <div class="cta-grid">
@@ -239,6 +300,187 @@ const MIC_SVG = `<svg ${ICON_ATTRS}><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0
     max-width: 65ch;
     margin: 1rem 0 0;
     line-height: 1.6;
+  }
+
+  /* InForm banner — dark card carrying the app's own brand colors */
+  .inform-section {
+    padding: 2.5rem 0 0.5rem;
+    /* Clears the sticky header when linked to as /#inform. */
+    scroll-margin-top: calc(var(--header-height) + 1rem);
+  }
+
+  .inform-banner {
+    --inform-cyan: #22d3ee;
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 2rem;
+    align-items: center;
+    padding: 2rem 2.25rem;
+    border-radius: var(--radius-lg);
+    border: 1px solid rgba(34, 211, 238, 0.35);
+    background:
+      radial-gradient(120% 140% at 88% 12%, rgba(34, 211, 238, 0.22) 0%, rgba(34, 211, 238, 0) 55%),
+      linear-gradient(135deg, #0b1220 0%, #0f1b2e 55%, #071019 100%);
+    color: #e2e8f0;
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+  }
+
+  .inform-eyebrow {
+    display: inline-block;
+    margin: 0 0 1rem;
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    background: rgba(249, 115, 22, 0.18);
+    border: 1px solid rgba(249, 115, 22, 0.55);
+    color: var(--color-orange-300);
+    font-size: 0.75rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.06em;
+  }
+
+  .inform-logo {
+    display: block;
+  }
+
+  .inform-logo img {
+    width: auto;
+    height: 7rem;
+    display: block;
+  }
+
+  .inform-content {
+    min-width: 0;
+  }
+
+  .inform-banner h2 {
+    margin: 1rem 0 0.35rem;
+    font-size: clamp(1.4rem, 2.4vw, 1.9rem);
+    color: white;
+    line-height: 1.25;
+  }
+
+  .inform-from {
+    margin: 0 0 0.85rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--inform-cyan);
+  }
+
+  .inform-lede {
+    margin: 0 0 1rem;
+    max-width: 56ch;
+    color: #cbd5e1;
+    font-size: 1rem;
+    line-height: 1.6;
+  }
+
+  .inform-features {
+    list-style: none;
+    margin: 0 0 1.5rem;
+    padding: 0;
+    display: grid;
+    gap: 0.4rem;
+    max-width: 56ch;
+    font-size: 0.92rem;
+    color: #cbd5e1;
+  }
+
+  .inform-features li {
+    position: relative;
+    padding-left: 1.4rem;
+    line-height: 1.5;
+  }
+
+  .inform-features li::before {
+    content: '';
+    position: absolute;
+    left: 0.15rem;
+    top: 0.5rem;
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 50%;
+    background: var(--inform-cyan);
+  }
+
+  .inform-badges {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.9rem;
+    margin-bottom: 1rem;
+  }
+
+  .inform-badge {
+    display: inline-flex;
+    border-radius: 0.5rem;
+    transition: transform 0.2s, filter 0.2s;
+  }
+
+  .inform-badge:hover,
+  .inform-badge:focus-visible {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+  }
+
+  /* The browser default outline is easy to lose on this dark card. */
+  .inform-badge:focus-visible {
+    outline: 2px solid var(--inform-cyan);
+    outline-offset: 3px;
+  }
+
+  .inform-badge img {
+    display: block;
+    width: auto;
+  }
+
+  /* Apple ships its badge edge-to-edge; Google's PNG bakes in 16% clear space
+     on every side, so it needs the taller box to match visually. */
+  .inform-badge-apple img {
+    height: 2.75rem;
+  }
+
+  .inform-badge-google img {
+    height: 4.1rem;
+    margin: -0.675rem;
+  }
+
+  .inform-free {
+    margin: 0;
+    font-size: 0.85rem;
+    color: #94a3b8;
+    max-width: 56ch;
+    line-height: 1.5;
+  }
+
+  .inform-shot {
+    width: 16rem;
+    border-radius: 1.25rem;
+    overflow: hidden;
+    border: 1px solid rgba(148, 163, 184, 0.35);
+    box-shadow: 0 18px 40px rgba(0, 0, 0, 0.45);
+    background: #000;
+  }
+
+  .inform-shot img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  @media (max-width: 900px) {
+    .inform-banner {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 1.75rem;
+      padding: 1.75rem 1.5rem;
+    }
+
+    .inform-shot {
+      width: min(13rem, 100%);
+      align-self: center;
+      justify-self: center;
+    }
   }
 
   /* CTA Cards */
