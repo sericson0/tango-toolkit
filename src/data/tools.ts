@@ -82,6 +82,8 @@ export interface Tool {
   url: string;
   /** true → link opens in a new tab (third-party sites). */
   external?: boolean;
+  /** Optional link to support the tool's author, shown as a Donate button. */
+  donationUrl?: string;
   /** Optional direct download link — renders a single Download button on the card. */
   downloadUrl?: string;
   /**
@@ -180,6 +182,22 @@ export const tools: Tool[] = [
     platforms: ['Windows', 'MacOS'],
     image: '/images/dj-tools/tangodj.png',
     dateAdded: '2026-07-23',
+  },
+
+  {
+    id: 'tangoq',
+    name: 'TangoQ',
+    tagline: 'Tango-aware DJing for your milonga',
+    description: 'A free, open-source DJ app built on Mixxx for milonga DJs, with an ordered queue, automatic cortina fades, set timing, and live playback safeguards. Optional donations support the project.',
+    category: 'dj-players',
+    author: 'Seemanta Dutta',
+    url: 'https://tangoq.app',
+    external: true,
+    donationUrl: 'https://www.paypal.com/paypalme/seemanta',
+    price: 'Free',
+    platforms: ['Windows', 'macOS'],
+    image: '/images/dj-tools/tangoq.png',
+    dateAdded: '2026-10-07',
   },
 
   // ===== Displays & Projections =====

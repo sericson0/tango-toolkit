@@ -57,6 +57,15 @@ const MUSIC_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" st
                     <span class="price-chip">{tool.price}</span>
                     {tool.platforms && <span class="platform-note">{tool.platforms.join(' · ')}</span>}
                     <span class="tool-card-actions">
+                      {tool.donationUrl && (
+                        <a
+                          href={tool.donationUrl}
+                          class="tool-card-dl"
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          aria-label={`Donate to ${tool.name}`}
+                        >Donate</a>
+                      )}
                       {tool.downloadUrl && (
                         <a
                           href={tool.downloadUrl}
