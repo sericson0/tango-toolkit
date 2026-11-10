@@ -59,6 +59,14 @@ export interface DancerVideo {
  */
 export const dancerVideos: DancerVideo[] = [
   {
+    id: 'asi-se-baila-el-tango-visualization',
+    title: 'Así Se Baila El Tango',
+    author: 'Ricardo Tanturi & Alberto Castillo, 1942',
+    url: 'https://www.youtube.com/watch?v=VYdGC3fyIVU',
+    category: 'music-visualization',
+    dateAdded: '2026-11-10',
+  },
+  {
     id: 'toda-mi-vida-visualization',
     title: 'Toda Mi Vida',
     author: 'Aníbal Troilo & Francisco Fiorentino, 1941',
