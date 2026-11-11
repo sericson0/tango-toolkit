@@ -4,6 +4,9 @@ import SupportModal from '../components/SupportModal.astro';
 import { products } from '../data/products';
 import { recentlyAdded, formatDate } from '../data/recent';
 
+// Temporarily hide the large banner; set true to restore it.
+const showInFormBanner = false;
+
 const recentItems = recentlyAdded(4);
 
 // Hisstory Lite shares a row with Hisstory Full on the home page
@@ -27,7 +30,7 @@ const MIC_SVG = `<svg ${ICON_ATTRS}><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0
       <p class="hero-intro">An expanding collection of quality tools and resources for tango dancers, DJs, and organizers of all levels.</p>
     </div>
   </section>
-  <section class="inform-section" id="inform">
+  {showInFormBanner && <section class="inform-section" id="inform">
     <div class="container">
       <aside class="inform-banner">
         <div class="inform-content">
@@ -87,7 +90,7 @@ const MIC_SVG = `<svg ${ICON_ATTRS}><path d="M12 1a3 3 0 0 0-3 3v8a3 3 0 0 0 6 0
         </div>
       </aside>
     </div>
-  </section>
+  </section>}
   <section class="cta-section">
     <div class="container">
       <div class="cta-grid">
